@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
@@ -10,6 +10,8 @@
           crossorigin="anonymous"/>
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+
 
     @yield('third_party_stylesheets')
 
@@ -74,14 +76,18 @@
     <!-- Main Footer -->
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.0.5
+            <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        <strong>Copyright &copy; 2022 <a href="https://www.instagram.com/rayid.media">Rayid Media</a>.</strong> All rights
         reserved.
     </footer>
 </div>
 
 <script src="{{ mix('js/app.js') }}" defer></script>
+
+<script src = "https://code.jquery.com/jquery-3.5.1.js" ></script>
+<script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
+<script src = "https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" defer ></script>
 
 @yield('third_party_scripts')
 

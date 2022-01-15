@@ -4,7 +4,7 @@
         <i class="nav-icon fas fa-home"></i>
         <p>Home</p>
     </a>
-    <a href="{{ route('home') }}" class="nav-link">
+    <a href="{{ route('adminPO') }}" class="nav-link">
         <i class="nav-icon fas fa-home"></i>
         <p>Admin PO</p>
     </a>
