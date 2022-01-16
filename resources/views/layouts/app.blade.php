@@ -11,8 +11,11 @@
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
 
-
+    
+    
     @yield('third_party_stylesheets')
 
     @stack('page_css')
@@ -87,7 +90,12 @@
 
 <script src = "https://code.jquery.com/jquery-3.5.1.js" ></script>
 <script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
+<script src = "https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js" defer ></script>
+<script src = "https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js" defer ></script>
 <script src = "https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" defer ></script>
+
+
+
 
 @yield('third_party_scripts')
 

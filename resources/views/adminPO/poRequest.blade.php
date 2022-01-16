@@ -38,7 +38,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Purchase Order</li>
+                        <li class="breadcrumb-item active">Purchase Request</li>
                     </ol>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                                         <td>InternetExplorerX</td>
                                         <td>InternetExplorerX</td>
                                         <td>
-                                            <button type='button' class='btn btn-warning btn-flat-right'><i class="fas fa-list-ul" style="font-size: 15px"></i> List</button>
+                                            <a href="{{ route('adminPO.poRequest.detail') }}" class='btn btn-warning btn-flat-right'><i class="fas fa-list-ul" style="font-size: 15px"></i> List</a>
                                         </td>
                                     </tr>                                    
                                 </tbody>                                

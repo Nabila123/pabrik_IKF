@@ -26,5 +26,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 /* Admin PO Routes */
 Route::get('/adminPO', [App\Http\Controllers\AdminPoController::class, 'index'])->name('adminPO');
 Route::get('/adminPO/Request', [App\Http\Controllers\AdminPoController::class, 'poRequest'])->name('adminPO.poRequest');
+Route::get('/adminPO/Request/detail', [App\Http\Controllers\AdminPoController::class, 'poRequestDetail'])->name('adminPO.poRequest.detail');
 
 Auth::routes();

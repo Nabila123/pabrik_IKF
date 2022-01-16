@@ -21,4 +21,9 @@ class AdminPoController extends Controller
     {
         return view('adminPO.poRequest');
     }
+
+    public function poRequestDetail()
+    {
+        return view('adminPO.poRequestDetail');
+    }
 }
