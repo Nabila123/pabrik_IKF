@@ -16,4 +16,9 @@ class AdminPoController extends Controller
     {
         return view('adminPO.index');
     }
+
+    public function poRequest()
+    {
+        return view('adminPO.poRequest');
+    }
 }
