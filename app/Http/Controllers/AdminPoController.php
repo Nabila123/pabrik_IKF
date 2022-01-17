@@ -36,4 +36,9 @@ class AdminPoController extends Controller
     {
         return view('adminPO.poOrderDetail');
     }
+
+    public function laporanAdminPO()
+    {
+        return view('adminPO.laporanAdminPO');
+    }
 }

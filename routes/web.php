@@ -31,5 +31,7 @@ Route::get('/adminPO/Request/detail', [App\Http\Controllers\AdminPoController::c
 Route::get('/adminPO/Order', [App\Http\Controllers\AdminPoController::class, 'poOrder'])->name('adminPO.poOrder');
 Route::get('/adminPO/Order/detail', [App\Http\Controllers\AdminPoController::class, 'poOrderDetail'])->name('adminPO.poOrder.detail');
 
+Route::get('/adminPO/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
+
 
 Auth::routes();

@@ -1,48 +1,54 @@
 <!-- need to remove -->
-<li class="nav-item">
-    <a href="{{ route('home') }}" class="nav-link active">
-        <i class="nav-icon fas fa-home"></i>
-        <p>
-            Home
-        </p>
-    </a>
-</li>
-<li class="nav-item">
-    <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-home"></i>
-        <p>
-            Admin PO
-            <i class="fas fa-angle-left right"></i>
-        </p>
-    </a>
+<?php
+    $mains = \DB::table('mst_menu')
+                ->where('parentId','=',0)
+                ->where('isActive','=',1)
+                ->orderBy('urutan','asc')
+                ->get();
+?>
 
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('adminPO') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('adminPO.poRequest') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Purchase Request</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('adminPO.poOrder') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Purchase Order</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Laporan Admin PO</p>
-            </a>
-        </li>
-    </ul>
-</li>
+@foreach($mains as $main)
+        <?php
+            $menus = \DB::table('mst_menu')
+                    ->where('parentId','=',$main->id)
+                    ->where('isActive','=',1)
+                    ->orderBy('urutan','asc')
+                    ->get();
+        ?>
+
+        @if(count($menus)==0)
+            <li class="nav-item">
+                <a href="{{ route($main->alias) }}" class="nav-link active">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        {{ $main->nama }}
+                    </p>
+                </a>
+            </li>
+        @else
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        {{ $main->nama }}
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+            
+                <ul class="nav nav-treeview">
+                    @foreach($menus as $menu)
+                            <li class="nav-item">
+                                <a href="{{ route($menu->alias) }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ $menu->nama }}</p>
+                                </a>
+                            </li>
+                    @endforeach
+                </ul>
+            </li>
+        @endif
+@endforeach
+
 <li class="nav-item">
     <a href="{{ route('home') }}" class="nav-link">
         <i class="nav-icon fas fa-home"></i>
