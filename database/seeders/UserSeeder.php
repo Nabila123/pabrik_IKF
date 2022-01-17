@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $admin = new User();
+        $admin->id = 1;
         $admin->nama = 'admin';
         $admin->nip = 'ADM001';
         $admin->password = bcrypt('12345678');
