@@ -60,11 +60,13 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
+                                <input type="hidden" name="purchaseId" id="purchaseId" value="{{ $purchase->id }}">        
+                                <input type="hidden" name="total" id="total" value="{{ $purchase->total }}">        
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode disable" value="{{ $purchaseKode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
+                                            <input class="form-control purchaseKode disable" value="{{ $purchase->kode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -79,19 +81,19 @@
                                     <div class="col-6">
                                         <label>Tanggal Pengiriman</label>
                                         <div class="input-group date" id="DatePengiriman">
-                                            <input type="date" id="pengirimanDate" name="pengirimanDate" class="form-control datetimepicker-input pengirimanDate" data-target="#DatePengiriman"/>
+                                            <input type="date" id="pengirimanDate" name="pengirimanDate" value="{{ $purchase->waktu }}" class="form-control datetimepicker-input pengirimanDate" data-target="#DatePengiriman"/>
                                         </div>                                        
                                     </div>
                                     <div class="col-6">
                                         <label>Tanggal Jatuh Tempo</label>
                                         <div class="input-group date" id="DateJatuhTempo">
-                                            <input type="date" id="jatuhTempoDate" name="jatuhTempoDate" class="form-control datetimepicker-input jatuhTempoDate" data-target="#DateJatuhTempo"/>
+                                            <input type="date" id="jatuhTempoDate" name="jatuhTempoDate" value="{{ $purchase->waktuPayment }}" class="form-control datetimepicker-input jatuhTempoDate" data-target="#DateJatuhTempo"/>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mt-3">
                                             <label>Catatan / Pesan</label>
-                                            <textarea id="notePesan" name="notePesan" class="form-control notePesan" rows="3" placeholder="Enter ..."></textarea>
+                                            <textarea id="notePesan" name="notePesan" class="form-control notePesan" rows="3" placeholder="Enter ..."> {{ $purchase->note }}</textarea>
                                           </div>
                                     </div>
                                 </div>
@@ -157,7 +159,6 @@
                                                         <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="textAlign" style="width: 7%;">No</th>
                                                                     <th class="textAlign">Nama Barang</th>
                                                                     <th class="textAlign">Jumlah </th>
                                                                     <th class="textAlign">Satuan</th>
@@ -167,7 +168,21 @@
                                                                     <th class="textAlign">Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody class="data textAlign"></tbody>                                                                                       
+                                                            <tbody class="data textAlign">
+                                                                @foreach ($purchaseDetails as $detail)
+                                                                    <tr>
+                                                                        <td>{{ $detail->material->nama }}</td>
+                                                                        <td>{{ $detail->qty }}</td>
+                                                                        <td>{{ $detail->unit }}</td>
+                                                                        <td>{{ $detail->unitPrice }}</td>
+                                                                        <td>{{ $detail->amount }}</td>
+                                                                        <td>{{ $detail->remark }}</td>
+                                                                        <td>
+                                                                            <a href="{{ route('adminPO.poOrder.detail.delete', [$detail->id, $purchase->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                                        </td>
+                                                                    </tr>                                                                    
+                                                                @endforeach    
+                                                            </tbody>                                                                                       
                                                         </table>
                                                     </div>
                                                 </div>
@@ -245,7 +260,6 @@
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                        table += "<td>"+jumlah_data+"</td>";
                         table += "<td>"+nama_material+"<input type='hidden' name='material[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
                         table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                         table += "<td>"+satuan+"<input type='hidden' name='satuan[]' value='"+satuan+"' id='satuan_"+jumlah_data+"'></td>";

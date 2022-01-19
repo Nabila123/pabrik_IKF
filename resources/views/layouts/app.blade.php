@@ -15,9 +15,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
-
-
-
     
     
     @yield('third_party_stylesheets')
@@ -98,10 +95,6 @@
 <script src = "https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js" defer ></script>
 <script src = "https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" defer ></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js" ></script>
-
-
-
-
 
 
 @yield('third_party_scripts')
