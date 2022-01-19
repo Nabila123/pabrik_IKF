@@ -50,6 +50,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <a href="{{ route('adminPO.poOrder.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
+                            </h3>
+                        </div>
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                 <thead>
@@ -75,7 +80,7 @@
                                         <td>InternetExplorerX</td>
                                         <td>InternetExplorerX</td>
                                         <td>
-                                            <a href="{{ route('adminPO.poRequest.detail') }}" class='btn btn-warning btn-flat-right'><i class="fas fa-list-ul" style="font-size: 15px"></i> List</a>
+                                            <a href="{{ route('adminPO.poOrder.detail') }}" class='btn btn-warning btn-flat-right'><i class="fas fa-list-ul" style="font-size: 15px"></i> List</a>
                                         </td>
                                     </tr>                                    
                                 </tbody>                                
