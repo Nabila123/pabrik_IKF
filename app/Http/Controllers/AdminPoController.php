@@ -106,6 +106,8 @@ class AdminPoController extends Controller
 
     public function poOrderUpdateSave(Request $request){
 
+        dd($request);
+
         $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
         $jenisPurchase = "Purchase Order";
@@ -165,16 +167,33 @@ class AdminPoController extends Controller
         return view('adminPO.purchaseRequest.index', ['poRequest' => $poRequest]);
     }
 
+    public function poRequestRequestKode($purchaseKode){
+
+        $materials = MaterialModel::get();
+        $getPurchaseId = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('kode', $purchaseKode)->first();
+        $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $getPurchaseId->id)->get();
+        $jenisPurchase = "Request";
+
+
+        return view('adminPO.purchaseOrder.update', ['jenisPurchase' => $jenisPurchase ,'materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+    }
+
+    public function poRequestApprove(Request $request){
+        $Approved = AdminPurchase::purchaseUpdateField($request['approve'], \Auth::user()->roleId, $request['purchaseId']);
+        if ($Approved == 1) {
+            $ApprovedAt = AdminPurchase::purchaseUpdateField($request['approveAt'], date('Y-m-d H:i:s'), $request['purchaseId']);
+
+            if ($ApprovedAt == 1) {
+                return 1;
+            }
+        }
+    }
+
     public function poRequestDetail($id){
         $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
 
         return view('adminPO.purchaseRequest.detail', ['request' => $getPurchaseId, 'requestDetail' => $getPurchaseDetailId]);
-    }
-
-    public function poRequestDetailDelete($detailId, $purchaseId)
-    {
-        # code...
     }
     //END PURCHASE REQUEST FUNCTION
 

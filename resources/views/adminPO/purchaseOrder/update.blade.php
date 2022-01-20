@@ -62,6 +62,7 @@
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
                                 <input type="hidden" name="purchaseId" id="purchaseId" value="{{ $purchase->id }}">        
                                 <input type="hidden" name="total" id="total" value="{{ $purchase->total }}">        
+                                <input type="hidden" name="jenisPurchase" id="jenisPurchase" value="{{ $jenisPurchase }}">        
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">

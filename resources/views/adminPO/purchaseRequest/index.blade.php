@@ -51,14 +51,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                            <table id="example2" class="table table-bordered  dataTables_scrollBody" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;width:10%;">Kode Purchase</th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:15%;">Tanggal Pengajuan</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Tanggal Pengajuan</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Agreement </th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Status Kedatangan</th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:10%;">action</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">action</th>
                                     </tr>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">PPIC</th>
@@ -69,7 +69,14 @@
                                 <tbody class="textAlign">
                                     @foreach ($poRequest as $request)
                                         <tr>
-                                            <td>{{ $request->kode }}</td>
+                                            <td>
+                                                @if (\Auth::user()->roleId == 7 && $request->isKaDeptPO != 0)
+                                                    <a href="{{ route('adminPO.poRequest.requestKode', $request->kode) }}" class="btn btn-info requestKode"> {{ $request->kode }} </a> <br>
+                                                    <span style="color: green; font-size: 10px">Lanjut Purchase Order</span>
+                                                @else
+                                                    {{ $request->kode }}
+                                                @endif
+                                            </td>
                                             <td>{{ date('d F Y', strtotime($request->tanggal)) }}</td>
                                             <td>
                                                 {{ $request->user->nama }} <br>
@@ -78,20 +85,28 @@
                                             </td>
                                             <td>
                                                 @if ($request->isKaDeptProd != 0)
-                                                    {{ $request->isKaDeptProd }} <br>
-                                                    Aproved At {{ date('d F Y', strtotime($request->isKaDeptProdAt)) }}
+                                                    {{ $request->roleKaDeptProdUser->nama }} <br>
+                                                    <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($request->isKaDeptProdAt)) }} </span>
                                                 @else
-                                                    <br>
-                                                    <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @if (\Auth::user()->roleId == 8)
+                                                    <button type="button" id="approveKaDeptProd" purchaseid="{{ $request->id }}" class='btn btn-success approveKaDeptProd'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
+                                                    @else
+                                                        <br>
+                                                        <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @endif
                                                 @endif                                                
                                             </td>
                                             <td>
                                                 @if ($request->isKaDeptPO != 0)
-                                                    {{ $request->isKaDeptPO }} <br>
-                                                    Aproved At {{ date('d F Y', strtotime($request->isKaDeptPOAt)) }}
+                                                    {{ $request->roleKaDeptPOUser->nama }} <br>
+                                                    <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($request->isKaDeptPOAt)) }} </span>
                                                 @else
-                                                    <br>
-                                                    <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @if (\Auth::user()->roleId == 7 && $request->isKaDeptProd != 0)
+                                                        <button type="button" id="approveKaDeptPO" purchaseId="{{ $request->id }}" class='btn btn-success approveKaDeptPO'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
+                                                    @else
+                                                        <br>
+                                                        <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td>
@@ -123,7 +138,49 @@
 @push('page_scripts') 
     <script type="text/javascript">
         $(document).ready( function () {
-            $('#example2').DataTable();
+            $('#example2').DataTable({
+                "responsive": true,
+            });
+            
+            $(document).on("click", "button.approveKaDeptProd", function(e){
+                e.preventDefault();
+                var purchaseId = $(this).attr('purchaseId');
+               
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('adminPO/Request/approve') }}',
+                    data: {
+                        'purchaseId' : purchaseId,
+                        'approve' : 'isKaDeptProd',
+                        'approveAt' : 'isKaDeptProdAt',
+                    },
+                    success: function(response){                        
+                        if(response == 1){
+                            location.reload();
+                        }
+                    }
+                })
+            });
+
+            $(document).on("click", "button.approveKaDeptPO", function(e){
+                e.preventDefault();
+                var purchaseId = $(this).attr('purchaseId');
+               
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('adminPO/Request/approve') }}',
+                    data: {
+                        'purchaseId' : purchaseId,
+                        'approve' : 'isKaDeptPO',
+                        'approveAt' : 'isKaDeptPOAt',
+                    },
+                    success: function(response){                        
+                        if(response == 1){
+                            location.reload();
+                        }
+                    }
+                })
+            });
         });
     </script>
 @endpush

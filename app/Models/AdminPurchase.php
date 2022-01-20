@@ -17,6 +17,26 @@ class AdminPurchase extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function roleKaDeptProdUser()
+    {
+        return $this->hasOne('App\Models\User','roleId','isKaDeptProd');
+    }
+
+    public function roleKaDeptPOUser()
+    {
+        return $this->hasOne('App\Models\User','roleId','isKaDeptPO');
+    }
+
+    public function roleKaDivPOUser()
+    {
+        return $this->hasOne('App\Models\User','roleId','isKaDivPO');
+    }
+
+    public function roleKaDivFinUser()
+    {
+        return $this->hasOne('App\Models\User','roleId','isKaDivFin');
+    }
+
     public static function findOne($id) {
         return self::where(array(
           'id'	=> $id,
@@ -80,5 +100,15 @@ class AdminPurchase extends Model
 
         return 1;
         
+    }
+
+    public static function purchaseUpdateField($fieldName, $updatedField, $id)
+    {
+        $purchaseFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($purchaseFieldUpdated);
+
+        if ($success) {
+            return 1;
+        }
     }
 }

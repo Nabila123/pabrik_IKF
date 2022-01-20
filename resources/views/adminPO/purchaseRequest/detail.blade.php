@@ -105,7 +105,7 @@
                                     <tr>
                                         <td>
                                             @if ($request->isKaDeptProd != 0)
-                                                {{ $request->isKaDeptProd }} <br> 
+                                                {{ $request->roleKaDeptProdUser->nama }} <br> 
                                                 <span style="font-size: 12px; color:green"> 
                                                     Approve At  {{ $request->isKaDeptProdAt }} 
                                                 </span>
@@ -119,7 +119,7 @@
                                         </td>    
                                         <td>
                                             @if ($request->isKaDeptPO != 0)
-                                                {{ $request->isKaDeptPO }} <br> 
+                                                {{ $request->roleKaDeptPOUser->nama }} <br> 
                                                 <span style="font-size: 12px; color:green">
                                                     Approve At  {{ $request->isKaDeptPOAt }} 
                                                 </span>
