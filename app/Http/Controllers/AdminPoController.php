@@ -40,7 +40,7 @@ class AdminPoController extends Controller
     {   
         $poOrder = AdminPurchase::get();
 
-        return view('adminPO.purchaseOrder.poOrder', ['poOrder'=>$poOrder]);
+        return view('adminPO.purchaseOrder.index', ['poOrder'=>$poOrder]);
     }
 
     public function poOrderCreate()
@@ -108,7 +108,7 @@ class AdminPoController extends Controller
     {
         $getPurchaseId = AdminPurchase::where('id', $id)->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
-        return view('adminPO.purchaseOrder.poOrderDetail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+        return view('adminPO.purchaseOrder.detail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
     public function poOrderUpdate($id)
