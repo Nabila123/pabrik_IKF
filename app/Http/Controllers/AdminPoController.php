@@ -17,7 +17,13 @@ class AdminPoController extends Controller
 
     public function index()
     {
-        return view('adminPO.index');
+        $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
+        $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
+
+        $poOrder = count($poOrder);
+        $poRequest = count($poRequest);
+
+        return view('adminPO.index', ['order' => $poOrder, 'request' => $poRequest]);
     }
 
     public function poRequest()
@@ -53,6 +59,7 @@ class AdminPoController extends Controller
     {
         
         $purchaseKode = $request['purchaseKode'];
+        $jenisPurchase = "Purchase Order";
         $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
         $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
         $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):date('Y-m-d H:i:s', strtotime(NULL));
@@ -73,33 +80,14 @@ class AdminPoController extends Controller
                 $total += $totalHarga[$i];
             }            
 
-            $AddPurchase = new AdminPurchase;
-            $AddPurchase->kode = $purchaseKode;
-            $AddPurchase->jenisPurchase = "Purchase Order";
-            $AddPurchase->tanggal = $pengajuanDate;
-            $AddPurchase->waktu = $pengirimanDate;
-            $AddPurchase->waktuPayment = $jatuhTempoDate;
-            $AddPurchase->note = $notePesan;
-            $AddPurchase->total = $total;
-
-            $AddPurchase->userId = \Auth::user()->id;
-            $AddPurchase->created_at = date('Y-m-d H:i:s');
-
-            if ($AddPurchase->save()) {
-                $purchaseId = $AddPurchase->id;
+            $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+            
+            if ($purchaseCreate) {
+                $purchaseId = $purchaseCreate;
 
                 for ($i = 0; $i < $jumlahData; $i++) {
-                    $addDetailPurchase = new AdminPurchaseDetail;
-                    $addDetailPurchase->purchaseId = $purchaseId;
-                    $addDetailPurchase->materialId = $material[$i];
-                    $addDetailPurchase->qty = $jumlah[$i];
-                    $addDetailPurchase->unit = $satuan[$i];
-                    $addDetailPurchase->unitPrice = $harga[$i];
-                    $addDetailPurchase->amount = $totalHarga[$i];
-                    $addDetailPurchase->remark = $note[$i];
-                    $addDetailPurchase->created_at = date('Y-m-d H:i:s');
-
-                    $addDetailPurchase->save();                    
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                  
+                    
                 }
                 return redirect('adminPO/Order');
             }
@@ -136,6 +124,7 @@ class AdminPoController extends Controller
 
         $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
+        $jenisPurchase = "Purchase Order";
         $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
         $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
         $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):date('Y-m-d H:i:s', strtotime(NULL));
@@ -154,49 +143,18 @@ class AdminPoController extends Controller
         if ($jumlahData != 0) {
             for ($i=0; $i < $jumlahData; $i++) { 
                 $total += $totalHarga[$i];
+            }         
+
+            $purchaseUpdate = AdminPurchase::purchaseUpdate($purchaseid, $purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+
+            if ($purchaseUpdate == 1) {
+                for ($i = 0; $i < $jumlahData; $i++) {
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseid, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                  
+                }
+                return redirect('adminPO/Order');
             }
-
-            $PurchaseUpdated['kode'] = $purchaseKode;
-            $PurchaseUpdated['jenisPurchase'] = "Purchase Order";
-            $PurchaseUpdated['tanggal'] = $pengajuanDate;
-            $PurchaseUpdated['waktu'] = $pengirimanDate;
-            $PurchaseUpdated['waktuPayment'] = $jatuhTempoDate;
-            $PurchaseUpdated['note'] = $notePesan;
-            $PurchaseUpdated['total'] = $total;
-
-            $PurchaseUpdated['userId'] = \Auth::user()->id;
-            $PurchaseUpdated['updated_at'] = date('Y-m-d H:i:s');
-
-            AdminPurchase::where('id', $purchaseid)->update($PurchaseUpdated);
-
-            for ($i = 0; $i < $jumlahData; $i++) {
-                $addDetailPurchase = new AdminPurchaseDetail;
-                $addDetailPurchase->purchaseId = $purchaseid;
-                $addDetailPurchase->materialId = $material[$i];
-                $addDetailPurchase->qty = $jumlah[$i];
-                $addDetailPurchase->unit = $satuan[$i];
-                $addDetailPurchase->unitPrice = $harga[$i];
-                $addDetailPurchase->amount = $totalHarga[$i];
-                $addDetailPurchase->remark = $note[$i];
-                $addDetailPurchase->created_at = date('Y-m-d H:i:s');
-
-                $addDetailPurchase->save();                    
-            }
-            return redirect('adminPO/Order');
         }else{
-            $AddPurchase = new AdminPurchase;
-            $AddPurchase->kode = $purchaseKode;
-            $AddPurchase->jenisPurchase = "Purchase Order";
-            $AddPurchase->tanggal = $pengajuanDate;
-            $AddPurchase->waktu = $pengirimanDate;
-            $AddPurchase->waktuPayment = $jatuhTempoDate;
-            $AddPurchase->note = $notePesan;
-            $AddPurchase->total = $total;
-
-            $AddPurchase->userId = \Auth::user()->id;
-            $AddPurchase->updated_at = date('Y-m-d H:i:s');
-            $AddPurchase->save();      
-            
+            $purchaseUpdate = AdminPurchase::purchaseUpdate($purchaseid, $purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);           
             return redirect('adminPO/Order');
         }
     }
@@ -211,11 +169,8 @@ class AdminPoController extends Controller
 
     public function poOrderDelete(Request $request)
     {
-        $PurchaseDetail = AdminPurchaseDetail::where('purchaseId', $request['purchaseId'])->delete();
-
-        if ($PurchaseDetail) {
-            AdminPurchase::where('id', $request['purchaseId'])->delete();
-        }
+        AdminPurchaseDetail::where('purchaseId', $request['purchaseId'])->delete();        
+        AdminPurchase::where('id', $request['purchaseId'])->delete();   
                 
         return redirect('adminPO/Order');
     }

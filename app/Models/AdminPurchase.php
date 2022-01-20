@@ -41,5 +41,44 @@ class AdminPurchase extends Model
         return $kode;
     }
 
-    
+    public static function purchaseCreate($kode, $jenisPurchase, $tanggal, $waktu, $waktuPayment, $note, $total, $userId)
+    {
+        $AddPurchase = new AdminPurchase;
+        $AddPurchase->kode = $kode;
+        $AddPurchase->jenisPurchase = $jenisPurchase;
+        $AddPurchase->tanggal = $tanggal;
+        $AddPurchase->waktu = $waktu;
+        $AddPurchase->waktuPayment = $waktuPayment;
+        $AddPurchase->note = $note;
+        $AddPurchase->total = $total;
+
+        $AddPurchase->userId = $userId;
+        $AddPurchase->created_at = date('Y-m-d H:i:s');
+
+        if ($AddPurchase->save()) {
+            return $AddPurchase->id;
+        } else {
+            return 0;
+        }
+        
+    }
+
+    public static function purchaseUpdate($id, $kode, $jenisPurchase, $tanggal, $waktu, $waktuPayment, $note, $total, $userId)
+    {
+        $purchaseUpdated['kode'] = $kode;
+        $purchaseUpdated['jenisPurchase'] = $jenisPurchase;
+        $purchaseUpdated['tanggal'] = $tanggal;
+        $purchaseUpdated['waktu'] = $waktu;
+        $purchaseUpdated['waktuPayment'] = $waktuPayment;
+        $purchaseUpdated['note'] = $note;
+        $purchaseUpdated['total'] = $total;
+
+        $purchaseUpdated['userId'] = $userId;
+        $purchaseUpdated['updated_at'] = date('Y-m-d H:i:s');
+
+        self::where('id', $id)->update($purchaseUpdated);
+
+        return 1;
+        
+    }
 }

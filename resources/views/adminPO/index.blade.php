@@ -54,7 +54,7 @@
             
                         <div class="info-box-content">
                             <span class="info-box-text">Purchase Request</span>
-                            <span class="info-box-number"> 10 <small>%</small> </span>
+                            <span class="info-box-number"> {{ $request }} </span>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
         
                         <div class="info-box-content">
                             <span class="info-box-text">Purchase Order</span>
-                            <span class="info-box-number">41,410</span>
+                            <span class="info-box-number"> {{ $order }}</span>
                         </div>
                     </div>
                 </div>
