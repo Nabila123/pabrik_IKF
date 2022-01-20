@@ -33,5 +33,16 @@ Route::get('/adminPO/Order/detail', [App\Http\Controllers\AdminPoController::cla
 
 Route::get('/adminPO/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
 
+/* Gudang Bahan Baku */
+Route::get('/bahan_baku', [App\Http\Controllers\GudangBahanBakuController::class, 'index'])->name('bahan_baku');
+Route::get('/bahan_baku/create', [App\Http\Controllers\GudangBahanBakuController::class, 'create'])->name('bahan_baku.create');
+Route::get('/bahan_baku/store', [App\Http\Controllers\GudangBahanBakuController::class, 'store'])->name('bahan_baku.store');
+Route::get('/bahan_baku/detail', [App\Http\Controllers\GudangBahanBakuController::class, 'detail'])->name('bahan_baku.detail');
+
+Route::get('/bahan_baku/Order', [App\Http\Controllers\AdminPoController::class, 'poOrder'])->name('adminPO.poOrder');
+Route::get('/bahan_baku/Order/detail', [App\Http\Controllers\AdminPoController::class, 'poOrderDetail'])->name('adminPO.poOrder.detail');
+
+Route::get('/bahan_baku/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
+
 
 Auth::routes();
