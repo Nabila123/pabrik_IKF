@@ -15,6 +15,7 @@ class AdminPoController extends Controller
         $this->middleware('auth');
     }
 
+    //PURCHASE ORDER FUNCTION
     public function index()
     {
         $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
@@ -24,17 +25,7 @@ class AdminPoController extends Controller
         $poRequest = count($poRequest);
 
         return view('adminPO.index', ['order' => $poOrder, 'request' => $poRequest]);
-    }
-
-    public function poRequest()
-    {
-        return view('adminPO.purchaseRequest.poRequest');
-    }
-
-    public function poRequestDetail()
-    {
-        return view('adminPO.purchaseRequest.poRequestDetail');
-    }
+    }    
 
     public function poOrder()
     {   
@@ -174,6 +165,19 @@ class AdminPoController extends Controller
                 
         return redirect('adminPO/Order');
     }
+    //END PURCHASE ORDER FUNCTION
+
+    //PURCHASE REQUEST FUNCTION
+    public function poRequest()
+    {
+        return view('adminPO.purchaseRequest.index');
+    }
+
+    public function poRequestDetail()
+    {
+        return view('adminPO.purchaseRequest.detail');
+    }
+    //END PURCHASE REQUEST FUNCTION
 
     public function laporanAdminPO()
     {
