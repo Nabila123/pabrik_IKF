@@ -16,8 +16,7 @@ class AdminPoController extends Controller
     }
 
     //PURCHASE ORDER FUNCTION
-    public function index()
-    {
+    public function index(){
         $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
         $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
 
@@ -27,18 +26,16 @@ class AdminPoController extends Controller
         return view('adminPO.index', ['order' => $poOrder, 'request' => $poRequest]);
     }    
 
-    public function poOrder()
-    {   
-        $poOrder = AdminPurchase::get();
+    public function poOrder(){   
+        $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
 
         return view('adminPO.purchaseOrder.index', ['poOrder'=>$poOrder]);
     }
 
-    public function poOrderCreate()
-    {
+    public function poOrderCreate(){
         $materials = MaterialModel::get();
         $purchaseKode = AdminPurchase::purchaseKode();
-        $getpurchaseKode = AdminPurchase::where('kode', $purchaseKode)->get();
+        $getpurchaseKode = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $purchaseKode)->get();
         while (empty($getpurchaseKode)) {
             $purchaseKode = AdminPurchase::purchaseKode();
         }
@@ -46,8 +43,7 @@ class AdminPoController extends Controller
         return view('adminPO.purchaseOrder.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode]);
     }
 
-    public function poOrderStore(Request $request)
-    {
+    public function poOrderStore(Request $request){
         
         $purchaseKode = $request['purchaseKode'];
         $jenisPurchase = "Purchase Order";
@@ -95,23 +91,20 @@ class AdminPoController extends Controller
         
     }
 
-    public function poOrderDetail($id)
-    {
-        $getPurchaseId = AdminPurchase::where('id', $id)->first();
+    public function poOrderDetail($id){
+        $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Order')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
         return view('adminPO.purchaseOrder.detail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
-    public function poOrderUpdate($id)
-    {
+    public function poOrderUpdate($id){
         $materials = MaterialModel::get();
-        $getPurchaseId = AdminPurchase::where('id', $id)->first();
+        $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Order')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
         return view('adminPO.purchaseOrder.update', ['materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
-    public function poOrderUpdateSave(Request $request)
-    {
+    public function poOrderUpdateSave(Request $request){
 
         $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
@@ -150,16 +143,14 @@ class AdminPoController extends Controller
         }
     }
 
-    public function poOrderDetailDelete($detailId, $purchaseId)
-    {
+    public function poOrderDetailDelete($detailId, $purchaseId){
         $purchaseDetail = AdminPurchaseDetail::where('id', $detailId)->delete();
         if ($purchaseDetail) {
             return redirect('adminPO/Order/update/' . $purchaseId . '');
         }
     }
 
-    public function poOrderDelete(Request $request)
-    {
+    public function poOrderDelete(Request $request){
         AdminPurchaseDetail::where('purchaseId', $request['purchaseId'])->delete();        
         AdminPurchase::where('id', $request['purchaseId'])->delete();   
                 
@@ -168,19 +159,26 @@ class AdminPoController extends Controller
     //END PURCHASE ORDER FUNCTION
 
     //PURCHASE REQUEST FUNCTION
-    public function poRequest()
-    {
-        return view('adminPO.purchaseRequest.index');
+    public function poRequest(){
+        $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
+
+        return view('adminPO.purchaseRequest.index', ['poRequest' => $poRequest]);
     }
 
-    public function poRequestDetail()
+    public function poRequestDetail($id){
+        $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
+        $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
+
+        return view('adminPO.purchaseRequest.detail', ['request' => $getPurchaseId, 'requestDetail' => $getPurchaseDetailId]);
+    }
+
+    public function poRequestDetailDelete($detailId, $purchaseId)
     {
-        return view('adminPO.purchaseRequest.detail');
+        # code...
     }
     //END PURCHASE REQUEST FUNCTION
 
-    public function laporanAdminPO()
-    {
+    public function laporanAdminPO(){
         return view('adminPO.laporanPurchase.laporanAdminPO');
     }
 }

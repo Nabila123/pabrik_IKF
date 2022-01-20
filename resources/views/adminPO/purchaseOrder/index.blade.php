@@ -66,9 +66,9 @@
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle; width:15%;">action</th>
                                     </tr>
                                     <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">PPIC</th>
-                                        <th class="textAlign" style="vertical-align: middle;">K. Dep Prod</th>
                                         <th class="textAlign" style="vertical-align: middle;">K. Dep PO</th>
+                                        <th class="textAlign" style="vertical-align: middle;">K. Div PO</th>
+                                        <th class="textAlign" style="vertical-align: middle;">K. Div Fin</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
@@ -82,9 +82,9 @@
 
                                             </td>
                                             <td>
-                                                @if ($order->isKaDeptProd != 0)
-                                                    {{ $order->isKaDeptProd }} <br>
-                                                    Aproved At {{ date('d F Y', strtotime($order->isKaDeptProdAt)) }}
+                                                @if ($order->isKaDivPO != 0)
+                                                    {{ $order->isKaDivPO }} <br>
+                                                    Aproved At {{ date('d F Y', strtotime($order->isKaDivPOAt)) }}
                                                 @else
                                                     <br>
                                                     <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
@@ -92,9 +92,9 @@
                                                 
                                             </td>
                                             <td>
-                                                @if ($order->isKaDeptPO != 0)
-                                                    {{ $order->isKaDeptPO }} <br>
-                                                    Aproved At {{ date('d F Y', strtotime($order->isKaDeptPOAt)) }}
+                                                @if ($order->isKaDivFin != 0)
+                                                    {{ $order->isKaDivFin }} <br>
+                                                    Aproved At {{ date('d F Y', strtotime($order->isKaDivFinAt)) }}
                                                 @else
                                                     <br>
                                                     <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
