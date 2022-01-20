@@ -49,12 +49,12 @@
                 <div class="col-12 col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <span class="tglPurchase">Tanggal Pengajuan</span>
+                            <span class="tglPurchase">Tanggal Pengajuan : {{ date('d F Y', strtotime($purchase->tanggal))}}</span>
                             <table class="table" style="margin-bottom: 35px">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">Kode Purchase</th>
-                                        <th>Note</th>
+                                        <th style="width: 40%">Kode Purchase : {{ $purchase->kode }}</th>
+                                        <th>Note : {{ $purchase->note }}</th>
                                     </tr>
                                 </thead>                               
                             </table>
@@ -72,15 +72,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td class="text-left">Internet Explorer 95+</td>
-                                        <td>4</td>
-                                        <td>Pcs</td>
-                                        <td>40000</td>
-                                        <td>160.000</td>
-                                        <td class="text-left">Barang Digunakan Untuk Lain Sebagainya</td>
-                                    </tr>                                    
+                                    <?php $no = 0; ?>
+                                    @foreach ($purchaseDetails as $detail)
+                                    <?php $no++; ?>
+                                        <tr>
+                                            <td>{{ $no }}</td>
+                                            <td class="text-left">{{ $detail->material->nama }}</td>
+                                            <td>{{ $detail->qty }}</td>
+                                            <td>{{ $detail->unit }}</td>
+                                            <td>{{ $detail->unitPrice }}</td>
+                                            <td>{{ $detail->amount }}</td>
+                                            <td class="text-left">{{ $detail->remark }}</td>
+                                        </tr>
+                                    @endforeach                                    
                                 </tbody>                                
                             </table>
 
@@ -97,9 +101,37 @@
                                 </thead> 
                                 <tbody>
                                     <tr>
-                                        <td>Nama Kepala Departemen Produksi <br> <span style="font-size: 12px; color:green"> Approve At 16 Jan 2022 </span></td>    
-                                        <td>Nama Kepala Departemen Purchase Order <br> <span style="font-size: 12px; color:green"> Approve At 16 Jan 2022 </span></td>    
-                                        <td>Nama Production Planning and Inventory Control</td>    
+                                        <td>
+                                            @if ($purchase->isKaDeptProd != 0)
+                                                {{ $purchase->isKaDeptProd }} <br> 
+                                                <span style="font-size: 12px; color:green"> 
+                                                    Approve At  {{ $purchase->isKaDeptProdAt }} 
+                                                </span>
+                                            @else
+                                                 <br> 
+                                                <span style="font-size: 12px; color:rgb(250, 1, 1)"> 
+                                                    Dalam Proses Approve
+                                                </span>
+                                            @endif
+                                            
+                                        </td>    
+                                        <td>
+                                            @if ($purchase->isKaDeptPO != 0)
+                                                {{ $purchase->isKaDeptPO }} <br> 
+                                                <span style="font-size: 12px; color:green">
+                                                    Approve At  {{ $purchase->isKaDeptPOAt }} 
+                                                </span>
+                                            @else
+                                                <br> 
+                                                <span style="font-size: 12px; color:rgb(250, 1, 1)"> 
+                                                    Dalam Proses Approve
+                                                </span>
+                                            @endif
+                                            
+                                        </td>    
+                                        <td>
+                                            {{ $purchase->user->nama }}
+                                        </td>    
                                     </tr>    
                                 </tbody>                              
                             </table>
