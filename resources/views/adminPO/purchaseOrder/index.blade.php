@@ -51,16 +51,16 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">
+                            {{--  <h3 class="card-title">
                                 <a href="{{ route('adminPO.poOrder.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
-                            </h3>
+                            </h3>  --}}
                         </div>
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:5%;">Kode Purchase</th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:15%;">Tanggal Pengajuan</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Tanggal Pengajuan</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Agreement </th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Status Kedatangan</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle; width:15%;">action</th>
@@ -83,21 +83,29 @@
                                             </td>
                                             <td>
                                                 @if ($order->isKaDivPO != 0)
-                                                    {{ $order->isKaDivPO }} <br>
-                                                    Aproved At {{ date('d F Y', strtotime($order->isKaDivPOAt)) }}
+                                                    {{ $order->roleKaDivPOUser->nama }} <br>
+                                                    <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($order->isKaDivPOAt)) }} </span>
                                                 @else
-                                                    <br>
-                                                    <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @if (\Auth::user()->roleId == 4)
+                                                        <button type="button" id="approveKaKaDivPO" purchaseid="{{ $order->id }}" class='btn btn-success approveKaKaDivPO'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
+                                                    @else
+                                                        <br>
+                                                        <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @endif
                                                 @endif
                                                 
                                             </td>
                                             <td>
                                                 @if ($order->isKaDivFin != 0)
-                                                    {{ $order->isKaDivFin }} <br>
-                                                    Aproved At {{ date('d F Y', strtotime($order->isKaDivFinAt)) }}
+                                                    {{ $order->roleKaDivFinUser->nama }} <br>
+                                                    <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($order->isKaDivFinAt)) }} </span>
                                                 @else
-                                                    <br>
-                                                    <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @if (\Auth::user()->roleId == 6 && $order->isKaDivPO != 0)
+                                                        <button type="button" id="approveKaDivFin" purchaseid="{{ $order->id }}" class='btn btn-success approveKaDivFin'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
+                                                    @else
+                                                        <br>
+                                                        <span style="color: rgb(253, 5, 5); font-size: 10px">Dalam Proses Approve</span>
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td>
@@ -110,7 +118,12 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('adminPO.poOrder.detail', $order->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('adminPO.poOrder.update', $order->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                {{--  <a href="{{ route('adminPO.poOrder.update', $order->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>  --}}
+                                                @if ($order->isKaDivFin != 0)
+                                                    <a href="{{ route('adminPO.poOrder.unduh', $order->id) }}" target="_blank" class='btn btn-info'><i class="fas fa-download" style="font-size: 14px"></i></a>
+                                                @else
+                                                    <button type="button" class='btn btn-info disabled'><i class="fas fa-download" style="font-size: 14px"></i></button>
+                                                @endif
                                                 <button type="button" data-toggle="modal" purchaseId='{{ $order->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $order->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
@@ -174,6 +187,46 @@
         $(document).ready( function () {        
             $('#example2').DataTable( {
                 "responsive": true,
+            });
+
+            $(document).on("click", "button.approveKaKaDivPO", function(e){
+                e.preventDefault();
+                var purchaseId = $(this).attr('purchaseId');
+               
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('adminPO/Request/approve') }}',
+                    data: {
+                        'purchaseId' : purchaseId,
+                        'approve' : 'isKaDivPO',
+                        'approveAt' : 'isKaDivPOAt',
+                    },
+                    success: function(response){                        
+                        if(response == 1){
+                            location.reload();
+                        }
+                    }
+                })
+            });
+
+            $(document).on("click", "button.approveKaDivFin", function(e){
+                e.preventDefault();
+                var purchaseId = $(this).attr('purchaseId');
+               
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('adminPO/Request/approve') }}',
+                    data: {
+                        'purchaseId' : purchaseId,
+                        'approve' : 'isKaDivFin',
+                        'approveAt' : 'isKaDivFinAt',
+                    },
+                    success: function(response){                        
+                        if(response == 1){
+                            location.reload();
+                        }
+                    }
+                })
             });
         });
     </script>

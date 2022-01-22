@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PDF;
 
 class AdminPurchase extends Model
 {
@@ -110,5 +111,14 @@ class AdminPurchase extends Model
         if ($success) {
             return 1;
         }
+    }
+
+    public static function unduhPurchase($jenisPurchase, $purchaseId)
+    {
+        $purchase = self::where('jenisPurchase', $jenisPurchase)->where('id', $purchaseId)->first();
+        $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $purchaseId)->get();
+ 
+    	$pdf = PDF::loadview('adminPO.purchaseOrder.unduh',['purchase' => $purchase, 'purchaseDetail' => $purchaseDetail]);
+    	return $pdf->stream();
     }
 }

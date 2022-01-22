@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminPurchase;
 use App\Models\MaterialModel;
 use App\Models\AdminPurchaseDetail;
+use PDF;
 
 use Illuminate\Http\Request;
 
@@ -139,6 +140,17 @@ class AdminPoController extends Controller
             $purchaseUpdate = AdminPurchase::purchaseUpdate($purchaseid, $purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);           
             return redirect('adminPO/Order');
         }
+    }
+
+    public function poOrderUnduh($id)
+    {
+        // AdminPurchase::unduhPurchase('Purchase Order', $id);
+        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('id', $id)->first();
+        $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $id)->get();
+        
+    	$pdf = PDF::loadview('adminPO.purchaseOrder.unduh',['purchase' => $purchase, 'purchaseDetail' => $purchaseDetail])
+                ->setPaper('a5', 'potrait');
+    	return $pdf->stream();
     }
 
     public function poOrderDetailDelete($detailId, $purchaseId){
