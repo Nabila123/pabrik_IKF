@@ -60,6 +60,8 @@ class RoleSeeder extends Seeder
             ['id' => 35, 'nama' => 'Admin Setrika', 'created_at' => date('Y-m-d H:i:s')],
             ['id' => 36, 'nama' => 'Admin Packing', 'created_at' => date('Y-m-d H:i:s')],
             ['id' => 37, 'nama' => 'Admin Gudang Barang Jadi', 'created_at' => date('Y-m-d H:i:s')],
+
+            ['id' => 38, 'nama' => 'Production Planning and Inventory Control', 'created_at' => date('Y-m-d H:i:s')],
         ];
 
         DB::table('mst_role')->insert($rol);

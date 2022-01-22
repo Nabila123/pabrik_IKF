@@ -54,6 +54,8 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 40%">Kode Purchase : {{ $purchase->kode }}</th>
+                                    </tr>
+                                    <tr>
                                         <th>Note : {{ $purchase->note }}</th>
                                     </tr>
                                 </thead>                               
@@ -92,20 +94,20 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2" style="width: 60%">Approved By</th>
-                                        <th rowspan="2" style="vertical-align: middle;">PPIC</th>
+                                        <th rowspan="2" style="vertical-align: middle;">K. Dep PO</th>
                                     </tr>
                                     <tr>
-                                        <th>K. Dept Prod</th>
-                                        <th>K. Dept PO</th>
+                                        <th>K. Div PO</th>
+                                        <th>K. Div Fin</th>
                                     </tr>
                                 </thead> 
                                 <tbody>
                                     <tr>
                                         <td>
-                                            @if ($purchase->isKaDeptProd != 0)
-                                                {{ $purchase->isKaDeptProd }} <br> 
+                                            @if ($purchase->isKaDivPO != 0)
+                                                {{ $purchase->isKaDivPO }} <br> 
                                                 <span style="font-size: 12px; color:green"> 
-                                                    Approve At  {{ $purchase->isKaDeptProdAt }} 
+                                                    Approve At  {{ $purchase->isKaDivPOAt }} 
                                                 </span>
                                             @else
                                                  <br> 
@@ -116,10 +118,10 @@
                                             
                                         </td>    
                                         <td>
-                                            @if ($purchase->isKaDeptPO != 0)
-                                                {{ $purchase->isKaDeptPO }} <br> 
+                                            @if ($purchase->isKaDivFin != 0)
+                                                {{ $purchase->isKaDivFin }} <br> 
                                                 <span style="font-size: 12px; color:green">
-                                                    Approve At  {{ $purchase->isKaDeptPOAt }} 
+                                                    Approve At  {{ $purchase->isKaDivFinAt }} 
                                                 </span>
                                             @else
                                                 <br> 
