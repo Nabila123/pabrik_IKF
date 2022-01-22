@@ -42,7 +42,7 @@ class AdminPoController extends Controller
 
         return view('adminPO.purchaseOrder.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode]);
     }
-
+    
     public function poOrderStore(Request $request){
         
         $purchaseKode = $request['purchaseKode'];
@@ -73,8 +73,7 @@ class AdminPoController extends Controller
                 $purchaseId = $purchaseCreate;
 
                 for ($i = 0; $i < $jumlahData; $i++) {
-                    AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                  
-                    
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                       
                 }
                 return redirect('adminPO/Order');
             }
@@ -87,7 +86,7 @@ class AdminPoController extends Controller
                 $purchaseKode = AdminPurchase::purchaseKode();
             }
             return view('adminPO.purchaseOrder.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode, 'message'=>'Material Belum Diisi']);
-        }
+        }       
         
     }
 
@@ -105,9 +104,6 @@ class AdminPoController extends Controller
     }
 
     public function poOrderUpdateSave(Request $request){
-
-        dd($request);
-
         $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
         $jenisPurchase = "Purchase Order";
@@ -163,6 +159,13 @@ class AdminPoController extends Controller
     //PURCHASE REQUEST FUNCTION
     public function poRequest(){
         $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
+        foreach ($poRequest as $request) {
+            $cek = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $request->kode)->first();
+            if ($cek != null) {
+                $request['prosesOrder'] = true;
+                $request['prosesOrderAt'] = $cek->tanggal;
+            }
+        }
 
         return view('adminPO.purchaseRequest.index', ['poRequest' => $poRequest]);
     }
@@ -175,7 +178,28 @@ class AdminPoController extends Controller
         $jenisPurchase = "Request";
 
 
-        return view('adminPO.purchaseOrder.update', ['jenisPurchase' => $jenisPurchase ,'materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+        return view('adminPO.purchaseOrder.create', ['jenisPurchase' => $jenisPurchase, 'purchaseKode' => $purchaseKode, 'materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+    }
+
+    public function poOrderRequestStore(Request $request){
+        $purchaseid = $request['id'];
+        $purchaseKode = $request['purchaseKode'];
+        $jenisPurchase = "Purchase Order";
+        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
+        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
+        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
+        $notePesan = $request['notePesan'];
+        $total = $request['total'];
+
+        $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+        $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $purchaseid)->get();
+        
+        $purchaseId = $purchaseCreate;
+        foreach ($purchaseDetail as $detail) {
+            AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $detail->materialId, $detail->qty, $detail->unit, $detail->unitPrice, $detail->amount, $detail->remark);                       
+        } 
+
+        return redirect('adminPO/Order');
     }
 
     public function poRequestApprove(Request $request){

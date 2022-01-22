@@ -57,20 +57,22 @@
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Tanggal Pengajuan</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Agreement </th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Status Kedatangan</th>
+                                        <th colspan="2" class="textAlign" style="vertical-align: middle;">Status</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">action</th>
                                     </tr>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">PPIC</th>
                                         <th class="textAlign" style="vertical-align: middle;">K. Dep Prod</th>
                                         <th class="textAlign" style="vertical-align: middle;">K. Dep PO</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Proses Order</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Kedatangan</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     @foreach ($poRequest as $request)
                                         <tr>
                                             <td>
-                                                @if (\Auth::user()->roleId == 7 && $request->isKaDeptPO != 0)
+                                                @if (\Auth::user()->roleId == 7 && $request->isKaDeptPO != 0 && $request->prosesOrder != true)
                                                     <a href="{{ route('adminPO.poRequest.requestKode', $request->kode) }}" class="btn btn-info requestKode"> {{ $request->kode }} </a> <br>
                                                     <span style="color: green; font-size: 10px">Lanjut Purchase Order</span>
                                                 @else
@@ -110,9 +112,16 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($request->prosesOrder == true)
+                                                    <span style="color: green; font-size: 10px"> {{ date('d F Y', strtotime($request->prosesOrderAt)) }} </span>
+                                                @else
+                                                    <span style="color: rgb(253, 5, 5); font-size: 12px">Menunggu Proses Order</span>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if ($request->statusDatang != 0)
                                                     Barang Datang <br>
-                                                    At {{ date('d F Y', strtotime($request->updated_at)) }}
+                                                    <span style="color: green; font-size: 10px"> At {{ date('d F Y', strtotime($request->updated_at)) }} </span>
                                                 @else
                                                     <span style="color: rgb(253, 5, 5); font-size: 12px">Barang Belum Datang</span>
                                                 @endif
