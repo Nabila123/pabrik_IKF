@@ -39,19 +39,20 @@ Route::get('/adminPO/Order/detail/delete/{detailId}/{purchaseId}', [App\Http\Con
 Route::get('/adminPO/Order/update/{id}', [App\Http\Controllers\AdminPoController::class, 'poOrderUpdate'])->name('adminPO.poOrder.update');
 Route::post('/adminPO/Order/update/{id}', [App\Http\Controllers\AdminPoController::class, 'poOrderUpdateSave'])->name('adminPO.poOrder.update');
 Route::delete('/adminPO/Order/delete', [App\Http\Controllers\AdminPoController::class, 'poOrderDelete'])->name('adminPO.poOrder.delete');
+Route::get('/adminPO/getDetail/{kode}', [App\Http\Controllers\AdminPoController::class, 'getDetail'])->name('adminPO.getDetail');
 
 Route::get('/adminPO/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
 
 /* Gudang Bahan Baku */
 Route::get('/bahan_baku', [App\Http\Controllers\GudangBahanBakuController::class, 'index'])->name('bahan_baku');
 Route::get('/bahan_baku/create', [App\Http\Controllers\GudangBahanBakuController::class, 'create'])->name('bahan_baku.create');
-Route::get('/bahan_baku/store', [App\Http\Controllers\GudangBahanBakuController::class, 'store'])->name('bahan_baku.store');
-Route::get('/bahan_baku/detail', [App\Http\Controllers\GudangBahanBakuController::class, 'detail'])->name('bahan_baku.detail');
+Route::post('/bahan_baku/create', [App\Http\Controllers\GudangBahanBakuController::class, 'store'])->name('bahan_baku.store');
+Route::get('/bahan_baku/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detail'])->name('bahan_baku.detail');
 
-Route::get('/bahan_baku/Order', [App\Http\Controllers\AdminPoController::class, 'poOrder'])->name('adminPO.poOrder');
-Route::get('/bahan_baku/Order/detail', [App\Http\Controllers\AdminPoController::class, 'poOrderDetail'])->name('adminPO.poOrder.detail');
+Route::get('/bahan_baku/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'edit'])->name('bahan_baku.update');
+Route::post('/bahan_baku/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.update');
+Route::post('/bahan_baku/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.delete');
 
-Route::get('/bahan_baku/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
 
 
 

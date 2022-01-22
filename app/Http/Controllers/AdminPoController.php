@@ -123,11 +123,22 @@ class AdminPoController extends Controller
         return view('adminPO.purchaseOrder.poOrderDetail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
+    public function getDetail($kode)
+    {
+        $getPurchase = AdminPurchase::where('kode', $kode)->first();
+        $getPurchaseDetail = AdminPurchaseDetail::where('purchaseId', $getPurchase->id)->get();
+        foreach ($getPurchaseDetail as $key => $value) {
+            $value->materialNama = $value->material->nama;
+        }
+        return json_encode($getPurchaseDetail);
+    }
+
     public function poOrderUpdate($id)
     {
         $materials = MaterialModel::get();
         $getPurchaseId = AdminPurchase::where('id', $id)->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
+        
         return view('adminPO.purchaseOrder.update', ['materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
