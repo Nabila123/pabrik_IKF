@@ -144,7 +144,6 @@ class AdminPoController extends Controller
 
     public function poOrderUnduh($id)
     {
-        // AdminPurchase::unduhPurchase('Purchase Order', $id);
         $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('id', $id)->first();
         $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $id)->get();
         
@@ -230,6 +229,16 @@ class AdminPoController extends Controller
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
 
         return view('adminPO.purchaseRequest.detail', ['request' => $getPurchaseId, 'requestDetail' => $getPurchaseDetailId]);
+    }
+
+    public function poRequestUnduh($id)
+    {
+        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('id', $id)->first();
+        $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $id)->get();
+        
+    	$pdf = PDF::loadview('adminPO.purchaseRequest.unduh',['purchase' => $purchase, 'purchaseDetail' => $purchaseDetail])
+                ->setPaper('a5', 'potrait');
+    	return $pdf->stream();
     }
     //END PURCHASE REQUEST FUNCTION
 

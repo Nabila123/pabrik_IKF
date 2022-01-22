@@ -58,7 +58,7 @@
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Tanggal Pengajuan</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Agreement </th>
                                         <th colspan="2" class="textAlign" style="vertical-align: middle;">Status</th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">action</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:11%;">action</th>
                                     </tr>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">PPIC</th>
@@ -128,6 +128,11 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('adminPO.poRequest.detail', $request->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                @if ($request->isKaDeptPO != 0)
+                                                    <a href="{{ route('adminPO.poRequest.unduh', $request->id) }}" target="_blank" class='btn btn-info'><i class="fas fa-download" style="font-size: 14px"></i></a>
+                                                @else
+                                                    <button type="button" class='btn btn-info disabled'><i class="fas fa-download" style="font-size: 14px"></i></button>
+                                                @endif
                                                 {{--  <a href="{{ route('adminPO.poRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 <button type="button" data-toggle="modal" purchaseId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>  --}}
                                             </td>

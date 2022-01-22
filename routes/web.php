@@ -44,6 +44,7 @@ Route::get('/adminPO/Request/requestKode/{id}', [App\Http\Controllers\AdminPoCon
 Route::post('/adminPO/Request/requestKode/{id}', [App\Http\Controllers\AdminPoController::class, 'poOrderRequestStore'])->name('adminPO.poRequest.requestKode');
 Route::get('/adminPO/Request/approve', [App\Http\Controllers\AdminPoController::class, 'poRequestApprove'])->name('adminPO.poRequest.approve');
 Route::get('/adminPO/Request/detail/{id}', [App\Http\Controllers\AdminPoController::class, 'poRequestDetail'])->name('adminPO.poRequest.detail');
+Route::get('/adminPO/Request/unduh/{id}', [App\Http\Controllers\AdminPoController::class, 'poRequestUnduh'])->name('adminPO.poRequest.unduh');
 
 Route::get('/adminPO/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
 
