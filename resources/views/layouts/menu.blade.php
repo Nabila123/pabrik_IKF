@@ -50,7 +50,7 @@
 @endforeach
 
 <li class="nav-item">
-    <a href="{{ route('home') }}" class="nav-link">
+    <a href="{{ route('bahan_baku') }}" class="nav-link">
         <i class="nav-icon fas fa-home"></i>
         <p>
             Gudang Bahan Baku
