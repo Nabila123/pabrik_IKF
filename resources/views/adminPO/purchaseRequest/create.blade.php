@@ -60,13 +60,16 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" name="purchaseId" id="purchaseId" value="{{ $purchase->id }}">        
-                                <input type="hidden" name="total" id="total" value="{{ $purchase->total }}">        
+                                @if (isset($purchase->id))
+                                    <input type="hidden" name="id" id="id" value="{{ $purchase->id }}">       
+                                    <input type="hidden" name="jenisPurchase" id="jenisPurchase" value="{{ $jenisPurchase }}">       
+                                    <input type="hidden" name="total" id="total" value="{{ $purchase->total }}">       
+                                @endif
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode disable" value="{{ $purchase->kode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
+                                            <input class="form-control purchaseKode disable" value="{{ $purchaseKode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -77,33 +80,41 @@
                                             </div>
                                             <input type="text" id="pengajuanDate" name="pengajuanDate" class="form-control disable pengajuanDate" value="{{ date('d F Y') }}" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask readonly>
                                         </div>
-                                    </div>
+                                    </div>                                    
                                     <div class="col-6">
-                                        <label>Tanggal Pengiriman</label>
+                                        <label>Tanggal Pengiriman <sup>(Optional)</sup></label> 
                                         <div class="input-group date" id="DatePengiriman">
-                                            <?php
-                                                if($purchase->waktu == date('Y-m-d', strtotime("1970-01-01"))){
-                                                    $purchase->waktu = null;
-                                                }
-                                            ?>
-                                            <input type="date" id="pengirimanDate" name="pengirimanDate" value="{{ $purchase->waktu }}" class="form-control datetimepicker-input pengirimanDate" data-target="#DatePengiriman"/>
+                                            @if (isset($jenisPurchase))
+                                                <?php
+                                                    if($purchase->waktu == date('Y-m-d', strtotime("1970-01-01"))){
+                                                        $purchase->waktu = null;
+                                                    }
+                                                ?>
+                                                <input type="date" id="pengirimanDate" value="{{ $purchase->waktu }}" name="pengirimanDate" class="form-control datetimepicker-input pengirimanDate" data-target="#DatePengiriman"/>
+                                            @else
+                                            <input type="date" id="pengirimanDate" name="pengirimanDate" class="form-control datetimepicker-input pengirimanDate" data-target="#DatePengiriman"/>
+                                            @endif
                                         </div>                                        
                                     </div>
                                     <div class="col-6">
-                                        <label>Tanggal Jatuh Tempo</label>
+                                        <label>Tanggal Jatuh Tempo <sup>(Optional)</sup></label>
                                         <div class="input-group date" id="DateJatuhTempo">
-                                            <?php
-                                                if($purchase->waktuPayment == date('Y-m-d', strtotime("1970-01-01"))){
-                                                    $purchase->waktuPayment = null;
-                                                }
-                                            ?>
-                                            <input type="date" id="jatuhTempoDate" name="jatuhTempoDate" value="{{ $purchase->waktuPayment }}" class="form-control datetimepicker-input jatuhTempoDate" data-target="#DateJatuhTempo"/>
+                                            @if (isset($jenisPurchase))
+                                                <?php
+                                                    if($purchase->waktuPayment == date('Y-m-d', strtotime("1970-01-01"))){
+                                                        $purchase->waktuPayment = null;
+                                                    }
+                                                ?>
+                                                <input type="date" value="{{ $purchase->waktuPayment }}" id="jatuhTempoDate" name="jatuhTempoDate" class="form-control datetimepicker-input jatuhTempoDate" data-target="#DateJatuhTempo"/>
+                                            @else
+                                                <input type="date" id="jatuhTempoDate" name="jatuhTempoDate" class="form-control datetimepicker-input jatuhTempoDate" data-target="#DateJatuhTempo"/>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mt-3">
-                                            <label>Catatan / Pesan</label>
-                                            <textarea id="notePesan" name="notePesan" class="form-control notePesan" rows="3" placeholder="Enter ..."> {{ $purchase->note }}</textarea>
+                                            <label>Catatan / Pesan <sup>(Optional)</sup></label>
+                                            <textarea id="notePesan" name="notePesan" class="form-control notePesan" rows="3" placeholder="Enter ...">@if (isset($jenisPurchase)){{ $purchase->note }}@endif</textarea>
                                           </div>
                                     </div>
                                 </div>
@@ -115,54 +126,56 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">                                                    
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label>Nama Barang</label>
-                                                            <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;">
-                                                                <option value="">Pilih Material / Bahan</option>
-                                                                @foreach($materials as $material)
-                                                                    <option value="{{$material->id}}">{{$material->nama}}</option>
-                                                                @endforeach
-                                                            </select>                                           
+                                                    @if (!isset($jenisPurchase))
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label>Nama Barang</label>
+                                                                <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;">
+                                                                    <option value="">Pilih Material / Bahan</option>
+                                                                    @foreach($materials as $material)
+                                                                        <option value="{{$material->id}}">{{$material->nama}}</option>
+                                                                    @endforeach
+                                                                </select>                                           
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <div class="form-group">
-                                                            <label>Jumlah</label>
-                                                            <input class="form-control jumlah" type="number" id="jumlah" name="jumlah" placeholder="Jumlah Barang">                                            
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label>Jumlah</label>
+                                                                <input class="form-control jumlah" type="number" id="jumlah" name="jumlah" placeholder="Jumlah Barang">                                            
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <div class="form-group">
-                                                            <label>Satuan</label>
-                                                            <input class="form-control disable satuan" id="satuan" name="satuan" type="text" placeholder="Satuan" readonly>                                            
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label>Satuan</label>
+                                                                <input class="form-control disable satuan" id="satuan" name="satuan" type="text" placeholder="Satuan" readonly>                                            
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label>Harga</label>
-                                                            <input class="form-control harga" id="harga" name="harga" type="number" placeholder="Harga">                                            
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label>Harga</label>
+                                                                <input class="form-control harga" id="harga" name="harga" type="number" placeholder="Harga">                                            
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label>Total Harga</label>
-                                                            <input class="form-control disable totalHarga" id="totalHarga" name="totalHarga" type="number" placeholder="Total Harga" readonly>                                            
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label>Total Harga</label>
+                                                                <input class="form-control disable totalHarga" id="totalHarga" name="totalHarga" type="number" placeholder="Total Harga" readonly>                                            
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label>Catatan / Pesan</label>
-                                                            <textarea class="form-control note" id="note" name="note" rows="3" placeholder="Enter ..."></textarea>                                          
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <label>Catatan / Pesan</label>
+                                                                <textarea class="form-control note" id="note" name="note" rows="3" placeholder="Enter ..."></textarea>                                          
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-12 right">
-                                                        <div class="form-group">
-                                                            <button type="button" id="TBarang" class='btn btn-success btn-flat-right TBarang'>Tambah Barang</button>
+                                                        <div class="col-12 right">
+                                                            <div class="form-group">
+                                                                <button type="button" id="TBarang" class='btn btn-success btn-flat-right TBarang'>Tambah Barang</button>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
 
                                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
                                                     <div class="col-12 right">
@@ -175,23 +188,24 @@
                                                                     <th class="textAlign">Harga</th>
                                                                     <th class="textAlign">Total Harga</th>
                                                                     <th class="textAlign">Catatan / Pesan</th>
-                                                                    <th class="textAlign">Action</th>
+                                                                    @if (!isset($jenisPurchase))
+                                                                        <th class="textAlign">Action</th>
+                                                                    @endif
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign">
-                                                                @foreach ($purchaseDetails as $detail)
-                                                                    <tr>
-                                                                        <td>{{ $detail->material->nama }}</td>
-                                                                        <td>{{ $detail->qty }}</td>
-                                                                        <td>{{ $detail->unit }}</td>
-                                                                        <td>{{ $detail->unitPrice }}</td>
-                                                                        <td>{{ $detail->amount }}</td>
-                                                                        <td>{{ $detail->remark }}</td>
-                                                                        <td>
-                                                                            <a href="{{ route('adminPO.poOrder.detail.delete', [$detail->id, $purchase->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
-                                                                        </td>
-                                                                    </tr>                                                                    
-                                                                @endforeach    
+                                                                @if (isset($jenisPurchase))
+                                                                    @foreach ($purchaseDetails as $detail)
+                                                                        <tr>
+                                                                            <td>{{ $detail->material->nama }}</td>
+                                                                            <td>{{ $detail->qty }}</td>
+                                                                            <td>{{ $detail->unit }}</td>
+                                                                            <td>{{ $detail->unitPrice }}</td>
+                                                                            <td>{{ $detail->amount }}</td>
+                                                                            <td>{{ $detail->remark }}</td>
+                                                                        </tr>                                                                    
+                                                                    @endforeach 
+                                                                @endif   
                                                             </tbody>                                                                                       
                                                         </table>
                                                     </div>
@@ -270,6 +284,7 @@
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
+                        table += "<td>"+jumlah_data+"</td>";
                         table += "<td>"+nama_material+"<input type='hidden' name='material[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
                         table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                         table += "<td>"+satuan+"<input type='hidden' name='satuan[]' value='"+satuan+"' id='satuan_"+jumlah_data+"'></td>";

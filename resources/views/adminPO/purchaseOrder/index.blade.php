@@ -49,12 +49,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            {{--  <h3 class="card-title">
-                                <a href="{{ route('adminPO.poOrder.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
-                            </h3>  --}}
-                        </div>
+                    <div class="card">                        
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
@@ -63,7 +58,7 @@
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Tanggal Pengajuan</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Agreement </th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Status Kedatangan</th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:15%;">action</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:11%;">action</th>
                                     </tr>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">K. Dep PO</th>
@@ -120,11 +115,11 @@
                                                 <a href="{{ route('adminPO.poOrder.detail', $order->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 {{--  <a href="{{ route('adminPO.poOrder.update', $order->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>  --}}
                                                 @if ($order->isKaDivFin != 0)
-                                                    <a href="{{ route('adminPO.poOrder.unduh', $order->id) }}" target="_blank" class='btn btn-info'><i class="fas fa-download" style="font-size: 14px"></i></a>
+                                                    <a href="{{ route('adminPO.poOrder.unduh', $order->id) }}" target="_blank" class='btn btn-info mt-1'><i class="fas fa-download" style="font-size: 14px"></i></a>
                                                 @else
-                                                    <button type="button" class='btn btn-info disabled'><i class="fas fa-download" style="font-size: 14px"></i></button>
+                                                    <button type="button" class='btn btn-info disabled mt-1'><i class="fas fa-download" style="font-size: 14px"></i></button>
                                                 @endif
-                                                <button type="button" data-toggle="modal" purchaseId='{{ $order->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $order->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                <button type="button" data-toggle="modal" purchaseId='{{ $order->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $order->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach                                    
