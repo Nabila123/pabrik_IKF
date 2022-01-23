@@ -73,7 +73,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label>Nama Suplier</label>
-                                                            <input class="form-control suplier" required id="suplier" name="suplier" type="text" placeholder="Nama Suplier" >                                            
+                                                            <input class="form-control suplier" required id="suplier" name="suplier" type="text" placeholder="Nama Suplier" readonly>                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
@@ -151,6 +151,15 @@
             var kodePurchase = $('#kodePurchase').val();
             var _token = $('#_token').val();
             
+            $.ajax({
+                type: "get",
+                url: '{{ url("adminPO/getSuplier") }}/'+kodePurchase,
+                success: function(response){
+                    var data = JSON.parse(response)
+                    $('#suplier').val(data);    
+                }
+            })
+
             $.ajax({
                 type: "get",
                 url: '{{ url("adminPO/getDetail") }}/'+kodePurchase,

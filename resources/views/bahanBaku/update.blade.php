@@ -68,7 +68,7 @@
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label>Nama Suplier</label>
-                                                            <input class="form-control suplier" required id="suplier" name="namaSuplier" type="text" placeholder="Nama Suplier" value="{{$data->namaSuplier}}" >                                            
+                                                            <input class="form-control suplier" required id="suplier" name="namaSuplier" type="text" placeholder="Nama Suplier" value="{{$data->namaSuplier}}" readonly >                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-4">

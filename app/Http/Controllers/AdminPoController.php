@@ -108,6 +108,12 @@ class AdminPoController extends Controller
         return json_encode($getPurchaseDetail);
     }
 
+     public function getSuplier($kode)
+    {
+        $getPurchase = AdminPurchase::where('kode', $kode)->first();
+        return json_encode($getPurchase->suplierName);
+    }
+
     public function poOrderUpdate($id){
         $materials = MaterialModel::get();
         $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Order')->first();

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -39,6 +37,7 @@ Route::post('/adminPO/Order/update/{id}', [App\Http\Controllers\AdminPoControlle
 Route::get('/adminPO/Order/unduh/{id}', [App\Http\Controllers\AdminPoController::class, 'poOrderUnduh'])->name('adminPO.poOrder.unduh');
 Route::delete('/adminPO/Order/delete', [App\Http\Controllers\AdminPoController::class, 'poOrderDelete'])->name('adminPO.poOrder.delete');
 Route::get('/adminPO/getDetail/{kode}', [App\Http\Controllers\AdminPoController::class, 'getDetail'])->name('adminPO.getDetail');
+Route::get('/adminPO/getSuplier/{kode}', [App\Http\Controllers\AdminPoController::class, 'getSuplier'])->name('adminPO.getSuplier');
 
 Route::get('/adminPO/Request', [App\Http\Controllers\AdminPoController::class, 'poRequest'])->name('adminPO.poRequest');
 Route::get('/adminPO/Request/tambahData', [App\Http\Controllers\AdminPoController::class, 'poRequestCreate'])->name('adminPO.poRequest.create');
