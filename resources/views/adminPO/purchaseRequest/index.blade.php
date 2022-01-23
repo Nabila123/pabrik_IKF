@@ -50,6 +50,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <a href="{{ route('adminPO.poRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
+                            </h3>
+                        </div>
                         <div class="card-body">
                             <table id="example2" class="table table-bordered  dataTables_scrollBody" style="width: 100%;">
                                 <thead>
@@ -128,13 +133,13 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('adminPO.poRequest.detail', $request->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('adminPO.poRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 @if ($request->isKaDeptPO != 0)
-                                                    <a href="{{ route('adminPO.poRequest.unduh', $request->id) }}" target="_blank" class='btn btn-info'><i class="fas fa-download" style="font-size: 14px"></i></a>
+                                                    <a href="{{ route('adminPO.poRequest.unduh', $request->id) }}" target="_blank" class='btn btn-info mt-1'><i class="fas fa-download" style="font-size: 14px"></i></a>
                                                 @else
-                                                    <button type="button" class='btn btn-info disabled'><i class="fas fa-download" style="font-size: 14px"></i></button>
+                                                    <button type="button" class='btn btn-info disabled mt-1'><i class="fas fa-download" style="font-size: 14px"></i></button>
                                                 @endif
-                                                {{--  <a href="{{ route('adminPO.poRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" purchaseId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>  --}}
+                                                <button type="button" data-toggle="modal" purchaseId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach                                    
@@ -146,11 +151,53 @@
             </div>
         </div>
     </section>
+    <div id="DeleteModal" class="modal fade">
+        <div class="modal-dialog ">
+            <!-- Modal content-->
+            <form action="{{ route('adminPO.poRequest.delete') }}" id="deleteForm" method="post" >
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h4 class="modal-title">DELETE CONFIRMATION</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <p>Anda yakin ingin menghapus data ini ?</p>
+                        <input type="hidden" name="purchaseId" id="purchaseId">
+                    </div>
+                    <div class="modal-footer">
+                        <center>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
+                            <button type="submit" name="" class="btn btn-danger" data-dismiss="modal" onclick="formSubmit()">Ya, Hapus</button>
+                        </center>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 
 @push('page_scripts') 
     <script type="text/javascript">
+        function deleteData(id)
+        {
+            var id = id;
+            var url = '{{ route('adminPO.poRequest.delete') }}';
+            // url = url.replace(':id', id);
+            console.log(id);
+            $('#purchaseId').val(id);
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
+
         $(document).ready( function () {
             $('#example2').DataTable({
                 "responsive": true,

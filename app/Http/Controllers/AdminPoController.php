@@ -47,6 +47,7 @@ class AdminPoController extends Controller
     public function poOrderStore(Request $request){
         
         $purchaseKode = $request['purchaseKode'];
+        $suplierName = $request['suplierName'];
         $jenisPurchase = "Purchase Order";
         $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
         $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
@@ -68,7 +69,7 @@ class AdminPoController extends Controller
                 $total += $totalHarga[$i];
             }            
 
-            $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+            $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $suplierName, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
             
             if ($purchaseCreate) {
                 $purchaseId = $purchaseCreate;
@@ -166,7 +167,7 @@ class AdminPoController extends Controller
     public function poOrderDetailDelete($detailId, $purchaseId){
         $purchaseDetail = AdminPurchaseDetail::where('id', $detailId)->delete();
         if ($purchaseDetail) {
-            return redirect('adminPO/Order/update/' . $purchaseId . '');
+            return redirect('adminPO/Request/update/' . $purchaseId . '');
         }
     }
 
@@ -192,6 +193,109 @@ class AdminPoController extends Controller
         return view('adminPO.purchaseRequest.index', ['poRequest' => $poRequest]);
     }
 
+    public function poRequestCreate(){
+        $materials = MaterialModel::get();
+        $purchaseKode = AdminPurchase::purchaseKode();
+        $getpurchaseKode = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('kode', $purchaseKode)->get();
+        while (empty($getpurchaseKode)) {
+            $purchaseKode = AdminPurchase::purchaseKode();
+        }
+
+        return view('adminPO.purchaseRequest.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode]);
+    }
+    
+    public function poRequestStore(Request $request){        
+        $purchaseKode = $request['purchaseKode'];
+        $suplierName = isset($request['suplierName'])?$request['suplierName']:null;
+        $jenisPurchase = "Purchase Request";
+        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
+        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
+        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
+        $notePesan = $request['notePesan'];
+
+        $material = $request['material'];
+        $jumlah = $request['jumlah'];
+        $satuan = $request['satuan'];
+        $harga = $request['harga'];
+        $totalHarga = $request['totalHarga'];
+        $note = $request['note'];
+
+        $jumlahData = $request['jumlah_data'];
+
+        if ($jumlahData != 0) {
+            $total = 0;
+            for ($i=0; $i < $jumlahData; $i++) { 
+                $total += $totalHarga[$i];
+            }            
+
+            $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $suplierName, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+            
+            if ($purchaseCreate) {
+                $purchaseId = $purchaseCreate;
+
+                for ($i = 0; $i < $jumlahData; $i++) {
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                       
+                }
+                return redirect('adminPO/Request');
+            }
+
+        } else {
+            $materials = MaterialModel::get();
+            $purchaseKode = AdminPurchase::purchaseKode();
+            $getpurchaseKode = AdminPurchase::where('kode', $purchaseKode)->get();
+            while (empty($getpurchaseKode)) {
+                $purchaseKode = AdminPurchase::purchaseKode();
+            }
+            return view('adminPO.purchaseRequest.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode, 'message'=>'Material Belum Diisi']);
+        }       
+        
+    }
+
+    public function poRequestUpdate($id){
+        $materials = MaterialModel::get();
+        $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
+        $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
+        return view('adminPO.purchaseOrder.update', ['materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+    }
+
+    public function poRequestUpdateSave(Request $request){
+        $purchaseid = $request['purchaseId'];
+        $purchaseKode = $request['purchaseKode'];
+        $jenisPurchase = "Purchase Request";
+        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
+        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
+        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):date('Y-m-d H:i:s', strtotime(NULL));
+        $notePesan = $request['notePesan'];
+        $total = (int)$request['total'];
+
+        $material = $request['material'];
+        $jumlah = $request['jumlah'];
+        $satuan = $request['satuan'];
+        $harga = $request['harga'];
+        $totalHarga = $request['totalHarga'];
+        $note = $request['note'];
+
+        $jumlahData = $request['jumlah_data'];
+
+        if ($jumlahData != 0) {
+            for ($i=0; $i < $jumlahData; $i++) { 
+                $total += $totalHarga[$i];
+            }         
+
+            $purchaseUpdate = AdminPurchase::purchaseUpdate($purchaseid, $purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+
+            if ($purchaseUpdate == 1) {
+                for ($i = 0; $i < $jumlahData; $i++) {
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseid, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                  
+                }
+                return redirect('adminPO/Request');
+            }
+        }else{
+            $purchaseUpdate = AdminPurchase::purchaseUpdate($purchaseid, $purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);           
+            return redirect('adminPO/Request');
+        }
+    }
+
     public function poRequestRequestKode($purchaseKode){
 
         $materials = MaterialModel::get();
@@ -206,6 +310,7 @@ class AdminPoController extends Controller
     public function poOrderRequestStore(Request $request){
         $purchaseid = $request['id'];
         $purchaseKode = $request['purchaseKode'];
+        $suplierName = $request['suplierName'];
         $jenisPurchase = "Purchase Order";
         $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
         $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
@@ -213,7 +318,7 @@ class AdminPoController extends Controller
         $notePesan = $request['notePesan'];
         $total = $request['total'];
 
-        $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+        $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $suplierName, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
         $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $purchaseid)->get();
         
         $purchaseId = $purchaseCreate;
@@ -250,6 +355,13 @@ class AdminPoController extends Controller
     	$pdf = PDF::loadview('adminPO.purchaseRequest.unduh',['purchase' => $purchase, 'purchaseDetail' => $purchaseDetail])
                 ->setPaper('a5', 'potrait');
     	return $pdf->stream();
+    }
+
+    public function poRequestDelete(Request $request){
+        AdminPurchaseDetail::where('purchaseId', $request['purchaseId'])->delete();        
+        AdminPurchase::where('id', $request['purchaseId'])->delete();   
+                
+        return redirect('adminPO/Request');
     }
     //END PURCHASE REQUEST FUNCTION
 

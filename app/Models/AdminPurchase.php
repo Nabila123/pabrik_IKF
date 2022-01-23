@@ -62,11 +62,12 @@ class AdminPurchase extends Model
         return $kode;
     }
 
-    public static function purchaseCreate($kode, $jenisPurchase, $tanggal, $waktu, $waktuPayment, $note, $total, $userId)
+    public static function purchaseCreate($kode, $jenisPurchase, $suplierName, $tanggal, $waktu, $waktuPayment, $note, $total, $userId)
     {
         $AddPurchase = new AdminPurchase;
         $AddPurchase->kode = $kode;
         $AddPurchase->jenisPurchase = $jenisPurchase;
+        $AddPurchase->suplierName = $suplierName;
         $AddPurchase->tanggal = $tanggal;
         $AddPurchase->waktu = $waktu;
         $AddPurchase->waktuPayment = $waktuPayment;

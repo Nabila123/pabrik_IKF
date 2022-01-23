@@ -81,6 +81,12 @@
                                             <input type="text" id="pengajuanDate" name="pengajuanDate" class="form-control disable pengajuanDate" value="{{ date('d F Y') }}" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask readonly>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Nama Suplier</label>
+                                            <input class="form-control suplierName" id="suplierName" name="suplierName"  type="text" placeholder="Nama Suplier" required>                                            
+                                        </div>
+                                    </div>
                                     <div class="col-6">
                                         <label>Tanggal Pengiriman <sup>(Optional)</sup></label> 
                                         <div class="input-group date" id="DatePengiriman">
