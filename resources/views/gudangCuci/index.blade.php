@@ -30,7 +30,7 @@
             
                         <div class="info-box-content">
                             <span class="info-box-text">Ambil Dari Gudang</span>
-                            <span class="info-box-number"> 10 </span>
+                            <span class="info-box-number"> {{ $keluar }} </span>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
         
                         <div class="info-box-content">
                             <span class="info-box-text">Kembalikan Ke Gudang</span>
-                            <span class="info-box-number"> 10 </span>
+                            <span class="info-box-number"> {{ $masuk }} </span>
                         </div>
                     </div>
                 </div>        

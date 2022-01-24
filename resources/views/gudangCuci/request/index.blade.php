@@ -64,12 +64,24 @@
                                 <tbody class="textAlign">
                                     @foreach ($gCuciRequest as $detail)
                                         <tr>
-                                            <td>{{ $detail->purchase->kode }}</td>
+                                            <td>
+                                                @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian))
+                                                    <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
+                                                    <a href="{{ route('GCuci.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> {{ $detail->purchase->kode }} </a> <br>
+                                                    <span style="color: green; font-size: 10px">Kembalikan Barang</span>
+                                                @else
+                                                    {{ $detail->purchase->kode }}
+                                                @endif
+                                            </td>
                                             <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->material->satuan }}</td>
                                             <td>{{ $detail->tanggal }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-success"> Barang Diterima </a>
+                                                @if ($detail->statusDiterima == 0)
+                                                    <a href="{{ route('GCuci.request.terima', [$detail->id]) }}" class="btn btn-success"> Barang Diterima </a>
+                                                @else
+                                                    <span style="color: green;"> Barang Sudah Diterima </span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -85,4 +97,11 @@
 
 
 @push('page_scripts') 
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#example2').DataTable( {
+                "responsive": true,
+            });
+        });
+    </script>
 @endpush
