@@ -64,7 +64,10 @@ Route::get('/bahan_baku/update/{id}', [App\Http\Controllers\GudangBahanBakuContr
 Route::post('/bahan_baku/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.update');
 Route::post('/bahan_baku/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.delete');
 
-
+/* Gudang Cuci */
+Route::get('/gudangCuci', [App\Http\Controllers\GudangCuciController::class, 'index'])->name('GCuci');
+Route::get('/gudangCuci/Request', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciRequest'])->name('GCuci.request');
+Route::get('/gudangCuci/Kembali', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciKembali'])->name('GCuci.kembali');
 
 
 Auth::routes();
