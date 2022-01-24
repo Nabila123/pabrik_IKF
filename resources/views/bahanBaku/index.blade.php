@@ -33,12 +33,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Bahan Baku</h1>
+                    <h1>Dashboard</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Bahan Baku</li>
+                        <li class="breadcrumb-item active"><a href="#">Home</a></li>
                     </ol>
                 </div>
             </div>
@@ -48,72 +47,47 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div style="margin:10px; text-align: right;">
-                                <a href="{{ route('bahan_baku.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Barang Datang</a>
-                            </div>
-                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th style="vertical-align: middle; width: 20%;">Kode Purchase</th>
-                                        <th style="vertical-align: middle; width: 30%;">Nama Supplier</th>
-                                        <th style="vertical-align: middle; width:10%;">Diameter </th>
-                                        <th style="vertical-align: middle; width:10%;">Gramasi</th>
-                                        <th style="vertical-align: middle; width: 10%;">Total</th>
-                                        <th style="vertical-align: middle; width:20%;">action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($data as $key=>$value)
-                                        <tr>
-                                            <td>{{$value->kodePurchase}}</td>
-                                            <td>{{$value->namaSuplier}}</td>
-                                            <td>{{$value->diameter}}</td>
-                                            <td>{{$value->gramasi}}</td>
-                                            <td>{{$value->total}}</td>
-                                            <td>
-                                                <a href="{{ route('bahan_baku.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('bahan_baku.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" dataId='{{ $value->id }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
-                                            </td>
-                                        </tr>
-                                    @endforeach                                    
-                                </tbody>                                
-                            </table>
-                        </div> 
+
+                <div class="col-12 col-sm-12 col-md-4">
+                    <div class="info-box mb-4">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
+            
+                        <div class="info-box-content">
+                            <span class="info-box-text"><h4>Stok Barang</h4></span>
+                            @foreach($dataStok as $stok)
+                                <label>{{$stok['barang']}}</label>
+                                <span class="info-box-number"> {{$stok['qty']}}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-12 col-md-4">
+                    <div class="info-box mb-4">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
+        
+                        <div class="info-box-content">
+                            <span class="info-box-text">Request Keluar</span>
+                            <span class="info-box-number"> 100</span>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="clearfix hidden-md-up"></div>
+        
+                <div class="col-12 col-sm-12 col-md-4">
+                    <div class="info-box mb-4">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-people-carry"></i></span>
+            
+                        <div class="info-box-content">
+                            <span class="info-box-text">Request Masuk</span>
+                            <span class="info-box-number">760</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <div id="DeleteModal" class="modal fade">
-        <div class="modal-dialog ">
-            <!-- Modal content-->
-            <form action="{{ route('bahan_baku.delete') }}" id="deleteForm" method="post" >
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h4 class="modal-title">DELETE CONFIRMATION</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        {{ csrf_field() }}
-                        <p>Anda yakin ingin menghapus data ini ?</p>
-                        <input type="hidden" name="gudangId" id="gudangId">
-                    </div>
-                    <div class="modal-footer">
-                        <center>
-                            <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger submitDelete">Ya, Hapus</button>
-                        </center>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 @endsection
 
 
@@ -121,30 +95,6 @@
     <script type="text/javascript">
         $(document).ready( function () {
             $('#example2').DataTable();
-
-            $('.delete').click(function () {
-               var id = $(this).attr('dataId');
-               $('#gudangId').val(id);
-            });
-
-            $('.submitDelete').click(function(){
-                $("#deleteForm").submit();
-            })
-
-            function hapusData(id)
-            {
-                var id = id;
-                var url = '{{ route('bahan_baku.delete') }}';
-                // url = url.replace(':id', id);
-                console.log(id);
-                $('#gudangId').val(id);
-                $("#deleteForm").attr('action', url);
-            }
-
-            function formSubmit()
-            {
-                $("#deleteForm").submit();
-            }
         });
     </script>
 @endpush

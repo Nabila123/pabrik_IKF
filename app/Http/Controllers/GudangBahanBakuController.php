@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\AdminPurchase;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
+use App\Models\GudangMasuk;
+use App\Models\GudangKeluar;
 
 class GudangBahanBakuController extends Controller
 {
@@ -15,6 +17,31 @@ class GudangBahanBakuController extends Controller
     }
 
     public function index(){
+        $data = GudangBahanBakuDetail::all();
+        $dataStok=[];
+        $dataStok[1]['barang']  = 'Benang';
+        $dataStok[2]['barang']  = 'Grey';
+        $dataStok[3]['barang']  = 'Kain';
+        $dataStok[1]['qty']  = 0;
+        $dataStok[2]['qty']  = 0;
+        $dataStok[3]['qty']  = 0;
+        foreach ($data as $key => $value) {
+            if($value->material->jenisId == 1){
+                $dataStok[1]['qty'] = $dataStok[1]['qty'] + $value->qty;
+            }
+            if($value->material->jenisId == 2){
+                $dataStok[2]['qty'] = $dataStok[2]['qty'] + $value->qty;
+            }
+            if($value->material->jenisId == 3){
+                $dataStok[3]['qty'] = $dataStok[3]['qty'] + $value->qty;
+            }
+        }
+        $dataMasuk = GudangMasuk::count();
+        $dataKeluar = GudangKeluar::count();
+        return view('bahanBaku.index')->with(['dataStok'=>$dataStok,'dataMasuk'=>$dataMasuk,'dataKeluar'=>$dataKeluar]);
+    }
+
+    public function indexSupplyBarang(){
         $data = GudangBahanBaku::all();
         return view('bahanBaku.index')->with(['data'=>$data]);
     }
