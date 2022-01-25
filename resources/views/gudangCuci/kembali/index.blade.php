@@ -42,20 +42,21 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Kode Purchase</th>
                                         <th class="textAlign">Nama Barang</th>
                                         <th class="textAlign">Satuan</th>
                                         <th class="textAlign">Tanggal </th>
+                                        <th class="textAlign">Admin G. Bahan Baku</th>
                                         <th class="textAlign">Status Keterangan</th>
+                                        <th class="textAlign">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     @foreach ($gCuciKembali as $kembali)
                                         <tr>
-                                            <td> {{ $kembali->purchase->kode }} </td>
                                             <td> {{ $kembali->material->nama }} </td>
                                             <td> {{ $kembali->material->satuan }} </td>
-                                            <td> {{ $kembali->tanggal }}  </td>
+                                            <td> {{ date('d F Y', strtotime($kembali->tanggal)) }}  </td>
+                                            <td> {{ $kembali->user->nama }}  </td>
                                             <td> 
                                                 @if ($kembali->statusDiterima == 0)
                                                 <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Pengembalian</span>
@@ -63,6 +64,9 @@
                                                 @else
                                                     <span style="color: green; font-size: 13px">Barang Sudah Dikembalikan</span>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('GCuci.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

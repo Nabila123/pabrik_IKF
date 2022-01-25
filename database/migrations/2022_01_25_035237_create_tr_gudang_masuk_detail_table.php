@@ -15,15 +15,15 @@ class CreateTrGudangMasukDetailTable extends Migration
     {
         Schema::create('tr_gudang_masuk_detail', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('gudangKeluarId');
+            $table->unsignedBigInteger('gudangMasukId');
             $table->unsignedBigInteger('purchaseId');
             $table->integer('qty')->nullable();
             $table->timestamps();
 
             
-            $table->foreign('gudangKeluarId')->references('id')->on('tr_gudang_keluar');
+            $table->foreign('gudangMasukId')->references('id')->on('tr_gudang_masuk');
             $table->foreign('purchaseId')->references('id')->on('tr_purchase');
-            $table->unique(['gudangKeluarId', 'purchaseId'], 'my_unique_ref');
+            $table->unique(['gudangMasukId', 'purchaseId'], 'my_unique_ref');
         });
     }
 

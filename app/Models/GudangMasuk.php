@@ -11,6 +11,11 @@ class GudangMasuk extends Model
 
     protected $table = 'tr_gudang_masuk';
 
+    public function user()
+    {
+        return $this->hasOne('App\Models\User','id','userId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
@@ -32,22 +37,25 @@ class GudangMasuk extends Model
 
     public static function createBarangKembali($request)
     {
-        $AddPurchase = new GudangMasuk;
-        $AddPurchase->gudangStokId = $request->gStokId;
-        $AddPurchase->gudangKeluarId = $request->id;
-        $AddPurchase->purchaseId = $request->purchaseId;
-        $AddPurchase->materialId = $request->materialId;
-        $AddPurchase->jenisId = $request->jenisId;
-        $AddPurchase->gudangRequest = $request->gudangRequest;
-        $AddPurchase->tanggal = $request->tanggal;
-        $AddPurchase->statusDiterima = 0;
-        $AddPurchase->userId = \Auth::user()->id;
-        $AddPurchase->created_at = date('Y-m-d H:i:s');
+        $AddGudangMasuk = new GudangMasuk;
+        $AddGudangMasuk->gudangStokId = $request->gudangStokId;
+        $AddGudangMasuk->gudangKeluarId = $request->id;
+        $AddGudangMasuk->purchaseId = 0;
+        $AddGudangMasuk->materialId = $request->material;
+        $AddGudangMasuk->jenisId = $request->jenisId;
+        $AddGudangMasuk->gudangRequest = $request->gudangRequest;
+        $AddGudangMasuk->tanggal = date('Y-m-d H:i:s');
+        $AddGudangMasuk->statusDiterima = 0;
+        $AddGudangMasuk->userId = \Auth::user()->id;
+        $AddGudangMasuk->created_at = date('Y-m-d H:i:s');
 
-        if ($AddPurchase->save()) {
-            return 1;
+        if ($AddGudangMasuk->save()) {
+            return $AddGudangMasuk->id;
         } else {
             return 0;
         }
+
     }
+
+    
 }

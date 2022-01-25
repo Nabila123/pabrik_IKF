@@ -11,4 +11,23 @@ class GudangMasukDetail extends Model
 
     protected $table = 'tr_gudang_masuk_detail';
 
+    public function purchase()
+    {
+        return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
+    }
+
+    public static function createBarangKembaliDetail($gudangMasukId, $request)
+    {
+        $AddGudangMasukDetail = new GudangMasukDetail;
+        $AddGudangMasukDetail->gudangMasukId = $gudangMasukId;
+        $AddGudangMasukDetail->purchaseId = $request->purchaseId;
+        $AddGudangMasukDetail->qty = $request->qty;
+        $AddGudangMasukDetail->created_at = date('Y-m-d H:i:s');
+
+        if ($AddGudangMasukDetail->save()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

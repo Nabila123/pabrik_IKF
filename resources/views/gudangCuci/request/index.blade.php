@@ -54,34 +54,36 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Kode Purchase</th>
                                         <th class="textAlign">Nama Barang</th>
                                         <th class="textAlign">Satuan</th>
-                                        <th class="textAlign">Tanggal </th>
+                                        <th class="textAlign">Tanggal Pengambilan </th>
+                                        <th class="textAlign">Admin G. Bahan Baku</th>
                                         <th class="textAlign">Status Keterangan</th>
+                                        <th class="textAlign">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     @foreach ($gCuciRequest as $detail)
                                         <tr>
-                                            <td>
-                                                @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian))
-                                                    <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
-                                                    <a href="{{ route('GCuci.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> {{ $detail->purchase->kode }} </a> <br>
-                                                    <span style="color: green; font-size: 10px">Kembalikan Barang</span>
-                                                @else
-                                                    {{ $detail->purchase->kode }}
-                                                @endif
-                                            </td>
                                             <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->material->satuan }}</td>
-                                            <td>{{ $detail->tanggal }}</td>
+                                            <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
+                                            <td>{{ $detail->user->nama }}</td>
                                             <td>
                                                 @if ($detail->statusDiterima == 0)
-                                                    <a href="{{ route('GCuci.request.terima', [$detail->id]) }}" class="btn btn-success"> Barang Diterima </a>
+                                                    <a href="{{ route('GCuci.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                 @else
-                                                    <span style="color: green;"> Barang Sudah Diterima </span>
+                                                    @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian))
+                                                        <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
+                                                        <a href="{{ route('GCuci.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
+                                                        <span style="color: green; font-size: 10px">Kembalikan Barang</span>
+                                                    @else
+                                                        <span style="color: green; font-size: 15px">Barang Sudah Dikembalikan</span>
+                                                    @endif
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('GCuci.request.detail', [$detail->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
