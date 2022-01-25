@@ -40,7 +40,6 @@ class GudangMasuk extends Model
         $AddGudangMasuk = new GudangMasuk;
         $AddGudangMasuk->gudangStokId = $request->gudangStokId;
         $AddGudangMasuk->gudangKeluarId = $request->id;
-        $AddGudangMasuk->purchaseId = 0;
         $AddGudangMasuk->materialId = $request->material;
         $AddGudangMasuk->jenisId = $request->jenisId;
         $AddGudangMasuk->gudangRequest = $request->gudangRequest;
