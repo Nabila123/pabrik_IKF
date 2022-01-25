@@ -7,7 +7,11 @@ use App\Models\AdminPurchase;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangMasuk;
+use App\Models\GudangMasukDetail;
 use App\Models\GudangKeluar;
+use App\Models\GudangKeluarDetail;
+use App\Models\GudangStokOpname;
+use App\Models\MaterialModel;
 
 class GudangBahanBakuController extends Controller
 {
@@ -17,25 +21,18 @@ class GudangBahanBakuController extends Controller
     }
 
     public function index(){
-        $data = GudangBahanBakuDetail::all();
+        $data = GudangStokOpname::all();
+        $materials = MaterialModel::all();
         $dataStok=[];
-        $dataStok[1]['barang']  = 'Benang';
-        $dataStok[2]['barang']  = 'Grey';
-        $dataStok[3]['barang']  = 'Kain';
-        $dataStok[1]['qty']  = 0;
-        $dataStok[2]['qty']  = 0;
-        $dataStok[3]['qty']  = 0;
-        foreach ($data as $key => $value) {
-            if($value->material->jenisId == 1){
-                $dataStok[1]['qty'] = $dataStok[1]['qty'] + $value->qty;
-            }
-            if($value->material->jenisId == 2){
-                $dataStok[2]['qty'] = $dataStok[2]['qty'] + $value->qty;
-            }
-            if($value->material->jenisId == 3){
-                $dataStok[3]['qty'] = $dataStok[3]['qty'] + $value->qty;
-            }
+        foreach ($materials as $key => $material) {
+            $dataStok[$material->id]['id'] = $material->id;
+            $dataStok[$material->id]['nama'] = $material->nama;
+            $dataStok[$material->id]['qty'] = 0;
         }
+        foreach ($data as $key => $value) {
+            $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $value->qty;
+        }
+    
         $dataMasuk = GudangMasuk::count();
         $dataKeluar = GudangKeluar::count();
         return view('bahanBaku.index')->with(['dataStok'=>$dataStok,'dataMasuk'=>$dataMasuk,'dataKeluar'=>$dataKeluar]);
@@ -63,6 +60,9 @@ class GudangBahanBakuController extends Controller
         $bahanBaku->total = $request['total'];
         $bahanBaku->userId = \Auth::user()->id;
 
+        //get purchaseId
+        $purchase = AdminPurchase::where('kode',$request['kodePurchase'])->first();
+
         if($bahanBaku->save()){
             for ($i=0; $i < $jumlahData; $i++) { 
                 $bahanBakuDetail = new GudangBahanBakuDetail;
@@ -82,6 +82,19 @@ class GudangBahanBakuController extends Controller
                     $saveStatus = 0;
                     die();
                 }
+
+                //get jenisId
+                $material = MaterialModel::find($request['materialId'][$i]);
+
+                //input ke gudang stok opname
+                $stokOpname = new GudangStokOpname;
+                $stokOpname->purchaseId = $purchase->id;
+                $stokOpname->materialId = $request['materialId'][$i];
+                $stokOpname->jenisId = $material->jenisId;
+                $stokOpname->qty = $request['qty'][$i];
+                $stokOpname->userId = \Auth::user()->id;
+
+                $stokOpname->save();
             }
         }
 
@@ -121,6 +134,9 @@ class GudangBahanBakuController extends Controller
 
         $updateBahanBaku = GudangBahanBaku::where('id',$id)->update($data);
 
+        //get purchaseId
+        $purchase = AdminPurchase::where('kode',$request['kodePurchase'])->first();
+
         for ($i=0; $i < $request['jumlah_data']; $i++) { 
             $dataDetail['gudangId'] = $id;
             $dataDetail['materialId'] = $request['materialId'][$i];
@@ -134,6 +150,15 @@ class GudangBahanBakuController extends Controller
             $dataDetail['remark'] = $request['remark'][$i];
 
             $updateBahanBakuDetail = GudangBahanBakuDetail::where('id',$request['detailId'][$i])->update($dataDetail);
+
+            //get jenisId
+            $material = MaterialModel::find($request['materialId'][$i]);
+
+            $dataStokOpname['jenisId'] = $request['jenisId'][$i];
+            $dataStokOpname['qty'] = $request['qty'][$i];
+            $dataStokOpname['userId'] = \Auth::user()->id;
+
+            $updateStokOpname = GudangStokOpname::where('purchaseId', $purchase->id)->where('materialId',$request['materialId'][$i])->update($dataStokOpname);
         }
 
         return redirect('bahan_baku/supply');
@@ -142,6 +167,10 @@ class GudangBahanBakuController extends Controller
 
     public function delete(Request $request)
     {
+        $kodePurchase = GudangBahanBaku::find($request['gudangId']);
+        $purchase = AdminPurchase::where('kode',$kodePurchase->kodePurchase)->first();
+        $delStokOpname = GudangStokOpname::where('purchaseId',$purchase->id)->delete();
+
         $gudangDetail = GudangBahanBakuDetail::where('gudangId', $request['gudangId'])->delete();
 
         if ($gudangDetail) {

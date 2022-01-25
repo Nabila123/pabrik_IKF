@@ -52,7 +52,7 @@
                         <div class="info-box mb-4">
                             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">{{$stok['barang']}}</span>
+                                <span class="info-box-text">{{$stok['nama']}}</span>
                                 <span class="info-box-number"> {{$stok['qty']}}</span>
                             </div>
                         </div>
