@@ -157,16 +157,16 @@ class GudangBahanBakuController extends Controller
         return view('bahanBaku.masuk.index')->with(['data'=>$data]);
     }
 
-    public function create()
+    public function createMasukGudang()
     {
         $purchases = AdminPurchase::all();
         return view('bahanBaku.supply.create')->with(['purchases'=>$purchases]);
     }
 
-    public function store(Request $request)
+    public function storeMasukGudang(Request $request)
     {
         $jumlahData = $request['jumlah_data'];
-        $bahanBaku = new GudangBahanBaku;
+        $bahanBaku = new GudangMasuk;
         $bahanBaku->kodePurchase = $request['kodePurchase'];
         $bahanBaku->namaSuplier = $request['suplier'];
         $bahanBaku->diameter = $request['diameter'];
@@ -176,7 +176,7 @@ class GudangBahanBakuController extends Controller
 
         if($bahanBaku->save()){
             for ($i=0; $i < $jumlahData; $i++) { 
-                $bahanBakuDetail = new GudangBahanBakuDetail;
+                $bahanBakuDetail = new GudangMasukDetail;
                 $bahanBakuDetail->gudangId = $bahanBaku->id;
                 $bahanBakuDetail->materialId = $request['materialId'][$i];
                 $bahanBakuDetail->qty = $request['qty'][$i];
@@ -196,32 +196,32 @@ class GudangBahanBakuController extends Controller
             }
         }
 
-        return redirect('/bahan_baku/supply');
+        return redirect('/bahan_baku/masuk');
     }
 
-    public function detail($id)
+    public function detailMasukGudang($id)
     {
-        $data = GudangBahanBaku::find($id);
-        $dataDetail = GudangBahanBakuDetail::where('gudangId',$id)->get();
+        $data = GudangMasuk::find($id);
+        $dataDetail = GudangMasukDetail::where('gudangId',$id)->get();
         foreach ($dataDetail as $key => $value) {
             $value->materialNama = $value->material->nama;
         }
 
-        return view('bahanBaku.supply.detail')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
+        return view('bahanBaku.masuk.detail')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
     }
 
-    public function edit($id)
+    public function editMasukGudang($id)
     {
-        $data = GudangBahanBaku::find($id);
-        $dataDetail = GudangBahanBakuDetail::where('gudangId',$id)->get();
+        $data = GudangMasuk::find($id);
+        $dataDetail = GudangMasukDetail::where('gudangId',$id)->get();
         foreach ($dataDetail as $key => $value) {
             $value->materialNama = $value->material->nama;
         }
 
-        return view('bahanBaku.supply.update')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
+        return view('bahanBaku.masuk.update')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
     }
 
-    public function update($id, Request $request)
+    public function updateMasukGudang($id, Request $request)
     {
         $data['kodePurchase'] = $request['kodePurchase'];
         $data['namaSuplier'] = $request['namaSuplier'];
@@ -230,7 +230,7 @@ class GudangBahanBakuController extends Controller
         $data['total'] = $request['total'];
         $data['userId'] = \Auth::user()->id;
 
-        $updateBahanBaku = GudangBahanBaku::where('id',$id)->update($data);
+        $updateBahanBaku = GudangMasuk::where('id',$id)->update($data);
 
         for ($i=0; $i < $request['jumlah_data']; $i++) { 
             $dataDetail['gudangId'] = $id;
@@ -244,10 +244,10 @@ class GudangBahanBakuController extends Controller
             $dataDetail['amount'] = $request['amount'][$i];
             $dataDetail['remark'] = $request['remark'][$i];
 
-            $updateBahanBakuDetail = GudangBahanBakuDetail::where('id',$request['detailId'][$i])->update($dataDetail);
+            $updateBahanBakuDetail = GudangMasukDetail::where('id',$request['detailId'][$i])->update($dataDetail);
         }
 
-        return redirect('bahan_baku/supply');
+        return redirect('bahan_baku/masuk');
 
     }
 

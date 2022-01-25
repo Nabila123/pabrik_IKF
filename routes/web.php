@@ -84,7 +84,14 @@ Route::get('/bahan_baku/masuk/update/{id}', [App\Http\Controllers\GudangBahanBak
 Route::post('/bahan_baku/update/masuk/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'updateMasukGudang'])->name('bahan_baku.masuk.update');
 Route::post('/bahan_baku/masuk/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteMasukGudang'])->name('bahan_baku.masuk.delete');
 
+/* Gudang Cuci */
+Route::get('/gudangCuci', [App\Http\Controllers\GudangCuciController::class, 'index'])->name('GCuci');
+Route::get('/gudangCuci/Request', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciRequest'])->name('GCuci.request');
+Route::get('/gudangCuci/Request/Terima/{id}', [App\Http\Controllers\GudangCuciController::class, 'RTerimaBarang'])->name('GCuci.request.terima');
+Route::get('/gudangCuci/Request/Kembali/{id}', [App\Http\Controllers\GudangCuciController::class, 'Rcreate'])->name('GCuci.request.kembali');
+Route::post('/gudangCuci/Request/Kembali/{id}', [App\Http\Controllers\GudangCuciController::class, 'Rstore'])->name('GCuci.request.kembali');
 
+Route::get('/gudangCuci/Kembali', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciKembali'])->name('GCuci.kembali');
 
 
 Auth::routes();
