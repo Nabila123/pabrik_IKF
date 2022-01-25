@@ -51,7 +51,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div style="margin:10px; text-align: right;">
-                                <a href="{{ route('bahan_baku.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Barang Datang</a>
+                                <a href="{{ route('bahan_baku.supply.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Barang Datang</a>
                             </div>
                             <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                 <thead>
@@ -73,8 +73,8 @@
                                             <td>{{$value->gramasi}}</td>
                                             <td>{{$value->total}}</td>
                                             <td>
-                                                <a href="{{ route('bahan_baku.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('bahan_baku.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('bahan_baku.supply.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('bahan_baku.supply.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 <button type="button" data-toggle="modal" dataId='{{ $value->id }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
                                             </td>
                                         </tr>
@@ -90,7 +90,7 @@
     <div id="DeleteModal" class="modal fade">
         <div class="modal-dialog ">
             <!-- Modal content-->
-            <form action="{{ route('bahan_baku.delete') }}" id="deleteForm" method="post" >
+            <form action="{{ route('bahan_baku.supply.delete') }}" id="deleteForm" method="post" >
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
                         <h4 class="modal-title">DELETE CONFIRMATION</h4>
@@ -133,7 +133,7 @@
             function hapusData(id)
             {
                 var id = id;
-                var url = '{{ route('bahan_baku.delete') }}';
+                var url = '{{ route('bahan_baku.supply.delete') }}';
                 // url = url.replace(':id', id);
                 console.log(id);
                 $('#gudangId').val(id);

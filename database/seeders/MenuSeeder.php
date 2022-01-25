@@ -27,6 +27,11 @@ class MenuSeeder extends Seeder
             ['id' => 6, 'parentId' => 2, 'urutan' => 4, 'nama' => 'Laporan Admin PO', 'alias' => 'adminPO.laporanAdminPO', 'directori' => 'adminPO/laporanPurchase/laporanAdminPO', 'isActive' => 1],
 
             //Admin Gudang Bahan Baku
+            ['id' => 7, 'parentId' => 0, 'urutan' => 3, 'nama' => 'Gudang Bahan Baku', 'alias' => 'bahan_baku', 'directori' => 'bahan_baku', 'isActive' => 1],
+            ['id' => 8, 'parentId' => 7, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'bahan_baku', 'directori' => 'bahan_baku/index', 'isActive' => 1],
+            ['id' => 9, 'parentId' => 7, 'urutan' => 2, 'nama' => 'Supply barang', 'alias' => 'bahan_baku.supply.index', 'directori' => 'bahan_baku/supply', 'isActive' => 1],
+            ['id' => 10, 'parentId' => 7, 'urutan' => 3, 'nama' => 'Request Keluar Gudang', 'alias' => 'bahan_baku.keluar', 'directori' => 'bahan_baku/keluar', 'isActive' => 1],
+            ['id' => 11, 'parentId' => 7, 'urutan' => 4, 'nama' => 'Request Masuk Gudang', 'alias' => 'bahan_baku.masuk', 'directori' => 'bahan_baku/masuk', 'isActive' => 1],
         ];
 
         DB::table('mst_menu')->insert($menu);

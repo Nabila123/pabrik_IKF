@@ -55,13 +55,34 @@ Route::get('/adminPO/LaporanAdminPO', [App\Http\Controllers\AdminPoController::c
 
 /* Gudang Bahan Baku */
 Route::get('/bahan_baku', [App\Http\Controllers\GudangBahanBakuController::class, 'index'])->name('bahan_baku');
-Route::get('/bahan_baku/create', [App\Http\Controllers\GudangBahanBakuController::class, 'create'])->name('bahan_baku.create');
-Route::post('/bahan_baku/create', [App\Http\Controllers\GudangBahanBakuController::class, 'store'])->name('bahan_baku.store');
-Route::get('/bahan_baku/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detail'])->name('bahan_baku.detail');
+Route::get('/bahan_baku/supply', [App\Http\Controllers\GudangBahanBakuController::class, 'indexSupplyBarang'])->name('bahan_baku.supply.index');
+Route::get('/bahan_baku/supply/create', [App\Http\Controllers\GudangBahanBakuController::class, 'create'])->name('bahan_baku.supply.create');
+Route::post('/bahan_baku/supply/create', [App\Http\Controllers\GudangBahanBakuController::class, 'store'])->name('bahan_baku.supply.store');
+Route::get('/bahan_baku/suppply/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detail'])->name('bahan_baku.supply.detail');
 
-Route::get('/bahan_baku/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'edit'])->name('bahan_baku.update');
-Route::post('/bahan_baku/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.update');
-Route::post('/bahan_baku/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.delete');
+Route::get('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'edit'])->name('bahan_baku.supply.update');
+Route::post('/bahan_baku/update/supply/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.supply.update');
+Route::post('/bahan_baku/supply/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.supply.delete');
+
+//GUDANG KELUAR
+Route::get('/bahan_baku/keluar', [App\Http\Controllers\GudangBahanBakuController::class, 'keluarGudang'])->name('bahan_baku.keluar');
+Route::get('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'createKeluarGudang'])->name('bahan_baku.keluar.create');
+Route::post('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'storeKeluarGudang'])->name('bahan_baku.keluar.store');
+Route::get('/bahan_baku/keluar/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.keluar.detail');
+
+Route::get('/bahan_baku/keluar/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'editKeluarGudang'])->name('bahan_baku.keluar.update');
+Route::post('/bahan_baku/update/keluar/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'updateKeluarGudang'])->name('bahan_baku.keluar.update');
+Route::post('/bahan_baku/keluar/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteKeluarGudang'])->name('bahan_baku.keluar.delete');
+
+//GUDANG MASUK
+Route::get('/bahan_baku/masuk', [App\Http\Controllers\GudangBahanBakuController::class, 'masukGudang'])->name('bahan_baku.masuk');
+Route::get('/bahan_baku/masuk/create', [App\Http\Controllers\GudangBahanBakuController::class, 'createMasukGudang'])->name('bahan_baku.masuk.create');
+Route::post('/bahan_baku/masuk/create', [App\Http\Controllers\GudangBahanBakuController::class, 'storeMasukGudang'])->name('bahan_baku.masuk.store');
+Route::get('/bahan_baku/masuk/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.masuk.detail');
+
+Route::get('/bahan_baku/masuk/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'editMasukGudang'])->name('bahan_baku.masuk.update');
+Route::post('/bahan_baku/update/masuk/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'updateMasukGudang'])->name('bahan_baku.masuk.update');
+Route::post('/bahan_baku/masuk/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteMasukGudang'])->name('bahan_baku.masuk.delete');
 
 
 
