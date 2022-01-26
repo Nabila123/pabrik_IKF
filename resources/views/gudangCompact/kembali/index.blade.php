@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Cuci Kembali</h1>
+                    <h1>Gudang Compact Kembali</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Cuci Kembali</li>
+                        <li class="breadcrumb-item active">Gudang Compact Kembali</li>
                     </ol>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gCuciKembali as $kembali)
+                                    @foreach ($gCompactKembali as $kembali)
                                         <tr>
                                             <td> {{ $kembali->material->nama }} </td>
                                             <td> {{ $kembali->material->satuan }} </td>
@@ -66,7 +66,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('GCuci.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('GCompact.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

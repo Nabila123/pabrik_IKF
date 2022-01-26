@@ -59,7 +59,7 @@
                         <div class="card-body">
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" name="id" id="id" value="{{ $gCuciRequest->id }}">           
+                                <input type="hidden" name="id" id="id" value="{{ $gCompactRequest->id }}">           
                                 
                                 <div class="row mb-5">
                                     <div class="col-6">
@@ -91,7 +91,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($gCuciRequestDetail as $detail)
+                                                @foreach ($gCompactRequestDetail as $detail)
                                                     <tr>
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ $detail->qty }}</td>

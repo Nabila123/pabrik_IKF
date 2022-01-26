@@ -58,14 +58,7 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a href="{{ route('home') }}" class="nav-link">
-        <i class="nav-icon fas fa-home"></i>
-        <p>
-            Admin Compact
-        </p>
-    </a>
-</li>
+
 <li class="nav-item">
     <a href="{{ route('home') }}" class="nav-link">
         <i class="nav-icon fas fa-home"></i>

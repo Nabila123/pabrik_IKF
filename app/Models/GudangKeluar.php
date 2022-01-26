@@ -11,6 +11,11 @@ class GudangKeluar extends Model
 
     protected $table = 'tr_gudang_keluar';
 
+    public function user()
+    {
+        return $this->hasOne('App\Models\User','id','userId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
