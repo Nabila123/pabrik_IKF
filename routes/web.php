@@ -75,4 +75,16 @@ Route::get('/gudangCuci/Kembali', [App\Http\Controllers\GudangCuciController::cl
 Route::get('/gudangCuci/Kembali/Detail/{id}', [App\Http\Controllers\GudangCuciController::class, 'KDetail'])->name('GCuci.kembali.detail');
 
 
+/* Gudang Compact */
+Route::get('/gudangCompact', [App\Http\Controllers\GudangCompactController::class, 'index'])->name('GCompact');
+Route::get('/gudangCompact/Request', [App\Http\Controllers\GudangCompactController::class, 'gudangCompactRequest'])->name('GCompact.request');
+Route::get('/gudangCompact/Request/Detail/{id}', [App\Http\Controllers\GudangCompactController::class, 'RDetail'])->name('GCompact.request.detail');
+Route::get('/gudangCompact/Request/Terima/{id}', [App\Http\Controllers\GudangCompactController::class, 'RTerimaBarang'])->name('GCompact.request.terima');
+Route::get('/gudangCompact/Request/Kembali/{id}', [App\Http\Controllers\GudangCompactController::class, 'Rcreate'])->name('GCompact.request.kembali');
+Route::post('/gudangCompact/Request/Kembali/{id}', [App\Http\Controllers\GudangCompactController::class, 'Rstore'])->name('GCompact.request.kembali');
+
+Route::get('/gudangCompact/Kembali', [App\Http\Controllers\GudangCompactController::class, 'gudangCompactKembali'])->name('GCompact.kembali');
+Route::get('/gudangCompact/Kembali/Detail/{id}', [App\Http\Controllers\GudangCompactController::class, 'KDetail'])->name('GCompact.kembali.detail');
+
+
 Auth::routes();

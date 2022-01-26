@@ -103,6 +103,6 @@ class GudangCuciController extends Controller
         return view('gudangCuci.kembali.detail', ['gudangMasuk' => $gCuciKembali, 'gudangMasukDetail' => $gCuciKembaliDetail]);
     }
 
-    /* END Gudang Cuci Request */
+    /* END Gudang Cuci Kembali */
 
 }

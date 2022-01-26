@@ -33,6 +33,12 @@ class MenuSeeder extends Seeder
              ['id' => 8, 'parentId' => 7, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GCuci', 'directori' => 'gudangCuci', 'isActive' => 1],
              ['id' => 9, 'parentId' => 7, 'urutan' => 2, 'nama' => 'Gudang Request', 'alias' => 'GCuci.request', 'directori' => 'gudangCuci/request/index', 'isActive' => 1],
              ['id' => 10, 'parentId' => 7, 'urutan' => 3, 'nama' => 'Gudang Kembali', 'alias' => 'GCuci.kembali', 'directori' => 'gudangCuci/kembali/index', 'isActive' => 1],
+
+             //Admin Gudang Compact
+             ['id' => 11, 'parentId' => 0, 'urutan' => 5, 'nama' => 'Gudang Compact', 'alias' => 'GCompact', 'directori' => 'gudangCompact', 'isActive' => 1],
+             ['id' => 12, 'parentId' => 11, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GCompact', 'directori' => 'gudangCompact', 'isActive' => 1],
+             ['id' => 13, 'parentId' => 11, 'urutan' => 2, 'nama' => 'Gudang Request', 'alias' => 'GCompact.request', 'directori' => 'gudangCompact/request/index', 'isActive' => 1],
+             ['id' => 14, 'parentId' => 11, 'urutan' => 3, 'nama' => 'Gudang Kembali', 'alias' => 'GCompact.kembali', 'directori' => 'gudangCompact/kembali/index', 'isActive' => 1],
         ];
 
         DB::table('mst_menu')->insert($menu);
