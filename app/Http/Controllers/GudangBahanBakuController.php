@@ -180,6 +180,41 @@ class GudangBahanBakuController extends Controller
         return redirect('bahan_baku/supply');
     }
 
+    public function keluarGudang()
+    {
+        $data = GudangKeluar::all();
+        return view('bahanBaku.keluar.index')->with(['data'=>$data]);
+    }
+
+    public function createKeluarGudang()
+    {
+        $datas = GudangStokOpname::all();
+        $dataMaterial=[];
+        foreach ($datas as $key => $value) {
+            $dataMaterial[]=$value->material;
+        }
+        return view('bahanBaku.keluar.create')->with(['dataMaterial'=>$dataMaterial]);
+    }
+
+    public function getDataJenis($materialId)
+    {
+        $datas = MaterialModel::find($materialId);
+    
+        return json_encode($datas->jenisId);
+    }
+
+    public function getDataPurchase($materialId)
+    {
+        $datas = GudangStokOpname::where('materialId',$materialId)->get();
+        $dataPurchase = [];
+        foreach($datas as $data){
+            $dataPurchase[] = $data->purchase;
+        }
+
+        return json_encode($dataPurchase);
+    }
+
+
     public function masukGudang()
     {
         $data = GudangMasuk::all();
@@ -189,7 +224,7 @@ class GudangBahanBakuController extends Controller
     public function createMasukGudang()
     {
         $purchases = AdminPurchase::all();
-        return view('bahanBaku.supply.create')->with(['purchases'=>$purchases]);
+        return view('bahanBaku.masuk.create')->with(['purchases'=>$purchases]);
     }
 
     public function storeMasukGudang(Request $request)
@@ -291,9 +326,4 @@ class GudangBahanBakuController extends Controller
         return redirect('bahan_baku/masuk');
     }
 
-    public function keluarGudang()
-    {
-        $data = GudangKeluar::all();
-        return view('bahanBaku.keluar.index')->with(['data'=>$data]);
-    }
 }

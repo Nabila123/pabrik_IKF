@@ -57,65 +57,51 @@
                                     <div class="col-12">
                                         <div class="card card-info">
                                             <div class="card-body">
-                                                <div class="row">                                                    
+                                                <div class="row
+                                                ">
                                                     <div class="col-6">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase</label>
-                                                            <select class="form-control col-md-7 col-xs-12 kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;" required>
-                                                                <option value="">Pilih Kode Purchase</option>
-                                                                @foreach($purchases as $purchase)
-                                                                    <option value="{{$purchase->kode}}">{{$purchase->kode}}</option>
-                                                                @endforeach
+                                                            <label>Gudang Request</label>
+                                                            <select class="form-control col-md-7 col-xs-12 gudangRequest" id="gudangRequest" name="gudangRequest" style="width: 100%; height: 38px;" required>
+                                                                <option value="">Pilih Gudang</option>
+                                                                    <option value="rajut">Gudang Rajut</option>
+                                                                    <option value="cuci">Gudang Cuci</option>
+                                                                    <option value="compact">Gudang Compact</option>
                                                             </select>                                           
                                                         </div>
                                                     </div>
-
-                                                    <div class="col-6">
-                                                        <div class="form-group">
-                                                            <label>Nama Suplier</label>
-                                                            <input class="form-control suplier" required id="suplier" name="suplier" type="text" placeholder="Nama Suplier" readonly>                                            
-                                                        </div>
-                                                    </div>
+                                                </div>
+                                                <div class="row">                                                    
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Diameter</label>
-                                                            <input type="text" class="form-control diameter" required id="diameter" name="diameter"placeholder="Diameter" /> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Gramasi</label>
-                                                            <input type="text" class="form-control gramasi" required id="gramasi" name="gramasi"placeholder="Gramasi" /> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Total</label>
-                                                            <input type="text" class="form-control total" required id="total" name="total"placeholder="Total" /> 
+                                                            <label>Material</label>
+                                                            <select class="form-control materialId" id="materialId" name="materialId" style="width: 100%; height: 38px;" required>
+                                                                <option value="">Pilih Material</option>
+                                                                @foreach($dataMaterial as $mat)
+                                                                    <option value="{{$mat->id}}">{{$mat->nama}}</option>
+                                                                @endforeach
+                                                            </select>   
+                                                            <input type="hidden" name="jenisId" id="jenisId" class="jenisId">                                        
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label>Kode Purchase</label>
+                                                            <select class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;" required>
+                                                                <option value="">Pilih Kode Purchase</option>
+                                                            </select>     
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label>Jumlah</label>
+                                                            <input type="text" class="form-control qty" required id="qty" name="qty"placeholder="qty" /> 
+                                                        </div>
+                                                    </div>
+                                                    
 
                                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
-                                                    <div class="col-12 right">
-                                                        <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="textAlign" style="width: 7%;">No</th>
-                                                                    <th class="textAlign">Nama Barang</th>
-                                                                    <th class="textAlign">Jumlah </th>
-                                                                    <th class="textAlign">Bruto </th>
-                                                                    <th class="textAlign">Netto </th>
-                                                                    <th class="textAlign">Tarra</th>
-                                                                    <th class="textAlign">Satuan </th>
-                                                                    <th class="textAlign">Harga Satuan</th>
-                                                                    <th class="textAlign">Amount</th>
-                                                                    <th class="textAlign">Remark</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="data textAlign"></tbody>                                                                                       
-                                                        </table>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,54 +133,33 @@
         });
         
 
-        $(document).on("change", ".kodePurchase", function(){
-            var kodePurchase = $('#kodePurchase').val();
+        $(document).on("change", ".materialId", function(){
+            var materialId = $('#materialId').val();
             var _token = $('#_token').val();
             
             $.ajax({
                 type: "get",
-                url: '{{ url("adminPO/getSuplier") }}/'+kodePurchase,
+                url: '{{ url("bahan_baku/keluar/getJenis") }}/'+materialId,
                 success: function(response){
-                    var data = JSON.parse(response)
-                    $('#suplier').val(data);    
+                    var data = JSON.parse(response);
+                    $('#jenisId').val(data);    
                 }
             })
 
             $.ajax({
                 type: "get",
-                url: '{{ url("adminPO/getDetail") }}/'+kodePurchase,
+                url: '{{ url("bahan_baku/keluar/getPurchase") }}/'+materialId,
                 success: function(response){
-                    var data = JSON.parse(response)
-                    // console.log(data);
-                    if(data){
-                        var nomor = 1;
-                        for(var i =0;i < data.length;i++)
-                        {
-                            var jumlah_data = $('#jumlah_data').val();
-                            jumlah_data++;
-                            $('#jumlah_data').val(jumlah_data);
-                            var dt = "<tr  class='data_"+jumlah_data+"'>";
-                            dt += "<td>"+nomor+"</td>";
-                            dt += "<td>"+data[i].materialNama;
-                            dt += "<input type='hidden' name='materialId[]' value='"+data[i].materialId+"' id='material_"+jumlah_data+"'>";
-                            dt += '</td>';
-                            dt += "<td>"+data[i].qty;
-                            dt += "<input type='hidden' name='qty[]' value='"+data[i].qty+"' id='qty_"+jumlah_data+"'>";
-                            dt += '</td>';
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto[]' value='' id='brutto_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto[]' value='' id='netto_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra[]' value='' id='tarra_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].unit+"<input type='hidden' name='unit[]' value='"+data[i].unit+"' id='unit_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].unitPrice+"<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].amount+"<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].remark+"<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'> </td>";
-                            dt += '</tr>';
-                            nomor++;
-                        }
-                        $('#materialPO tbody.data').append(dt);    
+                    var data = JSON.parse(response);
+                    var opt ="";
+                    for(var i =0;i < data.length;i++){
+                        opt += "<option value="+data[i].id+">"+data[i].kode+"</option>"
                     }
+                    console.log(opt);
+                    $('#kodePurchase').append(opt);    
                 }
             })
+
         });
 
         $(document).on("focusout", ".harga", function(){
