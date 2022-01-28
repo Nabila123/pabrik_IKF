@@ -33,7 +33,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Dashboard</h1>
+                    <h4>Stok Barang</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -47,28 +47,26 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-
-                <div class="col-12 col-sm-12 col-md-4">
-                    <div class="info-box mb-4">
-                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
-            
-                        <div class="info-box-content">
-                            <span class="info-box-text"><h4>Stok Barang</h4></span>
-                            @foreach($dataStok as $stok)
-                                <label>{{$stok['barang']}}</label>
+                @foreach($dataStok as $stok)
+                    <div class="col-12 col-sm-12 col-md-4">
+                        <div class="info-box mb-4">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">{{$stok['nama']}}</span>
                                 <span class="info-box-number"> {{$stok['qty']}}</span>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                @endforeach
+            </div>
+            <div class="row">
                 <div class="col-12 col-sm-12 col-md-4">
+                    <h4>Request Keluar</h4>
                     <div class="info-box mb-4">
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
         
                         <div class="info-box-content">
-                            <span class="info-box-text">Request Keluar</span>
-                            <span class="info-box-number"> 100</span>
+                            <span class="info-box-number">{{$dataKeluar}}</span>
                         </div>
                     </div>
                 </div>
@@ -76,12 +74,13 @@
                 <div class="clearfix hidden-md-up"></div>
         
                 <div class="col-12 col-sm-12 col-md-4">
+                    <h4>Request Masuk</h4>
                     <div class="info-box mb-4">
                         <span class="info-box-icon bg-success elevation-1"><i class="fas fa-people-carry"></i></span>
             
                         <div class="info-box-content">
                             <span class="info-box-text">Request Masuk</span>
-                            <span class="info-box-number">760</span>
+                            <span class="info-box-number">{{$dataMasuk}}</span>
                         </div>
                     </div>
                 </div>

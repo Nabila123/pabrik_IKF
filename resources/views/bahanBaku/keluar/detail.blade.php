@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <a href="{{route('bahan_baku')}}"" id="Simpan" style="float: right" class='btn btn-info btn-flat-right'>Kembali</a>
+                                        <a href="{{route('bahan_baku/supply')}}"" id="Simpan" style="float: right" class='btn btn-info btn-flat-right'>Kembali</a>
                                     </div>
                                 </div>
                             </div>

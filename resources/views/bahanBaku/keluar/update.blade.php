@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data" action="{{ route('bahan_baku.update',['id'=>$data->id]) }}">                    
+                            <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data" action="{{ route('bahan_baku.supply.update',['id'=>$data->id]) }}">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">   
                                 <div class="row">
                                     <div class="col-12">
@@ -173,56 +173,6 @@
     <script type="text/javascript">
         $(document).ready( function () {
             $('#example2').DataTable();
-        });
-
-        $(document).on("change", ".kodePurchase", function(){
-            var kodePurchase = $('#kodePurchase').val();
-            var _token = $('#_token').val();
-            
-            $.ajax({
-                type: "get",
-                url: '{{ url("adminPO/getDetail") }}/'+kodePurchase,
-                success: function(response){
-                    var data = JSON.parse(response)
-                    // console.log(data);
-                    if(data){
-                        var nomor = 1;
-                        for(var i =0;i < data.length;i++)
-                        {
-                            var jumlah_data = $('#jumlah_data').val();
-                            jumlah_data++;
-                            $('#jumlah_data').val(jumlah_data);
-                            var dt = "<tr  class='data_"+jumlah_data+"'>";
-                            dt += "<td>"+nomor+"</td>";
-                            dt += "<td>"+data[i].materialNama;
-                            dt += "<input type='hidden' name='materialId[]' value='"+data[i].materialId+"' id='material_"+jumlah_data+"'>";
-                            dt += '</td>';
-                            dt += "<td>"+data[i].qty;
-                            dt += "<input type='hidden' name='qty[]' value='"+data[i].qty+"' id='qty_"+jumlah_data+"'>";
-                            dt += '</td>';
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto[]' value='' id='brutto_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto[]' value='' id='netto_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra[]' value='' id='tarra_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].unit+"<input type='hidden' name='unit[]' value='"+data[i].unit+"' id='unit_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].unitPrice+"<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].amount+"<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].remark+"<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'> </td>";
-                            dt += '</tr>';
-                            nomor++;
-                        }
-                        $('#materialPO tbody.data').append(dt);    
-                    }
-                }
-            })
-        });
-
-        $(document).on("focusout", ".harga", function(){
-            var harga = $('#harga').val();
-            var jumlah = $('#jumlah').val();
-            
-            hargaTotal = (harga * jumlah);
-
-            $('#totalHarga').val(hargaTotal);
         });
 
     </script>
