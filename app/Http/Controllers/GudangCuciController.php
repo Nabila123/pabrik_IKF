@@ -21,7 +21,7 @@ class GudangCuciController extends Controller
 
     public function index(){
         $gudangKeluar = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->get();
-        $gudangMasuk = GudangMasuk::where('gudangRequest', 'Gudang Cuci')->get();
+        $gudangMasuk = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('statusDiterima', '>=', 2)->get();
 
         $gudangKeluar = count($gudangKeluar);
         $gudangMasuk = count($gudangMasuk);
@@ -54,8 +54,9 @@ class GudangCuciController extends Controller
 
         $id = $id;  
         $gudangRequest = 'Gudang Cuci';  
+        $statusDiterima = 1;
 
-        $gudangCuciTerima = GudangKeluar::updateStatusDiterima($id, $gudangRequest);
+        $gudangCuciTerima = GudangKeluar::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
 
         if ($gudangCuciTerima == 1) {
             return redirect('gudangCuci/Request');
@@ -72,37 +73,29 @@ class GudangCuciController extends Controller
 
     public function Rstore(Request $request){
 
-        $stokOpnameId = GudangStokOpname::where('materialId', $request['material'])->first();
-        $request['gudangStokId'] = "$stokOpnameId->id";
-        $request['gudangRequest'] = "Gudang Cuci";
+        $gudangRequest = "Gudang Cuci";
+        $statusDiterima = 2;
 
-        $pengembalian = GudangMasuk::createBarangKembali($request);        
-        if ($pengembalian) {
-            $gudangMasukId = $pengembalian;
-            $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        
-
-            for ($i=0; $i < count($detailPengembalian); $i++) { 
-                GudangMasukDetail::createBarangKembaliDetail($gudangMasukId, $detailPengembalian[$i]);
-            }
-
+        $pemindahan = GudangKeluar::updateStatusDiterima($request->id, $gudangRequest, $statusDiterima);        
+        if ($pemindahan == 1) {
             return redirect('gudangCuci/Kembali');
         }
     }
     /* END Gudang Cuci Request */
 
-    /* Gudang Cuci Kembali */
+    /* Gudang Cuci Pemindahan */
     public function gudangCuciKembali(){
-        $gCuciKembali = GudangMasuk::where('gudangRequest', 'Gudang Cuci')->get();
+        $gCuciKembali = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('statusDiterima', '>', 1)->get();
         return view('gudangCuci.kembali.index', ['gCuciKembali' => $gCuciKembali]);
     }
 
     public function KDetail($id){
-        $gCuciKembali = GudangMasuk::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
-        $gCuciKembaliDetail = GudangMasukDetail::where('gudangMasukId', $id)->get();
+        $gCuciRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
+        $gCuciRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
 
-        return view('gudangCuci.kembali.detail', ['gudangMasuk' => $gCuciKembali, 'gudangMasukDetail' => $gCuciKembaliDetail]);
+        return view('gudangCuci.kembali.detail', ['gudangKeluar' => $gCuciRequest, 'gudangKeluarDetail' => $gCuciRequestDetail]);
     }
 
-    /* END Gudang Cuci Kembali */
+    /* END Gudang Cuci Pemindahan */
 
 }

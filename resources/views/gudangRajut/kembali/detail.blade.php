@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Pemindahan Barang</h1>
+                    <h1>Detail Gudang Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Gudang Cuci Pemindahan</li>
+                        <li class="breadcrumb-item">Gudang Rajut Request</li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
@@ -54,10 +54,10 @@
                         <div class="card-header">
                             <table class="table">
                                 <tr>
-                                    <td> <b>Nama Barang :</b> {{ $gudangKeluar->material->nama }}</td>
+                                    <td> <b>Nama Barang :</b> {{ $gudangMasuk->material->nama }}</td>
                                 </tr>
                                 <tr>
-                                    <td> <b>Tanggal Pemindahan :</b> {{ date('d F Y', strtotime($gudangKeluar->tanggal)) }}</td>
+                                    <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangMasuk->tanggal)) }}</td>
                                 </tr>
                             </table>
                         </div>                       
@@ -65,13 +65,15 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
+                                        <th class="textAlign">Bahan</th>
                                         <th class="textAlign">Kode Purchase</th>
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gudangKeluarDetail as $detail)
+                                    @foreach ($gudangMasukDetail as $detail)
                                         <tr>
+                                            <td>{{ $gudangMasuk->gudangKeluar->material->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ $detail->qty }}</td>
                                         </tr>

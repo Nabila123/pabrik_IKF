@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pemindahan Ke Gudang Compact</h1>
+                    <h1>Gudang Rajut Kembali</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Pemindahan Gudang Compact</li>
+                        <li class="breadcrumb-item active">Gudang Rajut Kembali</li>
                     </ol>
                 </div>
             </div>
@@ -51,22 +51,22 @@
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gCuciKembali as $kembali)
+                                    @foreach ($gRajutKembali as $kembali)
                                         <tr>
                                             <td> {{ $kembali->material->nama }} </td>
                                             <td> {{ $kembali->material->satuan }} </td>
                                             <td> {{ date('d F Y', strtotime($kembali->tanggal)) }}  </td>
                                             <td> {{ $kembali->user->nama }}  </td>
                                             <td> 
-                                                @if ($kembali->statusDiterima == 2)
-                                                <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses DiPindahkan</span>
+                                                @if ($kembali->statusDiterima == 0)
+                                                <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Pengembalian</span>
                                                
                                                 @else
-                                                    <span style="color: green; font-size: 13px">Barang Sudah DiPindahkan</span>
+                                                    <span style="color: green; font-size: 13px">Barang Sudah Dikembalikan</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('GCuci.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('GRajut.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

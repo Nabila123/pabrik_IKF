@@ -29,7 +29,7 @@
                         <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
             
                         <div class="info-box-content">
-                            <span class="info-box-text">Pemindahan Dari Gudang Cuci</span>
+                            <span class="info-box-text">Ambil Dari Gudang</span>
                             <span class="info-box-number"> {{ $keluar }} </span>
                         </div>
                     </div>
