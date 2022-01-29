@@ -9,6 +9,8 @@ use App\Models\GudangMasuk;
 use App\Models\GudangMasukDetail;
 use App\Models\GudangStokOpname;
 use App\Models\MaterialModel;
+use App\Models\AdminPurchase;
+use App\Models\AdminPurchaseDetail;
 
 class GudangInspeksiController extends Controller
 {
@@ -91,6 +93,13 @@ class GudangInspeksiController extends Controller
     /* Gudang Inspeksi Proses */
     public function gudangInspeksiProses(){
         return view('gudangInspeksi.proses.index');
+    }
+
+    public function PCreate()
+    {
+        $gudangKeluar = GudangKeluar::where('Gudang Inspeksi')->get();
+
+        return view('gudangInspeksi.proses.create', ['gudangKeluar' => $gudangKeluar]);
     }
     /* END Gudang Inspeksi Proses */
 
