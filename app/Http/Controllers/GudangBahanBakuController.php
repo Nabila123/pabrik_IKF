@@ -214,6 +214,49 @@ class GudangBahanBakuController extends Controller
         return json_encode($dataPurchase);
     }
 
+    public function getDataGudang($materialId,$purchaseId)
+    {
+        $datas = GudangStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
+    
+        return json_encode($datas);
+    }
+
+    public function storeKeluarGudang(Request $request)
+    {
+        dd($request);
+        $jumlahData = $request['jumlah_data'];
+        $keluar = new GudangKeluar;
+        $keluar->gStokId = $request['kodePurchase'];
+        $keluar->namaSuplier = $request['suplier'];
+        $keluar->diameter = $request['diameter'];
+        $keluar->gramasi = $request['gramasi'];
+        $keluar->total = $request['total'];
+        $keluar->userId = \Auth::user()->id;
+
+        if($bahanBaku->save()){
+            for ($i=0; $i < $jumlahData; $i++) { 
+                $bahanBakuDetail = new GudangMasukDetail;
+                $bahanBakuDetail->gudangId = $bahanBaku->id;
+                $bahanBakuDetail->materialId = $request['materialId'][$i];
+                $bahanBakuDetail->qty = $request['qty'][$i];
+                $bahanBakuDetail->brutto = $request['brutto'][$i];
+                $bahanBakuDetail->netto = $request['netto'][$i];
+                $bahanBakuDetail->tarra = $request['tarra'][$i];
+                $bahanBakuDetail->unit = $request['unit'][$i];
+                $bahanBakuDetail->unitPrice = $request['unitPrice'][$i];
+                $bahanBakuDetail->amount = $request['amount'][$i];
+                $bahanBakuDetail->remark = $request['remark'][$i];
+                if($bahanBakuDetail->save()){
+                    $saveStatus = 1;
+                } else {
+                    $saveStatus = 0;
+                    die();
+                }
+            }
+        }
+
+        return redirect('/bahan_baku/masuk');
+    }
 
     public function masukGudang()
     {
