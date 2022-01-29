@@ -87,6 +87,18 @@ Route::get('/bahan_baku/masuk/update/{id}', [App\Http\Controllers\GudangBahanBak
 Route::post('/bahan_baku/update/masuk/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'updateMasukGudang'])->name('bahan_baku.masuk.update');
 Route::post('/bahan_baku/masuk/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteMasukGudang'])->name('bahan_baku.masuk.delete');
 
+/* Gudang Rajut */
+Route::get('/gudangRajut', [App\Http\Controllers\GudangRajutController::class, 'index'])->name('GRajut');
+Route::get('/gudangRajut/Request', [App\Http\Controllers\GudangRajutController::class, 'gudangRajutRequest'])->name('GRajut.request');
+Route::get('/gudangRajut/Request/Detail/{id}', [App\Http\Controllers\GudangRajutController::class, 'RDetail'])->name('GRajut.request.detail');
+Route::get('/gudangRajut/Request/Terima/{id}', [App\Http\Controllers\GudangRajutController::class, 'RTerimaBarang'])->name('GRajut.request.terima');
+Route::get('/gudangRajut/Request/Kembali/{id}', [App\Http\Controllers\GudangRajutController::class, 'Rcreate'])->name('GRajut.request.kembali');
+Route::post('/gudangRajut/Request/Kembali/{id}', [App\Http\Controllers\GudangRajutController::class, 'Rstore'])->name('GRajut.request.kembali');
+
+Route::get('/gudangRajut/Kembali', [App\Http\Controllers\GudangRajutController::class, 'gudangRajutKembali'])->name('GRajut.kembali');
+Route::get('/gudangRajut/Kembali/Detail/{id}', [App\Http\Controllers\GudangRajutController::class, 'KDetail'])->name('GRajut.kembali.detail');
+
+
 /* Gudang Cuci */
 Route::get('/gudangCuci', [App\Http\Controllers\GudangCuciController::class, 'index'])->name('GCuci');
 Route::get('/gudangCuci/Request', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciRequest'])->name('GCuci.request');

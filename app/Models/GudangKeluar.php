@@ -26,9 +26,9 @@ class GudangKeluar extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
-    public static function updateStatusDiterima($id, $gudangRequest)
+    public static function updateStatusDiterima($id, $gudangRequest, $statusDiterima)
     {
-        $purchaseUpdated['statusDiterima'] = 1;
+        $purchaseUpdated['statusDiterima'] = $statusDiterima;
 
         self::where('gudangRequest', $gudangRequest)->where('id', $id)->update($purchaseUpdated);
 

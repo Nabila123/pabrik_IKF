@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Pemindahan Barang</h1>
+                    <h1>Detail Gudang Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Gudang Cuci Pemindahan</li>
+                        <li class="breadcrumb-item">Gudang Rajut Request</li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
@@ -57,7 +57,7 @@
                                     <td> <b>Nama Barang :</b> {{ $gudangKeluar->material->nama }}</td>
                                 </tr>
                                 <tr>
-                                    <td> <b>Tanggal Pemindahan :</b> {{ date('d F Y', strtotime($gudangKeluar->tanggal)) }}</td>
+                                    <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangKeluar->tanggal)) }}</td>
                                 </tr>
                             </table>
                         </div>                       

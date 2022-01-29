@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1> Pemindahan Ke Gudang Compact</h1>
+                    <h1> Pengambalian Barang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Pemindahan Barang</li>
+                        <li class="breadcrumb-item">Pengembalian Barang</li>
                         <li class="breadcrumb-item active">Tambah Data</li>
                     </ol>
                 </div>
@@ -53,27 +53,31 @@
                     <div class="card">       
                         <div class="card-header ui-sortable-handle">
                             <h3 class="card-title" style="float: right">
-                                Pemindahan <label style="font-size: 15px;">  {{ date('d F y') }} </label>
+                                Pengembalian <label style="font-size: 15px;">  {{ date('d F y') }} </label>
                             </h3> 
                         </div>                 
                         <div class="card-body">
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" name="id" id="id" value="{{ $gCuciRequest->id }}">           
+                                <input type="hidden" name="id" id="id" value="{{ $gRajutRequest->id }}">           
                                 
                                 <div class="row mb-5">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Nama Barang</label>
-                                            <input type="hidden" id="idGrey" name="idGrey" value="12" class="form-control material">
-                                            <input type="text" id="material" name="material" value="Kain Grey" class="form-control material disabled" readonly>                                           
+                                            <label>Nama Barang</label>                                            
+                                            <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;" required>
+                                                <option value="">Pilih Material / Bahan</option>
+                                                @foreach($materials as $material)
+                                                    <option value="{{$material->id}}">{{$material->nama}}</option>
+                                                @endforeach
+                                            </select> 
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <label>Satuan</label>
                                         <div class="input-group">                                            
-                                            <input type="hidden" id="jenisId" name="jenisId" class="form-control jenisId disabled" readonly>
-                                            <input type="text" id="satuan" name="satuan" class="form-control satuan disabled" readonly>
+                                            <input type="hidden" id="jenisId" name="jenisId" class="form-control jenisId" required>
+                                            <input type="text" id="satuan" name="satuan" class="form-control satuan" required>
                                         </div>
                                     </div>                                                                  
                                 </div>
@@ -82,13 +86,15 @@
                                         <table id="example2" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th>Bahan</th>
                                                     <th>Kode Purchase</th>
                                                     <th>Jumlah</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($gCuciRequestDetail as $detail)
+                                                @foreach ($gRajutRequestDetail as $detail)
                                                     <tr>
+                                                        <td>{{ $gRajutRequest->material->nama }}</td>
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ $detail->qty }}</td>
                                                     </tr>
@@ -99,7 +105,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button type="submit" id="Simpan" style="float: right" class='btn btn-info btn-flat-right Simpan'>Ajukan Pemindahan</button>
+                                        <button type="submit" id="Simpan" style="float: right" class='btn btn-info btn-flat-right Simpan'>Ajukan Pengembalian</button>
                                     </div>
                                 </div>
                             </form>
@@ -113,23 +119,20 @@
 
 
 @push('page_scripts') 
-    <script type="text/javascript">        
+    <script type="text/javascript"> 
+        $('#material').select2({
+            theme: 'bootstrap4'
+        });
 
-        $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-            });
-
-            var idGrey = $('#idGrey').val();
+        $(document).on("change", ".material", function(){
+            var materialId = $('#material').val();
             var _token = $('#_token').val();
-
-            console.log(idGrey);
             
             $.ajax({
                 type: "post",
                 url: '{{ url('material/getSatuan') }}',
                 data: {
-                    'materialId' : idGrey,
+                    'materialId' : materialId,
                     '_token': _token
                 },
                 success: function(response){
@@ -139,6 +142,12 @@
                     console.log(data.satuan);
                 }
             })
+        });
+        
+        $(document).ready( function () {
+            $('#example2').DataTable( {
+                "responsive": true,
+            });            
         });
     </script>
 @endpush

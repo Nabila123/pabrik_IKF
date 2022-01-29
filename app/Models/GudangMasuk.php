@@ -26,6 +26,11 @@ class GudangMasuk extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function gudangKeluar()
+    {
+        return $this->hasOne('App\Models\GudangKeluar','id','gudangKeluarId');
+    }
+
     public static function updateStatusDiterima($id, $gudangRequest)
     {
         $purchaseUpdated['statusDiterima'] = 1;
@@ -33,7 +38,7 @@ class GudangMasuk extends Model
         self::where('gudangRequest', $gudangRequest)->where('id', $id)->update($purchaseUpdated);
 
         return 1;
-    }
+    }    
 
     public static function createBarangKembali($request)
     {

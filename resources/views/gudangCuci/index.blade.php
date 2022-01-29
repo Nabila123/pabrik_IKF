@@ -40,7 +40,7 @@
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-upload"></i></span>
         
                         <div class="info-box-content">
-                            <span class="info-box-text">Kembalikan Ke Gudang</span>
+                            <span class="info-box-text">Pemindahan Ke Gudang Compact</span>
                             <span class="info-box-number"> {{ $masuk }} </span>
                         </div>
                     </div>
