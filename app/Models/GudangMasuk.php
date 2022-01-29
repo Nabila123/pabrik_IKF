@@ -43,7 +43,6 @@ class GudangMasuk extends Model
     public static function createBarangKembali($request)
     {
         $AddGudangMasuk = new GudangMasuk;
-        $AddGudangMasuk->gudangStokId = $request->gudangStokId;
         $AddGudangMasuk->gudangKeluarId = $request->id;
         $AddGudangMasuk->materialId = $request->material;
         $AddGudangMasuk->jenisId = $request->jenisId;

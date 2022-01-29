@@ -66,9 +66,10 @@
                                         <div class="form-group">
                                             <label>Nama Barang</label>
                                             <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;" required>
-                                                <option value="">Pilih Material / Bahan</option>
                                                 @foreach($materials as $material)
-                                                    <option value="{{$material->id}}">{{$material->nama}}</option>
+                                                    @if ($material->id == 3)
+                                                        <option value="{{$material->id}}">{{$material->nama}}</option>
+                                                    @endif
                                                 @endforeach
                                             </select>                                           
                                         </div>
@@ -122,7 +123,11 @@
             theme: 'bootstrap4'
         });
 
-        $(document).on("change", ".material", function(){
+        $(document).ready( function () {
+            $('#example2').DataTable( {
+                "responsive": true,
+            });
+
             var materialId = $('#material').val();
             var _token = $('#_token').val();
             
@@ -140,12 +145,6 @@
                     console.log(data.satuan);
                 }
             })
-        });
-
-        $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-            });
         });
     </script>
 @endpush

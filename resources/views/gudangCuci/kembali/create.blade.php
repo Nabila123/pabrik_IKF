@@ -65,8 +65,13 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nama Barang</label>
-                                            <input type="hidden" id="idGrey" name="idGrey" value="12" class="form-control material">
-                                            <input type="text" id="material" name="material" value="Kain Grey" class="form-control material disabled" readonly>                                           
+                                            <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;" required>
+                                                @foreach($materials as $material)
+                                                    @if ($material->id == 2)
+                                                        <option value="{{$material->id}}">{{$material->nama}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>                                          
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -113,23 +118,24 @@
 
 
 @push('page_scripts') 
-    <script type="text/javascript">        
+    <script type="text/javascript">           
+        $('#material').select2({
+            theme: 'bootstrap4'
+        });
 
         $(document).ready( function () {
             $('#example2').DataTable( {
                 "responsive": true,
             });
 
-            var idGrey = $('#idGrey').val();
+            var materialId = $('#material').val();
             var _token = $('#_token').val();
-
-            console.log(idGrey);
             
             $.ajax({
                 type: "post",
                 url: '{{ url('material/getSatuan') }}',
                 data: {
-                    'materialId' : idGrey,
+                    'materialId' : materialId,
                     '_token': _token
                 },
                 success: function(response){
