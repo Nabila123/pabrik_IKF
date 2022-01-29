@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data" action="{{ route('bahan_baku.supply.store') }}">                    
+                            <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data" action="{{ route('bahan_baku.keluar.store') }}">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">   
                                 <div class="row">
                                     <div class="col-12">
@@ -74,9 +74,9 @@
                                                 <div class="row">                                                    
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Material</label>
-                                                            <select class="form-control materialId" id="materialId" name="materialId" style="width: 100%; height: 38px;" required>
-                                                                <option value="">Pilih Material</option>
+                                                            <label>Barang</label>
+                                                            <select class="form-control materialId" id="materialId" name="materialId" style="width: 100%; height: 38px;" >
+                                                                <option value="">Pilih Barang</option>
                                                                 @foreach($dataMaterial as $mat)
                                                                     <option value="{{$mat->id}}">{{$mat->nama}}</option>
                                                                 @endforeach
@@ -88,20 +88,41 @@
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Kode Purchase</label>
-                                                            <select class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;" required>
-                                                                <option value="">Pilih Kode Purchase</option>
+                                                            <select class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;">
+                                                                
                                                             </select>     
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Jumlah</label>
-                                                            <input type="text" class="form-control qty" required id="qty" name="qty"placeholder="qty" /> 
+                                                            <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
                                                         </div>
                                                     </div>
-                                                    
+                                                    <input type="hidden" name="gStokId" id="gStokId" class="gStokId">
+                                                    <div class="col-12 right">
+                                                        <div class="form-group">
+                                                            <button type="button" id="TBarang" class='btn btn-success btn-flat-right TBarang'>Tambah Barang</button>
+                                                        </div>
+                                                    </div>
 
                                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
+                                                    <div class="col-12 right">
+                                                        <table id="requestKeluar" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="textAlign">No</th>
+                                                                    <th class="textAlign">Nama Barang</th>
+                                                                    <th class="textAlign">Kode Purchase </th>
+                                                                    <th class="textAlign">Jumlah</th>
+                                                                    <th class="textAlign">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="data textAlign">
+                                                                
+                                                            </tbody>                                                                                       
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,24 +172,82 @@
                 url: '{{ url("bahan_baku/keluar/getPurchase") }}/'+materialId,
                 success: function(response){
                     var data = JSON.parse(response);
-                    var opt ="";
+                    var opt ="<option value=''>Pilih Kode Purchase</option>";
                     for(var i =0;i < data.length;i++){
                         opt += "<option value="+data[i].id+">"+data[i].kode+"</option>"
                     }
-                    console.log(opt);
-                    $('#kodePurchase').append(opt);    
+                    $('#kodePurchase').html(opt);    
                 }
             })
 
         });
 
-        $(document).on("focusout", ".harga", function(){
-            var harga = $('#harga').val();
-            var jumlah = $('#jumlah').val();
+        $(document).on("change", ".kodePurchase", function(){
+            var purchaseId = $('#kodePurchase').val();
+            var materialId = $('#materialId').val();
+            var _token = $('#_token').val();
             
-            hargaTotal = (harga * jumlah);
+            $.ajax({
+                type: "get",
+                url: '{{ url("bahan_baku/keluar/getGudang") }}/'+materialId+'/'+purchaseId,
+                success: function(response){
+                    var data = JSON.parse(response);
+                    $('#qty').val(data.qty);    
+                    $('#gStokId').val(data.id);    
+                }
+            })
+        });
 
-            $('#totalHarga').val(hargaTotal);
+        $(document).ready( function () {
+            $(document).on("click", "button.TBarang", function(e){
+                e.preventDefault();
+
+                var material        = $('#materialId').val();
+                var nama_material   = $('#materialId').find('option:selected').text();
+                var purchaseId      = $('#kodePurchase').val();
+                var kodePurchase    = $('#kodePurchase').find('option:selected').text();
+                var qty             = $('#qty').val();
+                var gStokId         = $('#gStokId').val();
+
+                var jumlah_data = $('#jumlah_data').val();
+
+                if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){
+                    jumlah_data++;
+                    $('#jumlah_data').val(jumlah_data);
+
+                    var table  = "<tr  class='data_"+jumlah_data+"'>";
+                        table += "<td>"+jumlah_data+"</td>";
+                        table += "<input type='hidden' name='gStokIdArr[]' value='"+gStokId
+                        +"' id='gStokId_"+jumlah_data+"'/>";
+                        table += "<td>"+nama_material+"<input type='hidden' name='materialIdArr[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
+                        table += "<td>"+kodePurchase+"<input type='hidden' name='purchaseIdArr[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
+                        table += "<td>"+qty+"<input type='hidden' name='qtyArr[]' value='"+qty+"' id='jumlah_"+jumlah_data+"'></td>";
+                        table += "<td>";
+                        table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
+                        table += "</td>";
+                        table += "</tr>";
+
+                    $('#materialId option[value=""]').attr('selected','selected');
+                    $('#materialId').val('');
+                    $('#kodePurchase option[value=""]').attr('selected','selected');
+                    $('#kodePurchase').val('');
+                    $('#qty').val('');
+                }else{
+                    alert("Material Dan Jumlah Pemakaian Tidak Boleh Kosong");
+                }
+
+                $('#requestKeluar tbody.data').append(table);
+            });
+    
+            $(document).on("click", "a.del", function(e){
+                e.preventDefault();
+                var sub = $(this).attr('idsub');
+                var jumlahdata = $('#jumlah_data').val();
+                
+                jumlahdata--;
+                $('#jumlah_data').val(jumlahdata);
+                $('.data_'+sub+'').remove();
+            });
         });
 
     </script>

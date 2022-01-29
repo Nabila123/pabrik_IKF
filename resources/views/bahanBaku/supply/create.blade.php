@@ -58,7 +58,7 @@
                                         <div class="card card-info">
                                             <div class="card-body">
                                                 <div class="row">                                                    
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Kode Purchase</label>
                                                             <select class="form-control col-md-7 col-xs-12 kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;" required>
@@ -70,22 +70,10 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Nama Suplier</label>
                                                             <input class="form-control suplier" required id="suplier" name="suplier" type="text" placeholder="Nama Suplier" readonly>                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Diameter</label>
-                                                            <input type="text" class="form-control diameter" required id="diameter" name="diameter"placeholder="Diameter" /> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Gramasi</label>
-                                                            <input type="text" class="form-control gramasi" required id="gramasi" name="gramasi"placeholder="Gramasi" /> 
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
@@ -98,12 +86,16 @@
 
                                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
                                                     <div class="col-12 right">
-                                                        <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                                        <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th class="textAlign" style="width: 7%;">No</th>
                                                                     <th class="textAlign">Nama Barang</th>
-                                                                    <th class="textAlign">Jumlah </th>
+                                                                    <th class="textAlign">Jumlah Permintaan</th>
+                                                                    <th class="textAlign">Jumlah Saat Ini</th>
+                                                                    <th class="textAlign">Jumlah Datang</th>
+                                                                    <th class="textAlign">Diameter</th>
+                                                                    <th class="textAlign">Gramasi</th>
                                                                     <th class="textAlign">Bruto </th>
                                                                     <th class="textAlign">Netto </th>
                                                                     <th class="textAlign">Tarra</th>
