@@ -146,6 +146,14 @@ class GudangInspeksiController extends Controller
 
         return view('gudangInspeksi.proses.detail', ['gudangInspeksi' => $gudangInspeksi, 'gudangInspeksiDetail' => $gudangInspeksiDetail]);
     }
+
+    public function PDelete(Request $request)
+    {
+        gudangInspeksiStokOpnameDetail::where('gudangInspeksiStokId', $request['inspeksiId'])->delete();        
+        gudangInspeksiStokOpname::where('id', $request['inspeksiId'])->delete();   
+                
+        return redirect('gudangInspeksi/proses');
+    }
     /* END Gudang Inspeksi Proses */
 
     /* Gudang Inspeksi Kembali */
