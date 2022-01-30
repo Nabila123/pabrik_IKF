@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Bahan Baku</h1>
+                    <h1>Supply Bahan Baku</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Bahan Baku</li>
+                        <li class="breadcrumb-item active">Supply Bahan Baku</li>
                     </ol>
                 </div>
             </div>
@@ -58,29 +58,17 @@
                                         <div class="card card-info">
                                             <div class="card-body">
                                                 <div class="row">                                                    
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Kode Purchase</label>
-                                                            <input type="text" class="form-control col-md-7 col-xs-12 kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->kodePurchase}}" readonly />
+                                                            <input type="text" class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->kodePurchase}}" readonly />
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Nama Suplier</label>
                                                             <input class="form-control suplier" required id="suplier" name="namaSuplier" type="text" placeholder="Nama Suplier" value="{{$data->namaSuplier}}" readonly >                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Diameter</label>
-                                                            <input type="text" class="form-control diameter" required id="diameter" name="diameter"placeholder="Diameter" value="{{$data->diameter}}" /> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Gramasi</label>
-                                                            <input type="text" class="form-control gramasi" required id="gramasi" name="gramasi"placeholder="Gramasi" value="{{$data->gramasi}}" /> 
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
@@ -93,12 +81,15 @@
 
                                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="{{count($dataDetail)}}">
                                                     <div class="col-12 right">
-                                                        <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                                        <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th class="textAlign" style="width: 7%;">No</th>
                                                                     <th class="textAlign">Nama Barang</th>
-                                                                    <th class="textAlign">Jumlah </th>
+                                                                    <th class="textAlign">Jumlah Permintaan</th>
+                                                                    <th class="textAlign">Jumlah Saat Ini</th>
+                                                                    <th class="textAlign">Diameter </th>
+                                                                    <th class="textAlign">Gramasi </th>
                                                                     <th class="textAlign">Bruto </th>
                                                                     <th class="textAlign">Netto </th>
                                                                     <th class="textAlign">Tarra</th>
@@ -121,7 +112,17 @@
                                                                             <input type="hidden" name="materialId[]" value="{{$detail->materialId}}">
                                                                         </td>
                                                                         <td>
-                                                                            <input type="text" name="qty[]" value="{{$detail->qty}}"  style="width: 70px;">
+                                                                            {{$detail->qty_permintaan}}
+                                                                            <input type="hidden" name="qty_permintaan[]" value="{{$detail->qty_permintaan}}"  style="width: 70px;">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="qty_saat_ini[]" value="{{$detail->qty_saat_ini}}"  style="width: 70px;">
+                                                                        </td>         
+                                                                        <td>
+                                                                            <input type="text" name="diameter[]" value="{{$detail->diameter}}" style="width: 70px;">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="gramasi[]" value="{{$detail->gramasi}}" style="width: 70px;">
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" name="brutto[]" value="{{$detail->brutto}}" style="width: 70px;">

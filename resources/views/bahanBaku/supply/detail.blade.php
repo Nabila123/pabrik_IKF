@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Bahan Baku</h1>
+                    <h1>Supply Bahan Baku</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Bahan Baku</li>
+                        <li class="breadcrumb-item active">Supply Bahan Baku</li>
                     </ol>
                 </div>
             </div>
@@ -68,12 +68,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                        <p><b>Diameter :</b> {{$data->diameter}} </p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p><b>Gramasi : </b>{{$data->gramasi}}</p>
-                                                </div>
-                                                <div class="col-4">
                                                     <p><b>Total : </b>{{$data->total}}</p>
                                                 </div>
 
@@ -83,7 +77,10 @@
                                                             <tr>
                                                                 <th class="textAlign" style="width: 7%;">No</th>
                                                                 <th class="textAlign">Nama Barang</th>
-                                                                <th class="textAlign">Jumlah </th>
+                                                                <th class="textAlign">Jumlah Permintaan</th>
+                                                                <th class="textAlign">Jumlah Saat ini</th>
+                                                                <th class="textAlign">Diameter </th>
+                                                                <th class="textAlign">Gramasi </th>
                                                                 <th class="textAlign">Bruto </th>
                                                                 <th class="textAlign">Netto </th>
                                                                 <th class="textAlign">Tarra</th>
@@ -101,7 +98,10 @@
                                                                 <tr>
                                                                     <td>{{$key}}</td>
                                                                     <td>{{$detail->materialNama}}</td>
-                                                                    <td>{{$detail->qty}}</td>
+                                                                    <td>{{$detail->qty_permintaan}}</td>
+                                                                    <td>{{$detail->qty_saat_ini}}</td>
+                                                                    <td>{{$detail->diameter}}</td>
+                                                                    <td>{{$detail->gramasi}}</td>
                                                                     <td>{{$detail->brutto}}</td>
                                                                     <td>{{$detail->netto}}</td>
                                                                     <td>{{$detail->tarra}}</td>
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <a href="{{route('bahan_baku/supply')}}"" id="Simpan" style="float: right" class='btn btn-info btn-flat-right'>Kembali</a>
+                                        <a href="{{route('bahan_baku.supply.index')}}"" id="Simpan" style="float: right" class='btn btn-info btn-flat-right'>Kembali</a>
                                     </div>
                                 </div>
                             </div>

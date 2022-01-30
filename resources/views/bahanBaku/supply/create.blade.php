@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Bahan Baku</h1>
+                    <h1>Supply Bahan Baku</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Bahan Baku</li>
+                        <li class="breadcrumb-item active">Supply Bahan Baku</li>
                     </ol>
                 </div>
             </div>
@@ -158,6 +158,7 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     // console.log(data);
+                    var jumlah_data = $('#jumlah_data').val(0);
                     if(data){
                         var nomor = 1;
                         for(var i =0;i < data.length;i++)
@@ -170,9 +171,12 @@
                             dt += "<td>"+data[i].materialNama;
                             dt += "<input type='hidden' name='materialId[]' value='"+data[i].materialId+"' id='material_"+jumlah_data+"'>";
                             dt += '</td>';
-                            dt += "<td>"+data[i].qty;
-                            dt += "<input type='hidden' name='qty[]' value='"+data[i].qty+"' id='qty_"+jumlah_data+"'>";
+                            dt += "<td>"+data[i].qty+"<input type='hidden' name='qty_permintaan[]' value='"+data[i].qty+"' id='qty_permintaan_"+jumlah_data+"'></td>";
+                            dt += "<td>"+data[i].qty_saat_ini+"</td>";
+                            dt += "<td><input type='text' name='qty_saat_ini[]' required style='width:60px;' class='form-control qty_saat_ini' id_data='"+jumlah_data+"' value='' id='qty_saat_ini_"+jumlah_data+"'>";
                             dt += '</td>';
+                            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter[]' value='' id='diameter_"+jumlah_data+"'> </td>";
+                            dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
                             dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto[]' value='' id='brutto_"+jumlah_data+"'> </td>";
                             dt += "<td><input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto[]' value='' id='netto_"+jumlah_data+"'> </td>";
                             dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra[]' value='' id='tarra_"+jumlah_data+"'> </td>";
@@ -183,7 +187,7 @@
                             dt += '</tr>';
                             nomor++;
                         }
-                        $('#materialPO tbody.data').append(dt);    
+                        $('#materialPO tbody.data').html(dt);    
                     }
                 }
             })

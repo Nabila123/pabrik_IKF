@@ -56,12 +56,10 @@
                             <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th style="vertical-align: middle; width: 20%;">Kode Purchase</th>
+                                        <th style="vertical-align: middle; width: 30%;">Kode Purchase</th>
                                         <th style="vertical-align: middle; width: 30%;">Nama Supplier</th>
-                                        <th style="vertical-align: middle; width:10%;">Diameter </th>
-                                        <th style="vertical-align: middle; width:10%;">Gramasi</th>
-                                        <th style="vertical-align: middle; width: 10%;">Total</th>
-                                        <th style="vertical-align: middle; width:20%;">action</th>
+                                        <th style="vertical-align: middle; width: 25%;">Total</th>
+                                        <th style="vertical-align: middle; width:30%;">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,8 +67,6 @@
                                         <tr>
                                             <td>{{$value->kodePurchase}}</td>
                                             <td>{{$value->namaSuplier}}</td>
-                                            <td>{{$value->diameter}}</td>
-                                            <td>{{$value->gramasi}}</td>
                                             <td>{{$value->total}}</td>
                                             <td>
                                                 <a href="{{ route('bahan_baku.supply.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

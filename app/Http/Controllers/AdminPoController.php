@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\AdminPurchase;
 use App\Models\MaterialModel;
 use App\Models\AdminPurchaseDetail;
+use App\Models\GudangBahanBaku;
+use App\Models\GudangBahanBakuDetail;
 use PDF;
 
 use Illuminate\Http\Request;
@@ -102,9 +104,17 @@ class AdminPoController extends Controller
     {
         $getPurchase = AdminPurchase::where('kode', $kode)->first();
         $getPurchaseDetail = AdminPurchaseDetail::where('purchaseId', $getPurchase->id)->get();
+        $cekGudang = GudangBahanBaku::where('kodePurchase',$kode)->first();
         foreach ($getPurchaseDetail as $key => $value) {
             $value->materialNama = $value->material->nama;
-        }
+            if($cekGudang){
+                $cekGudangDetail = GudangBahanBakuDetail::where('gudangId',$cekGudang->id)->where('materialId',$value->materialId)->first();
+                $value->qty_saat_ini = ($cekGudangDetail) ? $cekGudangDetail->qty_saat_ini : 0;
+            }else{
+                $value->qty_saat_ini = 0;
+            }
+        } 
+
         return json_encode($getPurchaseDetail);
     }
 

@@ -61,7 +61,7 @@ Route::post('/bahan_baku/supply/create', [App\Http\Controllers\GudangBahanBakuCo
 Route::get('/bahan_baku/suppply/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detail'])->name('bahan_baku.supply.detail');
 
 Route::get('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'edit'])->name('bahan_baku.supply.update');
-Route::post('/bahan_baku/update/supply/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.supply.update');
+Route::post('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.supply.update');
 Route::post('/bahan_baku/supply/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.supply.delete');
 
 //GUDANG KELUAR
