@@ -273,23 +273,17 @@ class GudangBahanBakuController extends Controller
         return view('bahanBaku.keluar.create')->with(['dataMaterial'=>$dataMaterial]);
     }
 
-    public function getDataJenis($materialId)
+    public function getDataMaterial($gudangRequest)
     {
-        $datas = MaterialModel::find($materialId);
-    
-        return json_encode($datas->jenisId);
-    }
-
-    public function getDataPurchase($materialId)
-    {
-        $datas = GudangStokOpname::where('materialId',$materialId)->get();
-        $dataPurchase = [];
-        foreach($datas as $data){
-            $dataPurchase[] = $data->purchase;
+        $data['material'] = MaterialModel::where('jenisId',$gudangRequest)->first();
+        $datas = GudangStokOpname::where('materialId',$data['material']->id)->get();
+        $data['purchase'] = [];
+        foreach($datas as $val){
+            $data['purchase'][] = $val->purchase;
         }
-
-        return json_encode($dataPurchase);
+        return json_encode($data);
     }
+
 
     public function getDataGudang($materialId,$purchaseId)
     {
@@ -300,39 +294,46 @@ class GudangBahanBakuController extends Controller
 
     public function storeKeluarGudang(Request $request)
     {
-        dd($request);
         $jumlahData = $request['jumlah_data'];
         $keluar = new GudangKeluar;
-        $keluar->gStokId = $request['kodePurchase'];
-        $keluar->namaSuplier = $request['suplier'];
-        $keluar->diameter = $request['diameter'];
-        $keluar->gramasi = $request['gramasi'];
-        $keluar->total = $request['total'];
+        $keluar->materialId = $request['materialId'];
+        $keluar->jenisId = $request['jenisId'];
+        switch ($request['jenisId']) {
+            case 1:
+                $gudang = 'Gudang Rajut';
+                break;
+            case 2:
+                $gudang = 'Gudang Cuci';
+                break;
+            case 3:
+                $gudang = 'Gudang Inspeksi';
+                break;
+            
+            default:
+                // code...
+                break;
+        }
+        $keluar->gudangRequest = $gudang;
+        $keluar->tanggal = date('Y-m-d');
         $keluar->userId = \Auth::user()->id;
 
-        if($bahanBaku->save()){
+        if($keluar->save()){
             for ($i=0; $i < $jumlahData; $i++) { 
-                $bahanBakuDetail = new GudangMasukDetail;
-                $bahanBakuDetail->gudangId = $bahanBaku->id;
-                $bahanBakuDetail->materialId = $request['materialId'][$i];
-                $bahanBakuDetail->qty = $request['qty'][$i];
-                $bahanBakuDetail->brutto = $request['brutto'][$i];
-                $bahanBakuDetail->netto = $request['netto'][$i];
-                $bahanBakuDetail->tarra = $request['tarra'][$i];
-                $bahanBakuDetail->unit = $request['unit'][$i];
-                $bahanBakuDetail->unitPrice = $request['unitPrice'][$i];
-                $bahanBakuDetail->amount = $request['amount'][$i];
-                $bahanBakuDetail->remark = $request['remark'][$i];
-                if($bahanBakuDetail->save()){
-                    $saveStatus = 1;
-                } else {
-                    $saveStatus = 0;
-                    die();
+                $keluarDetail = new GudangKeluarDetail;
+                $keluarDetail->gudangKeluarId = $keluar->id;
+                $keluarDetail->gudangStokId = $request['gStokIdArr'][$i];
+                $keluarDetail->purchaseId = $request['purchaseIdArr'][$i];
+                $keluarDetail->qty = $request['qtyArr'][$i];
+                if($keluarDetail->save()){
+                    $stokOpname = GudangStokOpname::where('materialId', $request['materialId'])->where('purchaseId',$request['purchaseIdArr'][$i])->first();
+                    $qtyUpdate = $stokOpname->qty - $request['qtyArr'][$i];
+
+                    $update = GudangStokOpname::where('materialId', $request['materialId'])->where('purchaseId',$request['purchaseIdArr'][$i])->update(['qty'=>$qtyUpdate]);
                 }
             }
         }
 
-        return redirect('/bahan_baku/masuk');
+        return redirect('/bahan_baku/keluar');
     }
 
     public function masukGudang()

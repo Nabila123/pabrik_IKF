@@ -32,12 +32,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Keluar</h1>
+                    <h1>Request Keluar Gudang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Keluar</li>
+                        <li class="breadcrumb-item active">Request Keluar Gudang</li>
                     </ol>
                 </div>
             </div>
@@ -56,25 +56,21 @@
                             <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th style="vertical-align: middle; width: 20%;">Kode Purchase</th>
-                                        <th style="vertical-align: middle; width: 30%;">Nama Supplier</th>
-                                        <th style="vertical-align: middle; width:10%;">Diameter </th>
-                                        <th style="vertical-align: middle; width:10%;">Gramasi</th>
-                                        <th style="vertical-align: middle; width: 10%;">Total</th>
+                                        <th style="vertical-align: middle; width: 20%;">Gudang Request</th>
+                                        <th style="vertical-align: middle; width: 30%;">Material</th>
+                                        <th style="vertical-align: middle; width:10%;">Tanggal </th>
                                         <th style="vertical-align: middle; width:20%;">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $key=>$value)
                                         <tr>
-                                            <td>{{$value->kodePurchase}}</td>
-                                            <td>{{$value->namaSuplier}}</td>
-                                            <td>{{$value->diameter}}</td>
-                                            <td>{{$value->gramasi}}</td>
-                                            <td>{{$value->total}}</td>
+                                            <td>{{$value->gudangRequest}}</td>
+                                            <td>{{$value->material->nama}}</td>
+                                            <td>{{$value->tanggal}}</td>
                                             <td>
-                                                <a href="{{ route('bahan_baku.supply.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('bahan_baku.supply.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('bahan_baku.keluar.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('bahan_baku.keluar.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 <button type="button" data-toggle="modal" dataId='{{ $value->id }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
                                             </td>
                                         </tr>
@@ -90,7 +86,7 @@
     <div id="DeleteModal" class="modal fade">
         <div class="modal-dialog ">
             <!-- Modal content-->
-            <form action="{{ route('bahan_baku.supply.delete') }}" id="deleteForm" method="post" >
+            <form action="{{ route('bahan_baku.keluar.delete') }}" id="deleteForm" method="post" >
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
                         <h4 class="modal-title">DELETE CONFIRMATION</h4>
@@ -133,7 +129,7 @@
             function hapusData(id)
             {
                 var id = id;
-                var url = '{{ route('bahan_baku.supply.delete') }}';
+                var url = '{{ route('bahan_baku.keluar.delete') }}';
                 // url = url.replace(':id', id);
                 console.log(id);
                 $('#gudangId').val(id);

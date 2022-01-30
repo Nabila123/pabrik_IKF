@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Bahan Baku</h1>
+                    <h1>Request Keluar Gudang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Bahan Baku</li>
+                        <li class="breadcrumb-item active">Request Keluar Gudang</li>
                     </ol>
                 </div>
             </div>
@@ -64,9 +64,9 @@
                                                             <label>Gudang Request</label>
                                                             <select class="form-control col-md-7 col-xs-12 gudangRequest" id="gudangRequest" name="gudangRequest" style="width: 100%; height: 38px;" required>
                                                                 <option value="">Pilih Gudang</option>
-                                                                    <option value="rajut">Gudang Rajut</option>
-                                                                    <option value="cuci">Gudang Cuci</option>
-                                                                    <option value="compact">Gudang Compact</option>
+                                                                    <option value=1>Gudang Rajut</option>
+                                                                    <option value=2>Gudang Cuci</option>
+                                                                    <option value=3>Gudang Inspeksi</option>
                                                             </select>                                           
                                                         </div>
                                                     </div>
@@ -75,13 +75,9 @@
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Barang</label>
-                                                            <select class="form-control materialId" id="materialId" name="materialId" style="width: 100%; height: 38px;" >
-                                                                <option value="">Pilih Barang</option>
-                                                                @foreach($dataMaterial as $mat)
-                                                                    <option value="{{$mat->id}}">{{$mat->nama}}</option>
-                                                                @endforeach
-                                                            </select>   
-                                                            <input type="hidden" name="jenisId" id="jenisId" class="jenisId">                                        
+                                                            <input type="text" class="form-control material" id="material" name="material" style="width: 100%; height: 38px;" readonly> 
+                                                            <input type="hidden" name="jenisId" id="jenisId" class="jenisId">            
+                                                            <input type="hidden" name="materialId" id="materialId" class="materialId">                                        
                                                         </div>
                                                     </div>
 
@@ -154,29 +150,24 @@
         });
         
 
-        $(document).on("change", ".materialId", function(){
-            var materialId = $('#materialId').val();
+        $(document).on("change", ".gudangRequest", function(){
+            var gudangRequest = $('#gudangRequest').val();
             var _token = $('#_token').val();
             
             $.ajax({
                 type: "get",
-                url: '{{ url("bahan_baku/keluar/getJenis") }}/'+materialId,
+                url: '{{ url("bahan_baku/keluar/getMaterial") }}/'+gudangRequest,
                 success: function(response){
                     var data = JSON.parse(response);
-                    $('#jenisId').val(data);    
-                }
-            })
-
-            $.ajax({
-                type: "get",
-                url: '{{ url("bahan_baku/keluar/getPurchase") }}/'+materialId,
-                success: function(response){
-                    var data = JSON.parse(response);
+                    console.log(data.material);
+                    $('#materialId').val(data.material.id);
+                    $('#material').val(data.material.nama);
+                    $('#jenisId').val(gudangRequest);
                     var opt ="<option value=''>Pilih Kode Purchase</option>";
-                    for(var i =0;i < data.length;i++){
-                        opt += "<option value="+data[i].id+">"+data[i].kode+"</option>"
+                    for(var i =0;i < data.purchase.length;i++){
+                        opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
                     }
-                    $('#kodePurchase').html(opt);    
+                    $('#kodePurchase').html(opt);        
                 }
             })
 
@@ -203,7 +194,7 @@
                 e.preventDefault();
 
                 var material        = $('#materialId').val();
-                var nama_material   = $('#materialId').find('option:selected').text();
+                var nama_material   = $('#material').val();
                 var purchaseId      = $('#kodePurchase').val();
                 var kodePurchase    = $('#kodePurchase').find('option:selected').text();
                 var qty             = $('#qty').val();
@@ -227,8 +218,6 @@
                         table += "</td>";
                         table += "</tr>";
 
-                    $('#materialId option[value=""]').attr('selected','selected');
-                    $('#materialId').val('');
                     $('#kodePurchase option[value=""]').attr('selected','selected');
                     $('#kodePurchase').val('');
                     $('#qty').val('');
