@@ -68,7 +68,16 @@
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    
+                                    @foreach ($gudangInspeksi as $inspeksi)
+                                        <td>{{ $inspeksi->purchase->kode }}</td>
+                                        <td>{{ $inspeksi->purchase->suplierName }}</td>
+                                        <td>{{ $inspeksi->material->nama }}</td>
+                                        <td>{{ date('d F Y', strtotime($inspeksi->tanggal)) }}</td>
+                                        <td>{{ $inspeksi->user->nama }}</td>
+                                        <td>
+                                            <a href="{{ route('GInspeksi.proses.detail', $inspeksi->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                        </td>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

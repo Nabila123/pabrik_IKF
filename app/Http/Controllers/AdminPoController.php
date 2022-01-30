@@ -27,6 +27,13 @@ class AdminPoController extends Controller
         return view('adminPO.index', ['order' => $poOrder, 'request' => $poRequest]);
     }    
 
+    public function getData(Request $request)
+    {
+        $purchase = AdminPurchase::getPurchaseWithMaterial($request);
+
+        return json_encode($purchase);
+    }
+
     public function poOrder(){   
         $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
 

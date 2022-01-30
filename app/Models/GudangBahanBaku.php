@@ -10,4 +10,9 @@ class GudangBahanBaku extends Model
     use HasFactory;
 
     protected $table = 'tr_gudang_bahan_baku';
+
+    public function bahanBakuDetail()
+    {
+        return $this->hasOne('App\Models\GudangBahanBakuDetail','gudangId','id');
+    }
 }

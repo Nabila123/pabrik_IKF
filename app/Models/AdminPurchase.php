@@ -18,6 +18,11 @@ class AdminPurchase extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function bahanBaku()
+    {
+        return $this->hasOne('App\Models\GudangBahanBaku','kodePurchase','kode');
+    }
+
     public function roleKaDeptProdUser()
     {
         return $this->hasOne('App\Models\User','roleId','isKaDeptProd');
@@ -42,6 +47,20 @@ class AdminPurchase extends Model
         return self::where(array(
           'id'	=> $id,
         ))->first();
+    }
+
+    public static function getPurchaseWithMaterial($request)
+    {
+
+        
+        $data = AdminPurchase::join('tr_gudang_bahan_baku', 'tr_gudang_bahan_baku.kodePurchase', '=', 'tr_purchase.kode')
+                            ->join('tr_gudang_bahan_baku_detail', 'tr_gudang_bahan_baku_detail.gudangId', '=', 'tr_gudang_bahan_baku.id')
+                            ->join('mst_material', 'mst_material.id', '=', 'tr_gudang_bahan_baku_detail.materialId')
+                            ->join('mst_jenis_barang', 'mst_jenis_barang.id', '=', 'mst_material.jenisId')
+                            ->where(['tr_purchase.id' => $request->purchaseId, 'tr_gudang_bahan_baku_detail.materialId' => $request->materialId, 'mst_material.jenisId' => $request->jenisId])
+                            ->select('tr_purchase.suplierName', 'mst_material.nama', 'tr_gudang_bahan_baku_detail.diameter')
+                            ->get();
+        return $data;
     }
 
     public static function purchaseKode()
