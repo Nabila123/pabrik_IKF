@@ -123,4 +123,21 @@ Route::get('/gudangCompact/Kembali', [App\Http\Controllers\GudangCompactControll
 Route::get('/gudangCompact/Kembali/Detail/{id}', [App\Http\Controllers\GudangCompactController::class, 'KDetail'])->name('GCompact.kembali.detail');
 
 
+/* Gudang Inspeksi */
+Route::get('/gudangInspeksi', [App\Http\Controllers\GudangInspeksiController::class, 'index'])->name('GInspeksi');
+
+Route::get('/gudangInspeksi/Request', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiRequest'])->name('GInspeksi.request');
+Route::get('/gudangInspeksi/Request/Detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'RDetail'])->name('GInspeksi.request.detail');
+Route::get('/gudangInspeksi/Request/Terima/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'RTerimaBarang'])->name('GInspeksi.request.terima');
+Route::get('/gudangInspeksi/Request/Kembali/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'Rcreate'])->name('GInspeksi.request.kembali');
+Route::post('/gudangInspeksi/Request/Kembali/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'Rstore'])->name('GInspeksi.request.kembali');
+
+
+Route::get('/gudangInspeksi/Kembali', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiKembali'])->name('GInspeksi.kembali');
+Route::get('/gudangInspeksi/Kembali/Detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'KDetail'])->name('GInspeksi.kembali.detail');
+
+Route::get('/gudangInspeksi/proses', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiproses'])->name('GInspeksi.proses');
+Route::get('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PCreate'])->name('GInspeksi.proses.create');
+
+
 Auth::routes();

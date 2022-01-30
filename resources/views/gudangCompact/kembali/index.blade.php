@@ -45,7 +45,7 @@
                                         <th class="textAlign">Nama Barang</th>
                                         <th class="textAlign">Satuan</th>
                                         <th class="textAlign">Tanggal </th>
-                                        <th class="textAlign">Admin G. Bahan Baku</th>
+                                        <th class="textAlign">Operator Compact</th>
                                         <th class="textAlign">Status Keterangan</th>
                                         <th class="textAlign">Action</th>
                                     </tr>

@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Rajut Kembali</h1>
+                    <h1>Gudang Inspeksi Kembali</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Rajut Kembali</li>
+                        <li class="breadcrumb-item active">Gudang Inspeksi Kembali</li>
                     </ol>
                 </div>
             </div>
@@ -45,13 +45,13 @@
                                         <th class="textAlign">Nama Barang</th>
                                         <th class="textAlign">Satuan</th>
                                         <th class="textAlign">Tanggal </th>
-                                        <th class="textAlign">Operator Rajut</th>
+                                        <th class="textAlign">Operator Inspeksi</th>
                                         <th class="textAlign">Status Keterangan</th>
                                         <th class="textAlign">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gRajutKembali as $kembali)
+                                    @foreach ($gInspeksiKembali as $kembali)
                                         <tr>
                                             <td> {{ $kembali->material->nama }} </td>
                                             <td> {{ $kembali->material->satuan }} </td>
@@ -66,7 +66,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('GRajut.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('GInspeksi.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

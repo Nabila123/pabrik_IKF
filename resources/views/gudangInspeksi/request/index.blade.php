@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pemindahan Ke Gudang Compact</h1>
+                    <h1>Gudang Inspeksi Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Pemindahan Gudang Compact</li>
+                        <li class="breadcrumb-item active">Gudang Inspeksi Request</li>
                     </ol>
                 </div>
             </div>
@@ -63,27 +63,27 @@
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gCompactRequest as $detail)
+                                    @foreach ($gInspeksiRequest as $detail)
                                         <tr>
                                             <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->material->satuan }}</td>
                                             <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
                                             <td>{{ $detail->user->nama }}</td>
                                             <td>
-                                                @if ($detail->statusDiterima == 2)
-                                                    <a href="{{ route('GCompact.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                @if ($detail->statusDiterima == 0)
+                                                    <a href="{{ route('GInspeksi.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                 @else
-                                                    @if ($detail->statusDiterima == 3 && !isset($detail->cekPengembalian))
+                                                    @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian))
                                                         <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
-                                                        <a href="{{ route('GCompact.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
-                                                        <span style="color: green; font-size: 10px">Kembalikan Barang </span>
+                                                        <a href="{{ route('GInspeksi.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
+                                                        <span style="color: green; font-size: 10px">Kembalikan Barang</span>
                                                     @else
                                                         <span style="color: green; font-size: 15px">Barang Sudah Dikembalikan</span>
                                                     @endif
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('GCompact.request.detail', [$detail->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('GInspeksi.request.detail', [$detail->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

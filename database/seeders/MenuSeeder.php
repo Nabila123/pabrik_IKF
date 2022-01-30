@@ -52,6 +52,13 @@ class MenuSeeder extends Seeder
              ['id' => 21, 'parentId' => 20, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GCompact', 'directori' => 'gudangCompact', 'isActive' => 1],
              ['id' => 22, 'parentId' => 20, 'urutan' => 2, 'nama' => 'Gudang Request', 'alias' => 'GCompact.request', 'directori' => 'gudangCompact/request/index', 'isActive' => 1],
              ['id' => 23, 'parentId' => 20, 'urutan' => 3, 'nama' => 'Gudang Kembali', 'alias' => 'GCompact.kembali', 'directori' => 'gudangCompact/kembali/index', 'isActive' => 1],
+
+             //Admin Gudang Inspeksi
+            ['id' => 24, 'parentId' => 0, 'urutan' => 7, 'nama' => 'Gudang Inspeksi', 'alias' => 'GInspeksi', 'directori' => 'gudangInspeksi', 'isActive' => 1],
+            ['id' => 25, 'parentId' => 24, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GInspeksi', 'directori' => 'gudangInspeksi', 'isActive' => 1],
+            ['id' => 26, 'parentId' => 24, 'urutan' => 2, 'nama' => 'Gudang Request', 'alias' => 'GInspeksi.request', 'directori' => 'gudangInspeksi/request/index', 'isActive' => 1],
+            ['id' => 27, 'parentId' => 24, 'urutan' => 3, 'nama' => 'Proses Inspeksi', 'alias' => 'GInspeksi.proses', 'directori' => 'gudangInspeksi/proses/index', 'isActive' => 1],
+            ['id' => 28, 'parentId' => 24, 'urutan' => 4, 'nama' => 'Gudang Kembali', 'alias' => 'GInspeksi.kembali', 'directori' => 'gudangInspeksi/kembali/index', 'isActive' => 1],
         ];
 
         DB::table('mst_menu')->insert($menu);
