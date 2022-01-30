@@ -97,9 +97,21 @@ class GudangInspeksiController extends Controller
 
     public function PCreate()
     {
-        $gudangKeluar = GudangKeluar::where('Gudang Inspeksi')->get();
+        $purchaseInspeksi = [];
+        $index = 0;
+        $gudangKeluar = GudangKeluar::select('id')->where('gudangRequest','Gudang Inspeksi')->get();
+        foreach ($gudangKeluar as $value) {
+            $gudangKeluarDetail = GudangKeluarDetail::select('purchaseId')->where('gudangKeluarId', $value->id)->first();
+            
+            $purchaseInspeksi[$index] = [
+                "id" => $gudangKeluarDetail->purchaseId,
+                "kode" => $gudangKeluarDetail->purchase->kode
+            ];
 
-        return view('gudangInspeksi.proses.create', ['gudangKeluar' => $gudangKeluar]);
+            $index++;
+        }       
+
+        return view('gudangInspeksi.proses.create', ['purchaseId' => $purchaseInspeksi]);
     }
     /* END Gudang Inspeksi Proses */
 
@@ -112,6 +124,7 @@ class GudangInspeksiController extends Controller
     public function KDetail($id){
         $gInspeksiKembali = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->where('id', $id)->first();
         $gInspeksiKembaliDetail = GudangMasukDetail::where('gudangMasukId', $id)->get();
+
 
         return view('gudangInspeksi.kembali.detail', ['gudangMasuk' => $gInspeksiKembali, 'gudangMasukDetail' => $gInspeksiKembaliDetail]);
     }

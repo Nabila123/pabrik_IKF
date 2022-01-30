@@ -52,7 +52,7 @@
                     <div class="card">      
                         <div class="card-header">
                             <h3 class="card-title">
-                                <a href="#" class='btn btn-info btn-flat-right'>Tambah Data</a>
+                                <a href="{{ route('GInspeksi.proses.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
                             </h3>
                         </div>                  
                         <div class="card-body">
