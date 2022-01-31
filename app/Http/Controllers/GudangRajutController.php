@@ -82,7 +82,7 @@ class GudangRajutController extends Controller
             $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        
 
             for ($i=0; $i < count($detailPengembalian); $i++) { 
-                GudangMasukDetail::createBarangKembaliDetail($gudangMasukId, $detailPengembalian[$i]);
+                GudangMasukDetail::createBarangKembaliDetail($gudangMasukId, $request['gudangStokId'], $detailPengembalian[$i]);
             }
 
             return redirect('gudangRajut/Kembali');

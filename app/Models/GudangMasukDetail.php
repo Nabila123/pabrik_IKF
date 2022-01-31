@@ -16,11 +16,11 @@ class GudangMasukDetail extends Model
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
     }
 
-    public static function createBarangKembaliDetail($gudangMasukId, $request)
+    public static function createBarangKembaliDetail($gudangMasukId, $gudangStokId, $request)
     {
         $AddGudangMasukDetail = new GudangMasukDetail;
         $AddGudangMasukDetail->gudangMasukId = $gudangMasukId;
-        $AddGudangMasukDetail->gudangStokId = $request->gudangStokId;
+        $AddGudangMasukDetail->gudangStokId = $gudangStokId;
         $AddGudangMasukDetail->purchaseId = $request->purchaseId;
         $AddGudangMasukDetail->qty = $request->qty;
         $AddGudangMasukDetail->created_at = date('Y-m-d H:i:s');
