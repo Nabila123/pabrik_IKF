@@ -59,6 +59,7 @@
                                         <th style="vertical-align: middle; width: 20%;">Gudang Request</th>
                                         <th style="vertical-align: middle; width: 30%;">Material</th>
                                         <th style="vertical-align: middle; width:10%;">Tanggal </th>
+                                        <th style="vertical-align: middle; width:10%;">Status </th>
                                         <th style="vertical-align: middle; width:20%;">action</th>
                                     </tr>
                                 </thead>
@@ -69,8 +70,15 @@
                                             <td>{{$value->material->nama}}</td>
                                             <td>{{$value->tanggal}}</td>
                                             <td>
+                                                @if ($value->statusDiterima == 0)
+                                                <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penyerahan</span>
+                                               
+                                                @else
+                                                    <span style="color: green; font-size: 13px">Barang Sudah Diterima</span>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 <a href="{{ route('bahan_baku.keluar.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('bahan_baku.keluar.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 <button type="button" data-toggle="modal" dataId='{{ $value->id }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
                                             </td>
                                         </tr>

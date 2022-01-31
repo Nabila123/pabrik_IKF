@@ -78,13 +78,9 @@ Route::post('/bahan_baku/keluar/delete', [App\Http\Controllers\GudangBahanBakuCo
 
 //GUDANG MASUK
 Route::get('/bahan_baku/masuk', [App\Http\Controllers\GudangBahanBakuController::class, 'masukGudang'])->name('bahan_baku.masuk');
-Route::get('/bahan_baku/masuk/create', [App\Http\Controllers\GudangBahanBakuController::class, 'createMasukGudang'])->name('bahan_baku.masuk.create');
-Route::post('/bahan_baku/masuk/create', [App\Http\Controllers\GudangBahanBakuController::class, 'storeMasukGudang'])->name('bahan_baku.masuk.store');
 Route::get('/bahan_baku/masuk/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.masuk.detail');
+Route::get('/bahan_baku/masuk/terima/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'terimaMasukGudang'])->name('bahan_baku.masuk.terima');
 
-Route::get('/bahan_baku/masuk/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'editMasukGudang'])->name('bahan_baku.masuk.update');
-Route::post('/bahan_baku/update/masuk/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'updateMasukGudang'])->name('bahan_baku.masuk.update');
-Route::post('/bahan_baku/masuk/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteMasukGudang'])->name('bahan_baku.masuk.delete');
 
 /* Gudang Rajut */
 Route::get('/gudangRajut', [App\Http\Controllers\GudangRajutController::class, 'index'])->name('GRajut');

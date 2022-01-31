@@ -20,6 +20,7 @@ class GudangMasukDetail extends Model
     {
         $AddGudangMasukDetail = new GudangMasukDetail;
         $AddGudangMasukDetail->gudangMasukId = $gudangMasukId;
+        $AddGudangMasukDetail->gudangStokId = $request->gudangStokId;
         $AddGudangMasukDetail->purchaseId = $request->purchaseId;
         $AddGudangMasukDetail->qty = $request->qty;
         $AddGudangMasukDetail->created_at = date('Y-m-d H:i:s');
