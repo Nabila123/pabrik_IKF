@@ -147,6 +147,35 @@ class GudangInspeksiController extends Controller
         return view('gudangInspeksi.proses.detail', ['gudangInspeksi' => $gudangInspeksi, 'gudangInspeksiDetail' => $gudangInspeksiDetail]);
     }
 
+    public function PUpdate($id)
+    {
+        $gudangInspeksi = gudangInspeksiStokOpname::where('id', $id)->first();
+        $gudangInspeksiDetail = gudangInspeksiStokOpnameDetail::where('gudangInspeksiStokId', $id)->get();
+
+        return view('gudangInspeksi.proses.update', ['gudangInspeksi' => $gudangInspeksi, 'gudangInspeksiDetail' => $gudangInspeksiDetail]);
+    }
+
+    public function PUpdateInspeksi(Request $request)
+    {
+        if ($request->jumlah_data > 0) {
+            for ($i = 0; $i < $request->jumlah_data; $i++) {
+                gudangInspeksiStokOpnameDetail::createInspeksiProsesDetail($request->id, $request->roll[$i], $request->berat[$i], $request->panjang[$i], $request->lubang[$i], $request->plex[$i], $request->belang[$i], $request->tanah[$i], $request->sambung[$i], $request->jarum[$i], $request->ket[$i]);                       
+            }
+            return redirect('gudangInspeksi/proses');
+        } else {
+            return redirect('gudangInspeksi/proses');
+        }
+        
+    }
+
+    public function PUpdateDelete($detailId, $inspeksiId)
+    {
+        $inspeksiDetail = gudangInspeksiStokOpnameDetail::where('id', $detailId)->delete();
+        if ($inspeksiDetail) {
+            return redirect('gudangInspeksi/proses/update/' . $inspeksiId . '');
+        }
+    }
+
     public function PDelete(Request $request)
     {
         gudangInspeksiStokOpnameDetail::where('gudangInspeksiStokId', $request['inspeksiId'])->delete();        

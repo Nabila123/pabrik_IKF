@@ -76,7 +76,7 @@
                                         <td>{{ $inspeksi->user->nama }}</td>
                                         <td>
                                             <a href="{{ route('GInspeksi.proses.detail', $inspeksi->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            <a href="#" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                            <a href="{{ route('GInspeksi.proses.update', $inspeksi->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                             <button type="button" data-toggle="modal" inspeksiId='{{ $inspeksi->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $inspeksi->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                         </td>
                                     @endforeach

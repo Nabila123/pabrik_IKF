@@ -135,7 +135,11 @@ Route::get('/gudangInspeksi/Kembali/Detail/{id}', [App\Http\Controllers\GudangIn
 Route::get('/gudangInspeksi/proses', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiproses'])->name('GInspeksi.proses');
 Route::get('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PCreate'])->name('GInspeksi.proses.create');
 Route::post('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PStore'])->name('GInspeksi.proses.create');
-Route::get('/gudangInspeksi/proses/Detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PDetail'])->name('GInspeksi.proses.detail');
+Route::get('/gudangInspeksi/proses/detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PDetail'])->name('GInspeksi.proses.detail');
+Route::get('/gudangInspeksi/proses/update/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PUpdate'])->name('GInspeksi.proses.update');
+Route::post('/gudangInspeksi/proses/update/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PUpdateInspeksi'])->name('GInspeksi.proses.update');
+
+Route::get('/gudangInspeksi/proses/update/delete/{detailId}/{inspeksiId}', [App\Http\Controllers\GudangInspeksiController::class, 'PUpdateDelete'])->name('GInspeksi.proses.update.delete');
 Route::delete('/gudangInspeksi/proses/delete', [App\Http\Controllers\GudangInspeksiController::class, 'PDelete'])->name('GInspeksi.proses.delete');
 
 
