@@ -47,7 +47,7 @@ class GudangBahanBakuController extends Controller
 
     public function create()
     {
-        $purchases = AdminPurchase::all();
+        $purchases = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
         return view('bahanBaku.supply.create')->with(['purchases'=>$purchases]);
     }
 
@@ -390,10 +390,10 @@ class GudangBahanBakuController extends Controller
         if ($gudangRajutTerima == 1) {
             $detailGudangMasuk = GudangMasukDetail::where('gudangMasukId',$id)->get();
             foreach ($detailGudangMasuk as $key => $value) {
-                $getStokOpname = GudangStokOpname::where('id',$value->gudangStokId)->where('purchaseId',$value->purchaseId)->first();
+                $getStokOpname = GudangStokOpname::where('id',$value->gudangStokId)->first();
                 $qty = $getStokOpname->qty + $value->qty;
 
-                $update = GudangStokOpname::where('id',$value->gudangStokId)->where('purchaseId',$value->purchaseId)->update(['qty'=>$qty]);
+                $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]);
             }
             return redirect('bahan_baku/masuk');
         }

@@ -71,7 +71,6 @@ class GudangRajutController extends Controller
 
     public function Rstore(Request $request){
 
-        // dd($request);
         $stokOpnameId = GudangStokOpname::where('materialId', $request->material)->first();
         $request['gudangStokId'] = "$stokOpnameId->id";
         $request['gudangRequest'] = "Gudang Rajut";

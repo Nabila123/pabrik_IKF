@@ -186,8 +186,9 @@
                             dt += "<td>"+data[i].remark+"<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'> </td>";
                             dt += '</tr>';
                             nomor++;
+                            
+                            $('#materialPO tbody.data').append(dt);    
                         }
-                        $('#materialPO tbody.data').html(dt);    
                     }
                 }
             })

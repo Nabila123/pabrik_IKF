@@ -71,7 +71,9 @@
                                             <select class="form-control col-md-7 col-xs-12 purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" required>
                                                 <option> Pilih Satu </option>
                                                 @for ($i = 0; $i < count($purchaseId); $i++)
-                                                <option value="{{ $purchaseId[$i]['id'] }}">{{ $purchaseId[$i]['kode'] }}</option>
+                                                    @if ($purchaseId[$i]['terima'] != 0)
+                                                        <option value="{{ $purchaseId[$i]['id'] }}">{{ $purchaseId[$i]['kode'] }}</option>
+                                                    @endif
                                                 @endfor    
                                             </select>                                                                                  
                                         </div>
