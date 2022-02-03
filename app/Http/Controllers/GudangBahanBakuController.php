@@ -97,7 +97,7 @@ class GudangBahanBakuController extends Controller
 
                         $updateBahanBakuDetail = GudangBahanBakuDetail::where('gudangId',$find->id)->where('materialId',$request['materialId'][$i])->update($data);
 
-                        $dataStokOpname['qty'] = $stokOpname->qty + $request['qty_saat_ini'][$i];
+                        $dataStokOpname['qty'] = $stokOpname->qty + $request['netto'][$i];
 
                         $updateStokOpname = GudangStokOpname::where('purchaseId',$purchase->id)->where('materialId',$request['materialId'][$i])->update($dataStokOpname);
                     }else{
@@ -130,7 +130,7 @@ class GudangBahanBakuController extends Controller
                         $stokOpname->purchaseId = $purchase->id;
                         $stokOpname->materialId = $request['materialId'][$i];
                         $stokOpname->jenisId = $material->jenisId;
-                        $stokOpname->qty = $request['qty_saat_ini'][$i];
+                        $stokOpname->qty = $request['netto'][$i];
                         $stokOpname->userId = \Auth::user()->id;
 
                         $stokOpname->save();
@@ -165,7 +165,7 @@ class GudangBahanBakuController extends Controller
                     $stokOpname->purchaseId = $purchase->id;
                     $stokOpname->materialId = $request['materialId'][$i];
                     $stokOpname->jenisId = $material->jenisId;
-                    $stokOpname->qty = $request['qty_saat_ini'][$i];
+                    $stokOpname->qty = $request['netto'][$i];
                     $stokOpname->userId = \Auth::user()->id;
 
                     $stokOpname->save();
@@ -232,7 +232,7 @@ class GudangBahanBakuController extends Controller
             //get jenisId
             $material = MaterialModel::find($request['materialId'][$i]);
 
-            $dataStokOpname['qty'] = $request['qty_saat_ini'][$i];
+            $dataStokOpname['qty'] = $request['netto'][$i];
             $dataStokOpname['userId'] = \Auth::user()->id;
 
             $updateStokOpname = GudangStokOpname::where('purchaseId', $purchase->id)->where('materialId',$request['materialId'][$i])->update($dataStokOpname);
@@ -381,8 +381,8 @@ class GudangBahanBakuController extends Controller
 
     public function terimaMasukGudang($id){
 
-        $id = $id;  
-        $gudangRequest = 'Gudang Rajut';  
+        $findMasukGudang = GudangMasuk::find($id); 
+        $gudangRequest = $findMasukGudang->gudangRequest;  
         $statusDiterima = 1;  
 
         $gudangRajutTerima = GudangMasuk::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
