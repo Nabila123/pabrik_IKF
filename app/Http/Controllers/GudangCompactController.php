@@ -67,18 +67,24 @@ class GudangCompactController extends Controller
         $gCompactRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
         $gCompactRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
 
-        return view('gudangCompact.kembali.create', ['materials' => $materials, 'gCompactRequest' => $gCompactRequest, 'gCompactRequestDetail' => $gCompactRequestDetail]);
+        foreach ($gCompactRequestDetail as $detail) {
+            $purchaseId[] = $detail->purchaseId;
+        }
+
+        return view('gudangCompact.kembali.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gCompactRequest' => $gCompactRequest, 'gCompactRequestDetail' => $gCompactRequestDetail]);
     }
 
     public function Rstore(Request $request){
 
         // dd($request);
 
-        $stokOpnameId = GudangStokOpname::where('materialId', $request->material)->first();
-        $request['gudangStokId'] = "$stokOpnameId->id";
-        $request['gudangRequest'] = "Gudang Compact";
-
-        $pengembalian = GudangMasuk::createBarangKembali($request);        
+        $stokOpnameId = GudangStokOpname::CheckStokOpnameData($request);
+                
+        for ($i=0; $i < count($stokOpnameId); $i++) { 
+            $request['gudangStokId'] = "$stokOpnameId[$i]";
+            $request['gudangRequest'] = "Gudang Compact";
+            $pengembalian = GudangMasuk::createBarangKembali($request); 
+        }       
         if ($pengembalian) {
             $gudangMasukId = $pengembalian;
             $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        

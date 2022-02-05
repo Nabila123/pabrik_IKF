@@ -70,15 +70,22 @@ class GudangInspeksiController extends Controller
         $gInspeksiRequest = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->where('id', $id)->first();
         $gInspeksiRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
 
-        return view('gudangInspeksi.kembali.create', ['materials' => $materials, 'gInspeksiRequest' => $gInspeksiRequest, 'gInspeksiRequestDetail' => $gInspeksiRequestDetail]);
+        foreach ($gInspeksiRequestDetail as $detail) {
+            $purchaseId[] = $detail->purchaseId;
+        }
+
+        return view('gudangInspeksi.kembali.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gInspeksiRequest' => $gInspeksiRequest, 'gInspeksiRequestDetail' => $gInspeksiRequestDetail]);
     }
 
     public function Rstore(Request $request){
-        $stokOpnameId = GudangStokOpname::where('materialId', $request->material)->first();
-        $request['gudangStokId'] = "$stokOpnameId->id";
-        $request['gudangRequest'] = "Gudang Inspeksi";
-
-        $pengembalian = GudangMasuk::createBarangKembali($request);        
+        $stokOpnameId = GudangStokOpname::CheckStokOpnameData($request);
+                
+        for ($i=0; $i < count($stokOpnameId); $i++) { 
+            $request['gudangStokId'] = "$stokOpnameId[$i]";
+            $request['gudangRequest'] = "Gudang Inspeksi";
+            $pengembalian = GudangMasuk::createBarangKembali($request); 
+        }
+               
         if ($pengembalian) {
             $gudangMasukId = $pengembalian;
             $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        
@@ -129,6 +136,7 @@ class GudangInspeksiController extends Controller
 
     public function PStore(Request $request)
     {
+        
         $gudangInspeksi = gudangInspeksiStokOpname::createInspeksiProses($request->gudangStokId, $request->purchaseId, $request->materialId, $request->jenisId, date('Y-m-d H:i:s'), \Auth::user()->id);
 
         if ($gudangInspeksi) {
