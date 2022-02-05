@@ -111,15 +111,16 @@ class GudangInspeksiController extends Controller
         $purchaseInspeksi = [];
         $purchaseMaterial = [];
         $index = 0;
-        $gudangKeluar = GudangKeluar::select('id', 'materialId', 'jenisId')->where('gudangRequest','Gudang Inspeksi')->get();
+        $gudangKeluar = GudangKeluar::select('id', 'materialId', 'jenisId', 'statusDiterima')->where('gudangRequest','Gudang Inspeksi')->get();
         foreach ($gudangKeluar as $value) {
             $gudangKeluarDetail = GudangKeluarDetail::select('purchaseId','gudangStokId')->where('gudangKeluarId', $value->id)->first();
             
             $purchaseInspeksi[$index] = [
                 "id" => $gudangKeluarDetail->purchaseId,
-                "kode" => $gudangKeluarDetail->purchase->kode               
+                "kode" => $gudangKeluarDetail->purchase->kode,              
+                "terima" => $value->statusDiterima              
             ];
-
+            
             $purchaseMaterial = [
                 "gudangStokId" => $gudangKeluarDetail->gudangStokId,
                 "materialId" => $value->materialId,
@@ -129,6 +130,7 @@ class GudangInspeksiController extends Controller
             $index++;
         }       
 
+        
         return view('gudangInspeksi.proses.create', ['purchaseId' => $purchaseInspeksi, 'gudangKeluar' => $purchaseMaterial]);
     }
 
