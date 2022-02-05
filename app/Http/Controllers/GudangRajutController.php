@@ -62,21 +62,27 @@ class GudangRajutController extends Controller
     }
 
     public function Rcreate($id){
+        $purchaseId = [];
         $materials = MaterialModel::get();
         $gRajutRequest = GudangKeluar::where('gudangRequest', 'Gudang Rajut')->where('id', $id)->first();
         $gRajutRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
 
-        return view('gudangRajut.kembali.create', ['materials' => $materials, 'gRajutRequest' => $gRajutRequest, 'gRajutRequestDetail' => $gRajutRequestDetail]);
+        foreach ($gRajutRequestDetail as $detail) {
+           $purchaseId[] = $detail->purchaseId;
+        }
+
+        return view('gudangRajut.kembali.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gRajutRequest' => $gRajutRequest, 'gRajutRequestDetail' => $gRajutRequestDetail]);
     }
 
     public function Rstore(Request $request){
-
-        // dd($request);
-        $stokOpnameId = GudangStokOpname::where('materialId', $request->material)->first();
-        $request['gudangStokId'] = "$stokOpnameId->id";
-        $request['gudangRequest'] = "Gudang Rajut";
-
-        $pengembalian = GudangMasuk::createBarangKembali($request);        
+        
+        $stokOpnameId = GudangStokOpname::CheckStokOpnameData($request);
+                
+        for ($i=0; $i < count($stokOpnameId); $i++) { 
+            $request['gudangStokId'] = "$stokOpnameId[$i]";
+            $request['gudangRequest'] = "Gudang Rajut";
+            $pengembalian = GudangMasuk::createBarangKembali($request); 
+        }       
         if ($pengembalian) {
             $gudangMasukId = $pengembalian;
             $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        

@@ -59,7 +59,10 @@
                         <div class="card-body">
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" name="id" id="id" value="{{ $gCompactRequest->id }}">           
+                                <input type="hidden" name="id" id="id" value="{{ $gCompactRequest->id }}">  
+                                @for ($i = 0; $i < count($purchaseId); $i++)
+                                    <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $purchaseId[$i] }}"> 
+                                @endfor         
                                 
                                 <div class="row mb-5">
                                     <div class="col-6">
