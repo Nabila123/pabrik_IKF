@@ -33,6 +33,7 @@ class gudangInspeksiStokOpname extends Model
         $addInspeksi->purchaseId = $purchaseId;
         $addInspeksi->materialId = $materialId;
         $addInspeksi->jenisId = $jenisId;
+        $addInspeksi->qty = 0;
         $addInspeksi->tanggal = $tanggal;
 
         $addInspeksi->userId = $userId;
