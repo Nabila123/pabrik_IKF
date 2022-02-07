@@ -36,9 +36,18 @@ class GudangInspeksiController extends Controller
     public function gudangInspeksiRequest(){
         $gInspeksiRequest = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->get();
         foreach ($gInspeksiRequest as $request) {
-            $cekPengembalian = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->where('gudangKeluarId', $request->id)->first();
-            if ($cekPengembalian != null) {
-                $request->cekPengembalian = 1;
+            $cekDetail = GudangKeluarDetail::select('purchaseId')->where('gudangKeluarId', $request->id)->get();
+
+            foreach ($cekDetail as $detail) {
+                $gudangInspeksi = gudangInspeksiStokOpname::where('purchaseId', $detail->purchaseId)->first();
+                $cekPengembalian = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->where('gudangKeluarId', $request->id)->first();
+                
+                if ($gudangInspeksi != null) {
+                    $request->cekInspeksi = 1;
+                }
+                if ($cekPengembalian != null) {
+                    $request->cekPengembalian = 1;
+                }
             }
         }
 

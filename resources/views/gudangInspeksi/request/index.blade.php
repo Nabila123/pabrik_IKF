@@ -73,10 +73,12 @@
                                                 @if ($detail->statusDiterima == 0)
                                                     <a href="{{ route('GInspeksi.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                 @else
-                                                    @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian))
+                                                    @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian) && isset($detail->cekInspeksi))
                                                         <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
                                                         <a href="{{ route('GInspeksi.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
                                                         <span style="color: green; font-size: 10px">Kembalikan Barang</span>
+                                                    @elseif (!isset($detail->cekInspeksi))
+                                                        <span style="color: green; font-size: 15px">Silahkan Lakukan Proses Inspeksi</span>
                                                     @else
                                                         <span style="color: green; font-size: 15px">Barang Sudah Dikembalikan</span>
                                                     @endif
