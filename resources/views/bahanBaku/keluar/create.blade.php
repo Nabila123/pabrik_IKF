@@ -93,6 +93,7 @@
                                                         <div class="form-group">
                                                             <label>Jumlah</label>
                                                             <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
+                                                            <input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/> 
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="gStokId" id="gStokId" class="gStokId">
@@ -184,6 +185,7 @@
                 success: function(response){
                     var data = JSON.parse(response);
                     $('#qty').val(data.qty);    
+                    $('#qtyHidden').val(data.qty);    
                     $('#gStokId').val(data.id);    
                 }
             })
@@ -201,28 +203,32 @@
                 var gStokId         = $('#gStokId').val();
 
                 var jumlah_data = $('#jumlah_data').val();
-
-                if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){
-                    jumlah_data++;
-                    $('#jumlah_data').val(jumlah_data);
-
-                    var table  = "<tr  class='data_"+jumlah_data+"'>";
-                        table += "<td>"+jumlah_data+"</td>";
-                        table += "<input type='hidden' name='gStokIdArr[]' value='"+gStokId
-                        +"' id='gStokId_"+jumlah_data+"'/>";
-                        table += "<td>"+nama_material+"<input type='hidden' name='materialIdArr[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
-                        table += "<td>"+kodePurchase+"<input type='hidden' name='purchaseIdArr[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
-                        table += "<td>"+qty+"<input type='hidden' name='qtyArr[]' value='"+qty+"' id='jumlah_"+jumlah_data+"'></td>";
-                        table += "<td>";
-                        table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
-                        table += "</td>";
-                        table += "</tr>";
-
-                    $('#kodePurchase option[value=""]').attr('selected','selected');
-                    $('#kodePurchase').val('');
-                    $('#qty').val('');
+                var qtyHidden = $('#qtyHidden').val();
+                if (qty > qtyHidden){
+                    alert("Jumlah tidak dapat melebihi stok di Gudang saat ini!\nStok di Gudang : "+qtyHidden);
                 }else{
-                    alert("Material Dan Jumlah Pemakaian Tidak Boleh Kosong");
+                    if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){
+                        jumlah_data++;
+                        $('#jumlah_data').val(jumlah_data);
+
+                        var table  = "<tr  class='data_"+jumlah_data+"'>";
+                            table += "<td>"+jumlah_data+"</td>";
+                            table += "<input type='hidden' name='gStokIdArr[]' value='"+gStokId
+                            +"' id='gStokId_"+jumlah_data+"'/>";
+                            table += "<td>"+nama_material+"<input type='hidden' name='materialIdArr[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
+                            table += "<td>"+kodePurchase+"<input type='hidden' name='purchaseIdArr[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
+                            table += "<td>"+qty+"<input type='hidden' name='qtyArr[]' value='"+qty+"' id='jumlah_"+jumlah_data+"'></td>";
+                            table += "<td>";
+                            table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
+                            table += "</td>";
+                            table += "</tr>";
+
+                        $('#kodePurchase option[value=""]').attr('selected','selected');
+                        $('#kodePurchase').val('');
+                        $('#qty').val('');
+                    }else{
+                        alert("Material Dan Jumlah Pemakaian Tidak Boleh Kosong");
+                    }
                 }
 
                 $('#requestKeluar tbody.data').append(table);
