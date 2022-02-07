@@ -127,7 +127,7 @@ class AdminPoController extends Controller
 
      public function getSuplier($kode)
     {
-        $getPurchase = AdminPurchase::where('kode', $kode)->first();
+        $getPurchase = AdminPurchase::where('kode', $kode)->where('jenisPurchase', 'Purchase Order')->first();
         return json_encode($getPurchase->suplierName);
     }
 

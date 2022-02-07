@@ -75,9 +75,6 @@ class GudangCompactController extends Controller
     }
 
     public function Rstore(Request $request){
-
-        // dd($request);
-
         $stokOpnameId = GudangStokOpname::CheckStokOpnameData($request);
                 
         for ($i=0; $i < count($stokOpnameId); $i++) { 

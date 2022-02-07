@@ -51,14 +51,11 @@ class AdminPurchase extends Model
 
     public static function getPurchaseWithMaterial($request)
     {
-
-        
-        $data = AdminPurchase::join('tr_gudang_bahan_baku', 'tr_gudang_bahan_baku.kodePurchase', '=', 'tr_purchase.kode')
-                            ->join('tr_gudang_bahan_baku_detail', 'tr_gudang_bahan_baku_detail.gudangId', '=', 'tr_gudang_bahan_baku.id')
-                            ->join('mst_material', 'mst_material.id', '=', 'tr_gudang_bahan_baku_detail.materialId')
+        $data = AdminPurchase::join('tr_purchase_detail', 'tr_purchase_detail.purchaseId', '=', 'tr_purchase.id')
+                            ->join('mst_material', 'mst_material.id', '=', 'tr_purchase_detail.materialId')
                             ->join('mst_jenis_barang', 'mst_jenis_barang.id', '=', 'mst_material.jenisId')
-                            ->where(['tr_purchase.id' => $request->purchaseId, 'tr_gudang_bahan_baku_detail.materialId' => $request->materialId, 'mst_material.jenisId' => $request->jenisId])
-                            ->select('tr_purchase.suplierName', 'mst_material.nama', 'tr_gudang_bahan_baku_detail.diameter')
+                            ->where(['tr_purchase.id' => $request->purchaseId, 'mst_material.id' => $request->materialId, 'mst_material.jenisId' => $request->jenisId])
+                            ->select('tr_purchase.suplierName', 'mst_material.nama')
                             ->get();
         return $data;
     }

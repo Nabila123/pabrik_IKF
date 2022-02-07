@@ -68,7 +68,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nama Barang</label>                                            
-                                            <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;" required>
+                                            <select class="form-control col-md-7 col-xs-12 material" id="material" name="material" style="width: 100%; height: 38px;" readonly>
                                                 @foreach($materials as $material)
                                                     @if ($material->id == 2)
                                                         <option value="{{$material->id}}">{{$material->nama}}</option>
@@ -81,7 +81,7 @@
                                         <label>Satuan</label>
                                         <div class="input-group">                                            
                                             <input type="hidden" id="jenisId" name="jenisId" class="form-control jenisId" required>
-                                            <input type="text" id="satuan" name="satuan" class="form-control satuan" required>
+                                            <input type="text" id="satuan" name="satuan" class="form-control satuan disabled" readonly>
                                         </div>
                                     </div>                                                                  
                                 </div>

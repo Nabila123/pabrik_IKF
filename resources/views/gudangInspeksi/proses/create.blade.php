@@ -100,7 +100,7 @@
                                     <div class="col-4">
                                         <label>Diameter</label>
                                         <div class="input-group">                                            
-                                            <input type="text" id="diameter" name="diameter" class="form-control diameter disabled" readonly>
+                                            <input type="text" id="diameter" name="diameter" class="form-control diameter" required>
                                         </div>
                                     </div>
                                 </div>
@@ -255,7 +255,6 @@
                     var data = JSON.parse(response)
                     $('.namaSuplier').val(data[0].suplierName);
                     $('.jenisKain').val(data[0].nama);
-                    $('.diameter').val(data[0].diameter);
                     console.log(data[0]);
                 }
             })

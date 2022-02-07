@@ -55,7 +55,7 @@ class GudangBahanBakuController extends Controller
     {
         $jumlahData = $request['jumlah_data'];
 
-        $purchase = AdminPurchase::where('kode',$request['kodePurchase'])->first();
+        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode',$request['kodePurchase'])->first();
 
         $barangDatang = new BarangDatang;
         $barangDatang->purchaseId = $purchase->id;
@@ -211,7 +211,7 @@ class GudangBahanBakuController extends Controller
         $updateBahanBaku = GudangBahanBaku::where('id',$id)->update($data);
 
         //get purchaseId
-        $purchase = AdminPurchase::where('kode',$request['kodePurchase'])->first();
+        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode',$request['kodePurchase'])->first();
 
         for ($i=0; $i < $request['jumlah_data']; $i++) { 
             $dataDetail['gudangId'] = $id;
@@ -245,7 +245,7 @@ class GudangBahanBakuController extends Controller
     public function delete(Request $request)
     {
         $kodePurchase = GudangBahanBaku::find($request['gudangId']);
-        $purchase = AdminPurchase::where('kode',$kodePurchase->kodePurchase)->first();
+        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode',$kodePurchase->kodePurchase)->first();
         $delStokOpname = GudangStokOpname::where('purchaseId',$purchase->id)->delete();
 
         $gudangDetail = GudangBahanBakuDetail::where('gudangId', $request['gudangId'])->delete();
