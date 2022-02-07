@@ -11,6 +11,7 @@ use App\Models\GudangMasukDetail;
 use App\Models\GudangKeluar;
 use App\Models\GudangKeluarDetail;
 use App\Models\GudangStokOpname;
+use App\Models\GudangInspeksiStokOpname;
 use App\Models\MaterialModel;
 use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
@@ -385,16 +386,23 @@ class GudangBahanBakuController extends Controller
         $gudangRequest = $findMasukGudang->gudangRequest;  
         $statusDiterima = 1;  
 
-        $gudangRajutTerima = GudangMasuk::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
+        $gudangTerima = GudangMasuk::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
             
-        if ($gudangRajutTerima == 1) {
+        if ($gudangTerima == 1) {
             $detailGudangMasuk = GudangMasukDetail::where('gudangMasukId',$id)->get();
             foreach ($detailGudangMasuk as $key => $value) {
-                $getStokOpname = GudangStokOpname::where('id',$value->gudangStokId)->first();
-                $qty = $getStokOpname->qty + $value->qty;
+                if($gudangRequest == 'Gudang Inspeksi'){
+                    $getInspeksiStok = GudangInspeksiStokOpname::where('gudangStokId',$value->gudangStokId)->where('purchaseId',$value->purchaseId)->where('materialId',$findMasukGudang->materialId)->first();
+                    $qty = $getInspeksiStok->qty + $value->qty;
+                    $updateInspeksi = GudangInspeksiStokOpname::where('gudangStokId',$value->gudangStokId)->where('purchaseId',$value->purchaseId)->where('materialId',$findMasukGudang->materialId)->update(['qty'=>$qty]);
+                }else{
+                    $getStokOpname = GudangStokOpname::where('id',$value->gudangStokId)->first();
+                    $qty = $getStokOpname->qty + $value->qty;
 
-                $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]);
+                    $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]); 
+                }
             }
+                
             return redirect('bahan_baku/masuk');
         }
     }
