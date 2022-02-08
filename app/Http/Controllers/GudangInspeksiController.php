@@ -24,11 +24,23 @@ class GudangInspeksiController extends Controller
     public function index() {
         $gudangKeluar = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->get();
         $gudangMasuk = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->get();
+        $data = gudangInspeksiStokOpname::all();
+        $materials = MaterialModel::where('id', 3)->get();
+
+        $dataStok=[];
+        foreach ($materials as $key => $material) {
+            $dataStok[$material->id]['id'] = $material->id;
+            $dataStok[$material->id]['nama'] = $material->nama;
+            $dataStok[$material->id]['qty'] = 0;
+        }
+        foreach ($data as $key => $value) {
+            $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $value->qty;
+        }
 
         $gudangKeluar = count($gudangKeluar);
         $gudangMasuk = count($gudangMasuk);
 
-        return view('gudangInspeksi.index', ['keluar' => $gudangKeluar, 'masuk' => $gudangMasuk]);
+        return view('gudangInspeksi.index', ['dataStok' => $dataStok, 'keluar' => $gudangKeluar, 'masuk' => $gudangMasuk]);
     }
 
 

@@ -23,7 +23,19 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-
+                @foreach($dataStok as $stok)
+                    <div class="col-12 col-sm-12 col-md-4">
+                        <div class="info-box mb-4">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">{{$stok['nama']}}</span>
+                                <span class="info-box-number"> {{$stok['qty']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="row">
                 <div class="col-12 col-sm-12 col-md-6">
                     <div class="info-box mb-4">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
