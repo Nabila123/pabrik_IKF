@@ -68,6 +68,11 @@
                                         <th style="width: 30%;">Deskripsi</th>
                                         <th style="width: 5%;">Qty</th>
                                         <th style="width: 5%;">Satuan</th>
+                                        @if (isset($datang['datang']))
+                                            <th style="width: 5%;">Brutto</th>
+                                            <th style="width: 5%;">Netto</th>
+                                            <th style="width: 5%;">Selisih </th>
+                                        @endif
                                         <th style="width: 5%;">Harga</th>
                                         <th style="width: 5%;">Total</th>
                                         <th style="width: 25%;">Keterangan</th>
@@ -82,6 +87,15 @@
                                             <td class="text-left">{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->qty }}</td>
                                             <td>{{ $detail->unit }}</td>
+                                            @if (isset($datang['datang']))
+                                                @for ($i = 0; $i < count($datang)-1; $i++)
+                                                   @if ($datang[$i]['materialId'] == $detail->materialId)
+                                                        <td>{{ $datang[$i]['brutto'] }}</td>
+                                                        <td>{{ $datang[$i]['netto'] }}</td>
+                                                        <td>{{ $datang[$i]['tarra'] }}</td>
+                                                   @endif
+                                                @endfor
+                                            @endif
                                             <td>{{ $detail->unitPrice }}</td>
                                             <td>{{ $detail->amount }}</td>
                                             <td class="text-left">{{ $detail->remark }}</td>

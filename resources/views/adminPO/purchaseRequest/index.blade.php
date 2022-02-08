@@ -124,9 +124,9 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($request->statusDatang != 0)
+                                                @if ($request->barangDatang == true)
                                                     Barang Datang <br>
-                                                    <span style="color: green; font-size: 10px"> At {{ date('d F Y', strtotime($request->updated_at)) }} </span>
+                                                    <span style="color: green; font-size: 10px"> At {{ date('d F Y', strtotime($request->barangDatangAt)) }} </span>
                                                 @else
                                                     <span style="color: rgb(253, 5, 5); font-size: 12px">Barang Belum Datang</span>
                                                 @endif
