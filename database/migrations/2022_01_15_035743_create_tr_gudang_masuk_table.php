@@ -15,7 +15,6 @@ class CreateTrGudangMasukTable extends Migration
     {
         Schema::create('tr_gudang_masuk', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('gudangStokId');
             $table->unsignedBigInteger('gudangKeluarId');
             $table->unsignedBigInteger('materialId');
             $table->unsignedBigInteger('jenisId');
@@ -26,12 +25,11 @@ class CreateTrGudangMasukTable extends Migration
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('gudangStokId')->references('id')->on('tr_gudang_stok_opname');
             $table->foreign('gudangKeluarId')->references('id')->on('tr_gudang_keluar');
             $table->foreign('materialId')->references('id')->on('mst_material');
             $table->foreign('jenisId')->references('id')->on('mst_jenis_barang');
             $table->foreign('userId')->references('id')->on('users');
-            $table->unique(['gudangKeluarId', 'gudangStokId','materialId', 'jenisId','userId'], 'my_unique_ref');
+            $table->unique(['gudangKeluarId', 'materialId', 'jenisId','userId'], 'my_unique_ref');
         });
     }
 

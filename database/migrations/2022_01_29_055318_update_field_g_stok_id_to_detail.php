@@ -12,21 +12,13 @@ class UpdateFieldGStokIdToDetail extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::table('tr_gudang_keluar', function (Blueprint $table) {
-            $table->dropForeign(['gStokId']);
-        });
-
+    {        
         Schema::table('tr_gudang_keluar_detail', function (Blueprint $table) {
             $table->unsignedBigInteger('gudangStokId')->after('gudangKeluarId');
 
             $table->foreign('gudangStokId')->references('id')->on('tr_gudang_stok_opname');
             $table->index(['gudangStokId']);
 
-        });
-
-        Schema::table('tr_gudang_masuk', function (Blueprint $table) {
-            $table->dropForeign(['gudangStokId']);
         });
 
         Schema::table('tr_gudang_masuk_detail', function (Blueprint $table) {

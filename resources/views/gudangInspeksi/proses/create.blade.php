@@ -253,9 +253,9 @@
                 },
                 success: function(response){
                     var data = JSON.parse(response)
-                    $('.namaSuplier').val(data[0].suplierName);
-                    $('.jenisKain').val(data[0].nama);
-                    console.log(data[0]);
+                    $('.namaSuplier').val(data.suplierName);
+                    $('.jenisKain').val(data.nama);
+                    console.log(data);
                 }
             })
         });

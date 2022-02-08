@@ -51,12 +51,14 @@ class AdminPurchase extends Model
 
     public static function getPurchaseWithMaterial($request)
     {
-        $data = AdminPurchase::join('tr_purchase_detail', 'tr_purchase_detail.purchaseId', '=', 'tr_purchase.id')
-                            ->join('mst_material', 'mst_material.id', '=', 'tr_purchase_detail.materialId')
-                            ->join('mst_jenis_barang', 'mst_jenis_barang.id', '=', 'mst_material.jenisId')
-                            ->where(['tr_purchase.id' => $request->purchaseId, 'mst_material.id' => $request->materialId, 'mst_material.jenisId' => $request->jenisId])
-                            ->select('tr_purchase.suplierName', 'mst_material.nama')
-                            ->get();
+        $dataPurchase = AdminPurchase::select('suplierName')->where('id', $request->purchaseId)->first();
+        $dataMaterial = MaterialModel::select('nama')->where('id', $request->materialId)->first();
+        
+        $data = [
+            'suplierName' => $dataPurchase['suplierName'],
+            'nama' => $dataMaterial['nama'],
+        ];
+        
         return $data;
     }
 
