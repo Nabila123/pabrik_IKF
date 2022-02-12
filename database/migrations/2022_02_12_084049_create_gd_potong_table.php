@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrGudangPotongTable extends Migration
+class CreateGdPotongTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTrGudangPotongTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_gudang_potong', function (Blueprint $table) {
+        Schema::create('gd_potong', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('purchaseId');
             $table->unsignedBigInteger('materialId');
@@ -45,11 +45,10 @@ class CreateTrGudangPotongTable extends Migration
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('purchaseId')->references('id')->on('tr_purchase');
+            $table->foreign('purchaseId')->references('id')->on('purchase');
             $table->foreign('materialId')->references('id')->on('mst_material');
-            $table->foreign('jenisId')->references('id')->on('mst_jenis_barang');
+            $table->foreign('jenisId')->references('id')->on('mst_jenisBarang');
             $table->foreign('userId')->references('id')->on('users');
-            $table->unique(['purchaseId','materialId', 'jenisId','userId'], 'my_unique_ref');
         });
     }
 
@@ -60,6 +59,6 @@ class CreateTrGudangPotongTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_gudang_potong');
+        Schema::dropIfExists('gd_potong');
     }
 }

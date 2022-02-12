@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMstMaterialTable extends Migration
+class CreateGdCuciKeluarTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,24 @@ class CreateMstMaterialTable extends Migration
      */
     public function up()
     {
-        Schema::create('mst_material', function (Blueprint $table) {
+        Schema::create('gd_cuciKeluar', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('gudangId');
+            $table->unsignedBigInteger('purchaseId');
+            $table->unsignedBigInteger('materialId');
             $table->unsignedBigInteger('jenisId');
-            $table->string('nama')->nullable();
-            $table->string('satuan')->nullable();
-            $table->string('jenis')->nullable();
-            $table->enum('keterangan',['Bahan Baku','Bahan Bantu / Merchandise']);
+            $table->date('tanggal')->nullable();
+            $table->boolean('statusDiterima')->default(0);
+
+            
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
+            $table->foreign('gudangId')->references('id')->on('gd_bahanBaku');
+            $table->foreign('purchaseId')->references('id')->on('purchase');
+            $table->foreign('materialId')->references('id')->on('mst_material');
             $table->foreign('jenisId')->references('id')->on('mst_jenisBarang');
             $table->foreign('userId')->references('id')->on('users');
-            $table->index(['jenisId','userId']);
         });
     }
 
@@ -36,6 +41,6 @@ class CreateMstMaterialTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mst_material');
+        Schema::dropIfExists('gd_cuciKeluar');
     }
 }

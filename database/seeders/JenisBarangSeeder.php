@@ -22,6 +22,6 @@ class JenisBarangSeeder extends Seeder
             ['id' => 4, 'nama' => 'Baju', 'created_at' => date('Y-m-d H:i:s')],
         ];
 
-        DB::table('mst_jenis_barang')->insert($rol);
+        DB::table('mst_jenisBarang')->insert($rol);
     }
 }

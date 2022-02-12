@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrPurchaseTable extends Migration
+class CreatePurchaseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTrPurchaseTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_purchase', function (Blueprint $table) {
+        Schema::create('purchase', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kode')->nullable();
             $table->enum('jenisPurchase',['Purchase Order','Purchase Request'])->nullable();
@@ -48,6 +48,6 @@ class CreateTrPurchaseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_purchase');
+        Schema::dropIfExists('purchase');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrGudangStokOpnameTable extends Migration
+class CreateGdCompactMasukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,26 @@ class CreateTrGudangStokOpnameTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_gudang_stok_opname', function (Blueprint $table) {
+        Schema::create('gd_compactMasuk', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('gudangId');
+            $table->unsignedBigInteger('gdCompactKId');
             $table->unsignedBigInteger('purchaseId');
             $table->unsignedBigInteger('materialId');
             $table->unsignedBigInteger('jenisId');
+            $table->date('tanggal')->nullable();
+            $table->boolean('statusDiterima')->default(0);
+
+            
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('purchaseId')->references('id')->on('tr_purchase');
+            $table->foreign('gudangId')->references('id')->on('gd_bahanBaku');
+            $table->foreign('gdCompactKId')->references('id')->on('gd_compactKeluar');
+            $table->foreign('purchaseId')->references('id')->on('purchase');
             $table->foreign('materialId')->references('id')->on('mst_material');
-            $table->foreign('jenisId')->references('id')->on('mst_jenis_barang');
+            $table->foreign('jenisId')->references('id')->on('mst_jenisBarang');
             $table->foreign('userId')->references('id')->on('users');
-            $table->index(['purchaseId','materialId', 'jenisId','userId']);
         });
     }
 
@@ -36,6 +43,6 @@ class CreateTrGudangStokOpnameTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_gudang_stok_opname');
+        Schema::dropIfExists('gd_compactMasuk');
     }
 }

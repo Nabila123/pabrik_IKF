@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrGudangBahanBakuDetailTable extends Migration
+class CreateGdBahanBakuDetailMaterialTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateTrGudangBahanBakuDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_gudang_bahan_baku_detail', function (Blueprint $table) {
+        Schema::create('gd_bahanBaku_detail_material', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('gudangId');
-            $table->unsignedBigInteger('materialId');
-            $table->integer('qty')->nullable();
+            $table->unsignedBigInteger('gudangDetailId');
+            $table->integer('diameter')->nullable();
+            $table->integer('gramasi')->nullable();
             $table->integer('brutto')->nullable();
             $table->integer('netto')->nullable();
             $table->integer('tarra')->nullable();
@@ -25,11 +25,13 @@ class CreateTrGudangBahanBakuDetailTable extends Migration
             $table->string('unitPrice')->nullable();
             $table->string('amount')->nullable();
             $table->string('remark')->nullable();
+
+            $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('gudangId')->references('id')->on('tr_gudang_bahan_baku');
-            $table->foreign('materialId')->references('id')->on('mst_material');
-            $table->index(['gudangId', 'materialId']);
+            $table->foreign('gudangDetailId')->references('id')->on('gd_bahanBaku_detail');
+            $table->foreign('userId')->references('id')->on('users');
+            $table->index(['gudangDetailId', 'userId']);
         });
     }
 
@@ -40,6 +42,6 @@ class CreateTrGudangBahanBakuDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_gudang_bahan_baku_detail');
+        Schema::dropIfExists('gd_bahanBaku_detail_material');
     }
 }

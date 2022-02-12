@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrPurchaseDetailTable extends Migration
+class CreateGudangBahanBakuDetailTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,21 @@ class CreateTrPurchaseDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_purchase_detail', function (Blueprint $table) {
+        Schema::create('gd_bahanBaku_detail', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('gudangId');
             $table->unsignedBigInteger('purchaseId');
             $table->unsignedBigInteger('materialId');
             $table->integer('qty')->nullable();
-            $table->string('unit')->nullable();
-            $table->string('unitPrice')->nullable();
-            $table->string('amount')->nullable();
-            $table->string('remark')->nullable();
+            
+            $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('purchaseId')->references('id')->on('tr_purchase');
+            $table->foreign('gudangId')->references('id')->on('gd_bahanBaku');
+            $table->foreign('purchaseId')->references('id')->on('purchase');
             $table->foreign('materialId')->references('id')->on('mst_material');
-            $table->index(['purchaseId', 'materialId']);
+            $table->foreign('userId')->references('id')->on('users');
+            $table->index(['gudangId', 'purchaseId', 'materialId', 'userId']);
         });
     }
 
@@ -37,6 +38,6 @@ class CreateTrPurchaseDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_purchase_detail');
+        Schema::dropIfExists('gd_bahanBaku_detail');
     }
 }

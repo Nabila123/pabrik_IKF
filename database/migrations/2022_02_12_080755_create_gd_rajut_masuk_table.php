@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrGudangMasukTable extends Migration
+class CreateGdRajutMasukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,26 @@ class CreateTrGudangMasukTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_gudang_masuk', function (Blueprint $table) {
+        Schema::create('gd_rajutMasuk', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('gudangKeluarId');
+            $table->unsignedBigInteger('gudangId');
+            $table->unsignedBigInteger('gdRajutKId');
+            $table->unsignedBigInteger('purchaseId');
             $table->unsignedBigInteger('materialId');
             $table->unsignedBigInteger('jenisId');
-
-            $table->string('gudangRequest')->nullable();
             $table->date('tanggal')->nullable();
+            $table->boolean('statusDiterima')->default(0);
 
+            
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('gudangKeluarId')->references('id')->on('tr_gudang_keluar');
+            $table->foreign('gudangId')->references('id')->on('gd_bahanBaku');
+            $table->foreign('gdRajutKId')->references('id')->on('gd_rajutKeluar');
+            $table->foreign('purchaseId')->references('id')->on('purchase');
             $table->foreign('materialId')->references('id')->on('mst_material');
-            $table->foreign('jenisId')->references('id')->on('mst_jenis_barang');
+            $table->foreign('jenisId')->references('id')->on('mst_jenisBarang');
             $table->foreign('userId')->references('id')->on('users');
-            $table->unique(['gudangKeluarId', 'materialId', 'jenisId','userId'], 'my_unique_ref');
         });
     }
 
@@ -40,6 +43,6 @@ class CreateTrGudangMasukTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_gudang_masuk');
+        Schema::dropIfExists('gd_rajutMasuk');
     }
 }

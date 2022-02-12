@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGudangInspeksiStokOpnameDetailTable extends Migration
+class CreateGdInspeksiStokOpnameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,14 @@ class CreateGudangInspeksiStokOpnameDetailTable extends Migration
      */
     public function up()
     {
-        Schema::table('tr_inspeksi_stok_opname', function (Blueprint $table) {
-            $table->dropColumn('berat');
-            $table->dropColumn('yard');
-            $table->dropColumn('lubang');
-            $table->dropColumn('plek');
-            $table->dropColumn('belang');
-            $table->dropColumn('tanah');
-            $table->dropColumn('bs');
-            $table->dropColumn('jarum');
-            $table->dropColumn('keterangan');
-
-        });
-
-        Schema::create('tr_inspeksi_stok_opname_detail', function (Blueprint $table) {
+        Schema::create('gd_inspeksi_stok_opname', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('gudangInspeksiStokId');
+            $table->unsignedBigInteger('gdDetailMaterialId');
+            $table->unsignedBigInteger('purchaseId');
+            $table->unsignedBigInteger('materialId');
+            $table->unsignedBigInteger('jenisId');
+            $table->date('tanggal')->nullable();
 
-            $table->string('roll')->nullable();
             $table->string('berat')->nullable();
             $table->string('yard')->nullable();
             $table->boolean('lubang')->default(0)->nullable();
@@ -41,10 +31,14 @@ class CreateGudangInspeksiStokOpnameDetailTable extends Migration
             $table->boolean('jarum')->default(0)->nullable();
             $table->text('keterangan')->nullable();
 
+            $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('gudangInspeksiStokId')->references('id')->on('tr_inspeksi_stok_opname');
-            $table->index(['gudangInspeksiStokId']);
+            $table->foreign('gdDetailMaterialId')->references('id')->on('gd_bahanBaku_detail_material');
+            $table->foreign('purchaseId')->references('id')->on('purchase');
+            $table->foreign('materialId')->references('id')->on('mst_material');
+            $table->foreign('jenisId')->references('id')->on('mst_jenisBarang');
+            $table->foreign('userId')->references('id')->on('users');
         });
     }
 
@@ -55,6 +49,6 @@ class CreateGudangInspeksiStokOpnameDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gudang_inspeksi_stok_opname_detail');
+        Schema::dropIfExists('gd_inspeksi_stok_opname');
     }
 }

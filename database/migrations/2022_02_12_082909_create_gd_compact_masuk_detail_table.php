@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrGudangBahanBakuTable extends Migration
+class CreateGdCompactMasukDetailTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,19 @@ class CreateTrGudangBahanBakuTable extends Migration
      */
     public function up()
     {
-        Schema::create('tr_gudang_bahan_baku', function (Blueprint $table) {
+        Schema::create('gd_compactMasuk_detail', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kodePurchase')->nullable();
-            $table->string('namaSuplier')->nullable();
-            $table->string('diameter')->nullable();
-            $table->string('gramasi')->nullable();
-            $table->string('total')->nullable();
+            $table->unsignedBigInteger('gdCompactMId');
+            $table->integer('gramasi')->nullable();
+            $table->integer('diameter')->nullable();
+            $table->integer('berat')->nullable();
 
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
+            $table->foreign('gdCompactMId')->references('id')->on('gd_compactMasuk');
             $table->foreign('userId')->references('id')->on('users');
-            $table->index(['userId']);
+            $table->index(['gdCompactMId', 'userId']);
         });
     }
 
@@ -36,6 +36,6 @@ class CreateTrGudangBahanBakuTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_gudang_bahan_baku');
+        Schema::dropIfExists('gd_compactMasuk_detail');
     }
 }
