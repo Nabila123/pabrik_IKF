@@ -66,13 +66,7 @@
                                     <input type="hidden" name="total" id="total" value="{{ $purchase->total }}">       
                                 @endif
                                 <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode disable" value="{{ $purchaseKode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
+                                    <div class="col-12 mb-3">
                                         <label>Tanggal Pengajuan</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -80,7 +74,7 @@
                                             </div>
                                             <input type="text" id="pengajuanDate" name="pengajuanDate" class="form-control disable pengajuanDate" value="{{ date('d F Y') }}" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask readonly>
                                         </div>
-                                    </div>                                    
+                                    </div> 
                                     <div class="col-6">
                                         <label>Tanggal Pengiriman <sup>(Optional)</sup></label> 
                                         <div class="input-group date" id="DatePengiriman">
@@ -151,18 +145,20 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-6">
-                                                            <div class="form-group">
-                                                                <label>Harga</label>
-                                                                <input class="form-control harga" id="harga" name="harga" type="number" placeholder="Harga">                                            
+                                                        {{--  
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label>Harga</label>
+                                                                    <input class="form-control harga" id="harga" name="harga" type="number" placeholder="Harga">                                            
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="form-group">
-                                                                <label>Total Harga</label>
-                                                                <input class="form-control disable totalHarga" id="totalHarga" name="totalHarga" type="number" placeholder="Total Harga" readonly>                                            
-                                                            </div>
-                                                        </div>
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label>Total Harga</label>
+                                                                    <input class="form-control disable totalHarga" id="totalHarga" name="totalHarga" type="number" placeholder="Total Harga" readonly>                                            
+                                                                </div>
+                                                            </div>  
+                                                        --}}
                                                         <div class="col-12">
                                                             <div class="form-group">
                                                                 <label>Catatan / Pesan</label>
@@ -185,8 +181,10 @@
                                                                     <th class="textAlign">Nama Barang</th>
                                                                     <th class="textAlign">Jumlah </th>
                                                                     <th class="textAlign">Satuan</th>
-                                                                    <th class="textAlign">Harga</th>
-                                                                    <th class="textAlign">Total Harga</th>
+                                                                    {{--  
+                                                                        <th class="textAlign">Harga</th>
+                                                                        <th class="textAlign">Total Harga</th>  
+                                                                    --}}
                                                                     <th class="textAlign">Catatan / Pesan</th>
                                                                     @if (!isset($jenisPurchase))
                                                                         <th class="textAlign">Action</th>
@@ -200,8 +198,10 @@
                                                                             <td>{{ $detail->material->nama }}</td>
                                                                             <td>{{ $detail->qty }}</td>
                                                                             <td>{{ $detail->unit }}</td>
-                                                                            <td>{{ $detail->unitPrice }}</td>
-                                                                            <td>{{ $detail->amount }}</td>
+                                                                            {{--  
+                                                                                <td>{{ $detail->unitPrice }}</td>
+                                                                                <td>{{ $detail->amount }}</td>  
+                                                                            --}}
                                                                             <td>{{ $detail->remark }}</td>
                                                                         </tr>                                                                    
                                                                     @endforeach 
@@ -273,13 +273,15 @@
                 var nama_material   = $('#material').find('option:selected').text();
                 var jumlah          = $('#jumlah').val();
                 var satuan          = $('#satuan').val();
-                var harga           = $('#harga').val();
-                var totalHarga      = $('#totalHarga').val();
+                {{--  
+                    var harga           = $('#harga').val();
+                    var totalHarga      = $('#totalHarga').val();  
+                --}}
                 var note            = $('#note').val();
 
                 var jumlah_data = $('#jumlah_data').val();
 
-                if((nama_material != "Pilih Material / Bahan" || material != "") && satuan != "" && jumlah != "" && harga != ""){
+                if((nama_material != "Pilih Material / Bahan" || material != "") && satuan != "" && jumlah != ""){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
@@ -288,8 +290,10 @@
                         table += "<td>"+nama_material+"<input type='hidden' name='material[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
                         table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                         table += "<td>"+satuan+"<input type='hidden' name='satuan[]' value='"+satuan+"' id='satuan_"+jumlah_data+"'></td>";
-                        table += "<td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"' id='harga_"+jumlah_data+"'></td>";
-                        table += "<td>"+totalHarga+"<input type='hidden' name='totalHarga[]' value='"+totalHarga+"' id='totalHarga_"+jumlah_data+"'></td>";
+                        {{--  
+                            table += "<td>"+harga+"<input type='hidden' name='harga[]' value='"+harga+"' id='harga_"+jumlah_data+"'></td>";
+                            table += "<td>"+totalHarga+"<input type='hidden' name='totalHarga[]' value='"+totalHarga+"' id='totalHarga_"+jumlah_data+"'></td>";  
+                        --}}
                         table += "<td>"+note+"<input type='hidden' name='note[]' value='"+note+"' id='note_"+jumlah_data+"'></td>";
                         table += "<td>";
                         table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
@@ -300,8 +304,10 @@
                     $('#material').val('');
                     $('#jumlah').val('');
                     $('#satuan').val('');
-                    $('#harga').val('');
-                    $('#totalHarga').val('');
+                    {{--  
+                        $('#harga').val('');
+                        $('#totalHarga').val('');  
+                    --}}
                     $('#note').val('');
                 }else{
                     alert("Material Dan Satuan Pemakaian Tidak Boleh Kosong");

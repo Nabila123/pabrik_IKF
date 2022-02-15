@@ -10,7 +10,7 @@ class AdminPurchase extends Model
 {
     use HasFactory;
 
-    protected $table = 'tr_purchase';
+    protected $table = 'purchase';
     protected $fillable = ['jenisPurchase'];
 
     public function user()

@@ -78,7 +78,7 @@
                                         <tr>
                                             <td>
                                                 @if (\Auth::user()->roleId == 7 && $request->isKaDeptPO != 0 && $request->prosesOrder != true)
-                                                    <a href="{{ route('adminPO.poRequest.requestKode', $request->kode) }}" class="btn btn-info requestKode"> {{ $request->kode }} </a> <br>
+                                                    <a href="{{ route('adminPO.poRequest.requestKode', $request->id) }}" class="btn btn-info requestKode"> Buat Pruchase Order </a> <br>
                                                     <span style="color: green; font-size: 10px">Lanjut Purchase Order</span>
                                                 @else
                                                     {{ $request->kode }}

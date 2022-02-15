@@ -61,7 +61,7 @@
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
                                 @if (isset($purchase->id))
-                                    <input type="hidden" name="id" id="id" value="{{ $purchase->id }}">       
+                                    <input type="hidden" name="purchaseId" id="purchaseId" value="{{ $purchase->id }}">       
                                     <input type="hidden" name="jenisPurchase" id="jenisPurchase" value="{{ $jenisPurchase }}">       
                                     <input type="hidden" name="total" id="total" value="{{ $purchase->total }}">       
                                 @endif
@@ -69,7 +69,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode disable" value="{{ $purchaseKode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
+                                            <input class="form-control purchaseKode" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" required>                                            
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -204,10 +204,17 @@
                                                                     @foreach ($purchaseDetails as $detail)
                                                                         <tr>
                                                                             <td>{{ $detail->material->nama }}</td>
-                                                                            <td>{{ $detail->qty }}</td>
+                                                                            <td>
+                                                                                {{ $detail->qty }}
+                                                                                <input type="hidden" id="jumlah{{ $detail->id }}" name="jumlah{{ $detail->id }}" value="{{ $detail->qty }}">
+                                                                            </td>
                                                                             <td>{{ $detail->unit }}</td>
-                                                                            <td>{{ $detail->unitPrice }}</td>
-                                                                            <td>{{ $detail->amount }}</td>
+                                                                            <td>
+                                                                                <input class="form-control harga" purchaseDetail="{{ $detail->id }}" id="harga{{ $detail->id }}" name="harga[{{ $detail->id }}]" type="number" placeholder="Harga">                                            
+                                                                            </td>
+                                                                            <td>
+                                                                                <input class="form-control disable totalHarga" id="totalHarga{{ $detail->id }}" name="totalHarga[{{ $detail->id }}]" type="number" placeholder="Total Harga" readonly>
+                                                                            </td>
                                                                             <td>{{ $detail->remark }}</td>
                                                                         </tr>                                                                    
                                                                     @endforeach 
@@ -242,6 +249,25 @@
             theme: 'bootstrap4'
         });
         
+        $(document).on("keyup", ".purchaseKode", function(){            
+            var purchaseKode = $('#purchaseKode').val();
+            var _token = $('#_token').val();
+            $.ajax({
+                type: "post",
+                url: '{{ url('purchase/getCheckKode') }}',
+                data: {
+                    'purchaseKode' : purchaseKode,
+                    '_token': _token
+                },
+                success: function(response){
+                   if(response == 1){
+                        $('#purchaseKode').addClass('is-valid').css({'background-image':'https://www.seekpng.com/png/full/433-4334311_gambar-ceklis-png-logo-checklist-png.png'});
+                   }else{
+                        $('#purchaseKode').addClass('is-invalid').css({'background-image':'https://cdn-icons-png.flaticon.com/512/179/179386.png'});   
+                   }
+                }
+            })
+        });
 
         $(document).on("change", ".material", function(){
             var materialId = $('#material').val();
@@ -263,12 +289,15 @@
         });
 
         $(document).on("focusout", ".harga", function(){
-            var harga = $('#harga').val();
-            var jumlah = $('#jumlah').val();
+            var id = $(this).attr('purchaseDetail');
+            var harga = $('#harga'+id).val();
+            var jumlah = $('#jumlah'+id).val();
+
+            console.log(id)
             
             hargaTotal = (harga * jumlah);
 
-            $('#totalHarga').val(hargaTotal);
+            $('#totalHarga'+id).val(hargaTotal);
         });
 
         $(document).ready( function () {

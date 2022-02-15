@@ -27,6 +27,7 @@ Route::post('/material/getSatuan', [App\Http\Controllers\MaterialController::cla
 /* Admin PO Routes */
 Route::get('/adminPO', [App\Http\Controllers\AdminPoController::class, 'index'])->name('adminPO');
 Route::post('/purchase/getData', [App\Http\Controllers\AdminPoController::class, 'getData'])->name('purchase.getData');
+Route::post('/purchase/getCheckKode', [App\Http\Controllers\AdminPoController::class, 'getPurchaseKode'])->name('purchase.getCheckKode');
 
 Route::get('/adminPO/Order', [App\Http\Controllers\AdminPoController::class, 'poOrder'])->name('adminPO.poOrder');
 Route::get('/adminPO/Order/tambahData', [App\Http\Controllers\AdminPoController::class, 'poOrderCreate'])->name('adminPO.poOrder.create');

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminPurchaseDetail extends Model
 {
-    protected $table = 'tr_purchase_detail';
+    protected $table = 'purchase_detail';
 
     public function material()
     {

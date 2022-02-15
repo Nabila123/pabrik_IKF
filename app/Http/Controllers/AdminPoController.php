@@ -36,11 +36,20 @@ class AdminPoController extends Controller
         return json_encode($purchase);
     }
 
+    public function getPurchaseKode(Request $request)
+    {
+        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $request->purchaseKode)->first();
+        if ($purchase != null) {
+            return 0;
+        }
+        return 1;
+    }
+
     public function poOrder(){   
         $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
         
         foreach ($poOrder as $order) {
-            $cekDatang = GudangBahanBaku::select('id', 'created_at')->where('kodePurchase', $order->kode)->first();
+            $cekDatang = GudangBahanBaku::select('id', 'created_at')->where('purchaseId', $order->id)->first();
 
             if ($cekDatang != null) {
                 $order['barangDatang'] = true;
@@ -113,21 +122,23 @@ class AdminPoController extends Controller
     public function poOrderDetail($id){
         $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Order')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
-
-        $gudang = GudangBahanBaku::select('id')->where('kodePurchase', $getPurchaseId->kode)->first();
-        $gudangDetail = GudangBahanBakuDetail::select('materialId', 'brutto', 'netto', 'tarra')->where('gudangId', $gudang->id)->get();
-
-        foreach ($gudangDetail as $detail) {
-            $gudangDatang = [
-                'datang'     => true                
-            ];
-
-            $gudangDatang[] = [
-                'materialId' => $detail->materialId,
-                'brutto'     => $detail->brutto,
-                'netto'      => $detail->netto,
-                'tarra'      => $detail->tarra
-            ];
+        
+        $gudangDatang = [];
+        $gudang = GudangBahanBaku::select('id')->where('purchaseId', $getPurchaseId->id)->first();
+        if ($gudang) {
+            $gudangDetail = GudangBahanBakuDetail::select('materialId', 'brutto', 'netto', 'tarra')->where('gudangId', $gudang->id)->get();
+            foreach ($gudangDetail as $detail) {
+                $gudangDatang = [
+                    'datang'     => true                
+                ];
+    
+                $gudangDatang[] = [
+                    'materialId' => $detail->materialId,
+                    'brutto'     => $detail->brutto,
+                    'netto'      => $detail->netto,
+                    'tarra'      => $detail->tarra
+                ];
+            }
         }
         
         return view('adminPO.purchaseOrder.detail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId, 'datang' => $gudangDatang]);
@@ -233,7 +244,7 @@ class AdminPoController extends Controller
         $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
         foreach ($poRequest as $request) {
             $cek = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $request->kode)->first();
-            $cekDatang = GudangBahanBaku::select('id')->where('kodePurchase', $request->kode)->first();
+            $cekDatang = GudangBahanBaku::select('id')->where('purchaseId', $request->id)->first();
 
             if ($cek != null) {
                 $request['prosesOrder'] = true;
@@ -251,17 +262,12 @@ class AdminPoController extends Controller
 
     public function poRequestCreate(){
         $materials = MaterialModel::get();
-        $purchaseKode = AdminPurchase::purchaseKode();
-        $getpurchaseKode = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('kode', $purchaseKode)->get();
-        while (empty($getpurchaseKode)) {
-            $purchaseKode = AdminPurchase::purchaseKode();
-        }
 
-        return view('adminPO.purchaseRequest.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode]);
+        return view('adminPO.purchaseRequest.create', ['materials' => $materials]);
     }
     
     public function poRequestStore(Request $request){        
-        $purchaseKode = $request['purchaseKode'];
+        $purchaseKode = "-";
         $suplierName = isset($request['suplierName'])?$request['suplierName']:null;
         $jenisPurchase = "Purchase Request";
         $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
@@ -272,17 +278,17 @@ class AdminPoController extends Controller
         $material = $request['material'];
         $jumlah = $request['jumlah'];
         $satuan = $request['satuan'];
-        $harga = $request['harga'];
-        $totalHarga = $request['totalHarga'];
+        // $harga = $request['harga'];
+        // $totalHarga = $request['totalHarga'];
         $note = $request['note'];
 
         $jumlahData = $request['jumlah_data'];
 
         if ($jumlahData != 0) {
             $total = 0;
-            for ($i=0; $i < $jumlahData; $i++) { 
-                $total += $totalHarga[$i];
-            }            
+            // for ($i=0; $i < $jumlahData; $i++) { 
+            //     $total += $totalHarga[$i];
+            // }            
 
             $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $suplierName, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
             
@@ -290,19 +296,15 @@ class AdminPoController extends Controller
                 $purchaseId = $purchaseCreate;
 
                 for ($i = 0; $i < $jumlahData; $i++) {
-                    AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                       
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $material[$i], $jumlah[$i], $satuan[$i], 0, 0, $note[$i]);                       
                 }
                 return redirect('adminPO/Request');
             }
 
         } else {
             $materials = MaterialModel::get();
-            $purchaseKode = AdminPurchase::purchaseKode();
-            $getpurchaseKode = AdminPurchase::where('kode', $purchaseKode)->get();
-            while (empty($getpurchaseKode)) {
-                $purchaseKode = AdminPurchase::purchaseKode();
-            }
-            return view('adminPO.purchaseRequest.create', ['materials' => $materials, 'purchaseKode' => $purchaseKode, 'message'=>'Material Belum Diisi']);
+            
+            return view('adminPO.purchaseRequest.create', ['materials' => $materials, 'message'=>'Material Belum Diisi']);
         }       
         
     }
@@ -352,19 +354,21 @@ class AdminPoController extends Controller
         }
     }
 
-    public function poRequestRequestKode($purchaseKode){
+    public function poRequestRequestKode($purchaseId){
 
         $materials = MaterialModel::get();
-        $getPurchaseId = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('kode', $purchaseKode)->first();
+        $getPurchaseId = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('id', $purchaseId)->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $getPurchaseId->id)->get();
         $jenisPurchase = "Request";
 
 
-        return view('adminPO.purchaseOrder.create', ['jenisPurchase' => $jenisPurchase, 'purchaseKode' => $purchaseKode, 'materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+        return view('adminPO.purchaseOrder.create', ['jenisPurchase' => $jenisPurchase, 'materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
     public function poOrderRequestStore(Request $request){
-        $purchaseid = $request['id'];
+
+        // dd($request);
+        $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
         $suplierName = $request['suplierName'];
         $jenisPurchase = "Purchase Order";
@@ -372,14 +376,27 @@ class AdminPoController extends Controller
         $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
         $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
         $notePesan = $request['notePesan'];
+        
+        $harga = $request['harga'];
+        $totalHarga = $request['totalHarga'];
         $total = $request['total'];
 
+        for ($i=1; $i <= count($totalHarga); $i++) { 
+            if ($totalHarga[$i] != null) {
+                $total += $totalHarga[$i];
+            }
+        }
+
         $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $suplierName, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
+        if ($purchaseCreate) {
+            AdminPurchase::purchaseUpdateField( "kode", $purchaseKode, $purchaseid);
+        }
         $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $purchaseid)->get();
         
         $purchaseId = $purchaseCreate;
+        // dd($purchaseDetail);
         foreach ($purchaseDetail as $detail) {
-            AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $detail->materialId, $detail->qty, $detail->unit, $detail->unitPrice, $detail->amount, $detail->remark);                       
+            AdminPurchaseDetail::purchaseDetailCreate($purchaseId, $detail->materialId, $detail->qty, $detail->unit, $harga[$detail->id], $totalHarga[$detail->id], $detail->remark);                       
         } 
 
         return redirect('adminPO/Order');
@@ -400,20 +417,23 @@ class AdminPoController extends Controller
         $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
 
-        $gudang = GudangBahanBaku::select('id')->where('kodePurchase', $getPurchaseId->kode)->first();
-        $gudangDetail = GudangBahanBakuDetail::select('materialId', 'brutto', 'netto', 'tarra')->where('gudangId', $gudang->id)->get();
+        $gudangDatang = [];
+        $gudang = GudangBahanBaku::select('id')->where('purchaseId', $getPurchaseId->id)->first();
+        if ($gudang) {
+            $gudangDetail = GudangBahanBakuDetail::select('materialId', 'brutto', 'netto', 'tarra')->where('gudangId', $gudang->id)->get();
 
-        foreach ($gudangDetail as $detail) {
-            $gudangDatang = [
-                'datang'     => true                
-            ];
+            foreach ($gudangDetail as $detail) {
+                $gudangDatang = [
+                    'datang'     => true                
+                ];
 
-            $gudangDatang[] = [
-                'materialId' => $detail->materialId,
-                'brutto'     => $detail->brutto,
-                'netto'      => $detail->netto,
-                'tarra'      => $detail->tarra
-            ];
+                $gudangDatang[] = [
+                    'materialId' => $detail->materialId,
+                    'brutto'     => $detail->brutto,
+                    'netto'      => $detail->netto,
+                    'tarra'      => $detail->tarra
+                ];
+            }
         }
 
         return view('adminPO.purchaseRequest.detail', ['request' => $getPurchaseId, 'requestDetail' => $getPurchaseDetailId, 'datang' => $gudangDatang]);

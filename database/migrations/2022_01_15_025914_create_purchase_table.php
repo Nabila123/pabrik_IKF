@@ -17,6 +17,7 @@ class CreatePurchaseTable extends Migration
             $table->bigIncrements('id');
             $table->string('kode')->nullable();
             $table->enum('jenisPurchase',['Purchase Order','Purchase Request'])->nullable();
+            $table->string('suplierName')->nullable();
             $table->date('tanggal')->nullable();
             $table->date('waktu')->nullable();
             $table->date('waktuPayment')->nullable();

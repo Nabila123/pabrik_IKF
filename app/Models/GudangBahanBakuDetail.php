@@ -9,7 +9,7 @@ class GudangBahanBakuDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'tr_gudang_bahan_baku_detail';
+    protected $table = 'gd_bahanbaku_detail';
 
     public function material()
     {
