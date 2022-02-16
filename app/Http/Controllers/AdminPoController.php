@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\AdminPurchase;
 use App\Models\MaterialModel;
 use App\Models\AdminPurchaseDetail;
+use App\Models\adminPurchaseInvoice;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
+use App\Models\GudangBahanBakuDetailMaterial;
 use PDF;
 
 use Illuminate\Http\Request;
@@ -34,6 +36,13 @@ class AdminPoController extends Controller
         $purchase = AdminPurchase::getPurchaseWithMaterial($request);
 
         return json_encode($purchase);
+    }
+
+    public function getDataForInvoice(Request $request)
+    {
+        $getData = AdminPurchase::getDataInvoice($request->purchaseId);
+
+        return json_encode($getData);
     }
 
     public function getPurchaseKode(Request $request)
@@ -456,6 +465,91 @@ class AdminPoController extends Controller
         return redirect('adminPO/Request');
     }
     //END PURCHASE REQUEST FUNCTION
+
+
+    //START PURCHASE INVOICE FUNCTION
+    public function poInvoice()
+    {
+        $invoice = adminPurchaseInvoice::all();
+        return view('adminPO.purchaseInvoice.index', ['invoice' => $invoice]);
+    }
+
+    public function poInvoiceDetail($id)
+    {
+        $data = [];
+        $i = 0;
+        $invoice = adminPurchaseInvoice::where('id', $id)->first();
+        $gudang = GudangBahanBaku::where('purchaseId', $invoice->purchaseId)->first();
+        $gudangDetail = GudangBahanBakuDetail::where('gudangId', $gudang->id)->get();
+       foreach ($gudangDetail as $detail) {
+            $gudangMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detail->id)->get();
+            foreach ($gudangMaterial as $material) {
+                $data["material"][$i++] = [
+                    'nama'      => $detail->material->nama,
+                    'diameter'  => $material->diameter,
+                    'gramasi'   => $material->gramasi,
+                    'brutto'    => $material->brutto,
+                    'netto'     => $material->netto,
+                    'tarra'     => $material->tarra,
+                    'satuan'    => $material->unit,
+                    'harga'     => $material->unitPrice,
+                    'note'      => $material->remark
+                ];
+            }
+       }
+
+        return view('adminPO.purchaseInvoice.detail', ['invoice' => $invoice, 'material' => $data]);
+    }
+
+    public function poInvoiceCreate()
+    {
+        $purchaseId = GudangBahanBaku::select('purchaseId')->where('total', 0)->get();
+        return view('adminPO.purchaseInvoice.create', ['purchaseId' => $purchaseId]);
+    }
+
+    public function poInvoiceStore(Request $request)
+    {
+        $invoice = adminPurchaseInvoice::createInvoicePurchase($request);
+        if ($invoice == 1) {
+            $gudangUpdate = GudangBahanBaku::updateFieldGudang('Total', $request['total'], $request['gudangId']);
+        }
+
+
+        $invoice = adminPurchaseInvoice::all();
+        return view('adminPO.purchaseInvoice.index', ['invoice' => $invoice]);
+    }
+
+
+    public function poInvoiceUpdate($id)
+    {
+        $invoice = adminPurchaseInvoice::where('id', $id)->first();
+        $purchaseId = GudangBahanBaku::select('purchaseId')->where('id', $invoice->gudangId)->first();
+
+        return view('adminPO.purchaseInvoice.update', ['invoice' => $invoice, 'purchase' => $purchaseId]);
+    }
+
+    public function poInvoiceUpdateSave(Request $request)
+    {
+        $invoice = adminPurchaseInvoice::updateInvoicePurchase($request);
+        if ($invoice == 1) {
+            $gudangUpdate = GudangBahanBaku::updateFieldGudang('Total', $request['total'], $request['gudangId']);
+        }
+
+        $invoice = adminPurchaseInvoice::all();
+        return view('adminPO.purchaseInvoice.index', ['invoice' => $invoice]);
+    }
+
+    public function poInvoiceDelete(Request $request)
+    {
+        $invoice = adminPurchaseInvoice::where('id', $request['invoiceId'])->first();  
+        if ($invoice) {
+           GudangBahanBaku::updateFieldGudang('Total', 0, $invoice->gudangId);
+           adminPurchaseInvoice::where('id', $request['invoiceId'])->delete();  
+        }
+
+        return redirect('adminPO/Invoice');
+    }
+    //END PURCHASE INVOICE FUNCTION
 
     public function laporanAdminPO(){
         return view('adminPO.laporanPurchase.laporanAdminPO');

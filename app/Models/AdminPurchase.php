@@ -62,6 +62,39 @@ class AdminPurchase extends Model
         return $data;
     }
 
+    public static function getDataInvoice($purchaseId)
+    {
+        $data = [];
+        $i = 0;
+        $purchase = Self::where('id', $purchaseId)->first();
+        $gudang = GudangBahanBaku::where('purchaseId', $purchase->id)->first();
+
+        $data["purchase"] = [
+            'gudangId' => $gudang->id,
+            'suplierName' => $purchase->suplierName,
+            'catatan' => $purchase->note
+        ];
+
+        $gudangDetail = GudangBahanBakuDetail::where('gudangId', $gudang->id)->get();
+       foreach ($gudangDetail as $detail) {
+            $gudangMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detail->id)->get();
+            foreach ($gudangMaterial as $material) {
+                $data["material"][$i++] = [
+                    'nama'      => $detail->material->nama,
+                    'diameter'  => $material->diameter,
+                    'gramasi'   => $material->gramasi,
+                    'brutto'    => $material->brutto,
+                    'netto'     => $material->netto,
+                    'tarra'     => $material->tarra,
+                    'satuan'    => $material->unit,
+                    'harga'     => $material->unitPrice
+                ];
+            }
+       }
+        
+       return $data;
+    }
+
     public static function purchaseKode()
     {
         $panjang = 5;

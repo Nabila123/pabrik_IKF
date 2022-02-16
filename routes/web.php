@@ -28,6 +28,7 @@ Route::post('/material/getSatuan', [App\Http\Controllers\MaterialController::cla
 Route::get('/adminPO', [App\Http\Controllers\AdminPoController::class, 'index'])->name('adminPO');
 Route::post('/purchase/getData', [App\Http\Controllers\AdminPoController::class, 'getData'])->name('purchase.getData');
 Route::post('/purchase/getCheckKode', [App\Http\Controllers\AdminPoController::class, 'getPurchaseKode'])->name('purchase.getCheckKode');
+Route::get('/purchase/getDataInvoice', [App\Http\Controllers\AdminPoController::class, 'getDataForInvoice'])->name('purchase.getDataInvoice');
 
 Route::get('/adminPO/Order', [App\Http\Controllers\AdminPoController::class, 'poOrder'])->name('adminPO.poOrder');
 Route::get('/adminPO/Order/tambahData', [App\Http\Controllers\AdminPoController::class, 'poOrderCreate'])->name('adminPO.poOrder.create');
@@ -52,6 +53,14 @@ Route::get('/adminPO/Request/approve', [App\Http\Controllers\AdminPoController::
 Route::get('/adminPO/Request/detail/{id}', [App\Http\Controllers\AdminPoController::class, 'poRequestDetail'])->name('adminPO.poRequest.detail');
 Route::get('/adminPO/Request/unduh/{id}', [App\Http\Controllers\AdminPoController::class, 'poRequestUnduh'])->name('adminPO.poRequest.unduh');
 Route::delete('/adminPO/Request/delete', [App\Http\Controllers\AdminPoController::class, 'poRequestDelete'])->name('adminPO.poRequest.delete');
+
+Route::get('/adminPO/Invoice', [App\Http\Controllers\AdminPoController::class, 'poInvoice'])->name('adminPO.poInvoice');
+Route::get('/adminPO/Invoice/detail/{id}', [App\Http\Controllers\AdminPoController::class, 'poInvoiceDetail'])->name('adminPO.poInvoice.detail');
+Route::get('/adminPO/Invoice/tambahData', [App\Http\Controllers\AdminPoController::class, 'poInvoiceCreate'])->name('adminPO.poInvoice.create');
+Route::post('/adminPO/Invoice/tambahData', [App\Http\Controllers\AdminPoController::class, 'poInvoiceStore'])->name('adminPO.poInvoice.create');
+Route::get('/adminPO/Invoice/update/{id}', [App\Http\Controllers\AdminPoController::class, 'poInvoiceUpdate'])->name('adminPO.poInvoice.update');
+Route::post('/adminPO/Invoice/update/{id}', [App\Http\Controllers\AdminPoController::class, 'poInvoiceUpdateSave'])->name('adminPO.poInvoice.update');
+Route::delete('/adminPO/Invoice/delete', [App\Http\Controllers\AdminPoController::class, 'poInvoiceDelete'])->name('adminPO.poInvoice.delete');
 
 Route::get('/adminPO/LaporanAdminPO', [App\Http\Controllers\AdminPoController::class, 'laporanAdminPO'])->name('adminPO.laporanAdminPO');
 
