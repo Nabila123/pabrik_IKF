@@ -313,7 +313,7 @@ class AdminPoController extends Controller
         $materials = MaterialModel::get();
         $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
-        return view('adminPO.purchaseOrder.update', ['materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
+        return view('adminPO.purchaseRequest.update', ['materials' => $materials, 'purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId]);
     }
 
     public function poRequestUpdateSave(Request $request){
@@ -329,22 +329,22 @@ class AdminPoController extends Controller
         $material = $request['material'];
         $jumlah = $request['jumlah'];
         $satuan = $request['satuan'];
-        $harga = $request['harga'];
-        $totalHarga = $request['totalHarga'];
+        // $harga = $request['harga'];
+        // $totalHarga = $request['totalHarga'];
         $note = $request['note'];
 
         $jumlahData = $request['jumlah_data'];
 
         if ($jumlahData != 0) {
-            for ($i=0; $i < $jumlahData; $i++) { 
-                $total += $totalHarga[$i];
-            }         
+            // for ($i=0; $i < $jumlahData; $i++) { 
+            //     $total += $totalHarga[$i];
+            // }         
 
             $purchaseUpdate = AdminPurchase::purchaseUpdate($purchaseid, $purchaseKode, $jenisPurchase, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
 
             if ($purchaseUpdate == 1) {
                 for ($i = 0; $i < $jumlahData; $i++) {
-                    AdminPurchaseDetail::purchaseDetailCreate($purchaseid, $material[$i], $jumlah[$i], $satuan[$i], $harga[$i], $totalHarga[$i], $note[$i]);                  
+                    AdminPurchaseDetail::purchaseDetailCreate($purchaseid, $material[$i], $jumlah[$i], $satuan[$i], 0, 0, $note[$i]);                  
                 }
                 return redirect('adminPO/Request');
             }
