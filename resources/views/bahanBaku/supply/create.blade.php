@@ -61,10 +61,10 @@
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Kode Purchase</label>
-                                                            <select class="form-control col-md-7 col-xs-12 kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;" required>
+                                                            <select class="form-control col-md-7 col-xs-12 purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" required>
                                                                 <option value="">Pilih Kode Purchase</option>
                                                                 @foreach($purchases as $purchase)
-                                                                    <option value="{{$purchase->kode}}">{{$purchase->kode}}</option>
+                                                                    <option value="{{$purchase->id}}">{{$purchase->kode}}</option>
                                                                 @endforeach
                                                             </select>                                           
                                                         </div>
@@ -94,15 +94,15 @@
                                                                     <th class="textAlign">Jumlah Permintaan</th>
                                                                     <th class="textAlign">Jumlah Saat Ini</th>
                                                                     <th class="textAlign">Jumlah Datang</th>
+                                                                    <th class="textAlign">Satuan </th>
+                                                                    <th class="textAlign">Harga Satuan</th>
+                                                                    <th class="textAlign">Amount</th>
+                                                                    <th class="textAlign">Remark</th>
                                                                     <th class="textAlign">Diameter</th>
                                                                     <th class="textAlign">Gramasi</th>
                                                                     <th class="textAlign">Bruto </th>
                                                                     <th class="textAlign">Netto </th>
                                                                     <th class="textAlign">Tarra</th>
-                                                                    <th class="textAlign">Satuan </th>
-                                                                    <th class="textAlign">Harga Satuan</th>
-                                                                    <th class="textAlign">Amount</th>
-                                                                    <th class="textAlign">Remark</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign"></tbody>                                                                                       
@@ -134,18 +134,18 @@
             $('#example2').DataTable();
         });
 
-        $('#kodePurchase').select2({
+        $('#purchaseId').select2({
             theme: 'bootstrap4'
         });
         
 
-        $(document).on("change", ".kodePurchase", function(){
-            var kodePurchase = $('#kodePurchase').val();
+        $(document).on("change", ".purchaseId", function(){
+            var purchaseId = $('#purchaseId').val();
             var _token = $('#_token').val();
             
             $.ajax({
                 type: "get",
-                url: '{{ url("adminPO/getSuplier") }}/'+kodePurchase,
+                url: '{{ url("adminPO/getSuplier") }}/'+purchaseId,
                 success: function(response){
                     var data = JSON.parse(response)
                     $('#suplier').val(data);    
@@ -154,7 +154,7 @@
 
             $.ajax({
                 type: "get",
-                url: '{{ url("adminPO/getDetail") }}/'+kodePurchase,
+                url: '{{ url("adminPO/getDetail") }}/'+purchaseId,
                 success: function(response){
                     var data = JSON.parse(response)
                     // console.log(data);
@@ -175,15 +175,20 @@
                             dt += "<td>"+data[i].qty_saat_ini+"</td>";
                             dt += "<td><input type='text' name='qty_saat_ini[]' required style='width:60px;' class='form-control qty_saat_ini' id_data='"+jumlah_data+"' value='' id='qty_saat_ini_"+jumlah_data+"'>";
                             dt += '</td>';
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter[]' value='' id='diameter_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto[]' value='' id='brutto_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto[]' value='' id='netto_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra[]' value='' id='tarra_"+jumlah_data+"'> </td>";
                             dt += "<td>"+data[i].unit+"<input type='hidden' name='unit[]' value='"+data[i].unit+"' id='unit_"+jumlah_data+"'> </td>";
                             dt += "<td>"+data[i].unitPrice+"<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'> </td>";
                             dt += "<td>"+data[i].amount+"<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'> </td>";
                             dt += "<td>"+data[i].remark+"<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'> </td>";
+                            if(data[i].materialId == 1){
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"'> </td>";
+                            }else{
+                                dt += '<input type="hidden" name="jumlah_roll_'+data[i].materialId+'" id="jumlah_roll_'+data[i].materialId+'" value="0"/>';
+                                dt += '<td colspan="5"><button type="button" id="addRoll" materialId="'+data[i].materialId+'" data='+jumlah_data+' style="float: left" class="btn btn-info btn-flat-right addRoll">Tambah Data Roll</button><td>'
+                            }
                             dt += '</tr>';
                             nomor++;
                             
@@ -192,6 +197,25 @@
                     }
                 }
             })
+        });
+
+        $(document).on("click", ".addRoll", function(){
+            var data = $(this).attr('data');
+            var materialId = $(this).attr('materialId');
+            var jumlah_roll = $('#jumlah_roll_'+materialId).val();
+            jumlah_roll++;
+            jumlah_data = data + 1;
+            dt = '<tr id="'+jumlah_data+'">';
+            dt += '<td colspan="9">Data Roll '+jumlah_roll+'</td>';
+            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value='' > </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value=''> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value=''> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' > </td>";
+            dt += '</tr>';
+
+            $('tr.data_'+data).after(dt);
+            $('#jumlah_roll_'+materialId).val(jumlah_roll);
         });
 
         $(document).on("focusout", ".harga", function(){
