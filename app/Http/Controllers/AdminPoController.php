@@ -396,11 +396,6 @@ class AdminPoController extends Controller
                 $total += $totalHarga[$value->id];
             }
         }
-        // for ($i=1; $i <= count($totalHarga); $i++) { 
-        //     if ($totalHarga[$i] != null) {
-        //         $total += $totalHarga[$i];
-        //     }
-        // }
 
         $purchaseCreate = AdminPurchase::purchaseCreate($purchaseKode, $jenisPurchase, $suplierName, $pengajuanDate, $pengirimanDate, $jatuhTempoDate, $notePesan, $total, \Auth::user()->id);
         if ($purchaseCreate) {
