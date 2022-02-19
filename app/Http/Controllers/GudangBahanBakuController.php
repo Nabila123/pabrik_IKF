@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\AdminPurchase;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
-use App\Models\GudangMasuk;
-use App\Models\GudangMasukDetail;
-use App\Models\GudangKeluar;
-use App\Models\GudangKeluarDetail;
-use App\Models\GudangStokOpname;
+use App\Models\GudangRajutMasuk;
+use App\Models\GudangRajutKeluar;
+use App\Models\GudangCuciKeluar;
+use App\Models\GudangCompactMasuk;
+use App\Models\GudangCompactKeluar;
+use App\Models\GudangInspeksiKeluar;
+use App\Models\GudangInspeksiMasuk;
 use App\Models\GudangInspeksiStokOpname;
 use App\Models\MaterialModel;
 use App\Models\BarangDatang;
@@ -24,7 +26,7 @@ class GudangBahanBakuController extends Controller
     }
 
     public function index(){
-        $data = GudangStokOpname::all();
+        $data = GudangBahanBaku::all();
         $materials = MaterialModel::all();
         $dataStok=[];
         foreach ($materials as $key => $material) {
@@ -36,8 +38,8 @@ class GudangBahanBakuController extends Controller
             $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $value->qty;
         }
     
-        $dataMasuk = GudangMasuk::count();
-        $dataKeluar = GudangKeluar::count();
+        $dataMasuk = GudangRajutMasuk::count() + GudangCompactMasuk::count() + GudangInspeksiMasuk::count();
+        $dataKeluar = GudangRajutKeluar::count() + GudangCuciKeluar::count() +GudangCompactKeluar::count() + GudangInspeksiKeluar::count();
         return view('bahanBaku.index')->with(['dataStok'=>$dataStok,'dataMasuk'=>$dataMasuk,'dataKeluar'=>$dataKeluar]);
     }
 

@@ -153,11 +153,11 @@ class AdminPoController extends Controller
         return view('adminPO.purchaseOrder.detail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId, 'datang' => $gudangDatang]);
     }
 
-    public function getDetail($kode)
+    public function getDetail($id)
     {
-        $getPurchase = AdminPurchase::where('kode', $kode)->first();
-        $getPurchaseDetail = AdminPurchaseDetail::where('purchaseId', $getPurchase->id)->get();
-        $cekGudang = GudangBahanBaku::where('kodePurchase',$kode)->first();
+        $getPurchase = AdminPurchase::find($id);
+        $getPurchaseDetail = AdminPurchaseDetail::where('purchaseId', $id)->get();
+        $cekGudang = GudangBahanBaku::where('purchaseId',$id)->first();
         foreach ($getPurchaseDetail as $key => $value) {
             $value->materialNama = $value->material->nama;
             if($cekGudang){
@@ -171,9 +171,9 @@ class AdminPoController extends Controller
         return json_encode($getPurchaseDetail);
     }
 
-     public function getSuplier($kode)
+     public function getSuplier($id)
     {
-        $getPurchase = AdminPurchase::where('kode', $kode)->where('jenisPurchase', 'Purchase Order')->first();
+        $getPurchase = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Order')->first();
         return json_encode($getPurchase->suplierName);
     }
 
@@ -390,9 +390,10 @@ class AdminPoController extends Controller
         $totalHarga = $request['totalHarga'];
         $total = $request['total'];
 
-        for ($i=1; $i <= count($totalHarga); $i++) { 
-            if ($totalHarga[$i] != null) {
-                $total += $totalHarga[$i];
+        $details = AdminPurchaseDetail::where('purchaseId', $purchaseid)->get();
+        foreach ($details as $key => $value) {
+            if ($totalHarga[$value->id] != null) {
+                $total += $totalHarga[$value->id];
             }
         }
 
