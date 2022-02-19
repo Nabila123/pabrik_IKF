@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GudangKeluar;
+use App\Models\gudangRajutKeluar;
 use App\Models\GudangKeluarDetail;
-use App\Models\GudangMasuk;
+use App\Models\gudangRajutMasuk;
 use App\Models\GudangMasukDetail;
 use App\Models\GudangStokOpname;
 use App\Models\MaterialModel;
@@ -18,8 +18,8 @@ class GudangRajutController extends Controller
     }
 
     public function index(){
-        $gudangKeluar = GudangKeluar::where('gudangRequest', 'Gudang Rajut')->get();
-        $gudangMasuk = GudangMasuk::where('gudangRequest', 'Gudang Rajut')->get();
+        $gudangKeluar = gudangRajutKeluar::all();
+        $gudangMasuk = gudangRajutMasuk::all();
 
         $gudangKeluar = count($gudangKeluar);
         $gudangMasuk = count($gudangMasuk);
@@ -30,9 +30,9 @@ class GudangRajutController extends Controller
 
     /* Gudang Rajut Request */
     public function gudangRajutRequest(){
-        $gRajutRequest = GudangKeluar::where('gudangRequest', 'Gudang Rajut')->get();
+        $gRajutRequest = gudangRajutKeluar::all();
         foreach ($gRajutRequest as $request) {
-            $cekPengembalian = GudangMasuk::where('gudangRequest', 'Gudang Rajut')->where('gudangKeluarId', $request->id)->first();
+            $cekPengembalian = gudangRajutMasuk::where('gdRajutKId', $request->id)->first();
             if ($cekPengembalian != null) {
                 $request->cekPengembalian = 1;
             }
