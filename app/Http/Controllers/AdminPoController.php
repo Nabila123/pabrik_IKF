@@ -162,9 +162,9 @@ class AdminPoController extends Controller
             $value->materialNama = $value->material->nama;
             if($cekGudang){
                 $cekGudangDetail = GudangBahanBakuDetail::where('gudangId',$cekGudang->id)->where('materialId',$value->materialId)->first();
-                $value->qty_saat_ini = ($cekGudangDetail) ? $cekGudangDetail->qty_saat_ini : 0;
+                $value->qtySaatIni = ($cekGudangDetail) ? $cekGudangDetail->qtySaatIni : 0;
             }else{
-                $value->qty_saat_ini = 0;
+                $value->qtySaatIni = 0;
             }
         } 
 

@@ -61,7 +61,7 @@
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Kode Purchase</label>
-                                                            <input type="text" class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->kodePurchase}}" readonly />
+                                                            <input type="text" class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->purchase->kode}}" readonly />
                                                         </div>
                                                     </div>
 
