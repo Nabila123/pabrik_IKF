@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\gudangRajutKeluar;
-use App\Models\GudangKeluarDetail;
+use App\Models\GudangRajutKeluar;
+use App\Models\GudangRajutKeluarDetail;
 use App\Models\gudangRajutMasuk;
 use App\Models\GudangMasukDetail;
 use App\Models\GudangStokOpname;
@@ -18,7 +18,7 @@ class GudangRajutController extends Controller
     }
 
     public function index(){
-        $gudangKeluar = gudangRajutKeluar::all();
+        $gudangKeluar = GudangRajutKeluar::all();
         $gudangMasuk = gudangRajutMasuk::all();
 
         $gudangKeluar = count($gudangKeluar);
@@ -30,7 +30,7 @@ class GudangRajutController extends Controller
 
     /* Gudang Rajut Request */
     public function gudangRajutRequest(){
-        $gRajutRequest = gudangRajutKeluar::all();
+        $gRajutRequest = GudangRajutKeluar::all();
         foreach ($gRajutRequest as $request) {
             $cekPengembalian = gudangRajutMasuk::where('gdRajutKId', $request->id)->first();
             if ($cekPengembalian != null) {
@@ -51,10 +51,9 @@ class GudangRajutController extends Controller
     public function RTerimaBarang($id){
 
         $id = $id;  
-        $gudangRequest = 'Gudang Rajut';  
         $statusDiterima = 1;  
 
-        $gudangRajutTerima = GudangKeluar::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
+        $gudangRajutTerima = GudangRajutKeluar::updateStatusDiterima($id, $statusDiterima);
 
         if ($gudangRajutTerima == 1) {
             return redirect('gudangRajut/Request');
@@ -62,16 +61,12 @@ class GudangRajutController extends Controller
     }
 
     public function Rcreate($id){
-        $purchaseId = [];
         $materials = MaterialModel::get();
-        $gRajutRequest = GudangKeluar::where('gudangRequest', 'Gudang Rajut')->where('id', $id)->first();
-        $gRajutRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gRajutRequest = GudangRajutKeluar::where('id', $id)->first();
+        $gRajutRequestDetail = GudangRajutKeluarDetail::where('gdRajutKId', $gRajutRequest->id)->get();
+        
 
-        foreach ($gRajutRequestDetail as $detail) {
-           $purchaseId[] = $detail->purchaseId;
-        }
-
-        return view('gudangRajut.kembali.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gRajutRequest' => $gRajutRequest, 'gRajutRequestDetail' => $gRajutRequestDetail]);
+        return view('gudangRajut.kembali.create', ['materials' => $materials, 'gRajutRequest' => $gRajutRequest, 'gRajutRequestDetail' => $gRajutRequestDetail]);
     }
 
     public function Rstore(Request $request){

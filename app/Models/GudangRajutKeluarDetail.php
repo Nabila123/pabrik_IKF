@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GudangRajutKeluar extends Model
+class GudangRajutKeluarDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'gd_rajutkeluar';
+    protected $table = 'gd_rajutkeluar_detail';
 
     public function user()
     {
@@ -29,14 +29,5 @@ class GudangRajutKeluar extends Model
     public function material()
     {
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
-    }
-
-    public static function updateStatusDiterima($id, $statusDiterima)
-    {
-        $purchaseUpdated['statusDiterima'] = $statusDiterima;
-
-        self::where('id', $id)->update($purchaseUpdated);
-
-        return 1;
     }
 }

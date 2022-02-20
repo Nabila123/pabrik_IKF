@@ -65,8 +65,8 @@
                                 <tbody class="textAlign">
                                     @foreach ($gRajutRequest as $detail)
                                         <tr>
-                                            <td>{{ $detail->material->nama }}</td>
-                                            <td>{{ $detail->material->satuan }}</td>
+                                            <td>Benang Rajut</td>
+                                            <td>Bal</td>
                                             <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
                                             <td>{{ $detail->user->nama }}</td>
                                             <td>

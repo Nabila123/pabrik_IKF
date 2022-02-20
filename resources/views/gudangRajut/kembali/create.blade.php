@@ -60,11 +60,11 @@
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
                                 <input type="hidden" name="id" id="id" value="{{ $gRajutRequest->id }}">           
-                                @for ($i = 0; $i < count($purchaseId); $i++)
+                                {{--  @for ($i = 0; $i < count($purchaseId); $i++)
                                     <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $purchaseId[$i] }}"> 
-                                @endfor          
+                                @endfor            --}}
                                 
-                                <div class="row mb-5">
+                                {{--  <div class="row mb-5">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nama Barang</label>                                            
@@ -84,23 +84,37 @@
                                             <input type="text" id="satuan" name="satuan" class="form-control satuan disabled" readonly>
                                         </div>
                                     </div>                                                                  
-                                </div>
+                                </div>  --}}
+                                <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
                                 <div class="row mb-5">
                                     <div class="col-12">
-                                        <table id="example2" class="table table-bordered">
+                                        <table class="table table-bordered textAlign">
                                             <thead>
                                                 <tr>
-                                                    <th>Bahan</th>
+                                                    <th>Bahan Baku</th>
+                                                    <th>Hasil Bahan Baku</th>
                                                     <th>Kode Purchase</th>
                                                     <th>Jumlah</th>
+                                                    <th>Gramasi</th>
+                                                    <th>Diameter</th>
+                                                    <th>Berat</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="data">
+                                                <?php $i = 0; ?>
                                                 @foreach ($gRajutRequestDetail as $detail)
-                                                    <tr>
-                                                        <td>{{ $gRajutRequest->material->nama }}</td>
+                                                <?php $i++; ?>
+                                                <input type="hidden" name="namaBahan" class="namaBahan" id="namaBahan" value="{{ $detail->material->nama }}">
+                                                <input type="hidden" name="jumlah_roll_{{ $i }}" id="jumlah_roll_{{ $i }}" value="0">
+                
+                                                    <tr class="data_{{ $i }}">
+                                                        <td>{{ $detail->material->nama }}</td>
+                                                        <td><button type="button" id="THasil" materialKode={{ $i }} class="btn btn-info THasil">Tambah Hasil</button></td>
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ $detail->qty }}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -127,29 +141,36 @@
         $('#material').select2({
             theme: 'bootstrap4'
         });
-        
         $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-            });    
-            
-            var materialId = $('#material').val();
-            var _token = $('#_token').val();
-            
-            $.ajax({
-                type: "post",
-                url: '{{ url('material/getSatuan') }}',
-                data: {
-                    'materialId' : materialId,
-                    '_token': _token
-                },
-                success: function(response){
-                    var data = JSON.parse(response)
-                    $('.satuan').val(data.satuan);
-                    $('.jenisId').val(data.jenisId);
-                    console.log(data.satuan);
-                }
-            })
+            $(document).on("click", "button.THasil", function(){
+                var bahan = $('#namaBahan').val();
+                var data = $('#jumlah_data').val();
+                var materialId = $(this).attr('materialKode');
+                var jumlah_roll = $('#jumlah_roll_'+materialId).val();
+
+
+                console.log("jumlah Data "+ data)
+                console.log("material Id "+ materialId)
+                console.log("jumlah Roll "+ jumlah_roll)
+
+
+
+                jumlah_roll++;
+                jumlah_data = data + 1;
+                dt = '<tr id="'+jumlah_data+'">';
+                dt += '<td>Data Roll '+jumlah_roll+'</td>';
+                dt += '<td>  Grey / Kain Grey </td>';
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value='' > </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value=''> </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value=''> </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' > </td>";
+                dt += '</tr>';
+
+                $('tr.data_'+materialId).after(dt);
+                $('#jumlah_roll_'+materialId).val(jumlah_roll);
+            });
         });
+    
     </script>
 @endpush
