@@ -16,6 +16,11 @@ class GudangRajutKeluar extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function rajutKDetail()
+    {
+        return $this->hasOne('App\Models\GudangRajutKeluarDetail','id','gdRajutKId');
+    }
+
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $purchaseUpdated['statusDiterima'] = $statusDiterima;

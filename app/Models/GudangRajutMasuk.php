@@ -16,6 +16,11 @@ class GudangRajutMasuk extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function rajutKeluar()
+    {
+        return $this->hasOne('App\Models\GudangRajutKeluar','id','gdRajutKId');
+    }
+
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $purchaseUpdated['statusDiterima'] = $statusDiterima;
@@ -23,5 +28,20 @@ class GudangRajutMasuk extends Model
         self::where('id', $id)->update($purchaseUpdated);
 
         return 1;
+    }
+
+    public static function CreateRajutMasuk($gdRajutKId)
+    {
+        $addGudangRajutMasuk = new GudangRajutMasuk;
+        $addGudangRajutMasuk->gdRajutKId = $gdRajutKId;
+        $addGudangRajutMasuk->tanggal = date('Y-m-d H:i:s');
+        $addGudangRajutMasuk->userId = \Auth::user()->id;
+        $addGudangRajutMasuk->created_at = date('Y-m-d H:i:s');
+
+        if ($addGudangRajutMasuk->save()) {
+            return $addGudangRajutMasuk->id;
+        } else {
+            return 0;
+        }
     }
 }

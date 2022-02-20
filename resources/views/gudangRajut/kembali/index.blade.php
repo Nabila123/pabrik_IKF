@@ -42,8 +42,6 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Nama Barang</th>
-                                        <th class="textAlign">Satuan</th>
                                         <th class="textAlign">Tanggal </th>
                                         <th class="textAlign">Operator Rajut</th>
                                         <th class="textAlign">Status Keterangan</th>
@@ -53,8 +51,6 @@
                                 <tbody class="textAlign">
                                     @foreach ($gRajutKembali as $kembali)
                                         <tr>
-                                            <td> {{ $kembali->material->nama }} </td>
-                                            <td> {{ $kembali->material->satuan }} </td>
                                             <td> {{ date('d F Y', strtotime($kembali->tanggal)) }}  </td>
                                             <td> {{ $kembali->user->nama }}  </td>
                                             <td> 

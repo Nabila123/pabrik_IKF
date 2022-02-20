@@ -54,7 +54,7 @@
                         <div class="card-header">
                             <table class="table">
                                 <tr>
-                                    <td> <b>Nama Barang :</b> {{ $gudangKeluar->material->nama }}</td>
+                                    <td> <b>Nama Barang :</b> {{ $material }}</td>
                                 </tr>
                                 <tr>
                                     <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangKeluar->tanggal)) }}</td>

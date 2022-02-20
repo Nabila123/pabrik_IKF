@@ -59,7 +59,7 @@
                         <div class="card-body">
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" name="id" id="id" value="{{ $gRajutRequest->id }}">           
+                                <input type="hidden" name="gdRajutKId" id="gdRajutKId" value="{{ $gRajutRequest->id }}">           
                                 {{--  @for ($i = 0; $i < count($purchaseId); $i++)
                                     <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $purchaseId[$i] }}"> 
                                 @endfor            --}}
@@ -98,20 +98,27 @@
                                                     <th>Gramasi</th>
                                                     <th>Diameter</th>
                                                     <th>Berat</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data">
                                                 <?php $i = 0; ?>
                                                 @foreach ($gRajutRequestDetail as $detail)
                                                 <?php $i++; ?>
+                                                <input type="hidden" name="totalData" class="totalData" id="totalData" value="{{ $i }}">
                                                 <input type="hidden" name="namaBahan" class="namaBahan" id="namaBahan" value="{{ $detail->material->nama }}">
                                                 <input type="hidden" name="jumlah_roll_{{ $i }}" id="jumlah_roll_{{ $i }}" value="0">
+                                                
+                                                <input type="hidden" name="gudangId_{{ $i }}" id="gudangId_{{ $i }}" value="{{ $detail->gudangId }}">
+                                                <input type="hidden" name="purchaseId_{{ $i }}" id="purchaseId_{{ $i }}" value="{{ $detail->purchaseId }}">
+                                                <input type="hidden" name="purchaseKode_{{ $i }}" id="purchaseKode_{{ $i }}" value="{{ $detail->purchase->kode }}">
                 
                                                     <tr class="data_{{ $i }}">
                                                         <td>{{ $detail->material->nama }}</td>
                                                         <td><button type="button" id="THasil" materialKode={{ $i }} class="btn btn-info THasil">Tambah Hasil</button></td>
                                                         <td>{{ $detail->purchase->kode }}</td>
-                                                        <td>{{ $detail->qty }}</td>
+                                                        <td>{{ $detail->qty }} <sub>Kg</sub></td>
+                                                        <td></td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -147,28 +154,45 @@
                 var data = $('#jumlah_data').val();
                 var materialId = $(this).attr('materialKode');
                 var jumlah_roll = $('#jumlah_roll_'+materialId).val();
+                jumlah_roll++;
+                data ++;
+
+                var gudangId = $('#gudangId_'+materialId).val();
+                var purchaseId = $('#purchaseId_'+materialId).val();
+                var purchaseKode = $('#purchaseKode_'+materialId).val();
 
 
                 console.log("jumlah Data "+ data)
                 console.log("material Id "+ materialId)
                 console.log("jumlah Roll "+ jumlah_roll)
 
-
-
-                jumlah_roll++;
-                jumlah_data = data + 1;
-                dt = '<tr id="'+jumlah_data+'">';
-                dt += '<td>Data Roll '+jumlah_roll+'</td>';
-                dt += '<td>  Grey / Kain Grey </td>';
-                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value='' > </td>";
+                dt = '<tr id="'+data+'">';
+                dt += "<td>Data Roll "+jumlah_roll+" <input type='hidden' name='gudangId_"+materialId+"' value='"+gudangId+"' > </td>";
+                dt += "<td>  Grey / Kain Grey <input type='hidden' name='materialId' value='2' > <input type='hidden' name='jenisId' value='2' > </td>";
+                dt += "<td align='center'>"+purchaseKode+"<input type='hidden' name='purchaseId_"+materialId+"' value='"+purchaseId+"' > </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control gramasi' name='qty_"+materialId+"[]' value=''> </td>";
                 dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
-                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value=''> </td>";
-                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value=''> </td>";
-                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' > </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value=''> </td>";
+                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control berat' name='berat_"+materialId+"[]' value='' placeholder='KG'> </td>";
+                dt += "<td align='center'><a class='btn btn-sm btn-block btn-danger del' materialId='"+materialId+"' idsub='"+data+"' style='width:40px;'><span class='fa fa-trash'></span></a> </td>";
                 dt += '</tr>';
 
                 $('tr.data_'+materialId).after(dt);
                 $('#jumlah_roll_'+materialId).val(jumlah_roll);
+                $('#jumlah_data').val(data);
+            });
+
+            $(document).on("click", "a.del", function(e){
+                e.preventDefault();
+                var sub = $(this).attr('idsub');
+                var jumlah_data = $('#jumlah_data').val();
+
+                console.log("Sub "+ sub)
+                console.log("jumlah_data "+ jumlah_data)
+                
+                jumlah_data--;
+                $('#jumlah_data').val(jumlah_data);
+                $('#'+sub+'').remove();
             });
         });
     
