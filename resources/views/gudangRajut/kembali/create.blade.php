@@ -173,7 +173,7 @@
                 dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control gramasi' name='qty_"+materialId+"[]' value=''> </td>";
                 dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
                 dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value=''> </td>";
-                dt += "<td align='center'><input type='text' required style='width:60px;' class='form-control berat' name='berat_"+materialId+"[]' value='' placeholder='KG'> </td>";
+                dt += "<td align='center'><input type='text' required style='width:80px;' class='form-control berat' name='berat_"+materialId+"[]' value='' placeholder='KG'> </td>";
                 dt += "<td align='center'><a class='btn btn-sm btn-block btn-danger del' materialId='"+materialId+"' idsub='"+data+"' style='width:40px;'><span class='fa fa-trash'></span></a> </td>";
                 dt += '</tr>';
 

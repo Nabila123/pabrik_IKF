@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\GudangKeluar;
-use App\Models\GudangKeluarDetail;
-use App\Models\GudangMasuk;
-use App\Models\GudangMasukDetail;
-use App\Models\GudangStokOpname;
+use App\Models\GudangCuciKeluar;
+use App\Models\GudangCuciKeluarDetail;
+use App\Models\GudangCompactKeluar;
+use App\Models\GudangCompactKeluarDetail;
 
 use App\Models\MaterialModel;
 
@@ -20,8 +19,8 @@ class GudangCuciController extends Controller
     }
 
     public function index(){
-        $gudangKeluar = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->get();
-        $gudangMasuk = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('statusDiterima', '>=', 2)->get();
+        $gudangKeluar = GudangCuciKeluar::all();
+        $gudangMasuk = GudangCuciKeluar::where('statusDiterima', '=', 1)->get();
 
         $gudangKeluar = count($gudangKeluar);
         $gudangMasuk = count($gudangMasuk);
@@ -32,10 +31,16 @@ class GudangCuciController extends Controller
 
     /* Gudang Cuci Request */
     public function gudangCuciRequest(){
-        $gCuciRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->get();
+        $gCuciRequest = GudangCuciKeluar::all();
+        $total = 0;
         foreach ($gCuciRequest as $request) {
-            $cekPengembalian = GudangMasuk::where('gudangRequest', 'Gudang Cuci')->where('gudangKeluarId', $request->id)->first();
-            if ($cekPengembalian != null) {
+            $gCuciDetail = GudangCuciKeluarDetail::where('gdCuciKId', $request->id)->get();
+            foreach ($gCuciDetail as $value) {
+                $total += $value->qty;
+            }
+
+            $cekPengembalian = GudangCompactKeluar::where('gdCuciKId', $request->id)->first();
+            if ($cekPengembalian != null && $total == 0) {
                 $request->cekPengembalian = 1;
             }
         }
@@ -44,19 +49,18 @@ class GudangCuciController extends Controller
     }
 
     public function RDetail($id){
-        $gCuciRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
-        $gCuciRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gCuciRequest = GudangCuciKeluar::where('id', $id)->first();
+        $gCuciRequestDetail = GudangCuciKeluarDetail::where('gdCuciKId', $id)->get();
 
         return view('gudangCuci.request.detail', ['gudangKeluar' => $gCuciRequest, 'gudangKeluarDetail' => $gCuciRequestDetail]);
     }
 
     public function RTerimaBarang($id){
 
-        $id = $id;  
-        $gudangRequest = 'Gudang Cuci';  
+        $id = $id;   
         $statusDiterima = 1;
 
-        $gudangCuciTerima = GudangKeluar::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
+        $gudangCuciTerima = GudangCuciKeluar::updateStatusDiterima($id, $statusDiterima);
 
         if ($gudangCuciTerima == 1) {
             return redirect('gudangCuci/Request');
@@ -65,21 +69,27 @@ class GudangCuciController extends Controller
 
     public function Rcreate($id){
         $materials = MaterialModel::get();
-        $gCuciRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
-        $gCuciRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gCuciRequest = GudangCuciKeluar::where('id', $id)->first();
+        $gCuciRequestDetail = GudangCuciKeluarDetail::where('gdCuciKId', $id)->get();
 
         return view('gudangCuci.kembali.create', ['materials' => $materials, 'gCuciRequest' => $gCuciRequest, 'gCuciRequestDetail' => $gCuciRequestDetail]);
     }
 
     public function Rstore(Request $request){
+        $gdCompactKeluar = GudangCompactKeluar::CreateCompactKeluar($request->id); 
+        if ($gdCompactKeluar) {
+            for ($i=1; $i <= count($request->detailId); $i++) { 
+                $total = 0;
+                $gdCuciKeluar = GudangCuciKeluarDetail::where('id', $request['detailId'][$i])->first();
+                GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request["qty"][$i]);
+                
+                $total = $request["qtyOri"][$i] - $request["qty"][$i];
+                GudangCuciKeluarDetail::gudangCuciUpdateField("qty", $total, $gdCuciKeluar->id);
+            }
 
-        $gudangRequest = "Gudang Cuci";
-        $statusDiterima = 2;
-
-        $pemindahan = GudangKeluar::updateStatusDiterima($request->id, $gudangRequest, $statusDiterima);        
-        if ($pemindahan == 1) {
             return redirect('gudangCuci/Kembali');
-        }
+
+        }       
     }
     /* END Gudang Cuci Request */
 

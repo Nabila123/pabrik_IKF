@@ -11,7 +11,7 @@ class GudangBahanBakuDetailMaterial extends Model
 
     protected $table = 'gd_bahanbaku_detail_material';
 
-    public static function CreateDetailMaterial($gudangDetailId, $diameter, $gramasi, $brutto, $netto, $tarra, $unit, $unitPrice, $amount, $remark)
+    public static function CreateDetailMaterial($gudangDetailId, $diameter, $gramasi, $brutto, $netto, $tarra, $qty, $unit, $unitPrice, $amount, $remark)
     {
         $addDetailMaterial = new GudangBahanBakuDetailMaterial;
         $addDetailMaterial->gudangDetailId = $gudangDetailId;
@@ -20,6 +20,7 @@ class GudangBahanBakuDetailMaterial extends Model
         $addDetailMaterial->brutto = $brutto;
         $addDetailMaterial->netto = $netto;
         $addDetailMaterial->tarra = $tarra;
+        $addDetailMaterial->qty = $qty;
         $addDetailMaterial->unit = $unit;
         $addDetailMaterial->unitPrice = $unitPrice;
         $addDetailMaterial->amount = $amount;

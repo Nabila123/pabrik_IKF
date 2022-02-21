@@ -261,9 +261,9 @@
                 },
                 success: function(response){
                    if(response == 1){
-                        $('#purchaseKode').addClass('is-valid').css({'background-image':'https://www.seekpng.com/png/full/433-4334311_gambar-ceklis-png-logo-checklist-png.png'});
+                        $('#purchaseKode').css({'border':'2px solid #2ecc71'});
                    }else{
-                        $('#purchaseKode').addClass('is-invalid').css({'background-image':'https://cdn-icons-png.flaticon.com/512/179/179386.png'});   
+                        $('#purchaseKode').css({'border':'2px solid #e74c3c'});
                    }
                 }
             })

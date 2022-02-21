@@ -60,7 +60,7 @@
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
                                 <input type="hidden" name="id" id="id" value="{{ $gCompactRequest->id }}">  
-                                @for ($i = 0; $i < count($purchaseId); $i++)
+                                {{--  @for ($i = 0; $i < count($purchaseId); $i++)
                                     <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $purchaseId[$i] }}"> 
                                 @endfor         
                                 
@@ -84,20 +84,35 @@
                                             <input type="text" id="satuan" name="satuan" class="form-control satuan disabled" readonly>
                                         </div>
                                     </div>                                                                  
-                                </div>
+                                </div>  --}}
                                 <div class="row mb-5">
                                     <div class="col-12">
                                         <table id="example2" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>Kode Purchase</th>
-                                                    <th>Jumlah</th>
+                                                    <th class="textAlign">Bahan</th>
+                                                    <th class="textAlign">satuan</th>
+                                                    <th class="textAlign">Kode Purchase</th>
+                                                    <th class="textAlign">Gramasi</th>
+                                                    <th class="textAlign">Diamater</th>
+                                                    <th class="textAlign">Berat</th>
+                                                    <th class="textAlign">Jumlah</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="textAlign">
                                                 @foreach ($gCompactRequestDetail as $detail)
                                                     <tr>
+                                                        <td align="center">
+                                                            <input type="hidden" name="materialId" value="{{ $material->id }}">
+                                                            <input style='width:120px; text-align:center;' type="text" name="materialName" id="materialName" value="{{ $material->nama }}" class="form-control materialName disabled" readonly>
+                                                        </td>
+                                                        <td align="center">
+                                                            <input style='width:60px; text-align:center;' type="text" name="satuan" id="satuan" value="{{ $material->satuan }}" class="form-control satuan disabled" readonly>
+                                                        </td>
                                                         <td>{{ $detail->purchase->kode }}</td>
+                                                        <td>{{ $detail->gramasi }}</td>
+                                                        <td>{{ $detail->diameter }}</td>
+                                                        <td>{{ $detail->berat }}</td>
                                                         <td>{{ $detail->qty }}</td>
                                                     </tr>
                                                 @endforeach

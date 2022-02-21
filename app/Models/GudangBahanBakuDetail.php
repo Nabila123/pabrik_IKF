@@ -16,13 +16,14 @@ class GudangBahanBakuDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
-    public static function CreateBahanBakuDetail($gudangId, $purchaseId, $materialId, $qty)
+    public static function CreateBahanBakuDetail($gudangId, $purchaseId, $materialId, $qtyPermintaan, $qtySaatIni)
     {
         $addBahanBakuDetail = new GudangBahanBakuDetail;
         $addBahanBakuDetail->gudangId = $gudangId;
         $addBahanBakuDetail->purchaseId = $purchaseId;
         $addBahanBakuDetail->materialId = $materialId;
-        $addBahanBakuDetail->qty = $qty;
+        $addBahanBakuDetail->qtyPermintaan = $qtyPermintaan;
+        $addBahanBakuDetail->qtySaatIni = $qtySaatIni;
         $addBahanBakuDetail->userId = \Auth::user()->id;
         $addBahanBakuDetail->created_at = date('Y-m-d H:i:s');
 

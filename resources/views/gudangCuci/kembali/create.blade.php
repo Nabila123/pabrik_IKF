@@ -61,7 +61,7 @@
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
                                 <input type="hidden" name="id" id="id" value="{{ $gCuciRequest->id }}">           
                                 
-                                <div class="row mb-5">
+                                {{--  <div class="row mb-5">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nama Barang</label>
@@ -81,21 +81,36 @@
                                             <input type="text" id="satuan" name="satuan" class="form-control satuan disabled" readonly>
                                         </div>
                                     </div>                                                                  
-                                </div>
+                                </div>  --}}
                                 <div class="row mb-5">
                                     <div class="col-12">
                                         <table id="example2" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>Kode Purchase</th>
-                                                    <th>Jumlah</th>
+                                                    <th class="textAlign">Bahan</th>
+                                                    <th class="textAlign">Kode Purchase</th>
+                                                    <th class="textAlign">Gramasi</th>
+                                                    <th class="textAlign">Diamater</th>
+                                                    <th class="textAlign">Berat</th>
+                                                    <th class="textAlign">Jumlah</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="textAlign">
+                                                <?php $i = 0; ?>
                                                 @foreach ($gCuciRequestDetail as $detail)
+                                                <?php $i++; ?>
+                                                <input type="hidden" name="detailId[{{ $i }}]" value="{{ $detail->id }}">
+                                                <input type="hidden" name="qtyOri[{{ $i }}]" id="qtyOri_{{ $i }}" value="{{ $detail->qty }}">
                                                     <tr>
+                                                        <td>{{ $detail->material->nama }}</td>
                                                         <td>{{ $detail->purchase->kode }}</td>
-                                                        <td>{{ $detail->qty }}</td>
+                                                        <td>{{ $detail->gramasi }}</td>
+                                                        <td>{{ $detail->diameter }}</td>
+                                                        <td>{{ $detail->berat }}</td>
+                                                        <td align="center">
+                                                            <input type="text" required style='width:60px;' class='form-control qty' detailId="{{ $i }}" name="qty[{{ $i }}]" id="qty_{{ $i }}" value="{{ $detail->qty }}">
+                                                            <sub id="note_{{ $i }}"></sub>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -124,27 +139,20 @@
         });
 
         $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-            });
+            $(document).on("keyup", ".qty", function(){
+                var detailId = $(this).attr('detailId');
+                var qtyOri = $('#qtyOri_'+detailId).val();
+                var qty = $('#qty_'+detailId).val();
 
-            var materialId = $('#material').val();
-            var _token = $('#_token').val();
-            
-            $.ajax({
-                type: "post",
-                url: '{{ url('material/getSatuan') }}',
-                data: {
-                    'materialId' : materialId,
-                    '_token': _token
-                },
-                success: function(response){
-                    var data = JSON.parse(response)
-                    $('.satuan').val(data.satuan);
-                    $('.jenisId').val(data.jenisId);
-                    console.log(data.satuan);
+                if(qty < qtyOri){
+                    $('#qty_'+detailId).css({'border':'2px solid #2ecc71'});
+                    $('#note_'+detailId).html("");   
                 }
-            })
+                if(qty > qtyOri){
+                    $('#qty_'+detailId).css({'border':'2px solid #e74c3c'});
+                    $('#note_'+detailId).html("Inputan Salah").css({'color':'#e74c3c'});   
+                }                
+            });
         });
     </script>
 @endpush

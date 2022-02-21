@@ -54,8 +54,6 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Nama Barang</th>
-                                        <th class="textAlign">Satuan</th>
                                         <th class="textAlign">Tanggal Pengambilan </th>
                                         <th class="textAlign">Operator Bahan Baku</th>
                                         <th class="textAlign">Status Keterangan</th>
@@ -65,15 +63,13 @@
                                 <tbody class="textAlign">
                                     @foreach ($gCompactRequest as $detail)
                                         <tr>
-                                            <td>{{ $detail->material->nama }}</td>
-                                            <td>{{ $detail->material->satuan }}</td>
                                             <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
                                             <td>{{ $detail->user->nama }}</td>
                                             <td>
-                                                @if ($detail->statusDiterima == 2)
+                                                @if ($detail->statusDiterima == 0)
                                                     <a href="{{ route('GCompact.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                 @else
-                                                    @if ($detail->statusDiterima == 3 && !isset($detail->cekPengembalian))
+                                                    @if ($detail->statusDiterima == 1 && !isset($detail->cekPengembalian))
                                                         <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
                                                         <a href="{{ route('GCompact.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
                                                         <span style="color: green; font-size: 10px">Kembalikan Barang </span>

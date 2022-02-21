@@ -75,14 +75,17 @@ class GudangRajutController extends Controller
     public function Rstore(Request $request){   
         $gdRajutMasuk = GudangRajutMasuk::CreateRajutMasuk($request->gdRajutKId);
         if ($gdRajutMasuk) {
-            for ($i=1; $i <= $request->totalData; $i++) { 
-                for ($j=0; $j < count($request["gramasi_".$i]); $j++) { 
-                    $gudangRajutMasuk = GudangRajutMasukDetail::CreateRajutMasukDetail($request["gudangId_".$i], $gdRajutMasuk, $request["purchaseId_".$i], $request->materialId, $request->jenisId, $request["gramasi_".$i][$j], $request["diameter_".$i][$j], $request["berat_".$i][$j], $request["qty_".$i][$j]);
-                }                     
-            } 
-
-            if ($gudangRajutMasuk == 1) {
-                return redirect('gudangRajut/Kembali');
+            $gdBahanBaku = GudangBahanBaku::CheckBahanBakuData($request);
+            if ($gdBahanBaku) {
+                for ($i=1; $i <= $request->totalData; $i++) { 
+                    for ($j=0; $j < count($request["gramasi_".$i]); $j++) { 
+                        $gudangRajutMasuk = GudangRajutMasukDetail::CreateRajutMasukDetail($request["gudangId_".$i], $gdRajutMasuk, $request["purchaseId_".$i], $request->materialId, $request->jenisId, $request["gramasi_".$i][$j], $request["diameter_".$i][$j], $request["berat_".$i][$j], $request["qty_".$i][$j]);
+                    }                     
+                } 
+    
+                if ($gudangRajutMasuk == 1) {
+                    return redirect('gudangRajut/Kembali');
+                }
             }
         }
     }

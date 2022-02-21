@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GudangKeluar;
-use App\Models\GudangKeluarDetail;
-use App\Models\GudangMasuk;
-use App\Models\GudangMasukDetail;
-use App\Models\GudangStokOpname;
+use App\Models\GudangCompactKeluar;
+use App\Models\GudangCompactKeluarDetail;
+use App\Models\GudangCompactMasuk;
+use App\Models\GudangCompactMasukDetail;
+use App\Models\GudangBahanBaku;
 use App\Models\MaterialModel;
 
 
@@ -19,8 +19,8 @@ class GudangCompactController extends Controller
     }
 
     public function index(){
-        $gudangKeluar = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('StatusDiterima', '>=', 2)->get();
-        $gudangMasuk = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('StatusDiterima', '>=', 3)->get();
+        $gudangKeluar = GudangCompactKeluar::all();
+        $gudangMasuk = GudangCompactMasuk::all();
 
         $gudangKeluar = count($gudangKeluar);
         $gudangMasuk = count($gudangMasuk);
@@ -31,9 +31,9 @@ class GudangCompactController extends Controller
 
     /* Gudang Compact Request */
     public function gudangCompactRequest(){
-        $gCompactRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('statusDiterima', '>=', '2')->get();
+        $gCompactRequest = GudangCompactKeluar::all();
         foreach ($gCompactRequest as $request) {
-            $cekPengembalian = GudangMasuk::where('gudangRequest', 'Gudang Compact')->where('gudangKeluarId', $request->id)->first();
+            $cekPengembalian = GudangCompactMasuk::where('gdCompactKId', $request->id)->first();
             if ($cekPengembalian != null) {
                 $request->cekPengembalian = 1;
             }
@@ -43,8 +43,8 @@ class GudangCompactController extends Controller
     }
 
     public function RDetail($id){
-        $gCompactRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('statusDiterima', '>=', '2')->where('id', $id)->first();
-        $gCompactRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gCompactRequest = GudangCompactKeluar::where('id', $id)->first();
+        $gCompactRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $id)->get();
 
         return view('gudangCompact.request.detail', ['gudangKeluar' => $gCompactRequest, 'gudangKeluarDetail' => $gCompactRequestDetail]);
     }
@@ -52,10 +52,9 @@ class GudangCompactController extends Controller
     public function RTerimaBarang($id){
 
         $id = $id;  
-        $gudangRequest = 'Gudang Cuci';  
-        $statusDiterima = 3;  
+        $statusDiterima = 1;  
 
-        $gudangCompactTerima = GudangKeluar::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
+        $gudangCompactTerima = GudangCompactKeluar::updateStatusDiterima($id, $statusDiterima);
 
         if ($gudangCompactTerima == 1) {
             return redirect('gudangCompact/Request');
@@ -63,47 +62,50 @@ class GudangCompactController extends Controller
     }
 
     public function Rcreate($id){
-        $materials = MaterialModel::get();
-        $gCompactRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
-        $gCompactRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $materials = MaterialModel::where('id', 3)->first();
+        $gCompactRequest = GudangCompactKeluar::where('id', $id)->first();
+        $gCompactRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $id)->get();
 
         foreach ($gCompactRequestDetail as $detail) {
             $purchaseId[] = $detail->purchaseId;
         }
 
-        return view('gudangCompact.kembali.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gCompactRequest' => $gCompactRequest, 'gCompactRequestDetail' => $gCompactRequestDetail]);
+        return view('gudangCompact.kembali.create', ['purchaseId' => $purchaseId, 'material' => $materials, 'gCompactRequest' => $gCompactRequest, 'gCompactRequestDetail' => $gCompactRequestDetail]);
     }
 
     public function Rstore(Request $request){
-        $stokOpnameId = GudangStokOpname::CheckStokOpnameData($request);
-                
-        for ($i=0; $i < count($stokOpnameId); $i++) { 
-            $request['gudangStokId'] = "$stokOpnameId[$i]";
-            $request['gudangRequest'] = "Gudang Compact";
-            $pengembalian = GudangMasuk::createBarangKembali($request); 
-        }       
-        if ($pengembalian) {
-            $gudangMasukId = $pengembalian;
-            $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        
+        // dd($request);
+        $gCompactRequest = GudangCompactKeluar::where('id', $request->id)->first();
+        $gCompactRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gCompactRequest->id)->get();
+        // dd($gCompactRequestDetail);
+        if ($gCompactRequestDetail != null) {
+            $gdCompactMasuk = GudangCompactMasuk::CreateCompactMasuk($gCompactRequest->id);
+            if ($gdCompactMasuk) {
+               foreach ($gCompactRequestDetail as $detail) {
+                   $gdBahanBaku = GudangBahanBaku::CheckBahanBakuForCompact($detail->gudangId, $detail->purchaseId, $request->materialId, $detail->diameter, $detail->gramasi, 0, $detail->berat, 0, 0, $request->satuan, 0, 0, null);
+                   if ($gdBahanBaku == 1) {
+                    $gudangCompactDetail = GudangCompactMasukDetail::CreateCompactMasukDetail($detail->gudangId, $gdCompactMasuk, $detail->purchaseId, $request->materialId, $request->materialId, $detail->gramasi, $detail->diameter, $detail->berat, $detail->qty);
+                   }
+               }
 
-            for ($i=0; $i < count($detailPengembalian); $i++) { 
-                GudangMasukDetail::createBarangKembaliDetail($gudangMasukId, $request['gudangStokId'], $detailPengembalian[$i]);
+               if ($gudangCompactDetail == 1) {
+                    return redirect('gudangCompact/Kembali');
+                }
             }
-
-            return redirect('gudangCompact/Kembali');
-        }
+        }            
+        
     }
     /* END Gudang Compact Request */
 
     /* Gudang Compact Kembali */
     public function gudangCompactKembali(){
-        $gCompactKembali = GudangMasuk::where('gudangRequest', 'Gudang Compact')->get();
+        $gCompactKembali = GudangCompactMasuk::all();
         return view('gudangCompact.kembali.index', ['gCompactKembali' => $gCompactKembali]);
     }
 
     public function KDetail($id){
-        $gCompactKembali = GudangMasuk::where('gudangRequest', 'Gudang Compact')->where('id', $id)->first();
-        $gCompactKembaliDetail = GudangMasukDetail::where('gudangMasukId', $id)->get();
+        $gCompactKembali = GudangCompactMasuk::where('id', $id)->first();
+        $gCompactKembaliDetail = GudangCompactMasukDetail::where('gdCompactMId', $id)->get();
 
         return view('gudangCompact.kembali.detail', ['gudangMasuk' => $gCompactKembali, 'gudangMasukDetail' => $gCompactKembaliDetail]);
     }

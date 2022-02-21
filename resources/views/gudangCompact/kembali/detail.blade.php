@@ -54,9 +54,6 @@
                         <div class="card-header">
                             <table class="table">
                                 <tr>
-                                    <td> <b>Nama Barang :</b> {{ $gudangMasuk->material->nama }}</td>
-                                </tr>
-                                <tr>
                                     <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangMasuk->tanggal)) }}</td>
                                 </tr>
                             </table>
@@ -65,14 +62,22 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
+                                        <th class="textAlign">Bahan</th>
                                         <th class="textAlign">Kode Purchase</th>
+                                        <th class="textAlign">Gramasi</th>
+                                        <th class="textAlign">Diamater</th>
+                                        <th class="textAlign">Berat</th>
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     @foreach ($gudangMasukDetail as $detail)
                                         <tr>
+                                            <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
+                                            <td>{{ $detail->gramasi }}</td>
+                                            <td>{{ $detail->diameter }}</td>
+                                            <td>{{ $detail->berat }}</td>
                                             <td>{{ $detail->qty }}</td>
                                         </tr>
                                     @endforeach
