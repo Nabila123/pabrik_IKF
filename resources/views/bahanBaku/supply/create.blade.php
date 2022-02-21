@@ -76,13 +76,6 @@
                                                             <input class="form-control suplier" required id="suplier" name="suplier" type="text" placeholder="Nama Suplier" readonly>                                            
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Total</label>
-                                                            <input type="text" class="form-control total" required id="total" name="total"placeholder="Total" /> 
-                                                        </div>
-                                                    </div>
-
 
                                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
                                                     <div class="col-12 right">
@@ -94,10 +87,10 @@
                                                                     <th class="textAlign">Jumlah Permintaan</th>
                                                                     <th class="textAlign">Jumlah Saat Ini</th>
                                                                     <th class="textAlign">Jumlah Datang</th>
-                                                                    <th class="textAlign">Satuan </th>
+                                                                    <th class="textAlign">Satuan </th><!-- 
                                                                     <th class="textAlign">Harga Satuan</th>
                                                                     <th class="textAlign">Amount</th>
-                                                                    <th class="textAlign">Remark</th>
+                                                                    <th class="textAlign">Remark</th> -->
                                                                     <th class="textAlign">Diameter</th>
                                                                     <th class="textAlign">Gramasi</th>
                                                                     <th class="textAlign">Bruto </th>
@@ -171,14 +164,14 @@
                             dt += "<td>"+data[i].materialNama;
                             dt += "<input type='hidden' name='materialId[]' value='"+data[i].materialId+"' id='material_"+jumlah_data+"'>";
                             dt += '</td>';
-                            dt += "<td>"+data[i].qty+"<input type='hidden' name='qty_permintaan[]' value='"+data[i].qty+"' id='qty_permintaan_"+jumlah_data+"'></td>";
-                            dt += "<td>"+data[i].qty_saat_ini+"</td>";
-                            dt += "<td><input type='text' name='qty_saat_ini[]' required style='width:60px;' class='form-control qty_saat_ini' id_data='"+jumlah_data+"' value='' id='qty_saat_ini_"+jumlah_data+"'>";
+                            dt += "<td>"+data[i].qty+"<input type='hidden' name='qtyPermintaan[]' value='"+data[i].qty+"' id='qtyPermintaan_"+jumlah_data+"'></td>";
+                            dt += "<td>"+data[i].qtySaatIni+"</td>";
+                            dt += "<td><input type='text' name='qtySaatIni[]' required style='width:60px;' class='form-control qtySaatIni' id_data='"+jumlah_data+"' value='' id='qtySaatIni_"+jumlah_data+"'>";
                             dt += '</td>';
                             dt += "<td>"+data[i].unit+"<input type='hidden' name='unit[]' value='"+data[i].unit+"' id='unit_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].unitPrice+"<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].amount+"<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'> </td>";
-                            dt += "<td>"+data[i].remark+"<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'> </td>";
+                            dt += "<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'>";
+                            dt += "<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'>";
+                            dt += "<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'>";
                             if(data[i].materialId == 1){
                                 dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"'> </td>";
                                 dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
@@ -187,7 +180,7 @@
                                 dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"'> </td>";
                             }else{
                                 dt += '<input type="hidden" name="jumlah_roll_'+data[i].materialId+'" id="jumlah_roll_'+data[i].materialId+'" value="0"/>';
-                                dt += '<td colspan="5"><button type="button" id="addRoll" materialId="'+data[i].materialId+'" data='+jumlah_data+' style="float: left" class="btn btn-info btn-flat-right addRoll">Tambah Data Roll</button><td>'
+                                dt += '<td colspan="5"><button type="button" id="addRoll" materialId="'+data[i].materialId+'" data='+jumlah_data+' style="float: left" class="btn btn-info btn-flat-right addRoll">Tambah Data Roll</button></td>'
                             }
                             dt += '</tr>';
                             nomor++;
@@ -204,9 +197,9 @@
             var materialId = $(this).attr('materialId');
             var jumlah_roll = $('#jumlah_roll_'+materialId).val();
             jumlah_roll++;
-            jumlah_data = data + 1;
+            jumlah_data = parseInt(data) + 1;
             dt = '<tr id="'+jumlah_data+'">';
-            dt += '<td colspan="9">Data Roll '+jumlah_roll+'</td>';
+            dt += '<td colspan="6">Data Roll '+jumlah_roll+'</td>';
             dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value='' > </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value=''> </td>";

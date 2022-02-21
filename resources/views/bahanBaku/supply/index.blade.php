@@ -53,21 +53,21 @@
                             <div style="margin:10px; text-align: right;">
                                 <a href="{{ route('bahan_baku.supply.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Barang Datang</a>
                             </div>
-                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                            <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th style="vertical-align: middle; width: 30%;">Kode Purchase</th>
-                                        <th style="vertical-align: middle; width: 30%;">Nama Supplier</th>
-                                        <th style="vertical-align: middle; width: 25%;">Total</th>
-                                        <th style="vertical-align: middle; width:30%;">action</th>
+                                        <th style="vertical-align: middle;">Kode Purchase</th>
+                                        <th style="vertical-align: middle;">Nama Supplier</th>
+                                        <!-- <th style="vertical-align: middle;">Total</th> -->
+                                        <th style="vertical-align: middle;">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $key=>$value)
                                         <tr>
-                                            <td>{{$value->kodePurchase}}</td>
+                                            <td>{{$value->purchase->kode}}</td>
                                             <td>{{$value->namaSuplier}}</td>
-                                            <td>{{$value->total}}</td>
+                                            <!-- <td>{{$value->total}}</td> -->
                                             <td>
                                                 <a href="{{ route('bahan_baku.supply.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 <a href="{{ route('bahan_baku.supply.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
