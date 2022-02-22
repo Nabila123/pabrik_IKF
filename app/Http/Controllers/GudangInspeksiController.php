@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GudangKeluar;
-use App\Models\GudangKeluarDetail;
-use App\Models\GudangMasuk;
-use App\Models\GudangMasukDetail;
-use App\Models\GudangStokOpname;
+use App\Models\GudangInspeksiKeluar;
+use App\Models\GudangInspeksiKeluarDetail;
+use App\Models\GudangInspeksiMasuk;
+use App\Models\GudangInspeksiMasukDetail;
 use App\Models\MaterialModel;
 use App\Models\AdminPurchase;
 use App\Models\AdminPurchaseDetail;
@@ -22,8 +21,8 @@ class GudangInspeksiController extends Controller
     }
 
     public function index() {
-        $gudangKeluar = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->get();
-        $gudangMasuk = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->get();
+        $gudangKeluar = GudangInspeksiKeluar::all();
+        $gudangMasuk = GudangInspeksiMasuk::all();
         $data = gudangInspeksiStokOpname::all();
         $materials = MaterialModel::where('id', 3)->get();
 
@@ -46,13 +45,13 @@ class GudangInspeksiController extends Controller
 
     /* Gudang Inspeksi Request */
     public function gudangInspeksiRequest(){
-        $gInspeksiRequest = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->get();
+        $gInspeksiRequest = GudangInspeksiKeluar::all();
         foreach ($gInspeksiRequest as $request) {
-            $cekDetail = GudangKeluarDetail::select('purchaseId')->where('gudangKeluarId', $request->id)->get();
+            $cekDetail = GudangInspeksiKeluarDetail::select('purchaseId')->where('gdInspeksiKId', $request->id)->get();
 
             foreach ($cekDetail as $detail) {
                 $gudangInspeksi = gudangInspeksiStokOpname::where('purchaseId', $detail->purchaseId)->first();
-                $cekPengembalian = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->where('gudangKeluarId', $request->id)->first();
+                $cekPengembalian = GudangInspeksiMasuk::where('gdInspeksiKId', $request->id)->first();
                 
                 if ($gudangInspeksi != null) {
                     $request->cekInspeksi = 1;
@@ -67,8 +66,8 @@ class GudangInspeksiController extends Controller
     }
 
     public function RDetail($id){
-        $gInspeksiRequest = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->where('id', $id)->first();
-        $gInspeksiRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gInspeksiRequest = GudangInspeksiKeluar::where('id', $id)->first();
+        $gInspeksiRequestDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $id)->get();
 
         return view('gudangInspeksi.request.detail', ['gudangKeluar' => $gInspeksiRequest, 'gudangKeluarDetail' => $gInspeksiRequestDetail]);
     }
@@ -76,10 +75,9 @@ class GudangInspeksiController extends Controller
     public function RTerimaBarang($id){
 
         $id = $id;  
-        $gudangRequest = 'Gudang Inspeksi';  
         $statusDiterima = 1;  
 
-        $gudangInspeksiTerima = GudangKeluar::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
+        $gudangInspeksiTerima = GudangInspeksiKeluar::updateStatusDiterima($id, $statusDiterima);
 
         if ($gudangInspeksiTerima == 1) {
             return redirect('gudangInspeksi/Request');
@@ -88,8 +86,8 @@ class GudangInspeksiController extends Controller
 
     public function Rcreate($id){
         $materials = MaterialModel::get();
-        $gInspeksiRequest = GudangKeluar::where('gudangRequest', 'Gudang Inspeksi')->where('id', $id)->first();
-        $gInspeksiRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gInspeksiRequest = GudangInspeksiKeluar::where('id', $id)->first();
+        $gInspeksiRequestDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $id)->get();
 
         foreach ($gInspeksiRequestDetail as $detail) {
             $purchaseId[] = $detail->purchaseId;
@@ -99,24 +97,26 @@ class GudangInspeksiController extends Controller
     }
 
     public function Rstore(Request $request){
-        $stokOpnameId = GudangStokOpname::CheckStokOpnameData($request);
-                
-        for ($i=0; $i < count($stokOpnameId); $i++) { 
-            $request['gudangStokId'] = "$stokOpnameId[$i]";
-            $request['gudangRequest'] = "Gudang Inspeksi";
-            $pengembalian = GudangMasuk::createBarangKembali($request); 
-        }
-               
-        if ($pengembalian) {
-            $gudangMasukId = $pengembalian;
-            $detailPengembalian = GudangKeluarDetail::where('gudangKeluarId', $request['id'])->get();        
+        
+        $gInspeksiRequest = GudangInspeksiKeluar::where('id', $request->id)->first();
+        $gInspeksiRequestDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $gInspeksiRequest->id)->get();
+        // dd($gInspeksiRequestDetail);
 
-            for ($i=0; $i < count($detailPengembalian); $i++) { 
-                GudangMasukDetail::createBarangKembaliDetail($gudangMasukId, $request['gudangStokId'], $detailPengembalian[$i]);
+        if ($gInspeksiRequestDetail != null) {
+            $gdInspeksiMasuk = GudangInspeksiMasuk::CreateInspeksiMasuk($gInspeksiRequest->id);
+            if ($gdInspeksiMasuk) {
+                foreach ($gInspeksiRequestDetail as $detail) {
+                    // $gdBahanBaku = GudangBahanBaku::CheckBahanBakuForCompact($detail->gudangId, $detail->purchaseId, $request->materialId, $detail->diameter, $detail->gramasi, 0, $detail->berat, 0, 0, $request->satuan, 0, 0, null);
+                    // if ($gdBahanBaku == 1) {
+                     $gudangInspeksiDetail = GudangInspeksiMasukDetail::CreateInspeksiMasukDetail($detail->gudangId, $detail->gdDetailMaterialId, $gdInspeksiMasuk, $detail->purchaseId, $detail->materialId, $detail->materialId, $detail->gramasi, $detail->diameter, $detail->berat, $detail->qty);
+                    // }
+                }
+
+                if ($gudangInspeksiDetail == 1) {
+                    return redirect('gudangInspeksi/Kembali');
+                }
             }
-
-            return redirect('gudangInspeksi/Kembali');
-        }
+        }        
     }
     /* END Gudang Inspeksi Request */
 
@@ -132,10 +132,9 @@ class GudangInspeksiController extends Controller
         $purchaseInspeksi = [];
         $purchaseMaterial = [];
         $index = 0;
-        $gudangKeluar = GudangKeluar::select('id', 'materialId', 'jenisId', 'statusDiterima')->where('gudangRequest','Gudang Inspeksi')->get();
+        $gudangKeluar = GudangInspeksiKeluar::select('id', 'statusDiterima')->get();
         foreach ($gudangKeluar as $value) {
-            $gudangKeluarDetail = GudangKeluarDetail::select('purchaseId','gudangStokId')->where('gudangKeluarId', $value->id)->first();
-            
+            $gudangKeluarDetail = GudangInspeksiKeluarDetail::select('purchaseId','gdDetailMaterialId','materialId', 'jenisId')->where('gdInspeksiKId', $value->id)->first();
             $purchaseInspeksi[$index] = [
                 "id" => $gudangKeluarDetail->purchaseId,
                 "kode" => $gudangKeluarDetail->purchase->kode,              
@@ -143,9 +142,9 @@ class GudangInspeksiController extends Controller
             ];
             
             $purchaseMaterial = [
-                "gudangStokId" => $gudangKeluarDetail->gudangStokId,
-                "materialId" => $value->materialId,
-                "jenisId" => $value->jenisId
+                "gdDetailMaterialId" => $gudangKeluarDetail->gdDetailMaterialId,
+                "materialId" => $gudangKeluarDetail->materialId,
+                "jenisId" => $gudangKeluarDetail->jenisId
             ];
 
             $index++;
@@ -157,8 +156,8 @@ class GudangInspeksiController extends Controller
 
     public function PStore(Request $request)
     {
-        
-        $gudangInspeksi = gudangInspeksiStokOpname::createInspeksiProses($request->gudangStokId, $request->purchaseId, $request->materialId, $request->jenisId, date('Y-m-d H:i:s'), \Auth::user()->id);
+        // dd($request);
+        $gudangInspeksi = gudangInspeksiStokOpname::createInspeksiProses($request->gdDetailMaterialId, $request->purchaseId, $request->materialId, $request->jenisId, $request->gramasi, $request->diameter, date('Y-m-d H:i:s'), \Auth::user()->id);
 
         if ($gudangInspeksi) {
             $inspeksiId = $gudangInspeksi;
@@ -173,7 +172,7 @@ class GudangInspeksiController extends Controller
     public function PDetail($id)
     {
         $gudangInspeksi = gudangInspeksiStokOpname::where('id', $id)->first();
-        $gudangInspeksiDetail = gudangInspeksiStokOpnameDetail::where('gudangInspeksiStokId', $id)->get();
+        $gudangInspeksiDetail = gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $id)->get();
 
         return view('gudangInspeksi.proses.detail', ['gudangInspeksi' => $gudangInspeksi, 'gudangInspeksiDetail' => $gudangInspeksiDetail]);
     }
@@ -218,13 +217,13 @@ class GudangInspeksiController extends Controller
 
     /* Gudang Inspeksi Kembali */
     public function gudangInspeksiKembali(){
-        $gInspeksiKembali = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->get();
+        $gInspeksiKembali = GudangInspeksiMasuk::all();
         return view('gudangInspeksi.kembali.index', ['gInspeksiKembali' => $gInspeksiKembali]);
     }
 
     public function KDetail($id){
-        $gInspeksiKembali = GudangMasuk::where('gudangRequest', 'Gudang Inspeksi')->where('id', $id)->first();
-        $gInspeksiKembaliDetail = GudangMasukDetail::where('gudangMasukId', $id)->get();
+        $gInspeksiKembali = GudangInspeksiMasuk::where('id', $id)->first();
+        $gInspeksiKembaliDetail = GudangInspeksiMasukDetail::where('gdInspeksiMId', $id)->get();
 
 
         return view('gudangInspeksi.kembali.detail', ['gudangMasuk' => $gInspeksiKembali, 'gudangMasukDetail' => $gInspeksiKembaliDetail]);

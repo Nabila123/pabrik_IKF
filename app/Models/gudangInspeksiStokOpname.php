@@ -9,7 +9,7 @@ class gudangInspeksiStokOpname extends Model
 {
     use HasFactory;
 
-    protected $table = 'tr_inspeksi_stok_opname';
+    protected $table = 'gd_inspeksi_stok_opname';
 
     public function user()
     {
@@ -27,12 +27,14 @@ class gudangInspeksiStokOpname extends Model
     }
 
 
-    public static function createInspeksiProses($gudangStokId, $purchaseId, $materialId, $jenisId, $tanggal, $userId){
+    public static function createInspeksiProses($gdDetailMaterialId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $tanggal, $userId){
         $addInspeksi = new gudangInspeksiStokOpname;
-        $addInspeksi->gudangStokId = $gudangStokId;
+        $addInspeksi->gdDetailMaterialId = $gdDetailMaterialId;
         $addInspeksi->purchaseId = $purchaseId;
         $addInspeksi->materialId = $materialId;
         $addInspeksi->jenisId = $jenisId;
+        $addInspeksi->gramasi = $gramasi;
+        $addInspeksi->diameter = $diameter;
         $addInspeksi->qty = 0;
         $addInspeksi->tanggal = $tanggal;
 

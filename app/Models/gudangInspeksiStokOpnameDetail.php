@@ -9,12 +9,12 @@ class gudangInspeksiStokOpnameDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'tr_inspeksi_stok_opname_detail';
+    protected $table = 'gd_inspeksi_stokopname_detail';
 
     public static function createInspeksiProsesDetail($gudangInspeksi, $roll, $berat, $panjang, $lubang, $plex, $belang, $tanah, $sambung, $jarum, $ket)
     {
         $AddDetailInspeksiProses = new gudangInspeksiStokOpnameDetail;
-        $AddDetailInspeksiProses->gudangInspeksiStokId = $gudangInspeksi;
+        $AddDetailInspeksiProses->gdInspeksiStokId = $gudangInspeksi;
         $AddDetailInspeksiProses->roll = $roll;
         $AddDetailInspeksiProses->berat = $berat;
         $AddDetailInspeksiProses->yard = $panjang;

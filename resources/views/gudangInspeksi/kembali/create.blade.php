@@ -64,7 +64,7 @@
                                     <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $purchaseId[$i] }}"> 
                                 @endfor
                                 
-                                <div class="row mb-5">
+                                {{--  <div class="row mb-5">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Nama Barang</label>                                            
@@ -84,22 +84,28 @@
                                             <input type="text" id="satuan" name="satuan" class="form-control satuan disabled" readonly>
                                         </div>
                                     </div>                                                                  
-                                </div>
+                                </div>  --}}
                                 <div class="row mb-5">
                                     <div class="col-12">
                                         <table id="example2" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>Bahan</th>
-                                                    <th>Kode Purchase</th>
-                                                    <th>Jumlah</th>
+                                                    <th class="textAlign">Bahan</th>
+                                                    <th class="textAlign">Kode Purchase</th>
+                                                    <th class="textAlign">Gramasi</th>
+                                                    <th class="textAlign">Diamater</th>
+                                                    <th class="textAlign">Berat</th>
+                                                    <th class="textAlign">Jumlah</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="textAlign">
                                                 @foreach ($gInspeksiRequestDetail as $detail)
                                                     <tr>
-                                                        <td>{{ $gInspeksiRequest->material->nama }}</td>
+                                                        <td>{{ $detail->material->nama }}</td>
                                                         <td>{{ $detail->purchase->kode }}</td>
+                                                        <td>{{ $detail->gramasi }}</td>
+                                                        <td>{{ $detail->diameter }}</td>
+                                                        <td>{{ $detail->berat }}</td>
                                                         <td>{{ $detail->qty }}</td>
                                                     </tr>
                                                 @endforeach

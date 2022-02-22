@@ -70,22 +70,28 @@
                                     </div>
                                 </div> 
     
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label>Nama Suplier</label>
                                     <div class="input-group">                                            
                                         <input type="text" value="{{ $gudangInspeksi->purchase->suplierName }}" class="form-control namaSuplier disabled" readonly>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label>Jenis Kain</label>
                                     <div class="input-group">                                            
                                         <input type="text" value="{{ $gudangInspeksi->material->nama }}" class="form-control jenisKain disabled" readonly>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
+                                    <label>Gramasi</label>
+                                    <div class="input-group">                                            
+                                        <input type="text" value="{{ $gudangInspeksi->gramasi }}" class="form-control gramasi disabled" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-3">
                                     <label>Diameter</label>
                                     <div class="input-group">                                            
-                                        <input type="text" value="{{ $gudangInspeksi->purchase->bahanBaku->bahanBakuDetail->diameter }}" class="form-control diameter disabled" readonly>
+                                        <input type="text" value="{{ $gudangInspeksi->diameter }}" class="form-control diameter disabled" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -115,48 +121,12 @@
                                                     <td>{{ $detail->roll }}</td>
                                                     <td>{{ $detail->berat }}</td>
                                                     <td>{{ $detail->yard }}</td>
-                                                    <td> 
-                                                        @if ($detail->lubang == 1)
-                                                            <i class="fas fa-check" style="font-size: 12px;"></i>
-                                                        @else
-                                                            <i class="fas fa-times" style="font-size: 12px;"></i>
-                                                        @endif 
-                                                    </td>
-                                                    <td> 
-                                                        @if ($detail->plek == 1)
-                                                            <i class="fas fa-check" style="font-size: 12px;"></i>
-                                                        @else
-                                                            <i class="fas fa-times" style="font-size: 12px;"></i>
-                                                        @endif 
-                                                    </td>
-                                                    <td> 
-                                                        @if ($detail->belang == 1)
-                                                            <i class="fas fa-check" style="font-size: 12px;"></i>
-                                                        @else
-                                                            <i class="fas fa-times" style="font-size: 12px;"></i>
-                                                        @endif 
-                                                    </td>
-                                                    <td> 
-                                                        @if ($detail->tanah == 1)
-                                                            <i class="fas fa-check" style="font-size: 12px;"></i>
-                                                        @else
-                                                            <i class="fas fa-times" style="font-size: 12px;"></i>
-                                                        @endif 
-                                                    </td>
-                                                    <td> 
-                                                        @if ($detail->bs == 1)
-                                                            <i class="fas fa-check" style="font-size: 12px;"></i>
-                                                        @else
-                                                            <i class="fas fa-times" style="font-size: 12px;"></i>
-                                                        @endif 
-                                                    </td>
-                                                    <td> 
-                                                        @if ($detail->jarum == 1)
-                                                            <i class="fas fa-check" style="font-size: 12px;"></i>
-                                                        @else
-                                                            <i class="fas fa-times" style="font-size: 12px;"></i>
-                                                        @endif 
-                                                    </td>
+                                                    <td>{{ $detail->lubang }}</td>
+                                                    <td>{{ $detail->plek }}</td>
+                                                    <td>{{ $detail->belang }}</td>
+                                                    <td>{{ $detail->tanah }}</td>
+                                                    <td>{{ $detail->bs }}</td>
+                                                    <td>{{ $detail->jarum }}</td>
                                                     <td>{{ $detail->keterangan }}</td>
                                                 </tr>
                                             @endforeach
