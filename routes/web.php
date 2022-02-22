@@ -152,5 +152,14 @@ Route::post('/gudangInspeksi/proses/update/{id}', [App\Http\Controllers\GudangIn
 Route::get('/gudangInspeksi/proses/update/delete/{detailId}/{inspeksiId}', [App\Http\Controllers\GudangInspeksiController::class, 'PUpdateDelete'])->name('GInspeksi.proses.update.delete');
 Route::delete('/gudangInspeksi/proses/delete', [App\Http\Controllers\GudangInspeksiController::class, 'PDelete'])->name('GInspeksi.proses.delete');
 
+/* PPIC */
+Route::get('/ppic', [App\Http\Controllers\PPICController::class, 'index'])->name('ppic');
+
+Route::get('/ppic/Gudang', [App\Http\Controllers\PPICController::class, 'gdRequest'])->name('ppic.gdRequest');
+Route::get('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestCreate'])->name('ppic.gdRequest.create');
+Route::post('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestStore'])->name('ppic.gdRequest.create');
+Route::get('ppic/Gudang/detail/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestDetail'])->name('ppic.gdRequest.detail');
+Route::delete('/ppic/Gudang//delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
+
 
 Auth::routes();

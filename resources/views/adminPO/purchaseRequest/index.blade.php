@@ -51,9 +51,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('adminPO.poRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
-                            </h3>
+                            @if (\Auth::user()->roleId == 38)
+                                <h3 class="card-title">
+                                    <a href="{{ route('adminPO.poRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
+                                </h3>
+                            @endif
                         </div>
                         <div class="card-body">
                             <table id="example2" class="table table-bordered  dataTables_scrollBody" style="width: 100%;">
