@@ -57,6 +57,33 @@ class PPICController extends Controller
         return view('ppic.gudangRequest.detail', ['ppicRequest' => $ppicRequest, 'ppicRequestDetail' => $ppicRequestDetail]);
     }   
 
+    public function gdRequestUpdate($id)
+    {
+        $materials = MaterialModel::where('keterangan', 'Bahan Baku')->get();
+        $ppicRequest = PPICGudangRequest::where('id', $id)->first();
+        $ppicRequestDetail = PPICGudangRequestDetail::where('gdPpicRequestId', $ppicRequest->id)->get();
+
+        return view('ppic.gudangRequest.update', ['materials' => $materials, 'ppicRequest' => $ppicRequest, 'ppicRequestDetail' => $ppicRequestDetail]);
+    }
+
+    public function gdRequestUpdateStore($id, Request $request)
+    {
+        $ppicRequest = PPICGudangRequest::where('id', $id)->first();
+        for ($i=0; $i < $request->jumlah_data; $i++) {
+            $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['qty'][$i]);
+        }
+
+        return redirect('ppic/Gudang');
+    }
+
+    public function gdRequestDetailDelete($detailId, $ppicRequestId)
+    {
+        $ppicRequestDetail = PPICGudangRequestDetail::where('id', $detailId)->delete();
+        if ($ppicRequestDetail) {
+            return redirect('ppic/Gudang/Update/' . $ppicRequestId . '');
+        }
+    }
+
     public function gdRequestDelete(Request $request)
     {
         PPICGudangRequestDetail::where('gdPpicRequestId', $request['ppicRequestId'])->delete();        

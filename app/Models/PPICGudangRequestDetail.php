@@ -15,6 +15,11 @@ class PPICGudangRequestDetail extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function ppicRequest()
+    {
+        return $this->hasOne('App\Models\PPICGudangRequest','id','gdPpicRequestId');
+    }
+
     public function material()
     {
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
