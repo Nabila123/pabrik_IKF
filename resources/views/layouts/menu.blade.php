@@ -21,7 +21,7 @@
                 <a href="{{ route($main->alias) }}" class="nav-link active">
                     <i class="nav-icon fas fa-home"></i>
                     <p>
-                        {{ $main->nama }}
+                        {{ $main->nama }}                        
                     </p>
                 </a>
             </li>
@@ -29,8 +29,13 @@
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-home"></i>
-                    <p>
+                    <p style="font-size: 14px">
                         {{ $main->nama }}
+                        @if(notifMenu($main->id)) 
+                            <sup class="badge bg">
+                                <i class="fa fa-star" style="color: #48ff00;"></i>
+                            </sup>
+                        @endif
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
@@ -40,7 +45,16 @@
                             <li class="nav-item">
                                 <a href="{{ route($menu->alias) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>{{ $menu->nama }}</p>
+                                    <p style="font-size: 14px">
+                                        {{ $menu->nama }}
+                                        @if($cekMenu = notifMenu($main->id)) 
+                                            @if (isset($cekMenu[$menu->id]))
+                                                <span class="badge bg" style="background-color: #1AAD19; ">
+                                                    {{ count($cekMenu)-1 }}
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </p>
                                 </a>
                             </li>
                     @endforeach
