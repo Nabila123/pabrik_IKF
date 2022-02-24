@@ -164,5 +164,9 @@ Route::get('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::cla
 Route::post('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdateStore'])->name('ppic.gdRequest.update');
 Route::delete('/ppic/Gudang//delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
 
+/* PPIC */
+Route::get('/GPotong', [App\Http\Controllers\GudangPotongController::class, 'index'])->name('GPotong');
+
+Route::get('/GPotong/proses', [App\Http\Controllers\GudangPotongController::class, 'gProses'])->name('GPotong.proses');
 
 Auth::routes();
