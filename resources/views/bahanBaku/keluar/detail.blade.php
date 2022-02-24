@@ -57,9 +57,6 @@
                                     <td> <b>Gudang :</b> {{ $data->gudangRequest }}</td>
                                 </tr>
                                 <tr>
-                                    <td> <b>Nama Barang :</b> {{ $data->material->nama }}</td>
-                                </tr>
-                                <tr>
                                     <td> <b>Tanggal Request :</b> {{ date('d F Y', strtotime($data->tanggal)) }}</td>
                                 </tr>
                             </table>
@@ -68,14 +65,26 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
+                                        <th class="textAlign">Bahan</th>
                                         <th class="textAlign">Kode Purchase</th>
+                                        @if ($data->gudangRequest != "Gudang Rajut")
+                                            <th class="textAlign">Gramasi</th>
+                                            <th class="textAlign">Diamater</th>
+                                            <th class="textAlign">Berat</th>
+                                        @endif
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     @foreach ($dataDetail as $detail)
                                         <tr>
+                                            <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
+                                            @if ($data->gudangRequest != "Gudang Rajut")
+                                                <td>{{ $detail->gramasi }}</td>
+                                                <td>{{ $detail->diameter }}</td>
+                                                <td>{{ $detail->berat }}</td>
+                                            @endif
                                             <td>{{ $detail->qty }}</td>
                                         </tr>
                                     @endforeach

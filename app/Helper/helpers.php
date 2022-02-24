@@ -44,7 +44,7 @@
         $notif = [];
 
         if ($mains->nama == "PPIC" && $user == 38) { //PPIC Gudang Request
-            $notif = PPICGudangRequest::where('statusDiterima', 0)->get();               
+            $notif = PPICGudangRequest::where('statusDiterima', 1)->get();               
             if (count($notif) != 0) {
                 $notif[5] = $notif;
                 return $notif;
@@ -84,9 +84,9 @@
 
         if ($mains->nama == "Gudang Bahan Baku") {
             if ($user == 38) { //Gudang Rajut Masuk
-                $notifRajut = GudangRajutMasuk::where('statusDiterima', 0)->get();          
-                $notifCompact = GudangCompactMasuk::where('statusDiterima', 0)->get();  
-                $notifInspeksi = GudangInspeksiMasuk::where('statusDiterima', 0)->get();  
+                $notifRajut = GudangRajutKeluar::where('statusDiterima', 0)->get();          
+                $notifCompact = GudangCompactKeluar::where('statusDiterima', 0)->get();  
+                $notifInspeksi = GudangInspeksiKeluar::where('statusDiterima', 0)->get();  
             }
             
             if (count($notifRajut) != 0){
@@ -99,10 +99,12 @@
                 $notif[] = $notifInspeksi;
             }
 
+            // dd($notif);
             if (count($notif) != 0) {
                 $notif[15] = $notif;
                 return $notif;
             }
+
         }
 
         if ($mains->nama == "Gudang Rajut") {

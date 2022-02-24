@@ -57,36 +57,40 @@
                                 <thead>
                                     <tr>
                                         <th style="vertical-align: middle; width: 20%;">Gudang Request</th>
-                                        <th style="vertical-align: middle; width: 30%;">Material</th>
                                         <th style="vertical-align: middle; width:10%;">Tanggal </th>
                                         <th style="vertical-align: middle; width:20%;">Status </th>
                                         <th style="vertical-align: middle; width:10%;">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($data as $key=>$value)
-                                        <tr>
-                                            <td>{{$value->gudangRequest}}</td>
-                                            <td>{{$value->material->nama}}</td>
-                                            <td>{{$value->tanggal}}</td>
-                                            <td>
-                                                @if ($value->statusDiterima == 0)
-                                                <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penyerahan</span>
-                                               
-                                                @elseif ($value->statusDiterima == 1)
-                                                    <span style="color: green; font-size: 13px">Barang Sudah Diterima Oleh {{$value->gudangRequest}}</span>
-                                                @elseif ($value->statusDiterima == 2)
-                                                    <span style="color: green; font-size: 13px">Barang Sedang Dipindahkan ke Gudang Compact</span>
-                                                @elseif ($value->statusDiterima == 3)
-                                                    <span style="color: green; font-size: 13px">Barang Sudah Diterima Oleh Gudang Compact</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('bahan_baku.keluar.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" dataId='{{ $value->id }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
-                                            </td>
-                                        </tr>
-                                    @endforeach                                    
+                                    @for ($i = 0; $i < count($data); $i++)
+                                        @for ($j = 0; $j < count($data[$i]); $j++)
+                                            <tr>
+                                                <td>{{$data[$i][$j]->gudangRequest}}</td>
+                                                <td>{{$data[$i][$j]->tanggal}}</td>
+                                                <td>
+                                                    @if ($data[$i][$j]->statusDiterima == 0)
+                                                    <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penyerahan</span>
+                                                
+                                                    @elseif ($data[$i][$j]->statusDiterima == 1)
+                                                        <span style="color: green; font-size: 13px">Barang Sudah Diterima Oleh {{$data[$i][$j]->gudangRequest}}</span>
+                                                    @elseif ($data[$i][$j]->statusDiterima == 2)
+                                                        <span style="color: green; font-size: 13px">Barang Sedang Dipindahkan ke Gudang Compact</span>
+                                                    @elseif ($data[$i][$j]->statusDiterima == 3)
+                                                        <span style="color: green; font-size: 13px">Barang Sudah Diterima Oleh Gudang Compact</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('bahan_baku.keluar.detail',['id'=>$data[$i][$j]->id, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                    @if ($data[$i][$j]->statusDiterima == 0 && !isset($data[$i][$j]->cuciDelete))
+                                                        <button type="button" data-toggle="modal" dataId='{{ $data[$i][$j]->id }}' dataRequest="{{ $data[$i][$j]->gudangRequest }}" data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
+                                                    @else
+                                                        <button type="button" class='btn btn-danger disabled'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endfor
+                                    @endfor                                  
                                 </tbody>                                
                             </table>
                         </div> 
@@ -109,7 +113,8 @@
                     <div class="modal-body">
                         {{ csrf_field() }}
                         <p>Anda yakin ingin menghapus data ini ?</p>
-                        <input type="hidden" name="gudangId" id="gudangId">
+                        <input type="hidden" name="gudangRequestId" id="gudangRequestId">
+                        <input type="hidden" name="gudangRequestName" id="gudangRequestName">
                     </div>
                     <div class="modal-footer">
                         <center>
@@ -131,7 +136,9 @@
 
             $('.delete').click(function () {
                var id = $(this).attr('dataId');
-               $('#gudangId').val(id);
+               var gudangRequest = $(this).attr('dataRequest');
+               $('#gudangRequestId').val(id);
+               $('#gudangRequestName').val(gudangRequest);
             });
 
             $('.submitDelete').click(function(){
@@ -144,6 +151,7 @@
                 var url = '{{ route('bahan_baku.keluar.delete') }}';
                 // url = url.replace(':id', id);
                 console.log(id);
+                $('#gudangId').val(id);
                 $('#gudangId').val(id);
                 $("#deleteForm").attr('action', url);
             }
