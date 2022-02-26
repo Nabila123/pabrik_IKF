@@ -87,17 +87,17 @@
                 $notifRajut = GudangRajutMasuk::where('statusDiterima', 0)->get();          
                 $notifCompact = GudangCompactMasuk::where('statusDiterima', 0)->get();  
                 $notifInspeksi = GudangInspeksiMasuk::where('statusDiterima', 0)->get();  
-            }
-            
-            if (count($notifRajut) != 0){
-                $notif[] = $notifRajut;
-            } 
-            if (count($notifCompact) != 0){
-                $notif[] = $notifCompact;
-            } 
-            if (count($notifInspeksi) != 0) {
-                $notif[] = $notifInspeksi;
-            }
+
+                if (count($notifRajut) != 0){
+                    $notif[] = $notifRajut;
+                } 
+                if (count($notifCompact) != 0){
+                    $notif[] = $notifCompact;
+                } 
+                if (count($notifInspeksi) != 0) {
+                    $notif[] = $notifInspeksi;
+                }
+            }          
 
             // dd($notif);
             if (count($notif) != 0) {
