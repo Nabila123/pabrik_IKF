@@ -25,6 +25,7 @@ use App\Models\GudangInspeksiStokOpname;
 use App\Models\MaterialModel;
 use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
+use App\Models\PPICGudangRequest;
 
 class GudangBahanBakuController extends Controller
 {
@@ -269,6 +270,24 @@ class GudangBahanBakuController extends Controller
         }
                 
         return redirect('bahan_baku/supply');
+    }
+
+    public function ppicRequest()
+    {
+        $ppicRequest = PPICGudangRequest::all();
+        return view('ppic.gudangRequest.index', ['ppicRequest' => $ppicRequest]);
+    }
+
+    public function terimaPPICRequest($id)
+    {
+        $id = $id;   
+        $statusDiterima = 1;
+
+        $gudangCuciTerima = PPICGudangRequest::updateStatusDiterima($id, $statusDiterima);
+
+        if ($gudangCuciTerima == 1) {
+            return redirect('bahan_baku/ppicRequest');
+        }
     }
 
     public function keluarGudang()

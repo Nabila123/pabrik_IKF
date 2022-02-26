@@ -75,6 +75,10 @@ Route::get('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBa
 Route::post('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.supply.update');
 Route::post('/bahan_baku/supply/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.supply.delete');
 
+//PPIC Request
+Route::get('/bahan_baku/ppicRequest', [App\Http\Controllers\GudangBahanBakuController::class, 'ppicRequest'])->name('bahan_baku.ppicRequest');
+Route::get('/bahan_baku/ppicRequest/terima/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'terimaPPICRequest'])->name('bahan_baku.ppicRequest.terima');
+
 //GUDANG KELUAR
 Route::get('/bahan_baku/keluar', [App\Http\Controllers\GudangBahanBakuController::class, 'keluarGudang'])->name('bahan_baku.keluar');
 Route::get('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'createKeluarGudang'])->name('bahan_baku.keluar.create');
