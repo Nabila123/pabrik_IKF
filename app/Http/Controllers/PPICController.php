@@ -16,6 +16,11 @@ class PPICController extends Controller
 
     public function gdRequest()
     {
+        $ppicUpdateStatus = PPICGudangRequest::where('statusDiterima', 1)->get();
+        foreach ($ppicUpdateStatus as $val) {
+            PPICGudangRequest::updateStatusDiterima($val->id, 2);
+        }
+        
         $ppicRequest = PPICGudangRequest::all();
         return view('ppic.gudangRequest.index', ['ppicRequest' => $ppicRequest]);
     }
