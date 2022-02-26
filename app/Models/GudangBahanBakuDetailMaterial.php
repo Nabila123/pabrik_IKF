@@ -11,6 +11,11 @@ class GudangBahanBakuDetailMaterial extends Model
 
     protected $table = 'gd_bahanbaku_detail_material';
 
+    public function bahanBakuDetail()
+    {
+        return $this->hasOne('App\Models\GudangBahanBakuDetail','id','gudangDetailId');
+    }
+
     public static function CreateDetailMaterial($gudangDetailId, $diameter, $gramasi, $brutto, $netto, $tarra, $qty, $unit, $unitPrice, $amount, $remark)
     {
         $addDetailMaterial = new GudangBahanBakuDetailMaterial;

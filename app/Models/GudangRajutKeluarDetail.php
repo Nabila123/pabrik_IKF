@@ -30,4 +30,22 @@ class GudangRajutKeluarDetail extends Model
     {
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
+
+    public static function createGudangRajutKeluarDetail($gdRajutKId, $gudangId, $purchaseId, $materialId, $qty)
+    {
+        $keluarDetail = new GudangRajutKeluarDetail;
+        $keluarDetail->gdRajutKId = $gdRajutKId;
+        $keluarDetail->gudangId = $gudangId;
+        $keluarDetail->purchaseId = $purchaseId;
+        $keluarDetail->materialId = $materialId;
+        $keluarDetail->jenisId = $materialId;
+        $keluarDetail->qty = $qty;
+        $keluarDetail->created_at = date('Y-m-d H:i:s');
+
+        if($keluarDetail->save()){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }
