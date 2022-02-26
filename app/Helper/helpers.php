@@ -84,9 +84,9 @@
 
         if ($mains->nama == "Gudang Bahan Baku") {
             if ($user == 38) { //Gudang Rajut Masuk
-                $notifRajut = GudangRajutKeluar::where('statusDiterima', 0)->get();          
-                $notifCompact = GudangCompactKeluar::where('statusDiterima', 0)->get();  
-                $notifInspeksi = GudangInspeksiKeluar::where('statusDiterima', 0)->get();  
+                $notifRajut = GudangRajutMasuk::where('statusDiterima', 0)->get();          
+                $notifCompact = GudangCompactMasuk::where('statusDiterima', 0)->get();  
+                $notifInspeksi = GudangInspeksiMasuk::where('statusDiterima', 0)->get();  
             }
             
             if (count($notifRajut) != 0){
@@ -101,7 +101,7 @@
 
             // dd($notif);
             if (count($notif) != 0) {
-                $notif[15] = $notif;
+                $notif[16] = $notif;
                 return $notif;
             }
 
