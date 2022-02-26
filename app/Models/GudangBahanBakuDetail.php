@@ -16,6 +16,11 @@ class GudangBahanBakuDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function bahanBakuDetailMaterial()
+    {
+        return $this->hasMany('App\Models\GudangBahanBakuDetailMaterial','gudangDetailId','id');
+    }
+
     public static function CreateBahanBakuDetail($gudangId, $purchaseId, $materialId, $qtyPermintaan, $qtySaatIni)
     {
         $addBahanBakuDetail = new GudangBahanBakuDetail;
