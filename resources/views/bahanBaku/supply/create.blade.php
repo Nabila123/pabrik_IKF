@@ -82,20 +82,20 @@
                                                         <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="textAlign" style="width: 7%;">No</th>
-                                                                    <th class="textAlign">Nama Barang</th>
-                                                                    <th class="textAlign">Jumlah Permintaan</th>
-                                                                    <th class="textAlign">Jumlah Saat Ini</th>
-                                                                    <th class="textAlign">Jumlah Datang</th>
-                                                                    <th class="textAlign">Satuan </th><!-- 
+                                                                    <th class="textAlign" style="width: 7%;"  >No</th>
+                                                                    <th class="textAlign"  >Nama Barang</th>
+                                                                    <th class="textAlign"  >Jumlah Permintaan</th>
+                                                                    <th class="textAlign"  >Jumlah Saat Ini</th>
+                                                                    <th class="textAlign"  >Jumlah Datang</th>
+                                                                    <th class="textAlign"  >Satuan </th><!-- 
                                                                     <th class="textAlign">Harga Satuan</th>
                                                                     <th class="textAlign">Amount</th>
                                                                     <th class="textAlign">Remark</th> -->
-                                                                    <th class="textAlign">Diameter</th>
-                                                                    <th class="textAlign">Gramasi</th>
-                                                                    <th class="textAlign">Bruto </th>
+                                                                    <th class="textAlign"  >Diameter</th>
+                                                                    <th class="textAlign"  >Gramasi</th>
+                                                                    <th class="textAlign"  >Bruto</th>
                                                                     <th class="textAlign">Netto </th>
-                                                                    <th class="textAlign">Tarra</th>
+                                                                    <th class="textAlign"  >Tarra</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign"></tbody>                                                                                       
@@ -154,6 +154,7 @@
                     var jumlah_data = $('#jumlah_data').val(0);
                     if(data){
                         var nomor = 1;
+                        $('#materialPO tbody.data').html('');   
                         for(var i =0;i < data.length;i++)
                         {
                             var jumlah_data = $('#jumlah_data').val();
@@ -173,14 +174,15 @@
                             dt += "<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'>";
                             dt += "<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'>";
                             if(data[i].materialId == 1){
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"' > </td>";
                                 dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"'> </td>";
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'> </td>";
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"' placeholder='Kg'> </td>";
+                                dt += "<td>Kg<input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'>";
+                                dt += "Ball<input type='text' required style='width:60px;' class='form-control netto_ball' id_data='"+jumlah_data+"' name='netto_ball_"+data[i].materialId+"[]' value='' id='netto_ball_"+jumlah_data+"'> </td>";
+                                dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"' placeholder='Kg'> </td>";
                             }else{
                                 dt += '<input type="hidden" name="jumlah_roll_'+data[i].materialId+'" id="jumlah_roll_'+data[i].materialId+'" value="0"/>';
-                                dt += '<td colspan="5"><button type="button" id="addRoll" materialId="'+data[i].materialId+'" data='+jumlah_data+' style="float: left" class="btn btn-info btn-flat-right addRoll">Tambah Data Roll</button></td>'
+                                dt += '<td colspan="6"><button type="button" id="addRoll" materialId="'+data[i].materialId+'" data='+jumlah_data+' style="float: left" class="btn btn-info btn-flat-right addRoll">Tambah Data Roll</button></td>'
                             }
                             dt += '</tr>';
                             nomor++;
@@ -200,11 +202,11 @@
             jumlah_data = parseInt(data) + 1;
             dt = '<tr id="'+jumlah_data+'">';
             dt += '<td colspan="6">Data Roll '+jumlah_roll+'</td>';
-            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value='' > </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value=''> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
-            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value=''> </td>";
-            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value=''> </td>";
-            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' > </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' placeholder='Kg'> </td>";
             dt += '</tr>';
 
             $('tr.data_'+data).after(dt);
@@ -220,5 +222,19 @@
             $('#totalHarga').val(hargaTotal);
         });
 
+        $(document).on("change", ".netto_ball", function(){
+            var netto_ball = $(this).val();
+            var idData = $(this).attr('id_data');
+            var netto = netto_ball * 181.44;
+
+            $('#netto_'+idData).val(netto); 
+        });
+
+        $(document).on("change", ".netto", function(){
+            var netto = $(this).val();
+            var idData = $(this).attr('id_data');
+            var netto_ball = parseFloat(netto) / 181.44;
+            $('#netto_ball_'+idData).val(netto_ball.toFixed(2)); 
+        });
     </script>
 @endpush

@@ -8,6 +8,7 @@ use App\Models\adminPurchaseInvoice;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;
+use App\Models\BarangDatangDetail;
 use PDF;
 
 use Illuminate\Http\Request;
@@ -157,12 +158,12 @@ class AdminPoController extends Controller
     {
         $getPurchase = AdminPurchase::find($id);
         $getPurchaseDetail = AdminPurchaseDetail::where('purchaseId', $id)->get();
-        $cekGudang = GudangBahanBaku::where('purchaseId',$id)->first();
+        $cekBarangDatangDetail = BarangDatangDetail::where('purchaseId',$id)->first();
         foreach ($getPurchaseDetail as $key => $value) {
             $value->materialNama = $value->material->nama;
-            if($cekGudang){
-                $cekGudangDetail = GudangBahanBakuDetail::where('gudangId',$cekGudang->id)->where('materialId',$value->materialId)->first();
-                $value->qtySaatIni = ($cekGudangDetail) ? $cekGudangDetail->qtySaatIni : 0;
+            if($cekBarangDatangDetail){
+                $barangDatangDetail = BarangDatangDetail::where('purchaseId',$id)->where('materialId',$value->materialId)->sum('jumlah_datang');
+                $value->qtySaatIni = ($cekBarangDatangDetail) ? $barangDatangDetail : 0;
             }else{
                 $value->qtySaatIni = 0;
             }

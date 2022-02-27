@@ -18,6 +18,7 @@ use App\Models\GudangInspeksiStokOpname;
 use App\Models\MaterialModel;
 use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
+use App\Models\BarangDatangDetailMaterial;
 
 class GudangBahanBakuController extends Controller
 {
@@ -86,6 +87,7 @@ class GudangBahanBakuController extends Controller
 
                 $barangDatangDetail = new BarangDatangDetail;
                 $barangDatangDetail->barangDatangId = $barangDatang->id;
+                $barangDatangDetail->purchaseId = $request['purchaseId'];
                 $barangDatangDetail->materialId = $materialId;
                 $barangDatangDetail->jumlah_datang = $request['qtySaatIni'][$i];
                 $barangDatangDetail->save();
@@ -137,13 +139,13 @@ class GudangBahanBakuController extends Controller
                     $bahanBakuDetailMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanBakuDetail->id)->first();
 
                     if($bahanBakuDetailMaterial){
-                        $data['gramasi'] = $bahanBakuDetailMaterial->gramasi + $gramasi[0];
-                        $data['diameter'] = $bahanBakuDetailMaterial->diameter + $diameter[0];
-                        $data['brutto'] = $bahanBakuDetailMaterial->brutto + $brutto[0];
-                        $data['netto'] = $bahanBakuDetailMaterial->netto + $netto[0];
-                        $data['tarra'] = $bahanBakuDetailMaterial->tarra + $tarra[0];
+                        $dataDetail['gramasi'] = $bahanBakuDetailMaterial->gramasi + $gramasi[0];
+                        $dataDetail['diameter'] = $bahanBakuDetailMaterial->diameter + $diameter[0];
+                        $dataDetail['brutto'] = $bahanBakuDetailMaterial->brutto + $brutto[0];
+                        $dataDetail['netto'] = $bahanBakuDetailMaterial->netto + $netto[0];
+                        $dataDetail['tarra'] = $bahanBakuDetailMaterial->tarra + $tarra[0];
 
-                        $updateBahanBakuDetailMaterial =  GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanBakuDetail->id)->update($data);
+                        $updateBahanBakuDetailMaterial =  GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanBakuDetail->id)->update($dataDetail);
                     }else{
                         $bahanBakuDetailMaterial = new GudangBahanBakuDetailMaterial;
                         $bahanBakuDetailMaterial->gudangDetailId = $bahanBakuDetail->id;
@@ -160,6 +162,9 @@ class GudangBahanBakuController extends Controller
 
                         $bahanBakuDetailMaterial->save();
                     }
+
+                    BarangDatangDetailMaterial::createDetailMaterial($barangDatangDetail->id, $diameter[0], $gramasi[0], $brutto[0], $netto[0], $tarra[0], $request['unit'][$i], $request['unitPrice'][$i], $request['amount'][$i], $request['remark'][$i]);
+
                 }elseif($materialId == 2 || $materialId == 3){
                     $jumlah_roll = $request['jumlah_roll_'.$materialId];
 
@@ -178,6 +183,8 @@ class GudangBahanBakuController extends Controller
                         $bahanBakuDetailMaterial->userId = \Auth::user()->id;
 
                         $bahanBakuDetailMaterial->save();
+
+                        BarangDatangDetailMaterial::createDetailMaterial($barangDatangDetail->id, $diameter[$j], $gramasi[$j], $brutto[$j], $netto[$j], $tarra[$j], $request['unit'][$i], $request['unitPrice'][$i], $request['amount'][$i], $request['remark'][$i]);
                     }
                 }
             }
