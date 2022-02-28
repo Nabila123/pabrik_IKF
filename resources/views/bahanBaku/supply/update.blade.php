@@ -95,6 +95,7 @@
                                                                     <th class="textAlign">Bruto </th>
                                                                     <th class="textAlign">Netto </th>
                                                                     <th class="textAlign">Tarra</th>
+                                                                    <th class="textAlign">Action</th>
                                                                     <!-- <th class="textAlign">Harga Satuan</th>
                                                                     <th class="textAlign">Amount</th>
                                                                     <th class="textAlign">Remark</th> -->
@@ -156,8 +157,8 @@
                                                                             <td colspan="5">
                                                                                 Data Per Roll
                                                                             </td>
-                                                                            @foreach($detail->bahanBakuDetailMaterial as $detailMaterial)
-                                                                            <tr>
+                                                                            @foreach($detail->bahanBakuDetailMaterial as $key3=>$detailMaterial)
+                                                                            <tr id="roll_{{$key3}}">
                                                                                 <input type="hidden" name="gudangDetailId[]" value="{{$detailMaterial->gudangDetailId}}" >
                                                                                 <input type="hidden" name="gudangDetailMaterialId[]" value="{{$detailMaterial->id}}" >
                                                                                 <td colspan="5"></td>
@@ -175,6 +176,9 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <input type="text" name="tarra[]" value="{{$detailMaterial->tarra}}" style="width: 70px;" >
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a idRoll="{{$key3}}" idData="{{$detailMaterial->id}}" class="btn btn-danger delRoll"><i class="fa fa-trash"></i></a>
                                                                                 </td>
                                                                             </tr>
                                                                             @endforeach
@@ -210,6 +214,27 @@
         $(document).ready( function () {
             $('#example2').DataTable();
         });
+        $(document).on("click", ".delRoll", function(e){
+            e.preventDefault();
+            var idRoll = $(this).attr('idRoll');
+            $('#roll_'+idRoll).remove();
 
+            var idData = $(this).attr('idData');
+            var _token = $('#_token').val();
+            
+            $.ajax({
+                type: "post",
+                url: '{{ url("bahan_baku/supply/delDetailMaterial") }}/'+idData,
+                data: {'_token' : _token},
+                success: function(response){
+                    if(response == 1){
+                         $('#roll_'+idRoll).remove();
+                        alert('Data Berhasil Dihapus!');
+                    }else{
+                        alert('Data Gagal Dihapus!');
+                    }
+                }
+            })
+        });
     </script>
 @endpush

@@ -91,11 +91,12 @@
                                                                     <th class="textAlign">Harga Satuan</th>
                                                                     <th class="textAlign">Amount</th>
                                                                     <th class="textAlign">Remark</th> -->
-                                                                    <th class="textAlign"  >Diameter</th>
-                                                                    <th class="textAlign"  >Gramasi</th>
-                                                                    <th class="textAlign"  >Bruto</th>
+                                                                    <th class="textAlign">Diameter</th>
+                                                                    <th class="textAlign">Gramasi</th>
+                                                                    <th class="textAlign">Bruto</th>
                                                                     <th class="textAlign">Netto </th>
-                                                                    <th class="textAlign"  >Tarra</th>
+                                                                    <th class="textAlign">Tarra</th>
+                                                                    <th class="textAlign">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign"></tbody>                                                                                       
@@ -200,13 +201,15 @@
             var jumlah_roll = $('#jumlah_roll_'+materialId).val();
             jumlah_roll++;
             jumlah_data = parseInt(data) + 1;
-            dt = '<tr id="'+jumlah_data+'">';
-            dt += '<td colspan="6">Data Roll '+jumlah_roll+'</td>';
+            dt = '<tr id="roll_'+materialId+'_'+jumlah_roll+'">';
+            // dt += '<td colspan="6">Data Roll '+jumlah_roll+'</td>';
+            dt += '<td colspan="6"></td>';
             dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value=''> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' placeholder='Kg'> </td>";
+            dt += '<td><a idRoll="'+jumlah_roll+'" materialId="'+materialId+'" class="btn btn-danger delRoll"><i class="fa fa-trash"></i></a></td>';
             dt += '</tr>';
 
             $('tr.data_'+data).after(dt);
@@ -235,6 +238,18 @@
             var idData = $(this).attr('id_data');
             var netto_ball = parseFloat(netto) / 181.44;
             $('#netto_ball_'+idData).val(netto_ball.toFixed(2)); 
+        });
+
+        $(document).on("click", ".delRoll", function(e){
+            e.preventDefault();
+            var idRoll = $(this).attr('idRoll');
+            console.log(idRoll);
+            var materialId = $(this).attr('materialId');
+            $('#roll_'+materialId+'_'+idRoll).remove();
+            var jumlah_roll = $('#jumlah_roll_'+materialId).val();
+            jumlah_roll--; 
+            $('#jumlah_roll_'+materialId).val(jumlah_roll);
+            console.log(idRoll);
         });
     </script>
 @endpush

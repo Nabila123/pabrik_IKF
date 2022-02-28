@@ -74,6 +74,7 @@ Route::get('/bahan_baku/suppply/detail/{id}', [App\Http\Controllers\GudangBahanB
 Route::get('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'edit'])->name('bahan_baku.supply.update');
 Route::post('/bahan_baku/supply/update/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'update'])->name('bahan_baku.supply.update');
 Route::post('/bahan_baku/supply/delete', [App\Http\Controllers\GudangBahanBakuController::class, 'delete'])->name('bahan_baku.supply.delete');
+Route::post('/bahan_baku/supply/delDetailMaterial/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'delDetailMaterial'])->name('bahan_baku.supply.delDetailMaterial');
 
 //GUDANG KELUAR
 Route::get('/bahan_baku/keluar', [App\Http\Controllers\GudangBahanBakuController::class, 'keluarGudang'])->name('bahan_baku.keluar');

@@ -254,10 +254,13 @@ class GudangBahanBakuController extends Controller
 
     public function delete(Request $request)
     {
-        $kodePurchase = GudangBahanBaku::find($request['gudangId']);
-        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode',$kodePurchase->kodePurchase)->first();
-        $delStokOpname = GudangStokOpname::where('purchaseId',$purchase->id)->delete();
-
+        $findGudang = GudangBahanBaku::find($request['gudangId']);
+        $findGudangDetail = GudangBahanBakuDetail::where('gudangId',$request['gudangId'])->get();
+        foreach ($findGudangDetail as $key => $value) {
+            if(GudangBahanBakuDetailMaterial::where('gudangDetailId', $value->id)->delete() == null){
+                break;
+            }
+        }
         $gudangDetail = GudangBahanBakuDetail::where('gudangId', $request['gudangId'])->delete();
 
         if ($gudangDetail) {
@@ -265,6 +268,16 @@ class GudangBahanBakuController extends Controller
         }
                 
         return redirect('bahan_baku/supply');
+    }
+
+    public function delDetailMaterial($id)
+    {
+        if(GudangBahanBakuDetailMaterial::where('id',$id)->delete()){
+            return 1;
+        }else{
+            return 0;
+        }
+
     }
 
     public function keluarGudang()
