@@ -475,6 +475,85 @@ class GudangBahanBakuController extends Controller
         return view('bahanBaku.keluar.detail')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
     }
 
+    public function updateKeluarGudang($id, $gudangRequest)
+    {
+        switch ($gudangRequest) {
+            case 'Gudang Rajut':
+                $data = GudangRajutKeluar::find($id);
+                $data->gudangRequestId = 1;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangRajutKeluarDetail::where('gdRajutKId',$id)->get();
+                break;
+
+            case 'Gudang Cuci':
+                $data = GudangCuciKeluar::find($id);
+                $data->gudangRequestId = 2;                
+                $data->gudangRequest = $gudangRequest;                
+                $dataDetail = GudangCuciKeluarDetail::where('gdCuciKId',$id)->get();
+                break;
+
+            case 'Gudang Compact':
+                $data = GudangCompactKeluar::find($id);
+                $data->gudangRequestId = 3;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangCompactKeluarDetail::where('gdCompactKId',$id)->get();
+                break;
+
+            case 'Gudang Inspeksi':
+                $data = GudangInspeksiKeluar::find($id);
+                $data->gudangRequestId = 4;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$id)->get();
+                break;
+        }
+        return view('bahanBaku.keluar.update', ['data' => $data, 'dataDetail' => $dataDetail, 'gudangRequest' => $gudangRequest]);
+    }
+
+    public function updateSaveKeluarGudang(Request $request)
+    {
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                if($request['jenisId'] == 1){
+                    $keluarDetail = GudangRajutKeluarDetail::createGudangRajutKeluarDetail($request->gudangKeluarId, $request['gudangIdArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['qtyArr'][$i]);
+                }elseif($request['jenisId'] == 2){
+                    $keluarDetail = GudangCuciKeluarDetail::createGudangCuciKeluarDetail($request->gudangKeluarId, $request['gudangIdArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                }elseif($request['jenisId'] == 3){
+                    $keluarDetail = GudangInspeksiKeluarDetail::createGudangInspeksiKeluarDetail($request->gudangKeluarId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                }
+            }
+
+            if ($keluarDetail == 1) {
+                return redirect('/bahan_baku/keluar');
+            }
+        }else {
+            return redirect('/bahan_baku/keluar');
+        }
+    }
+
+    public function deleteDetailGudang($gudangId, $detailId, $gudangRequest)
+    {
+        switch ($gudangRequest) {
+            case 'Gudang Rajut':
+                $dataDetail = GudangRajutKeluarDetail::where('id',$detailId)->delete();
+                break;
+
+            case 'Gudang Cuci':                
+                $dataDetail = GudangCuciKeluarDetail::where('id',$detailId)->delete();
+                break;
+
+            case 'Gudang Compact':
+                $dataDetail = GudangCompactKeluarDetail::where('id',$detailId)->delete();
+                break;
+
+            case 'Gudang Inspeksi':
+                $dataDetail = GudangInspeksiKeluarDetail::where('id',$detailId)->delete();
+                break;
+        }
+        if ($dataDetail) {
+            return redirect('bahan_baku/keluar/update/' . $gudangId . '/' . $gudangRequest . '');
+        }
+    }
+
     public function deleteKeluarGudang(Request $request)
     {
         // dd($request);

@@ -30,7 +30,8 @@ class MenuSeeder extends Seeder
             ['id' => 7, 'parentId' => 6, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'adminPO', 'directori' => 'adminPO/index', 'isActive' => 1],
             ['id' => 8, 'parentId' => 6, 'urutan' => 2, 'nama' => 'Purchase Request', 'alias' => 'adminPO.poRequest', 'directori' => 'adminPO/purchaseRequest/poRequest', 'isActive' => 1],
             ['id' => 9, 'parentId' => 6, 'urutan' => 3, 'nama' => 'Purchase Order', 'alias' => 'adminPO.poOrder', 'directori' => 'adminPO/purchaseOrder/poOrder', 'isActive' => 1],
-            ['id' => 10, 'parentId' => 6, 'urutan' => 4, 'nama' => 'Laporan Admin PO', 'alias' => 'adminPO.laporanAdminPO', 'directori' => 'adminPO/laporanPurchase/laporanAdminPO', 'isActive' => 1],
+            ['id' => 10, 'parentId' => 6, 'urutan' => 3, 'nama' => 'Purchase Invoice', 'alias' => 'adminPO.poInvoice', 'directori' => 'adminPO/purchaseInvoice/index', 'isActive' => 1],
+            // ['id' => 10, 'parentId' => 6, 'urutan' => 4, 'nama' => 'Laporan Admin PO', 'alias' => 'adminPO.laporanAdminPO', 'directori' => 'adminPO/laporanPurchase/laporanAdminPO', 'isActive' => 1],
             
             //Admin Gudang Bahan Baku
             ['id' => 11, 'parentId' => 0, 'urutan' => 4, 'nama' => 'Gudang Bahan Baku', 'alias' => 'bahan_baku', 'directori' => 'bahan_baku', 'isActive' => 1],
