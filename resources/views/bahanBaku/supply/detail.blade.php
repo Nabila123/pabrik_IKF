@@ -50,80 +50,139 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">  
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card card-info">
-                                        <div class="card-body">
-                                            <div class="row">                                                    
-                                                <div class="col-8">
-                                                    <div class="form-group">
-                                                        <label>Kode Purchase : {{$data->kodePurchase}} </label>                                        
+                        <div class="card-body">
+                            <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data" action="{{ route('bahan_baku.supply.update',['id'=>$data->id]) }}">                    
+                                <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">   
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card card-info">
+                                            <div class="card-body">
+                                                <div class="row">                                                    
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label>Kode Purchase</label>
+                                                            <input type="text" class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->purchase->kode}}" readonly />
+                                                            <input type="hidden" class="form-control purchaseId" id="purchaseId" name="purchaseId" value="{{$data->purchaseId}}" readonly />                                                            
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-4">
-                                                    <div class="form-group">
-                                                        <label>Nama Suplier : {{$data->namaSuplier}}</label>                                            
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label>Nama Suplier</label>
+                                                            <input class="form-control suplier" required id="suplier" name="namaSuplier" type="text" placeholder="Nama Suplier" value="{{$data->namaSuplier}}" readonly >                                            
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p><b>Total : </b>{{$data->total}}</p>
-                                                </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label>Total</label>
+                                                            <input type="text" class="form-control total" required id="total" name="total"placeholder="Total" value="{{$data->total}}"readonly /> 
+                                                        </div>
+                                                    </div>
 
-                                                <div class="col-12 right">
-                                                    <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="textAlign" style="width: 7%;">No</th>
-                                                                <th class="textAlign">Nama Barang</th>
-                                                                <th class="textAlign">Jumlah Permintaan</th>
-                                                                <th class="textAlign">Jumlah Saat ini</th>
-                                                                <th class="textAlign">Diameter </th>
-                                                                <th class="textAlign">Gramasi </th>
-                                                                <th class="textAlign">Bruto </th>
-                                                                <th class="textAlign">Netto </th>
-                                                                <th class="textAlign">Tarra</th>
-                                                                <th class="textAlign">Satuan </th>
-                                                                <th class="textAlign">Harga Satuan</th>
-                                                                <th class="textAlign">Amount</th>
-                                                                <th class="textAlign">Remark</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="data textAlign">
-                                                            @foreach($dataDetail as $key=>$detail)
-                                                                @php
-                                                                    $key++;
-                                                                @endphp
+
+                                                    <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="{{count($dataDetail)}}">
+                                                    <div class="col-12 right">
+                                                        <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                                                            <thead>
                                                                 <tr>
-                                                                    <td>{{$key}}</td>
-                                                                    <td>{{$detail->materialNama}}</td>
-                                                                    <td>{{$detail->qty_permintaan}}</td>
-                                                                    <td>{{$detail->qty_saat_ini}}</td>
-                                                                    <td>{{$detail->diameter}}</td>
-                                                                    <td>{{$detail->gramasi}}</td>
-                                                                    <td>{{$detail->brutto}}</td>
-                                                                    <td>{{$detail->netto}}</td>
-                                                                    <td>{{$detail->tarra}}</td>
-                                                                    <td>{{$detail->unit}}</td>
-                                                                    <td>{{$detail->unitPrice}}</td>
-                                                                    <td>{{$detail->amount}}</td>
-                                                                    <td>{{$detail->remark}}</td>
+                                                                    <th class="textAlign" style="width: 7%;">No</th>
+                                                                    <th class="textAlign">Nama Barang</th>
+                                                                    <th class="textAlign">Jumlah Permintaan</th>
+                                                                    <th class="textAlign">Jumlah Saat Ini</th>
+                                                                    <th class="textAlign">Satuan </th>
+                                                                    <th class="textAlign">Diameter </th>
+                                                                    <th class="textAlign">Gramasi </th>
+                                                                    <th class="textAlign">Bruto </th>
+                                                                    <th class="textAlign">Netto </th>
+                                                                    <th class="textAlign">Tarra</th>
+                                                                    <!-- <th class="textAlign">Harga Satuan</th>
+                                                                    <th class="textAlign">Amount</th>
+                                                                    <th class="textAlign">Remark</th> -->
                                                                 </tr>
-                                                            @endforeach
-                                                        </tbody>                                                                                       
-                                                    </table>
+                                                            </thead>
+                                                            <tbody class="data textAlign">
+                                                                @php $i=1; @endphp
+                                                                @foreach($dataDetail as $key=>$detail)
+                                                                    <tr>
+                                                                        <td>
+                                                                            {{$i}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{$detail->materialNama}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{$detail->qtyPermintaan}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{$detail->qtySaatIni}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{$detail->material->satuan}}
+                                                                        </td>
+                                                                        @if($detail->materialId == 1)
+                                                                             @foreach($detail->bahanBakuDetailMaterial as $key2=>$detailMaterial)
+                                                                                <td>
+                                                                                    {{$detailMaterial->diameter}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->gramasi}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->brutto}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->netto}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->tarra}}
+                                                                                </td>
+                                                                            @endforeach
+                                                                            <!-- <td>
+                                                                                <input type="text" name="unitPrice[]" value="{{$detail->unitPrice}}" style="width: 90px;">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="amount[]" value="{{$detail->amount}}" style="width: 90px;">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="remark[]" value="{{$detail->remark}}" style="width: 70px;">
+                                                                            </td> -->
+                                                                        @else
+                                                                            <td colspan="5">
+                                                                                Data Per Roll
+                                                                            </td>
+                                                                            @foreach($detail->bahanBakuDetailMaterial as $detailMaterial)
+                                                                            <tr>
+                                                                                <td colspan="5"></td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->diameter}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->gramasi}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->brutto}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->netto}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->tarra}}
+                                                                                </td>
+                                                                            </tr>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </tr>
+                                                                    @php $i++; @endphp
+                                                                @endforeach
+                                                            </tbody>                                                                                       
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <a href="{{route('bahan_baku.supply.index')}}"" id="Simpan" style="float: right" class='btn btn-info btn-flat-right'>Kembali</a>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div> 
                     </div>
                 </div>
@@ -137,10 +196,6 @@
     <script type="text/javascript">
         $(document).ready( function () {
             $('#example2').DataTable();
-        });
-
-        $('#kodePurchase').select2({
-            theme: 'bootstrap4'
         });
 
     </script>

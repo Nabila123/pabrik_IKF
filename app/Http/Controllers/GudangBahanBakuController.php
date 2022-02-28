@@ -218,39 +218,35 @@ class GudangBahanBakuController extends Controller
 
     public function update($id, Request $request)
     {
-        $data['kodePurchase'] = $request['kodePurchase'];
+        $data['purchaseId'] = $request['purchaseId'];
         $data['namaSuplier'] = $request['namaSuplier'];
-        $data['total'] = $request['total'];
+        $data['total'] = 0;
         $data['userId'] = \Auth::user()->id;
 
         $updateBahanBaku = GudangBahanBaku::where('id',$id)->update($data);
 
-        //get purchaseId
-        $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode',$request['kodePurchase'])->first();
-
         for ($i=0; $i < $request['jumlah_data']; $i++) { 
             $dataDetail['gudangId'] = $id;
+            $dataDetail['purchaseId'] = $request['purchaseId'];
             $dataDetail['materialId'] = $request['materialId'][$i];
             $dataDetail['qtySaatIni'] = $request['qtySaatIni'][$i];
-            $dataDetail['brutto'] = $request['brutto'][$i];
-            $dataDetail['diameter'] = $request['diameter'][$i];
-            $dataDetail['gramasi'] = $request['gramasi'][$i];
-            $dataDetail['netto'] = $request['netto'][$i];
-            $dataDetail['tarra'] = $request['tarra'][$i];
-            $dataDetail['unit'] = $request['unit'][$i];
-            $dataDetail['unitPrice'] = $request['unitPrice'][$i];
-            $dataDetail['amount'] = $request['amount'][$i];
-            $dataDetail['remark'] = $request['remark'][$i];
+            $dataDetail['userId'] = \Auth::user()->id;
 
             $updateBahanBakuDetail = GudangBahanBakuDetail::where('id',$request['detailId'][$i])->update($dataDetail);
 
-            //get jenisId
-            $material = MaterialModel::find($request['materialId'][$i]);
+            for ($j=0; $j < count($request['gudangDetailMaterialId']); $j++) { 
+                $dt['gramasi'] = $request['gramasi'][$j];
+                $dt['diameter'] = $request['diameter'][$j];
+                $dt['brutto'] = $request['brutto'][$j];
+                $dt['netto'] = $request['netto'][$j];
+                $dt['tarra'] = $request['tarra'][$j];
+                $dt['unit'] = $request['unit'][$i];
+                // $data['unitPrice'] = $request['unitPrice_'.$request['materialId'][$i]][$j];
+                // $data['amount'] = $request['amount_'.$request['materialId'][$i]][$j];
+                // $data['remark'] = $request['remark_'.$request['materialId'][$i]][$j];
 
-            $dataStokOpname['qty'] = $request['netto'][$i];
-            $dataStokOpname['userId'] = \Auth::user()->id;
-
-            $updateStokOpname = GudangStokOpname::where('purchaseId', $purchase->id)->where('materialId',$request['materialId'][$i])->update($dataStokOpname);
+                $updateBahanBakuDetailMaterial =  GudangBahanBakuDetailMaterial::where('id',$request['gudangDetailMaterialId'][$j])->update($dt);
+            } 
         }
 
         return redirect('bahan_baku/supply');
