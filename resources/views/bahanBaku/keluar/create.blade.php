@@ -120,9 +120,11 @@
 
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Jumlah</label>
-                                                            <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
-                                                            <input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/> 
+                                                            <div id="Jumlah">
+                                                                <label>Jumlah</label>
+                                                                <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
+                                                                <input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>    
+                                                            </div> 
                                                         </div>
                                                     </div>
 
@@ -206,7 +208,31 @@
                     for(var i =0;i < data.purchase.length;i++){
                         opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
                     }
-                    $('#kodePurchase').html(opt);        
+                    $('#kodePurchase').html(opt);   
+                    
+                    if(gudangRequest == 1){
+                        var dt = '<table>';
+                                dt += '<tr>';
+                                    dt += '<th>Jumlah <sub>Kg</sub></th>';
+                                    dt += '<th>Jumlah <sub>Bal</sub></th>';
+                                dt += '</tr>';
+                                dt += '<tr>';
+                                    dt += '<td>';
+                                        dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="KG" />'; 
+                                    dt += '</td>';
+                                    dt += '<td>';                                                            
+                                        dt += '<input type="text" class="form-control bal" id="bal" name="bal"placeholder="Bal" />'; 
+                                    dt += '</td>';
+                                dt += '</tr>';
+                            dt += '</table>';
+                            dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
+                    }else{
+                        var dt = '<label>Jumlah</label>';
+                            dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" />';
+                            dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
+                    }
+
+                    $('#Jumlah').html(dt);
                 }
             })
 
@@ -295,6 +321,59 @@
             })
         });
 
+        $(document).on("keyup", ".qty", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var berat = $('#berat').val();
+            var qty = $('#qty').val();
+            
+           if(gudangRequest == 1){
+               var cek = berat-qty;
+                console.log(berat);
+                console.log(qty);
+                console.log(cek < 0);
+                
+                if(berat != 0 && berat != null && cek > 0){
+                    $('#qty').css({'border':'1px solid #ced4da'});
+                    $('#bal').css({'border':'1px solid #ced4da'});
+
+                    var bal = (qty/181.44);
+                
+                    $('#bal').val(bal.toFixed(2));    
+                    $('#qtyHidden').val(qty);
+                }else{
+                    $('#qty').css({'border':'2px solid #e74c3c'});
+                    $('#bal').css({'border':'2px solid #e74c3c'});
+                }
+           }      
+                
+        });
+
+        $(document).on("keyup", ".bal", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var berat = $('#berat').val();
+            var bal = $('#bal').val();
+            
+           if(gudangRequest == 1){
+               var qty = (bal*181.44);
+               var cek = berat-qty;
+                console.log(berat);
+                console.log(bal);
+                console.log(cek < 0);
+                
+                if(berat != 0 && berat != null && cek > 0){
+                    $('#qty').css({'border':'1px solid #ced4da'});
+                    $('#bal').css({'border':'1px solid #ced4da'});
+                                   
+                    $('#qty').val(qty.toFixed(2));    
+                    $('#qtyHidden').val(qty);
+                }else{
+                    $('#qty').css({'border':'2px solid #e74c3c'});
+                    $('#bal').css({'border':'2px solid #e74c3c'});
+                }
+           }      
+                
+        });
+
         $(document).ready( function () {
             $(document).on("click", "button.TBarang", function(e){
                 e.preventDefault();
@@ -343,7 +422,10 @@
                         $('#diameter').val('');
                         $('#gramasi').find('option[value=""]').attr('selected','selected');
                         $('#gramasi').val('');
+                        $('#berat').find('option[value=""]').attr('selected','selected');
+                        $('#berat').val('');
                         $('#qty').val('');
+                        $('#bal').val('');
                     }else{
                         alert("Material Dan Jumlah Pemakaian Tidak Boleh Kosong");
                     }
