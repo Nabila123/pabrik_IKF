@@ -50,34 +50,38 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody textAlign" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th style="vertical-align: middle; width: 20%;">Gudang Request</th>
-                                        <th style="vertical-align: middle; width: 30%;">Material</th>
+                                        <th style="vertical-align: middle; width:20%;">Gudang Request</th>
                                         <th style="vertical-align: middle; width:10%;">Tanggal </th>
                                         <th style="vertical-align: middle; width:20%;">Status </th>
-                                        <th style="vertical-align: middle; width:20%;">action</th>
+                                        <th style="vertical-align: middle; width:10%;">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($data as $key=>$value)
-                                        <tr>
-                                            <td>{{$value->gudangRequest}}</td>
-                                            <td>{{$value->material->nama}}</td>
-                                            <td>{{$value->tanggal}}</td>
-                                            <td>
-                                                @if ($value->statusDiterima == 0)
-                                                    <a href="{{ route('bahan_baku.masuk.terima', [$value->id]) }}" class="btn btn-success"> Terima Barang </a>
-                                                @else
-                                                    <span style="color: green; font-size: 15px">Barang Sudah Diterima</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('bahan_baku.masuk.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach                                    
+                                    @for ($i = 0; $i < count($data); $i++)
+                                        @for ($j = 0; $j < count($data[$i]); $j++)
+                                            <tr>
+                                                <td>{{$data[$i][$j]->gudangRequest}}</td>
+                                                <td>{{$data[$i][$j]->tanggal}}</td>
+                                                <td>
+                                                    @if ($data[$i][$j]->statusDiterima == 0)
+                                                        <a href="{{ route('bahan_baku.masuk.terima', [$data[$i][$j]->id, $data[$i][$j]->gudangRequest]) }}" class="btn btn-success"> Terima Barang </a>
+                                                    @elseif ($data[$i][$j]->statusDiterima == 1)
+                                                        <span style="color: green; font-size: 13px">Barang Sudah Diterima </span>
+                                                   @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('bahan_baku.masuk.detail',['id'=>$data[$i][$j]->id, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                    {{--  <a href="{{ route('bahan_baku.keluar.update',['id'=>$data[$i][$j]->id, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    @if ($data[$i][$j]->statusDiterima == 0 && !isset($data[$i][$j]->cuciDelete))
+                                                        <button type="button" data-toggle="modal" dataId='{{ $data[$i][$j]->id }}' dataRequest="{{ $data[$i][$j]->gudangRequest }}" data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
+                                                    @endif  --}}
+                                                </td>
+                                            </tr>
+                                        @endfor
+                                    @endfor                                
                                 </tbody>                                
                             </table>
                         </div> 

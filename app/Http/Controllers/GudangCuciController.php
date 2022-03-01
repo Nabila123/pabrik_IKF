@@ -81,7 +81,7 @@ class GudangCuciController extends Controller
             for ($i=1; $i <= count($request->detailId); $i++) { 
                 $total = 0;
                 $gdCuciKeluar = GudangCuciKeluarDetail::where('id', $request['detailId'][$i])->first();
-                GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request["qty"][$i]);
+                GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCuciKeluar->gdDetailMaterialId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request["qty"][$i]);
                 
                 $total = $request["qtyOri"][$i] - $request["qty"][$i];
                 GudangCuciKeluarDetail::gudangCuciUpdateField("qty", $total, $gdCuciKeluar->id);
@@ -95,7 +95,7 @@ class GudangCuciController extends Controller
 
     /* Gudang Cuci Pemindahan */
     public function gudangCuciKembali(){
-        $gCuciKembali = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('statusDiterima', '>', 1)->get();
+        $gCuciKembali = GudangCuciKeluar::all();
         return view('gudangCuci.kembali.index', ['gCuciKembali' => $gCuciKembali]);
     }
 

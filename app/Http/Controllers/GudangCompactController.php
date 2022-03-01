@@ -83,8 +83,8 @@ class GudangCompactController extends Controller
             if ($gdCompactMasuk) {
                foreach ($gCompactRequestDetail as $detail) {
                    $gdBahanBaku = GudangBahanBaku::CheckBahanBakuForCompact($detail->gudangId, $detail->purchaseId, $request->materialId, $detail->diameter, $detail->gramasi, 0, $detail->berat, 0, 0, $request->satuan, 0, 0, null);
-                   if ($gdBahanBaku == 1) {
-                    $gudangCompactDetail = GudangCompactMasukDetail::CreateCompactMasukDetail($detail->gudangId, $gdCompactMasuk, $detail->purchaseId, $request->materialId, $request->materialId, $detail->gramasi, $detail->diameter, $detail->berat, $detail->qty);
+                   if ($gdBahanBaku) {
+                    $gudangCompactDetail = GudangCompactMasukDetail::CreateCompactMasukDetail($detail->gudangId, $gdBahanBaku, $gdCompactMasuk, $detail->purchaseId, $request->materialId, $request->materialId, $detail->gramasi, $detail->diameter, $detail->berat, $detail->qty);
                    }
                }
 

@@ -47,21 +47,25 @@ class GudangInspeksiController extends Controller
     public function gudangInspeksiRequest(){
         $gInspeksiRequest = GudangInspeksiKeluar::all();
         foreach ($gInspeksiRequest as $request) {
-            $cekDetail = GudangInspeksiKeluarDetail::select('purchaseId')->where('gdInspeksiKId', $request->id)->get();
+            $cekDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $request->id)->get();
 
             foreach ($cekDetail as $detail) {
-                $gudangInspeksi = gudangInspeksiStokOpname::where('purchaseId', $detail->purchaseId)->first();
+                $gudangInspeksi = gudangInspeksiStokOpname::where('gdInspeksiKId', $detail->gdInspeksiKId)->where('gdDetailMaterialId', $detail->gdDetailMaterialId)->where('purchaseId', $detail->purchaseId)->first();
                 $cekPengembalian = GudangInspeksiMasuk::where('gdInspeksiKId', $request->id)->first();
                 
                 if ($gudangInspeksi != null) {
                     $request->cekInspeksi = 1;
+                }else {
+                    $request->cekInspeksi = 0;
                 }
+
                 if ($cekPengembalian != null) {
                     $request->cekPengembalian = 1;
                 }
             }
         }
 
+        // dd($gInspeksiRequest);
         return view('gudangInspeksi.request.index', ['gInspeksiRequest' => $gInspeksiRequest]);
     }
 
@@ -132,32 +136,49 @@ class GudangInspeksiController extends Controller
         $purchaseInspeksi = [];
         $purchaseMaterial = [];
         $index = 0;
-        $gudangKeluar = GudangInspeksiKeluar::select('id', 'statusDiterima')->get();
+        $gudangKeluar = GudangInspeksiKeluar::select('id', 'tanggal', 'statusDiterima')->get();
         foreach ($gudangKeluar as $value) {
-            $gudangKeluarDetail = GudangInspeksiKeluarDetail::select('purchaseId','gdDetailMaterialId','materialId', 'jenisId')->where('gdInspeksiKId', $value->id)->first();
-            $purchaseInspeksi[$index] = [
-                "id" => $gudangKeluarDetail->purchaseId,
-                "kode" => $gudangKeluarDetail->purchase->kode,              
-                "terima" => $value->statusDiterima              
-            ];
-            
-            $purchaseMaterial = [
-                "gdDetailMaterialId" => $gudangKeluarDetail->gdDetailMaterialId,
-                "materialId" => $gudangKeluarDetail->materialId,
-                "jenisId" => $gudangKeluarDetail->jenisId
-            ];
+            $gudangKeluarDetail = GudangInspeksiKeluarDetail::select('purchaseId', 'gdInspeksiKId','gdDetailMaterialId','materialId', 'jenisId')->where('gdInspeksiKId', $value->id)->get();
+            foreach ($gudangKeluarDetail as $detail) {
+                $inspeksiStokOpname = gudangInspeksiStokOpname::where('gdInspeksiKId', $detail->gdInspeksiKId)->where('gdDetailMaterialId', $detail->gdDetailMaterialId)->where('purchaseId', $detail->purchaseId)->first();
+                if ($inspeksiStokOpname == null) {
+                    $data = [
+                        "id" => $detail->purchaseId,
+                        "kode" => $detail->purchase->kode,              
+                        "terima" => $value->statusDiterima,
+                        "tanggal" => $value->tanggal,
+                        "gdKeluarId" => $value->id,
+                    ];
+                    if (!in_array($data, $purchaseInspeksi)) {
+                        $purchaseInspeksi[$index] = [
+                            "id" => $detail->purchaseId,
+                            "kode" => $detail->purchase->kode,              
+                            "terima" => $value->statusDiterima,                         
+                            "tanggal" => $value->tanggal,
+                            "gdKeluarId" => $value->id,
+                        ];
+                        $index++;
+                    }
+                }
+                
+                $purchaseMaterial = [
+                    "materialId" => $detail->materialId,
+                    "jenisId" => $detail->jenisId
+                ];
 
-            $index++;
+                $gdDetailMaterialId[] = $detail->gdDetailMaterialId;
+               
+            }
+
         }       
 
-        
-        return view('gudangInspeksi.proses.create', ['purchaseId' => $purchaseInspeksi, 'gudangKeluar' => $purchaseMaterial]);
+        return view('gudangInspeksi.proses.create', ['purchaseId' => $purchaseInspeksi, 'gudangKeluar' => $purchaseMaterial, 'gdDetailMaterialId' => $gdDetailMaterialId]);
     }
 
     public function PStore(Request $request)
     {
-        // dd($request);
-        $gudangInspeksi = gudangInspeksiStokOpname::createInspeksiProses($request->gdDetailMaterialId, $request->purchaseId, $request->materialId, $request->jenisId, $request->gramasi, $request->diameter, date('Y-m-d H:i:s'), \Auth::user()->id);
+        $dataId = explode("-",$request->purchaseId);
+        $gudangInspeksi = gudangInspeksiStokOpname::createInspeksiProses($dataId[1], $request->gdDetailMaterialId, $dataId[0], $request->materialId, $request->jenisId, $request->gramasi, $request->diameter, $request->jumlah, date('Y-m-d H:i:s'), \Auth::user()->id);
 
         if ($gudangInspeksi) {
             $inspeksiId = $gudangInspeksi;
@@ -167,6 +188,28 @@ class GudangInspeksiController extends Controller
             }
             return redirect('gudangInspeksi/proses');
         }
+    }
+
+    public function getDataDetailMaterial($purchaseId, $materialId, $diameter, $gramasi = "")
+    {
+        $dataId = explode("-",$purchaseId);
+        $datas = [];
+        if ($gramasi == "null") {        
+            $inspeksiKeluarDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$dataId[1])->where('purchaseId',$dataId[0])->where('materialId',$materialId)->where('diameter',$diameter)->get();
+            foreach ($inspeksiKeluarDetail as $detail) {
+                if (!in_array($detail->gramasi, $datas)) {
+                    $datas[] = $detail->gramasi;
+                }
+            }
+        }else{
+            $inspeksiKeluarDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$dataId[1])->where('purchaseId',$dataId[0])->where('materialId',$materialId)->where('diameter',$diameter)->where('gramasi',$gramasi)->get();
+            foreach ($inspeksiKeluarDetail as $detail) {
+                $datas['gdDetailMaterialId'] = $detail->gdDetailMaterialId;
+                $datas['jumlah'] = $detail->qty;
+            }
+        }
+
+        return json_encode($datas);
     }
 
     public function PDetail($id)
@@ -180,7 +223,7 @@ class GudangInspeksiController extends Controller
     public function PUpdate($id)
     {
         $gudangInspeksi = gudangInspeksiStokOpname::where('id', $id)->first();
-        $gudangInspeksiDetail = gudangInspeksiStokOpnameDetail::where('gudangInspeksiStokId', $id)->get();
+        $gudangInspeksiDetail = gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $id)->get();
 
         return view('gudangInspeksi.proses.update', ['gudangInspeksi' => $gudangInspeksi, 'gudangInspeksiDetail' => $gudangInspeksiDetail]);
     }
@@ -208,7 +251,7 @@ class GudangInspeksiController extends Controller
 
     public function PDelete(Request $request)
     {
-        gudangInspeksiStokOpnameDetail::where('gudangInspeksiStokId', $request['inspeksiId'])->delete();        
+        gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $request['inspeksiId'])->delete();        
         gudangInspeksiStokOpname::where('id', $request['inspeksiId'])->delete();   
                 
         return redirect('gudangInspeksi/proses');

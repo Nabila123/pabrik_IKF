@@ -15,7 +15,6 @@
                     ->orderBy('urutan','asc')
                     ->get();
         ?>
-
         @if(count($menus)==0)
             <li class="nav-item">
                 <a href="{{ route($main->alias) }}" class="nav-link active">

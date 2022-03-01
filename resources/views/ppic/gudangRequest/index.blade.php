@@ -51,9 +51,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('ppic.gdRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
-                            </h3>
+                            @if (\Auth::user()->roleId == 38)
+                                <h3 class="card-title">
+                                    <a href="{{ route('ppic.gdRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
+                                </h3>
+                            @endif
                         </div>
                         <div class="card-body">
                             <table id="example2" class="table table-bordered  dataTables_scrollBody" style="width: 100%;">
@@ -72,15 +74,21 @@
                                             <td>{{ date('d F Y', strtotime($request->tanggal)) }}</td>
                                             <td>
                                                 @if ($request->statusDiterima == 0)
-                                                    <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penerimaan</span>
+                                                    @if (\Auth::user()->roleId == 26)
+                                                        <a href="{{ route('bahan_baku.ppicRequest.terima', [$request->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Proses Request </a> <br>
+                                                    @else
+                                                        <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penerimaan</span>                                                        
+                                                    @endif
                                                 @else
                                                     <span style="color: green; font-size: 13px">Permintaan Sudah Diterima</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 <a href="{{ route('ppic.gdRequest.detail', $request->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('ppic.gdRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                               <button type="button" data-toggle="modal" invoiceId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @if (\Auth::user()->roleId == 38)
+                                                    <a href="{{ route('ppic.gdRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    <button type="button" data-toggle="modal" invoiceId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                                
