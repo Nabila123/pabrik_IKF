@@ -26,8 +26,18 @@ class gudangInspeksiStokOpname extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function inspeksiKeluar()
+    {
+        return $this->hasOne('App\Models\GudangInspeksiKeluar','id','gdInspeksiKId');
+    }
 
-    public static function createInspeksiProses($gdInspeksiKId, $gdDetailMaterialId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $tanggal, $userId){
+    public function inspeksiStokDetail()
+    {
+        return $this->hasOne('App\Models\gudangInspeksiStokOpnameDetail','gdInspeksiKId','id');
+    }
+
+
+    public static function createInspeksiProses($gdInspeksiKId, $gdDetailMaterialId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $qty, $tanggal, $userId){
         $addInspeksi = new gudangInspeksiStokOpname;
         $addInspeksi->gdInspeksiKId = $gdInspeksiKId;
         $addInspeksi->gdDetailMaterialId = $gdDetailMaterialId;
@@ -36,7 +46,7 @@ class gudangInspeksiStokOpname extends Model
         $addInspeksi->jenisId = $jenisId;
         $addInspeksi->gramasi = $gramasi;
         $addInspeksi->diameter = $diameter;
-        $addInspeksi->qty = 0;
+        $addInspeksi->qty = $qty;
         $addInspeksi->tanggal = $tanggal;
 
         $addInspeksi->userId = $userId;

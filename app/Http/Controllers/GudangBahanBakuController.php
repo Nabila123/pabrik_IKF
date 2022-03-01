@@ -446,6 +446,13 @@ class GudangBahanBakuController extends Controller
                     }
                 }elseif($request['jenisId'] == 3){
                     $keluarDetail = GudangInspeksiKeluarDetail::createGudangInspeksiKeluarDetail($gdId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                    if ($keluarDetail) {
+                        $newQty = 0;
+                        $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                        $newQty = $detailMaterial->qty - $request['qtyArr'][$i];
+                        GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
+                        
+                    }
                 }
             }
         }
@@ -701,11 +708,13 @@ class GudangBahanBakuController extends Controller
 
             
         if ($statusDiterima == 1) {
-            foreach ($dataDetail as $value) {
-                $gudangDetailMaterial = GudangBahanBakuDetailMaterial::where('id',$value->gdDetailMaterialId)->first();
-                $qty = $gudangDetailMaterial->qty + $value->qty;
-
-                GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $qty, $value->gdDetailMaterialId);
+            if ($gudangRequest != "Gudang Inspeksi Masuk") {
+                foreach ($dataDetail as $value) {
+                    $gudangDetailMaterial = GudangBahanBakuDetailMaterial::where('id',$value->gdDetailMaterialId)->first();
+                    $qty = $gudangDetailMaterial->qty + $value->qty;
+    
+                    GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $qty, $value->gdDetailMaterialId);
+                }
             }
                 
             return redirect('bahan_baku/masuk');

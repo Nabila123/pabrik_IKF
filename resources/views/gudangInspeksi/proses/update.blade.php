@@ -75,24 +75,34 @@
                                         </div>
                                     </div> 
 
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label>Nama Suplier</label>
                                         <div class="input-group">                                            
                                             <input type="text" id="namaSuplier" name="namaSuplier" value="{{ $gudangInspeksi->purchase->suplierName }}" class="form-control namaSuplier disabled" readonly>
                                         </div>
                                     </div>
-                                    <div class="col-4">
+
+                                    <div class="col-3">
                                         <label>Jenis Kain</label>
                                         <div class="input-group">                                            
                                             <input type="text" id="jenisKain" name="jenisKain" value="{{ $gudangInspeksi->material->nama }}" class="form-control jenisKain disabled" readonly>
                                         </div>
                                     </div>
-                                    <div class="col-4">
+
+                                    <div class="col-3">
                                         <label>Diameter</label>
                                         <div class="input-group">                                            
-                                            <input type="text" id="diameter" name="diameter" value="{{ $gudangInspeksi->purchase->bahanBaku->bahanBakuDetail->diameter }}" class="form-control diameter disabled" readonly>
+                                            <input type="text" id="diameter" name="diameter" value="{{ $gudangInspeksi->diameter }}" class="form-control diameter disabled" readonly>
                                         </div>
                                     </div>
+
+                                    <div class="col-3">
+                                        <label>Diameter</label>
+                                        <div class="input-group">                                            
+                                            <input type="text" id="diameter" name="diameter" value="{{ $gudangInspeksi->diameter }}" class="form-control diameter disabled" readonly>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -120,51 +130,33 @@
                                                     <td> <input class="form-control" type="text" name="beratInput" id="beratInput"> </td>
                                                     <td> <input class="form-control" type="text" name="panjangInput" id="panjangInput"> </td>
                                                     <td> 
-                                                        <div class="form-group clearfix">
-                                                            <div class="icheck-primary d-inline">
-                                                                <input type="checkbox" name="lubangInput" id="lubangInput">
-                                                                <label for="lubangInput"> </label>
-                                                              </div>    
+                                                        <div class="form-group">
+                                                                <input style='width:70px;' class="form-control" type="number" name="lubangInput" id="lubangInput">
                                                         </div>    
                                                     </td>
                                                     <td> 
-                                                        <div class="form-group clearfix">
-                                                            <div class="icheck-primary d-inline">
-                                                                <input type="checkbox" name="plexInput" id="plexInput">
-                                                                <label for="plexInput"> </label>
-                                                            </div>    
+                                                        <div class="form-group">
+                                                                <input style='width:70px;' class="form-control" type="number" name="plexInput" id="plexInput">
                                                         </div>    
                                                     </td>
                                                     <td> 
-                                                        <div class="form-group clearfix">
-                                                            <div class="icheck-primary d-inline">
-                                                                <input type="checkbox" name="belangInput" id="belangInput">
-                                                                <label for="belangInput"> </label>
-                                                            </div>    
+                                                        <div class="form-group">
+                                                                <input style='width:70px;' class="form-control" type="number" name="belangInput" id="belangInput">
                                                         </div>    
                                                     </td>
                                                     <td> 
-                                                        <div class="form-group clearfix">
-                                                            <div class="icheck-primary d-inline">
-                                                                <input type="checkbox" name="tanahInput" id="tanahInput">
-                                                                <label for="tanahInput"> </label>
-                                                            </div>    
+                                                        <div class="form-group">
+                                                                <input style='width:70px;' class="form-control" type="number" name="tanahInput" id="tanahInput">
                                                         </div>    
                                                     </td>
                                                     <td> 
-                                                        <div class="form-group clearfix">
-                                                            <div class="icheck-primary d-inline">
-                                                                <input type="checkbox" name="sambungInput" id="sambungInput">
-                                                                <label for="sambungInput"> </label>
-                                                            </div>    
+                                                        <div class="form-group">
+                                                                <input style='width:70px;' class="form-control" type="number" name="sambungInput" id="sambungInput">
                                                         </div>    
                                                     </td>
                                                     <td> 
-                                                        <div class="form-group clearfix">
-                                                            <div class="icheck-primary d-inline">
-                                                                <input type="checkbox" name="jarumInput" id="jarumInput">
-                                                                <label for="jarumInput"> </label>
-                                                            </div>    
+                                                        <div class="form-group">
+                                                                <input style='width:70px;' class="form-control" type="number" name="jarumInput" id="jarumInput">
                                                         </div>    
                                                     </td>
                                                     <td> <input class="form-control" type="text" name="ketInput" id="ketInput"> </td>
@@ -345,12 +337,12 @@
                         $('#rollInput').val('');
                         $('#beratInput').val('');
                         $('#panjangInput').val('');
-                        $('#lubangInput').prop('checked', false);
-                        $('#plexInput').prop('checked', false);
-                        $('#belangInput').prop('checked', false);
-                        $('#tanahInput').prop('checked', false);
-                        $('#sambungInput').prop('checked', false);
-                        $('#jarumInput').prop('checked', false);
+                        $('#lubangInput').val('');
+                        $('#plexInput').val('');
+                        $('#belangInput').val('');
+                        $('#tanahInput').val('');
+                        $('#sambungInput').val('');
+                        $('#jarumInput').val('');
                         $('#ketInput').val('');
                 }else{
                     alert("Data Roll, Berat & Panjang Tidak Boleh Kosong");

@@ -340,7 +340,7 @@
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                            table += "<td>"+jumlah_data+"x</td>";
+                            table += "<td>"+jumlah_data+"</td>";
                             table += "<td>"+rollInput+"<input type='hidden' name='roll[]' value='"+rollInput+"' id='roll_"+jumlah_data+"'></td>";
                             table += "<td>"+beratInput+"<input type='hidden' name='berat[]' value='"+beratInput+"' id='berat_"+jumlah_data+"'></td>";
                             table += "<td>"+panjangInput+"<input type='hidden' name='panjang[]' value='"+panjangInput+"' id='panjang_"+jumlah_data+"'></td>";
