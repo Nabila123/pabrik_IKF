@@ -3,15 +3,57 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PPICGudangRequest;
+use App\Models\GudangBahanBaku;
+use App\Models\GudangBahanBakuDetail;
+use App\Models\GudangBahanBakuDetailMaterial;
+use App\Models\GudangRajutMasuk;
+use App\Models\GudangCompactKeluarDetail;
+use App\Models\GudangCompactMasukDetail;
+use App\Models\GudangInspeksiMasuk;
 use App\Models\PPICGudangRequestDetail;
 use App\Models\MaterialModel;
 
 class PPICController extends Controller
 {
     public function index()
-    {
-        return view('ppic.index');
+    {        
+        $dataStok=[];
+        $dataBenang=[];       
+        $materials = MaterialModel::all();       
+        $bahanBaku = GudangBahanBaku::all();       
+
+        foreach ($materials as $material) {
+            $dataStok[$material->id]['id'] = $material->id;
+            $dataStok[$material->id]['nama'] = $material->nama;
+            $dataStok[$material->id]['qty'] = 0;
+            $dataStok[$material->id]['satuan'] = "";
+
+            $data = GudangBahanBakuDetail::where('materialId', $material->id)->get();
+            foreach ($data as $value) {
+                $dataMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $value->id)->get();
+                foreach ($dataMaterial as $detail) {
+                    if ($material->id == 1) {
+                        $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $detail->netto;
+                        $dataStok[$material->id]['satuan'] = "KG";
+                    } else {
+                        $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $detail->qty;
+                        $dataStok[$material->id]['satuan'] = "Roll";
+                    }
+                    
+                }
+            }
+        }
+
+        // foreach ($bahanBaku as $value) {
+        //     $detailBahanBaku = GudangBahanBakuDetail::where('gudangId', $value->id)->where('materialId', 1)->get();
+        //     foreach ($variable as $detail) {
+        //         $compacKeluar = GudangCompacKeluarDetail::where('gudangId', $value->id)
+        //         $compactMasuk = GudangCompactMasukDetail::where('gudangId', $value->id)
+        //     }
+        //     dd($detailBahanBaku);
+        // }
+        
+        return view('ppic.index')->with(['dataStok'=>$dataStok]);
     }
 
     public function gdRequest()
