@@ -66,22 +66,28 @@
                             <table id="example2" class="table table-bordered" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle; width:10%;">No</th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Bahan Baku</th>
-                                        <th colspan="2" class="textAlign" style="vertical-align: middle;">Bahan Olahan</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">Kain Grey</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Kain Putih</th>
+                                        <th class="textAlign" style="vertical-align: middle; width:10%;">No</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Bahan Baku</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jenis Bahan Olahan</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Diameter</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Gramasi</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    <?php $no = 1; ?>
+                                    @for ($i = 0; $i < count($dataBenang); $i++)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $dataBenang[$i]['purchaseId'] }}</td>
+                                            <td>{{ $dataBenang[$i]['materialOld'] }}</td>
+                                            <td>{{ $dataBenang[$i]['materialNew'] }}</td>
+                                            <td>{{ $dataBenang[$i]['diameter'] }}</td>
+                                            <td>{{ $dataBenang[$i]['gramasi'] }}</td>
+                                            <td>{{ $dataBenang[$i]['qty'] }}</td>
+                                        </tr>
+                                    @endfor
                                 </tbody>
                             </table>
                         </div>

@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;
+use App\Models\GudangRajutKeluarDetail;
 use App\Models\GudangRajutMasuk;
-use App\Models\GudangCompactKeluarDetail;
+use App\Models\GudangRajutMasukDetail;
+use App\Models\GudangCuciKeluarDetail;
+use App\Models\GudangCompactKeluar;
+use App\Models\GudangCompactMasuk;
 use App\Models\GudangCompactMasukDetail;
-use App\Models\GudangInspeksiMasuk;
 use App\Models\PPICGudangRequestDetail;
 use App\Models\MaterialModel;
 
@@ -18,7 +21,8 @@ class PPICController extends Controller
     public function index()
     {        
         $dataStok=[];
-        $dataBenang=[];       
+        $dataBenang=[];    
+        $i = 0;   
         $materials = MaterialModel::all();       
         $bahanBaku = GudangBahanBaku::all();       
 
@@ -44,16 +48,38 @@ class PPICController extends Controller
             }
         }
 
-        // foreach ($bahanBaku as $value) {
-        //     $detailBahanBaku = GudangBahanBakuDetail::where('gudangId', $value->id)->where('materialId', 1)->get();
-        //     foreach ($variable as $detail) {
-        //         $compacKeluar = GudangCompacKeluarDetail::where('gudangId', $value->id)
-        //         $compactMasuk = GudangCompactMasukDetail::where('gudangId', $value->id)
-        //     }
-        //     dd($detailBahanBaku);
-        // }
+        foreach ($bahanBaku as $value) {            
+            $rajutKeluarDetail = GudangRajutKeluarDetail::where('gudangId', $value->id)->where('materialId', 1)->get();
+            foreach ($rajutKeluarDetail as $rajutKeluar) {
+                $rajutMasuk = GudangRajutMasuk::where('gdRajutKId', $rajutKeluar->id)->first();
+                $rajutMasukDetail = GudangRajutMasukDetail::where('gudangId', $value->id)->where('gdRajutMId', $rajutMasuk->id)->get();
+                foreach ($rajutMasukDetail as $rajutMasuk) {
+                    $cuciKeluarDetail = GudangCuciKeluarDetail::where('gudangId', $value->id)->where('gdDetailMaterialId', $rajutMasuk->gdDetailMaterialId)->get();
+                    foreach ($cuciKeluarDetail as $cuciKeluar) {
+                        $compactKeluar = GudangCompactKeluar::where('gdCuciKId', $cuciKeluar->id)->first();
+                        $compactMasuk = GudangCompactMasuk::where('gdCompactKId', $compactKeluar->id)->first();
+                        $compactMasukDetail = GudangCompactMasukDetail::where('gudangId', $value->id)->where('gdCompactMId', $compactMasuk->id)->get();                       
+                        foreach ($compactMasukDetail as $compactMasuk) {
+                            $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $compactMasuk->gdDetailMaterialId)->get();
+                            foreach ($detailMaterial as $materialDetail) {
+                               $dataBenang[$i] = [
+                                   'purchaseId'     => $value->purchase->kode,
+                                   'materialOld'    => $rajutKeluar->material->nama,
+                                   'materialNew'    => $compactMasuk->material->nama,
+                                   'diameter'       => $materialDetail->diameter,
+                                   'gramasi'        => $materialDetail->gramasi,
+                                   'qty'            => $materialDetail->qty,
+                               ];
+
+                               $i++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
-        return view('ppic.index')->with(['dataStok'=>$dataStok]);
+        return view('ppic.index')->with(['dataStok'=>$dataStok, 'dataBenang'=>$dataBenang]);
     }
 
     public function gdRequest()

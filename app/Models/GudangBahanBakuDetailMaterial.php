@@ -15,6 +15,11 @@ class GudangBahanBakuDetailMaterial extends Model
     {
         return $this->hasOne('App\Models\GudangBahanBakuDetail','id','gudangDetailId');
     }
+    
+    public function material()
+    {
+        return $this->hasOne('App\Models\MaterialModel','id','materialId');
+    }
 
     public static function CreateDetailMaterial($gudangDetailId, $diameter, $gramasi, $brutto, $netto, $tarra, $qty, $unit, $unitPrice, $amount, $remark)
     {
