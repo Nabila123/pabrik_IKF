@@ -26,10 +26,11 @@ class GudangCompactMasukDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
-    public static function CreateCompactMasukDetail($gudangId, $gdCompactMId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $berat, $qty)
+    public static function CreateCompactMasukDetail($gudangId, $gdDetailMaterialId, $gdCompactMId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $berat, $qty)
     {
         $addCompactMasukDetail = new GudangCompactMasukDetail;
         $addCompactMasukDetail->gudangId = $gudangId;
+        $addCompactMasukDetail->gdDetailMaterialId = $gdDetailMaterialId;
         $addCompactMasukDetail->gdCompactMId = $gdCompactMId;
         $addCompactMasukDetail->purchaseId = $purchaseId;
         $addCompactMasukDetail->materialId = $materialId;

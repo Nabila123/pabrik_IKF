@@ -97,8 +97,8 @@ Route::post('/bahan_baku/keluar/delete', [App\Http\Controllers\GudangBahanBakuCo
 
 //GUDANG MASUK
 Route::get('/bahan_baku/masuk', [App\Http\Controllers\GudangBahanBakuController::class, 'masukGudang'])->name('bahan_baku.masuk');
-Route::get('/bahan_baku/masuk/detail/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.masuk.detail');
-Route::get('/bahan_baku/masuk/terima/{id}', [App\Http\Controllers\GudangBahanBakuController::class, 'terimaMasukGudang'])->name('bahan_baku.masuk.terima');
+Route::get('/bahan_baku/masuk/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.masuk.detail');
+Route::get('/bahan_baku/masuk/terima/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'terimaMasukGudang'])->name('bahan_baku.masuk.terima');
 
 
 /* Gudang Rajut */
@@ -153,6 +153,7 @@ Route::get('/gudangInspeksi/Kembali/Detail/{id}', [App\Http\Controllers\GudangIn
 Route::get('/gudangInspeksi/proses', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiproses'])->name('GInspeksi.proses');
 Route::get('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PCreate'])->name('GInspeksi.proses.create');
 Route::post('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PStore'])->name('GInspeksi.proses.create');
+Route::get('/gudangInspeksi/proses/getDetailMaterial/{purchaseId}/{materialId}/{diameter}/{gramasi}', [App\Http\Controllers\GudangInspeksiController::class, 'getDataDetailMaterial'])->name('GInspeksi.proses.detailMaterial');
 Route::get('/gudangInspeksi/proses/detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PDetail'])->name('GInspeksi.proses.detail');
 Route::get('/gudangInspeksi/proses/update/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PUpdate'])->name('GInspeksi.proses.update');
 Route::post('/gudangInspeksi/proses/update/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'PUpdateInspeksi'])->name('GInspeksi.proses.update');

@@ -31,10 +31,11 @@ class GudangCuciKeluarDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
-    public static function createGudangCuciKeluarDetail($gdCuciKId, $gudangId, $purchaseId, $materialId, $gramasi, $diameter, $berat, $qty)
+    public static function createGudangCuciKeluarDetail($gdCuciKId, $gudangId, $gdDetailMaterialId, $purchaseId, $materialId, $gramasi, $diameter, $berat, $qty)
     {
         $keluarDetail = new GudangCuciKeluarDetail;
         $keluarDetail->gudangId = $gudangId;
+        $keluarDetail->gdDetailMaterialId = $gdDetailMaterialId;
         $keluarDetail->gdCuciKId = $gdCuciKId;
         $keluarDetail->purchaseId = $purchaseId;
         $keluarDetail->materialId = $materialId;

@@ -332,7 +332,7 @@
                 console.log(qty);
                 console.log(cek < 0);
                 
-                if(berat != 0 && berat != null && cek > 0){
+                if(berat != 0 && berat != null && cek >= 0){
                     $('#qty').css({'border':'1px solid #ced4da'});
                     $('#bal').css({'border':'1px solid #ced4da'});
 
@@ -360,7 +360,7 @@
                 console.log(bal);
                 console.log(cek < 0);
                 
-                if(berat != 0 && berat != null && cek > 0){
+                if(berat != 0 && berat != null && cek >= 0){
                     $('#qty').css({'border':'1px solid #ced4da'});
                     $('#bal').css({'border':'1px solid #ced4da'});
                                    

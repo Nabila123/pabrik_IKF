@@ -27,8 +27,9 @@ class gudangInspeksiStokOpname extends Model
     }
 
 
-    public static function createInspeksiProses($gdDetailMaterialId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $tanggal, $userId){
+    public static function createInspeksiProses($gdInspeksiKId, $gdDetailMaterialId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $tanggal, $userId){
         $addInspeksi = new gudangInspeksiStokOpname;
+        $addInspeksi->gdInspeksiKId = $gdInspeksiKId;
         $addInspeksi->gdDetailMaterialId = $gdDetailMaterialId;
         $addInspeksi->purchaseId = $purchaseId;
         $addInspeksi->materialId = $materialId;

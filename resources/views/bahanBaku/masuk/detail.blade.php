@@ -55,60 +55,32 @@
                                 <div class="col-12">
                                     <div class="card card-info">
                                         <div class="card-body">
-                                            <div class="row">                                                    
-                                                <div class="col-8">
-                                                    <div class="form-group">
-                                                        <label>Kode Purchase : {{$data->kodePurchase}} </label>                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-4">
-                                                    <div class="form-group">
-                                                        <label>Nama Suplier : {{$data->namaSuplier}}</label>                                            
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                        <p><b>Diameter :</b> {{$data->diameter}} </p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p><b>Gramasi : </b>{{$data->gramasi}}</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p><b>Total : </b>{{$data->total}}</p>
-                                                </div>
-
+                                            <div class="row">          
                                                 <div class="col-12 right">
                                                     <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                         <thead>
                                                             <tr>
-                                                                <th class="textAlign" style="width: 7%;">No</th>
-                                                                <th class="textAlign">Nama Barang</th>
-                                                                <th class="textAlign">Jumlah </th>
-                                                                <th class="textAlign">Bruto </th>
-                                                                <th class="textAlign">Netto </th>
-                                                                <th class="textAlign">Tarra</th>
-                                                                <th class="textAlign">Satuan </th>
-                                                                <th class="textAlign">Harga Satuan</th>
-                                                                <th class="textAlign">Amount</th>
-                                                                <th class="textAlign">Remark</th>
+                                                                <th class="textAlign">Bahan</th>
+                                                                <th class="textAlign">Kode Purchase</th>
+                                                                @if ($data->gudangRequest != "Gudang Rajut")
+                                                                    <th class="textAlign">Gramasi</th>
+                                                                    <th class="textAlign">Diamater</th>
+                                                                    <th class="textAlign">Berat</th>
+                                                                @endif
+                                                                <th class="textAlign">Jumlah</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody class="data textAlign">
-                                                            @foreach($dataDetail as $key=>$detail)
-                                                                @php
-                                                                    $key++;
-                                                                @endphp
+                                                        <tbody class="textAlign">
+                                                            @foreach ($dataDetail as $detail)
                                                                 <tr>
-                                                                    <td>{{$key}}</td>
-                                                                    <td>{{$detail->materialNama}}</td>
-                                                                    <td>{{$detail->qty}}</td>
-                                                                    <td>{{$detail->brutto}}</td>
-                                                                    <td>{{$detail->netto}}</td>
-                                                                    <td>{{$detail->tarra}}</td>
-                                                                    <td>{{$detail->unit}}</td>
-                                                                    <td>{{$detail->unitPrice}}</td>
-                                                                    <td>{{$detail->amount}}</td>
-                                                                    <td>{{$detail->remark}}</td>
+                                                                    <td>{{ $detail->material->nama }}</td>
+                                                                    <td>{{ $detail->purchase->kode }}</td>
+                                                                    @if ($data->gudangRequest != "Gudang Rajut")
+                                                                        <td>{{ $detail->gramasi }}</td>
+                                                                        <td>{{ $detail->diameter }}</td>
+                                                                        <td>{{ $detail->berat }}</td>
+                                                                    @endif
+                                                                    <td>{{ $detail->qty }}</td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>                                                                                       
