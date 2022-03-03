@@ -83,9 +83,11 @@ Route::get('/bahan_baku/ppicRequest/terima/{id}', [App\Http\Controllers\GudangBa
 //GUDANG KELUAR
 Route::get('/bahan_baku/keluar', [App\Http\Controllers\GudangBahanBakuController::class, 'keluarGudang'])->name('bahan_baku.keluar');
 Route::get('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'createKeluarGudang'])->name('bahan_baku.keluar.create');
-Route::get('/bahan_baku/keluar/getMaterial/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataMaterial'])->name('bahan_baku.keluar.material');
+Route::get('/bahan_baku/keluar/getMaterial/{gudangRequest}/{jenisKain}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataMaterial'])->name('bahan_baku.keluar.material');
 Route::get('/bahan_baku/keluar/getGudang/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataGudang'])->name('bahan_baku.keluar.gudang');
+Route::get('/bahan_baku/keluar/getGudangInspeksi/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataGudangInspeksi'])->name('bahan_baku.keluar.gudangInspeksi');
 Route::get('/bahan_baku/keluar/getDetailMaterial/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataDetailMaterial'])->name('bahan_baku.keluar.detailMaterial');
+Route::get('/bahan_baku/keluar/getDetailMaterialInspeksi/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataDetailMaterialInspeksi'])->name('bahan_baku.keluar.detailMaterialInspeksi');
 Route::post('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'storeKeluarGudang'])->name('bahan_baku.keluar.store');
 Route::get('/bahan_baku/keluar/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.keluar.detail');
 Route::get('/bahan_baku/keluar/detail/delete/{gudangId}/{detailId}/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteDetailGudang'])->name('bahan_baku.keluar.detail.delete');

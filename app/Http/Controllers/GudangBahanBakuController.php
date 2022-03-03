@@ -22,6 +22,9 @@ use App\Models\GudangInspeksiKeluarDetail;
 use App\Models\GudangInspeksiMasuk;
 use App\Models\GudangInspeksiMasukDetail;
 use App\Models\GudangInspeksiStokOpname;
+use App\Models\gudangInspeksiStokOpnameDetail;
+use App\Models\GudangPotongKeluar;
+use App\Models\GudangPotongKeluarDetail;
 use App\Models\MaterialModel;
 use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
@@ -313,6 +316,7 @@ class GudangBahanBakuController extends Controller
         $data[1] = GudangCuciKeluar::all();
         $data[2] = GudangCompactKeluar::all();
         $data[3] = GudangInspeksiKeluar::all();
+        $data[4] = GudangPotongKeluar::all();
 
         for ($i=0; $i < count($data); $i++) { 
             foreach ($data[$i] as $val) {
@@ -335,6 +339,10 @@ class GudangBahanBakuController extends Controller
 
                     case 3:
                         $val->gudangRequest = "Gudang Inspeksi";
+                        break;
+
+                    case 4:
+                        $val->gudangRequest = "Gudang Potong";
                         break;
                 }
             }
@@ -361,14 +369,28 @@ class GudangBahanBakuController extends Controller
     }
     
 
-    public function getDataMaterial($gudangRequest)
+    public function getDataMaterial($gudangRequest, $jenisKain = null)
     {
-        $data['material'] = MaterialModel::where('jenisId',$gudangRequest)->first();
-        $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->get();
+        if ($gudangRequest != 4 || ($gudangRequest == 4 && $jenisKain == 1)) {
+            if ($gudangRequest == 4) {
+                $gudangRequest = 3;
+            }
+            $data['material'] = MaterialModel::where('jenisId',$gudangRequest)->first();
+            $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->get();
 
-        $data['purchase'] = [];
-        foreach($datas as $val){
-            $data['purchase'][] = $val->purchase;
+            $data['purchase'] = [];
+            foreach($datas as $val){
+                $data['purchase'][] = $val->purchase;
+            }
+        }else{
+            $data['material'] = MaterialModel::where('jenisId',3)->first();
+            $datas = GudangInspeksiStokOpname::where('materialId', $data['material']->id)->get();
+
+            $data['purchase'] = [];
+            foreach($datas as $val){
+                $data['purchase'][] = $val->purchase;
+            }
+
         }
         return json_encode($data);
     }
@@ -382,6 +404,21 @@ class GudangBahanBakuController extends Controller
         
         $datas['gudangId'] = $detailGudang->gudangId;
         foreach ($gudangMaterialDetail as $detail) {
+            if (!in_array($detail->diameter, $datas['diameter'])) {
+                $datas['diameter'][] = $detail->diameter;
+            }
+        }
+
+        return json_encode($datas);
+    }
+
+    public function getDataGudangInspeksi($materialId,$purchaseId)
+    {
+        $datas['diameter'] = [];
+        $detailGudangInspeksi = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->get();
+        
+        foreach ($detailGudangInspeksi as $detail) {
+            $datas['gudangId'] = $detail->gudangDetailmaterial->bahanBakuDetail->gudangId;
             if (!in_array($detail->diameter, $datas['diameter'])) {
                 $datas['diameter'][] = $detail->diameter;
             }
@@ -422,6 +459,38 @@ class GudangBahanBakuController extends Controller
         return json_encode($datas);
     }
 
+    public function getDataDetailMaterialInspeksi($materialId, $purchaseId, $diameter, $gramasi="", $berat="")
+    {
+        $datas = [];
+        if ($gramasi == "null") {
+            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->get();
+        
+            foreach ($detailGudang as $detail) {
+                if (!in_array($detail->gramasi, $datas)) {
+                    $datas[] = $detail->gramasi;
+                }
+            }
+        }elseif ($berat == "null") {
+            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('gramasi', $gramasi)->get();
+            foreach ($detailGudang as $detail) {
+                $gudangMaterialDetail = gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $detail->id)->get();
+                foreach ($gudangMaterialDetail as $value) {
+                    if (!in_array($value->berat, $datas)) {
+                        $datas[] = $value->berat;
+                    }
+                }
+            }
+        }else{
+            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('gramasi', $gramasi)->first();
+            $gudangMaterialDetail = gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $detailGudang->id)->where('berat', $berat)->first();
+            
+            $datas['gudangMaterialDetail'] = $gudangMaterialDetail->inspeksiStok->id;
+            $datas['qty'] = $gudangMaterialDetail->inspeksiStok->qty;
+        }       
+
+        return json_encode($datas);
+    }
+
     public function storeKeluarGudang(Request $request)
     {
         // dd($request);
@@ -438,6 +507,10 @@ class GudangBahanBakuController extends Controller
             case 3:
                 $gudang = 'Gudang Inspeksi';
                 $keluar = new GudangInspeksiKeluar;
+                break;
+            case 4:
+                $gudang = 'Gudang Potong';
+                $keluar = new GudangPotongKeluar;
                 break;
         }
 
@@ -473,6 +546,27 @@ class GudangBahanBakuController extends Controller
                         GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
                         
                     }
+                }elseif($request['jenisId'] == 4){
+                    if ($request['jenisKain'] == 1) {
+                        $keluarDetail = GudangPotongKeluarDetail::createGudangPotongKeluarDetail($gdId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], null, $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                        if ($keluarDetail) {
+                            $newQty = 0;
+                            $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                            $newQty = $detailMaterial->qty - $request['qtyArr'][$i];
+                            GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
+                            
+                        }
+                    } else {
+                        $keluarDetail = GudangPotongKeluarDetail::createGudangPotongKeluarDetail($gdId, $request['gudangIdArr'][$i], null, $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                        if ($keluarDetail) {
+                            $newQty = 0;
+                            $detailMaterial = GudangInspeksiStokOpname::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                            $newQty = $detailMaterial->qty - $request['qtyArr'][$i];
+                            GudangInspeksiStokOpname::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
+                            
+                        }
+                    }
+                    
                 }
             }
         }

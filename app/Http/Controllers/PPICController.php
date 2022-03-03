@@ -49,29 +49,37 @@ class PPICController extends Controller
         }
 
         foreach ($bahanBaku as $value) {            
-            $rajutKeluarDetail = GudangRajutKeluarDetail::where('gudangId', $value->id)->where('materialId', 1)->get();
+            $rajutKeluarDetail = GudangRajutKeluarDetail::where('gudangId', 1)->where('materialId', 1)->get();
             foreach ($rajutKeluarDetail as $rajutKeluar) {
-                $rajutMasuk = GudangRajutMasuk::where('gdRajutKId', $rajutKeluar->id)->first();
-                $rajutMasukDetail = GudangRajutMasukDetail::where('gudangId', $value->id)->where('gdRajutMId', $rajutMasuk->id)->get();
-                foreach ($rajutMasukDetail as $rajutMasuk) {
-                    $cuciKeluarDetail = GudangCuciKeluarDetail::where('gudangId', $value->id)->where('gdDetailMaterialId', $rajutMasuk->gdDetailMaterialId)->get();
-                    foreach ($cuciKeluarDetail as $cuciKeluar) {
-                        $compactKeluar = GudangCompactKeluar::where('gdCuciKId', $cuciKeluar->id)->first();
-                        $compactMasuk = GudangCompactMasuk::where('gdCompactKId', $compactKeluar->id)->first();
-                        $compactMasukDetail = GudangCompactMasukDetail::where('gudangId', $value->id)->where('gdCompactMId', $compactMasuk->id)->get();                       
-                        foreach ($compactMasukDetail as $compactMasuk) {
-                            $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $compactMasuk->gdDetailMaterialId)->get();
-                            foreach ($detailMaterial as $materialDetail) {
-                               $dataBenang[$i] = [
-                                   'purchaseId'     => $value->purchase->kode,
-                                   'materialOld'    => $rajutKeluar->material->nama,
-                                   'materialNew'    => $compactMasuk->material->nama,
-                                   'diameter'       => $materialDetail->diameter,
-                                   'gramasi'        => $materialDetail->gramasi,
-                                   'qty'            => $materialDetail->qty,
-                               ];
+                $gdrajutMasuk = GudangRajutMasuk::where('gdRajutKId', $rajutKeluar->gdRajutKId)->get();
+                // dd($gdrajutMasuk);
+                foreach ($gdrajutMasuk as $gdRmasuk) {
+                    $rajutMasukDetail = GudangRajutMasukDetail::where('gudangId', $value->id)->where('gdRajutMId', $gdRmasuk->id)->get();
+                    foreach ($rajutMasukDetail as $rajutMasuk) {
+                        $cuciKeluarDetail = GudangCuciKeluarDetail::where('gudangId', $value->id)->where('gdDetailMaterialId', $rajutMasuk->gdDetailMaterialId)->get();
+                        // dd($cuciKeluarDetail);
+                        foreach ($cuciKeluarDetail as $cuciKeluar) {
+                            $compactKeluar = GudangCompactKeluar::where('gdCuciKId', $cuciKeluar->gdCuciKId)->get();
+                            foreach ($compactKeluar as $keluarCompact) {
+                                $compactMasuk = GudangCompactMasuk::where('gdCompactKId', $keluarCompact->id)->get();
+                                foreach ($compactMasuk as $masukCompact) {
+                                    $compactMasukDetail = GudangCompactMasukDetail::where('gudangId', $value->id)->where('gdCompactMId', $masukCompact->id)->get();                       
+                                    foreach ($compactMasukDetail as $masukCompactDetail) {
+                                        $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $masukCompactDetail->gdDetailMaterialId)->get();
+                                        foreach ($detailMaterial as $materialDetail) {
+                                            $dataBenang[$i] = [
+                                                'purchaseId'     => $value->purchase->kode,
+                                                'materialOld'    => $rajutKeluar->material->nama,
+                                                'materialNew'    => $masukCompactDetail->material->nama,
+                                                'diameter'       => $materialDetail->diameter,
+                                                'gramasi'        => $materialDetail->gramasi,
+                                                'qty'            => $materialDetail->qty,
+                                            ];
 
-                               $i++;
+                                            $i++;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
