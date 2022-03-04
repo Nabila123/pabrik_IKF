@@ -33,12 +33,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Proses Potong</h1>
+                    <h1>Detail Gudang Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Proses Potong</li>
+                        <li class="breadcrumb-item">Gudang Potong Request</li>
+                        <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
             </div>
@@ -49,38 +50,39 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">   
+                    <div class="card"> 
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('GPotong.proses.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
-                            </h3>
-                        </div>                        
+                            <table class="table">
+                                <tr>
+                                    <td> <b>Nama Barang :</b> Kain Putih</td>
+                                </tr>
+                                <tr>
+                                    <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangPotong->tanggal)) }}</td>
+                                </tr>
+                            </table>
+                        </div>                       
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Kode Purchase </th>
-                                        <th class="textAlign">Bahan Baku</th>
-                                        <th class="textAlign">Operator Proses</th>
-                                        <th class="textAlign">Tanggal Proses</th>
+                                        <th class="textAlign">Bahan</th>
+                                        <th class="textAlign">Kode Purchase</th>
+                                        <th class="textAlign">Gramasi</th>
+                                        <th class="textAlign">Diamater</th>
+                                        <th class="textAlign">Berat</th>
                                         <th class="textAlign">Jumlah</th>
-                                        <th class="textAlign">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gdPotongProses as $proses)
-                                    <tr>
-                                        <td>{{ $proses->purchase->kode }}</td>    
-                                        <td>{{ $proses->material->nama }}</td>    
-                                        <td>{{ $proses->user->nama }}</td>    
-                                        <td>{{ date('d F Y', strtotime($proses->tanggal)) }}</td>    
-                                        <td>{{ $proses->qty }}</td>    
-                                        <td>
-                                            <a href="{{ route('GPotong.proses.detail', $proses->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            <a href="{{ route('GInspeksi.proses.update', $proses->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                            <button type="button" data-toggle="modal" inspeksiId='{{ $proses->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $proses->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>    
-                                        </td>    
-                                    </tr>                                        
+                                    @foreach ($gudangPotongDetail as $detail)
+                                        <tr>
+                                            <td>{{ $detail->material->nama }}</td>
+                                            <td>{{ $detail->purchase->kode }}</td>
+                                            <td>{{ $detail->gramasi }}</td>
+                                            <td>{{ $detail->diameter }}</td>
+                                            <td>{{ $detail->berat }}</td>
+                                            <td>{{ $detail->qty }}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

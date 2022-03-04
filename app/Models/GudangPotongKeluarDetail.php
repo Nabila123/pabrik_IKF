@@ -26,6 +26,11 @@ class GudangPotongKeluarDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function gdPotongKeluar()
+    {
+        return $this->hasOne('App\Models\GudangPotongKeluar','id','gdPotongKId');
+    }
+
     public static function createGudangPotongKeluarDetail($gdPotongKId, $gudangId, $gdDetailMaterialId, $gdInspeksiStokId, $purchaseId, $materialId, $gramasi, $diameter, $berat, $qty)
     {
         $keluarDetail = new GudangPotongKeluarDetail;

@@ -176,9 +176,22 @@ Route::get('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::cla
 Route::post('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdateStore'])->name('ppic.gdRequest.update');
 Route::delete('/ppic/Gudang//delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
 
-/* PPIC */
+/* Gudang Potong */
 Route::get('/GPotong', [App\Http\Controllers\GudangPotongController::class, 'index'])->name('GPotong');
+Route::post('/GPotong/getData', [App\Http\Controllers\GudangPotongController::class, 'getData'])->name('GPotong.getData');
+
+Route::get('/GPotong/request', [App\Http\Controllers\GudangPotongController::class, 'gRequest'])->name('GPotong.request');
+
+Route::get('/GPotong/keluar', [App\Http\Controllers\GudangPotongController::class, 'gKeluar'])->name('GPotong.keluar');
+Route::get('/GPotong/keluar/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarDetail'])->name('GPotong.keluar.detail');
+Route::get('/GPotong/keluar/Terima/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarTerima'])->name('GPotong.keluar.terima');
+Route::get('/GPotong/keluar/kembali/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarKembali'])->name('GPotong.keluar.kembali');
+Route::Post('/GPotong/keluar/kembali/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarKembaliStore'])->name('GPotong.keluar.kembali');
 
 Route::get('/GPotong/proses', [App\Http\Controllers\GudangPotongController::class, 'gProses'])->name('GPotong.proses');
+Route::get('/GPotong/proses/create', [App\Http\Controllers\GudangPotongController::class, 'gProsesCreate'])->name('GPotong.proses.create');
+Route::post('/GPotong/proses/create', [App\Http\Controllers\GudangPotongController::class, 'gProsesStore'])->name('GPotong.proses.create');
+Route::get('/GPotong/proses/getDetailMaterial/{purchaseId}/{materialId}/{diameter}/{gramasi}', [App\Http\Controllers\GudangPotongController::class, 'getDataDetailMaterial'])->name('GPotong.proses.detailMaterial');
+Route::get('/GPotong/proses/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesDetail'])->name('GPotong.proses.detail');
 
 Auth::routes();

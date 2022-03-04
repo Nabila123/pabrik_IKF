@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\GudangPotongKeluar;
+use App\Models\GudangPotongKeluarDetail;
+use App\Models\GudangPotongProses;
+use App\Models\GudangPotongProsesDetail;
 
 class GudangPotongController extends Controller
 {
@@ -11,8 +15,159 @@ class GudangPotongController extends Controller
         return view('gudangPotong.index');
     }
 
+    public function getData(Request $request)
+    {
+        $gdPotong = GudangPotongKeluar::getPurchaseWithMaterial($request);
+
+        return json_encode($gdPotong);
+    }
+
+    public function gRequest()
+    {
+        return view('gudangPotong.request.index');
+    }
+
+    public function gKeluar()
+    {
+        $gudangPotong = GudangPotongKeluar::all();
+        foreach ($gudangPotong as $request) {
+            $cekDetail = GudangPotongProses::where('gPotongKId', $request->id)->first();
+                
+            if ($cekDetail != null) {
+                $request->cekPotong = 1;
+            }else {
+                $request->cekPotong = 0;
+            }
+        }
+
+        return view('gudangPotong.keluar.index', ['gudangPotong' => $gudangPotong]);
+    }
+
+    public function gKeluarDetail($id)
+    {
+        $gudangPotong = GudangPotongKeluar::where('id', $id)->first();
+        $gudangPotongDetail = GudangPotongKeluarDetail::where('gdPotongKId', $gudangPotong->id)->get();
+
+        return view('gudangPotong.keluar.detail', ['gudangPotong' => $gudangPotong, 'gudangPotongDetail' => $gudangPotongDetail]);
+    }
+
+    public function gKeluarTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 1;  
+
+        $gudangPotongTerima = GudangPotongKeluar::updateStatusDiterima($id, $statusDiterima);
+
+        if ($gudangPotongTerima == 1) {
+            return redirect('GPotong/keluar');
+        }
+    }
+
+    public function gKeluarKembali($id)
+    {
+        $materials = MaterialModel::get();
+        $gPotong = GudangPotongKeluar::where('id', $id)->first();
+        $gPotongKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $id)->get();
+
+        foreach ($gPotongKeluarDetail as $detail) {
+            $purchaseId[] = $detail->purchaseId;
+        }
+
+        return view('gudangPotong.keluar.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gPotong' => $gPotong, 'gPotongKeluarDetail' => $gPotongKeluarDetail]);
+    }
+
+    public function gKeluarKembaliStore(Request $request)
+    {
+        dd($request);
+    }
+
     public function gProses()
     {
-        return view('gudangPotong.proses.index');
+        $gudangPotongProses = GudangPotongProses::all();
+        return view('gudangPotong.proses.index', ['gdPotongProses' => $gudangPotongProses]);
+    }
+
+    public function gProsesCreate()
+    {
+        $purchasePotong = [];
+        $material = [];
+        $index = 0;
+        $gudangKeluar = GudangPotongKeluar::all();
+        foreach ($gudangKeluar as $keluar) {
+            $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
+            foreach ($gudangKeluarDetail as $detail) {
+                $prosesPotong = GudangPotongProses::where('gPotongKId', $keluar->id)->where('purchaseId', $detail->purchaseId)->first();
+                if ($prosesPotong == null) {
+                    $data = [
+                        "id" => $detail->purchaseId,
+                        "kode" => $detail->purchase->kode,              
+                        "terima" => $keluar->statusDiterima,
+                        "tanggal" => $keluar->tanggal,
+                        "gdKeluarId" => $keluar->id,
+                    ];
+                    if (!in_array($data, $purchasePotong)) {
+                        $purchasePotong[$index] = [
+                            "id" => $detail->purchaseId,
+                            "kode" => $detail->purchase->kode,              
+                            "terima" => $keluar->statusDiterima,                         
+                            "tanggal" => $keluar->tanggal,
+                            "gdKeluarId" => $keluar->id,
+                        ];
+                        $index++;
+                    }
+                }
+
+                $material = [
+                    "materialId" => $detail->materialId,
+                    "jenisId" => $detail->jenisId
+                ];
+            }
+        }
+
+        return view('gudangPotong.proses.create', ['purchaseId' => $purchasePotong, 'material' => $material]);
+    }
+
+    public function gProsesStore(Request $request)
+    {
+        $dataId = explode("-",$request->purchaseId);
+        $gudangPotong = GudangPotongProses::createPotongProses($request->gdPotongKId, $dataId[0], $request->materialId, $request->jenisId, $request->jumlah, date('Y-m-d H:i:s'), \Auth::user()->id);
+        if ($gudangPotong) {
+            $potongProsesId = $gudangPotong;
+
+            for ($i = 0; $i < $request->jumlah_data; $i++) {
+                GudangPotongProsesDetail::createPotongProsesDetail($potongProsesId, $request->jmlPotong[$i], $request->beratPotong[$i],  $request->diameter, $request->gramasi, $request->beratRoll[$i], $request->jnsBaju[$i], $request->size[$i], $request->totalDZ[$i], $request->totalKG[$i], $request->skb[$i], $request->bs[$i], $request->kecil[$i], $request->ketek[$i], $request->ketekPot[$i], $request->sumbu[$i], $request->bunder[$i], $request->tKecil[$i], $request->tBesar[$i], $request->tangan[$i], $request->kPutih[$i], $request->kBelang[$i], \Auth::user()->id);                
+            }
+            return redirect('GPotong/proses');
+        }
+    }
+
+    public function getDataDetailMaterial($purchaseId, $materialId, $diameter, $gramasi = "")
+    {
+        $dataId = explode("-",$purchaseId);
+        $datas = [];
+        if ($gramasi == "null") {        
+            $potongKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId',$dataId[1])->where('purchaseId',$dataId[0])->where('materialId',$materialId)->where('diameter',$diameter)->get();
+            foreach ($potongKeluarDetail as $detail) {
+                if (!in_array($detail->gramasi, $datas)) {
+                    $datas[] = $detail->gramasi;
+                }
+            }
+        }else{
+            $potongKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId',$dataId[1])->where('purchaseId',$dataId[0])->where('materialId',$materialId)->where('diameter',$diameter)->where('gramasi',$gramasi)->get();
+            foreach ($potongKeluarDetail as $detail) {
+                $datas['gdPotongKId'] = $detail->gdPotongKeluar->id;
+                $datas['jumlah'] = $detail->qty;
+            }
+        }
+
+        return json_encode($datas);
+    }
+
+    public function gProsesDetail($id)
+    {
+        $gdPotong = GudangPotongProses::find($id);
+        $gdPotongDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotong->id)->get();
+
+        return view('gudangPotong.proses.detail', ['gdPotong' => $gdPotong, 'gdPotongDetail' => $gdPotongDetail]);
     }
 }

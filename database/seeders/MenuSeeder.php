@@ -71,7 +71,9 @@ class MenuSeeder extends Seeder
             //Gudang Potong
             ['id' => 34, 'parentId' => 0, 'urutan' => 9, 'nama' => 'Gudang Potong', 'alias' => 'GPotong', 'directori' => 'gudangPotong', 'isActive' => 1],
             ['id' => 35, 'parentId' => 34, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GPotong', 'directori' => 'gudangPotong', 'isActive' => 1],
-            ['id' => 36, 'parentId' => 34, 'urutan' => 2, 'nama' => 'Proses Potong', 'alias' => 'GPotong.proses', 'directori' => 'gudangPotong/proses/index', 'isActive' => 1],
+            ['id' => 36, 'parentId' => 34, 'urutan' => 2, 'nama' => 'Request Barang Jadi', 'alias' => 'GPotong.request', 'directori' => 'gudangPotong/request/index', 'isActive' => 1],
+            ['id' => 37, 'parentId' => 34, 'urutan' => 3, 'nama' => 'Request Bahan Baku', 'alias' => 'GPotong.keluar', 'directori' => 'gudangPotong/keluar/index', 'isActive' => 1],
+            ['id' => 38, 'parentId' => 34, 'urutan' => 4, 'nama' => 'Proses Potong', 'alias' => 'GPotong.proses', 'directori' => 'gudangPotong/proses/index', 'isActive' => 1],
 
         ];
 
