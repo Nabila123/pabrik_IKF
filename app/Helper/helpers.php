@@ -44,7 +44,7 @@
         $notif = [];
 
         if ($mains->nama == "PPIC" && $user == 38) { //PPIC Gudang Request
-            $notif = PPICGudangRequest::where('statusDiterima', 0)->get();               
+            $notif = PPICGudangRequest::where('statusDiterima', 1)->get();               
             if (count($notif) != 0) {
                 $notif[5] = $notif;
                 return $notif;
@@ -87,22 +87,24 @@
                 $notifRajut = GudangRajutMasuk::where('statusDiterima', 0)->get();          
                 $notifCompact = GudangCompactMasuk::where('statusDiterima', 0)->get();  
                 $notifInspeksi = GudangInspeksiMasuk::where('statusDiterima', 0)->get();  
-            }
-            
-            if (count($notifRajut) != 0){
-                $notif[] = $notifRajut;
-            } 
-            if (count($notifCompact) != 0){
-                $notif[] = $notifCompact;
-            } 
-            if (count($notifInspeksi) != 0) {
-                $notif[] = $notifInspeksi;
-            }
 
+                if (count($notifRajut) != 0){
+                    $notif[] = $notifRajut;
+                } 
+                if (count($notifCompact) != 0){
+                    $notif[] = $notifCompact;
+                } 
+                if (count($notifInspeksi) != 0) {
+                    $notif[] = $notifInspeksi;
+                }
+            }          
+
+            // dd($notif);
             if (count($notif) != 0) {
-                $notif[15] = $notif;
+                $notif[16] = $notif;
                 return $notif;
             }
+
         }
 
         if ($mains->nama == "Gudang Rajut") {
@@ -111,7 +113,7 @@
             }
             
             if (count($notif) != 0) {
-                $notif[18] = $notif;      
+                $notif[19] = $notif;      
                 return $notif;
             }
         }
@@ -122,7 +124,7 @@
             }
             
             if (count($notif) != 0) {
-                $notif[22] = $notif;
+                $notif[23] = $notif;
                 return $notif;
             }
         }
@@ -133,7 +135,7 @@
             }
             
             if (count($notif) != 0) {
-                $notif[26] = $notif;
+                $notif[27] = $notif;
                 return $notif;
             }
         }
@@ -144,7 +146,7 @@
             }
             
             if (count($notif) != 0) {
-                $notif[30] = $notif;
+                $notif[31] = $notif;
                 return $notif;
             }
         }

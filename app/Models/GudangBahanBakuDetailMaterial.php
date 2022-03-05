@@ -11,6 +11,16 @@ class GudangBahanBakuDetailMaterial extends Model
 
     protected $table = 'gd_bahanbaku_detail_material';
 
+    public function bahanBakuDetail()
+    {
+        return $this->hasOne('App\Models\GudangBahanBakuDetail','id','gudangDetailId');
+    }
+    
+    public function material()
+    {
+        return $this->hasOne('App\Models\MaterialModel','id','materialId');
+    }
+
     public static function CreateDetailMaterial($gudangDetailId, $diameter, $gramasi, $brutto, $netto, $tarra, $qty, $unit, $unitPrice, $amount, $remark)
     {
         $addDetailMaterial = new GudangBahanBakuDetailMaterial;
@@ -29,9 +39,19 @@ class GudangBahanBakuDetailMaterial extends Model
         $addDetailMaterial->created_at = date('Y-m-d H:i:s');
 
         if ($addDetailMaterial->save()) {
-            return 1;
+            return $addDetailMaterial->id;
         } else {
             return 0;
+        }
+    }
+
+    public static function detailMaterialUpdateField($fieldName, $updatedField, $id)
+    {
+        $detailMaterialFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($detailMaterialFieldUpdated);
+
+        if ($success) {
+            return 1;
         }
     }
 }

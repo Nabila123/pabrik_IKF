@@ -30,4 +30,13 @@ class GudangCompactMasuk extends Model
             return 0;
         }
     }
+
+    public static function updateStatusDiterima($id, $statusDiterima)
+    {
+        $purchaseUpdated['statusDiterima'] = $statusDiterima;
+
+        self::where('id', $id)->update($purchaseUpdated);
+
+        return 1;
+    }
 }

@@ -25,10 +25,11 @@ class GudangRajutMasukDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
-    public static function CreateRajutMasukDetail($gudangId, $gdRajutMId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $berat, $qty)
+    public static function CreateRajutMasukDetail($gudangId, $gdDetailMaterialId, $gdRajutMId, $purchaseId, $materialId, $jenisId, $gramasi, $diameter, $berat, $qty)
     {
         $addRajutMasukDetail = new GudangRajutMasukDetail;
         $addRajutMasukDetail->gudangId = $gudangId;
+        $addRajutMasukDetail->gdDetailMaterialId = $gdDetailMaterialId;
         $addRajutMasukDetail->gdRajutMId = $gdRajutMId;
         $addRajutMasukDetail->purchaseId = $purchaseId;
         $addRajutMasukDetail->materialId = $materialId;

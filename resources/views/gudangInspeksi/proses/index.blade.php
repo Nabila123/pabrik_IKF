@@ -62,7 +62,7 @@
                                         <th class="textAlign">Kode Purchase</th>
                                         <th class="textAlign">Nama Suplier</th>
                                         <th class="textAlign">Jenis Kain</th>
-                                        <th class="textAlign">Tanggal</th>
+                                        <th class="textAlign">Tanggal Request</th>
                                         <th class="textAlign">Operator Inspeksi</th>
                                         <th class="textAlign">Action</th>
                                     </tr>
@@ -73,7 +73,7 @@
                                             <td>{{ $inspeksi->purchase->kode }}</td>
                                             <td>{{ $inspeksi->purchase->suplierName }}</td>
                                             <td>{{ $inspeksi->material->nama }}</td>
-                                            <td>{{ date('d F Y', strtotime($inspeksi->tanggal)) }}</td>
+                                            <td>{{ date('d F Y', strtotime($inspeksi->inspeksiKeluar->tanggal)) }}</td>
                                             <td>{{ $inspeksi->user->nama }}</td>
                                             <td>
                                                 <a href="{{ route('GInspeksi.proses.detail', $inspeksi->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

@@ -11,6 +11,11 @@ class GudangBahanBakuDetail extends Model
 
     protected $table = 'gd_bahanbaku_detail';
 
+    public function purchase()
+    {
+        return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
+    }
+    
     public function material()
     {
         return $this->hasOne('App\Models\MaterialModel','id','materialId');

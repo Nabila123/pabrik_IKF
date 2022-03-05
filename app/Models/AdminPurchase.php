@@ -51,13 +51,24 @@ class AdminPurchase extends Model
 
     public static function getPurchaseWithMaterial($request)
     {
-        $dataPurchase = AdminPurchase::select('suplierName')->where('id', $request->purchaseId)->first();
+        $dataId = explode("-",$request->purchaseId);
+        $dataPurchase = AdminPurchase::select('suplierName')->where('id', $dataId[0])->first();
         $dataMaterial = MaterialModel::select('nama')->where('id', $request->materialId)->first();
-        
+        $detailMaterial = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $dataId[1])->where('purchaseId', $request->purchaseId)->where('materialId', $request->materialId)->get();
+
         $data = [
             'suplierName' => $dataPurchase['suplierName'],
             'nama' => $dataMaterial['nama'],
+            'diameter' => []
         ];
+
+        $i = 0;
+        foreach ($detailMaterial as $detail) {
+           if (!in_array($detail->diameter, $data['diameter'])) {
+            $data['diameter'][$i] = $detail->diameter;
+           }
+            $i++;
+        }      
         
         return $data;
     }

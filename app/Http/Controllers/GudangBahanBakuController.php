@@ -8,16 +8,24 @@ use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;
 use App\Models\GudangRajutMasuk;
+use App\Models\GudangRajutMasukDetail;
 use App\Models\GudangRajutKeluar;
+use App\Models\GudangRajutKeluarDetail;
 use App\Models\GudangCuciKeluar;
+use App\Models\GudangCuciKeluarDetail;
 use App\Models\GudangCompactMasuk;
+use App\Models\GudangCompactMasukDetail;
 use App\Models\GudangCompactKeluar;
+use App\Models\GudangCompactKeluarDetail;
 use App\Models\GudangInspeksiKeluar;
+use App\Models\GudangInspeksiKeluarDetail;
 use App\Models\GudangInspeksiMasuk;
+use App\Models\GudangInspeksiMasukDetail;
 use App\Models\GudangInspeksiStokOpname;
 use App\Models\MaterialModel;
 use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
+use App\Models\PPICGudangRequest;
 use App\Models\BarangDatangDetailMaterial;
 
 class GudangBahanBakuController extends Controller
@@ -270,6 +278,24 @@ class GudangBahanBakuController extends Controller
         return redirect('bahan_baku/supply');
     }
 
+    public function ppicRequest()
+    {
+        $ppicRequest = PPICGudangRequest::all();
+        return view('ppic.gudangRequest.index', ['ppicRequest' => $ppicRequest]);
+    }
+
+    public function terimaPPICRequest($id)
+    {
+        $id = $id;   
+        $statusDiterima = 1;
+
+        $gudangCuciTerima = PPICGudangRequest::updateStatusDiterima($id, $statusDiterima);
+
+        if ($gudangCuciTerima == 1) {
+            return redirect('bahan_baku/ppicRequest');
+        }
+    }
+
     public function delDetailMaterial($id)
     {
         if(GudangBahanBakuDetailMaterial::where('id',$id)->delete()){
@@ -282,24 +308,64 @@ class GudangBahanBakuController extends Controller
 
     public function keluarGudang()
     {
-        $data = GudangKeluar::all();
+        $data = [];
+        $data[0] = GudangRajutKeluar::all();
+        $data[1] = GudangCuciKeluar::all();
+        $data[2] = GudangCompactKeluar::all();
+        $data[3] = GudangInspeksiKeluar::all();
+
+        for ($i=0; $i < count($data); $i++) { 
+            foreach ($data[$i] as $val) {
+                switch ($i) {
+                    case 0:
+                        $val->gudangRequest = "Gudang Rajut";
+                        break;
+                    
+                    case 1:
+                        $val->gudangRequest = "Gudang Cuci";
+                        $dataCompact = GudangCompactKeluar::where('gdCuciKId',$val->id)->first();
+                        if ($dataCompact != null) {
+                            $val->cuciDelete = false;
+                        }
+                        break;
+
+                    case 2:
+                        $val->gudangRequest = "Gudang Compact";
+                        break;
+
+                    case 3:
+                        $val->gudangRequest = "Gudang Inspeksi";
+                        break;
+                }
+            }
+        }
+
+        // dd($data);
+
         return view('bahanBaku.keluar.index')->with(['data'=>$data]);
     }
 
     public function createKeluarGudang()
     {
-        $datas = GudangStokOpname::all();
+        // $datas = GudangStokOpname::all();
         $dataMaterial=[];
-        foreach ($datas as $key => $value) {
-            $dataMaterial[]=$value->material;
+        $gudang = GudangBahanBaku::all();
+        foreach ($gudang as $gd) {
+            $gudangDetail = GudangBahanBakuDetail::where('gudangId', $gd->id)->get();
+            foreach ($gudangDetail as $value) {
+                $dataMaterial[]=$value->material;
+            }
         }
+
         return view('bahanBaku.keluar.create')->with(['dataMaterial'=>$dataMaterial]);
     }
+    
 
     public function getDataMaterial($gudangRequest)
     {
         $data['material'] = MaterialModel::where('jenisId',$gudangRequest)->first();
-        $datas = GudangStokOpname::where('materialId',$data['material']->id)->get();
+        $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->get();
+
         $data['purchase'] = [];
         foreach($datas as $val){
             $data['purchase'][] = $val->purchase;
@@ -310,48 +376,103 @@ class GudangBahanBakuController extends Controller
 
     public function getDataGudang($materialId,$purchaseId)
     {
-        $datas = GudangStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-    
+        $datas['diameter'] = [];
+        $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
+        $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->get();
+        
+        $datas['gudangId'] = $detailGudang->gudangId;
+        foreach ($gudangMaterialDetail as $detail) {
+            if (!in_array($detail->diameter, $datas['diameter'])) {
+                $datas['diameter'][] = $detail->diameter;
+            }
+        }
+
+        return json_encode($datas);
+    }
+
+    public function getDataDetailMaterial($materialId, $purchaseId, $diameter, $gramasi="", $berat="")
+    {
+        $datas = [];
+        if ($gramasi == "null") {
+            $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->get();
+        
+            foreach ($gudangMaterialDetail as $detail) {
+                if (!in_array($detail->gramasi, $datas)) {
+                    $datas[] = $detail->gramasi;
+                }
+            }
+        }elseif ($berat == "null") {
+            $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->get();
+        
+            foreach ($gudangMaterialDetail as $detail) {
+                if (!in_array($detail->netto, $datas)) {
+                    $datas[] = $detail->netto;
+                }
+            }
+        }else{
+            $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('netto', $berat)->first();
+            
+            $datas['gudangMaterialDetail'] = $gudangMaterialDetail->id;
+            $datas['qty'] = $gudangMaterialDetail->qty;
+        }       
+
         return json_encode($datas);
     }
 
     public function storeKeluarGudang(Request $request)
     {
-        $jumlahData = $request['jumlah_data'];
-        $keluar = new GudangKeluar;
-        $keluar->materialId = $request['materialId'];
-        $keluar->jenisId = $request['jenisId'];
+        // dd($request);
+        $jumlahData = $request['jumlah_data'];        
         switch ($request['jenisId']) {
             case 1:
                 $gudang = 'Gudang Rajut';
+                $keluar = new GudangRajutKeluar;
                 break;
             case 2:
                 $gudang = 'Gudang Cuci';
+                $keluar = new GudangCuciKeluar;
                 break;
             case 3:
                 $gudang = 'Gudang Inspeksi';
-                break;
-            
-            default:
-                // code...
+                $keluar = new GudangInspeksiKeluar;
                 break;
         }
-        $keluar->gudangRequest = $gudang;
+
         $keluar->tanggal = date('Y-m-d');
         $keluar->userId = \Auth::user()->id;
-
+        $keluar->created_at = date('Y-m-d H:i:s');
         if($keluar->save()){
+            $gdId = $keluar->id;
             for ($i=0; $i < $jumlahData; $i++) { 
-                $keluarDetail = new GudangKeluarDetail;
-                $keluarDetail->gudangKeluarId = $keluar->id;
-                $keluarDetail->gudangStokId = $request['gStokIdArr'][$i];
-                $keluarDetail->purchaseId = $request['purchaseIdArr'][$i];
-                $keluarDetail->qty = $request['qtyArr'][$i];
-                if($keluarDetail->save()){
-                    $stokOpname = GudangStokOpname::where('materialId', $request['materialId'])->where('purchaseId',$request['purchaseIdArr'][$i])->first();
-                    $qtyUpdate = $stokOpname->qty - $request['qtyArr'][$i];
-
-                    $update = GudangStokOpname::where('materialId', $request['materialId'])->where('purchaseId',$request['purchaseIdArr'][$i])->update(['qty'=>$qtyUpdate]);
+                if($request['jenisId'] == 1){
+                    $keluarDetail = GudangRajutKeluarDetail::createGudangRajutKeluarDetail($gdId, $request['gudangIdArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['qtyArr'][$i]);
+                    if ($keluarDetail) {
+                        $newQty = 0;
+                        $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                        $newQty = $detailMaterial->netto - $request['qtyArr'][$i];
+                        GudangBahanBakuDetailMaterial::detailMaterialUpdateField('netto', $newQty, $request['gudangMaterialDetailArr'][$i]);
+                    }
+                }elseif($request['jenisId'] == 2){
+                    $keluarDetail = GudangCuciKeluarDetail::createGudangCuciKeluarDetail($gdId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                    if ($keluarDetail) {
+                        $newQty = 0;
+                        $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                        $newQty = $detailMaterial->qty - $request['qtyArr'][$i];
+                        GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
+                        
+                    }
+                }elseif($request['jenisId'] == 3){
+                    $keluarDetail = GudangInspeksiKeluarDetail::createGudangInspeksiKeluarDetail($gdId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                    if ($keluarDetail) {
+                        $newQty = 0;
+                        $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                        $newQty = $detailMaterial->qty - $request['qtyArr'][$i];
+                        GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
+                        
+                    }
                 }
             }
         }
@@ -359,34 +480,210 @@ class GudangBahanBakuController extends Controller
         return redirect('/bahan_baku/keluar');
     }
 
-    public function detailKeluarGudang($id)
+    public function detailKeluarGudang($id, $gudangRequest)
     {
-        $data = GudangKeluar::find($id);
-        $dataDetail = GudangKeluarDetail::where('gudangKeluarId',$id)->get();
+        switch ($gudangRequest) {
+            //KELUAR
+            case 'Gudang Rajut':
+                $data = GudangRajutKeluar::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangRajutKeluarDetail::where('gdRajutKId',$id)->get();
+                break;
 
+            case 'Gudang Cuci':
+                $data = GudangCuciKeluar::find($id);
+                $data->gudangRequest = $gudangRequest;                
+                $dataDetail = GudangCuciKeluarDetail::where('gdCuciKId',$id)->get();
+                break;
+
+            case 'Gudang Compact':
+                $data = GudangCompactKeluar::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangCompactKeluarDetail::where('gdCompactKId',$id)->get();
+                break;
+
+            case 'Gudang Inspeksi':
+                $data = GudangInspeksiKeluar::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$id)->get();
+                break;
+
+            //MASUK
+            case 'Gudang Rajut Masuk':
+                $data = GudangRajutMasuk::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangRajutMasukDetail::where('gdRajutMId',$id)->get();
+                break;
+
+            case 'Gudang Compact Masuk':
+                $data = GudangCompactMasuk::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangCompactMasukDetail::where('gdCompactMId',$id)->get();
+                break;
+
+            case 'Gudang Inspeksi Masuk':
+                $data = GudangInspeksiMasuk::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangInspeksiMasukDetail::where('gdInspeksiMId',$id)->get();
+                break;
+        }
+        
         return view('bahanBaku.keluar.detail')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
+    }
+
+    public function updateKeluarGudang($id, $gudangRequest)
+    {
+        switch ($gudangRequest) {
+            case 'Gudang Rajut':
+                $data = GudangRajutKeluar::find($id);
+                $data->gudangRequestId = 1;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangRajutKeluarDetail::where('gdRajutKId',$id)->get();
+                break;
+
+            case 'Gudang Cuci':
+                $data = GudangCuciKeluar::find($id);
+                $data->gudangRequestId = 2;                
+                $data->gudangRequest = $gudangRequest;                
+                $dataDetail = GudangCuciKeluarDetail::where('gdCuciKId',$id)->get();
+                break;
+
+            case 'Gudang Compact':
+                $data = GudangCompactKeluar::find($id);
+                $data->gudangRequestId = 3;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangCompactKeluarDetail::where('gdCompactKId',$id)->get();
+                break;
+
+            case 'Gudang Inspeksi':
+                $data = GudangInspeksiKeluar::find($id);
+                $data->gudangRequestId = 4;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$id)->get();
+                break;
+        }
+        return view('bahanBaku.keluar.update', ['data' => $data, 'dataDetail' => $dataDetail, 'gudangRequest' => $gudangRequest]);
+    }
+
+    public function updateSaveKeluarGudang(Request $request)
+    {
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                if($request['jenisId'] == 1){
+                    $keluarDetail = GudangRajutKeluarDetail::createGudangRajutKeluarDetail($request->gudangKeluarId, $request['gudangIdArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['qtyArr'][$i]);
+                }elseif($request['jenisId'] == 2){
+                    $keluarDetail = GudangCuciKeluarDetail::createGudangCuciKeluarDetail($request->gudangKeluarId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                }elseif($request['jenisId'] == 3){
+                    $keluarDetail = GudangInspeksiKeluarDetail::createGudangInspeksiKeluarDetail($request->gudangKeluarId, $request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $request['purchaseIdArr'][$i], $request['materialIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                }
+            }
+
+            if ($keluarDetail == 1) {
+                return redirect('/bahan_baku/keluar');
+            }
+        }else {
+            return redirect('/bahan_baku/keluar');
+        }
+    }
+
+    public function deleteDetailGudang($gudangId, $detailId, $gudangRequest)
+    {
+        switch ($gudangRequest) {
+            case 'Gudang Rajut':
+                $dataDetail = GudangRajutKeluarDetail::where('id',$detailId)->delete();
+                break;
+
+            case 'Gudang Cuci':                
+                $dataDetail = GudangCuciKeluarDetail::where('id',$detailId)->delete();
+                break;
+
+            case 'Gudang Compact':
+                $dataDetail = GudangCompactKeluarDetail::where('id',$detailId)->delete();
+                break;
+
+            case 'Gudang Inspeksi':
+                $dataDetail = GudangInspeksiKeluarDetail::where('id',$detailId)->delete();
+                break;
+        }
+        if ($dataDetail) {
+            return redirect('bahan_baku/keluar/update/' . $gudangId . '/' . $gudangRequest . '');
+        }
     }
 
     public function deleteKeluarGudang(Request $request)
     {
-        $getDetail = GudangKeluarDetail::where('gudangKeluarId', $request['gudangId'])->get();
-        $gudangDetail = GudangKeluarDetail::where('gudangKeluarId', $request['gudangId'])->delete();
+        // dd($request);
 
-        if ($gudangDetail) {
-            GudangKeluar::where('id', $request['gudangId'])->delete();
-            foreach ($getDetail as $key => $value) {
-                $getStok = GudangStokOpname::find($value->gudangStokId);
-                $qty = $getStok->qty + $value->qty;
-                $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]);
-            }
+        switch ($request->gudangRequestName) {
+            case 'Gudang Rajut':
+                $dataDetail = GudangRajutKeluarDetail::where('gdRajutKId',$request->gudangRequestId)->get();
+                $dataDetailDelete = GudangRajutKeluarDetail::where('gdRajutKId',$request->gudangRequestId)->delete();
+                if ($dataDetailDelete) {
+                    GudangRajutKeluar::where('id', $request->gudangRequestId)->delete();
+                }
+                break;
+
+            case 'Gudang Cuci':
+                $dataDetail = GudangCuciKeluarDetail::where('gdCuciKId',$request->gudangRequestId)->get();
+                $dataDetailDelete = GudangCuciKeluarDetail::where('gdCuciKId',$request->gudangRequestId)->delete();
+                if ($dataDetailDelete) {
+                    GudangCuciKeluar::where('id', $request->gudangRequestId)->delete();
+                }
+                break;
+
+            case 'Gudang Compact':
+                $dataDetail = GudangCompactKeluarDetail::where('gdCompactKId',$request->gudangRequestId)->get();
+                $dataDetailDelete = GudangCompactKeluarDetail::where('gdCompactKId',$request->gudangRequestId)->delete();
+                if ($dataDetailDelete) {
+                    GudangCompactKeluar::where('id', $request->gudangRequestId)->delete();
+                }
+                break;
+
+            case 'Gudang Inspeksi':
+                $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$request->gudangRequestId)->get();
+                $dataDetailDelete = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$request->gudangRequestId)->delete();
+                if ($dataDetailDelete) {
+                    GudangInspeksiKeluar::where('id', $request->gudangRequestId)->delete();
+                }
+                break;
         }
+        
+        // if ($dataDetailDelete) {
+        //     GudangKeluar::where('id', $request['gudangId'])->delete();
+        //     foreach ($dataDetail as $value) {
+        //         $getStok = GudangStokOpname::find($value->gudangStokId);
+        //         $qty = $getStok->qty + $value->qty;
+        //         $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]);
+        //     }
+        // }
                 
         return redirect('bahan_baku/keluar');
     }
 
     public function masukGudang()
-    {
-        $data = GudangMasuk::all();
+    {   
+        $data = [];
+        $data[0] = GudangRajutMasuk::all();
+        $data[1] = GudangCompactMasuk::all();
+        $data[2] = GudangInspeksiMasuk::all();
+
+        for ($i=0; $i < count($data); $i++) { 
+            foreach ($data[$i] as $val) {
+                switch ($i) {
+                    case 0:
+                        $val->gudangRequest = "Gudang Rajut Masuk";
+                        break;
+                    
+                    case 1:
+                        $val->gudangRequest = "Gudang Compact Masuk";
+                        break;
+
+                    case 2:
+                        $val->gudangRequest = "Gudang Inspeksi Masuk";
+                        break;
+                }
+            }
+        }
         return view('bahanBaku.masuk.index')->with(['data'=>$data]);
     }
 
@@ -402,26 +699,41 @@ class GudangBahanBakuController extends Controller
         return view('bahanBaku.masuk.detail')->with(['data'=>$data,'dataDetail'=>$dataDetail]);
     }
 
-    public function terimaMasukGudang($id){
+    public function terimaMasukGudang($id, $gudangRequest){
 
-        $findMasukGudang = GudangMasuk::find($id); 
-        $gudangRequest = $findMasukGudang->gudangRequest;  
-        $statusDiterima = 1;  
+        // dd($id, $gudangRequest);
 
-        $gudangTerima = GudangMasuk::updateStatusDiterima($id, $gudangRequest, $statusDiterima);
+        switch ($gudangRequest) {
+            case 'Gudang Rajut Masuk':
+                $data = GudangRajutMasuk::where('id',$id)->first();
+                $dataDetail = GudangRajutMasukDetail::where('gdRajutMId',$data->id)->get();
+                $statusDiterima = 1; 
+                $gudangTerima = GudangRajutMasuk::updateStatusDiterima($id, $statusDiterima);
+                break;
+
+            case 'Gudang Compact Masuk':
+                $data = GudangCompactMasuk::where('id',$id)->first();
+                $dataDetail = GudangCompactMasukDetail::where('gdCompactMId',$data->id)->get();
+                $statusDiterima = 1; 
+                $gudangTerima = GudangCompactMasuk::updateStatusDiterima($id, $statusDiterima);
+                break;
+
+            case 'Gudang Inspeksi Masuk':
+                $data = GudangInspeksiMasuk::where('id',$id)->first();
+                $dataDetail = GudangInspeksiMasukDetail::where('gdInspeksiMId',$data->id)->get();
+                $statusDiterima = 1; 
+                $gudangTerima = GudangInspeksiMasuk::updateStatusDiterima($id, $statusDiterima);
+                break;
+        } 
+
             
-        if ($gudangTerima == 1) {
-            $detailGudangMasuk = GudangMasukDetail::where('gudangMasukId',$id)->get();
-            foreach ($detailGudangMasuk as $key => $value) {
-                if($gudangRequest == 'Gudang Inspeksi'){
-                    $getInspeksiStok = GudangInspeksiStokOpname::where('gudangStokId',$value->gudangStokId)->where('purchaseId',$value->purchaseId)->where('materialId',$findMasukGudang->materialId)->first();
-                    $qty = $getInspeksiStok->qty + $value->qty;
-                    $updateInspeksi = GudangInspeksiStokOpname::where('gudangStokId',$value->gudangStokId)->where('purchaseId',$value->purchaseId)->where('materialId',$findMasukGudang->materialId)->update(['qty'=>$qty]);
-                }else{
-                    $getStokOpname = GudangStokOpname::where('id',$value->gudangStokId)->first();
-                    $qty = $getStokOpname->qty + $value->qty;
-
-                    $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]); 
+        if ($statusDiterima == 1) {
+            if ($gudangRequest != "Gudang Inspeksi Masuk") {
+                foreach ($dataDetail as $value) {
+                    $gudangDetailMaterial = GudangBahanBakuDetailMaterial::where('id',$value->gdDetailMaterialId)->first();
+                    $qty = $gudangDetailMaterial->qty + $value->qty;
+    
+                    GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $qty, $value->gdDetailMaterialId);
                 }
             }
                 

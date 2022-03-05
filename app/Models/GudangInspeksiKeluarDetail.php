@@ -25,4 +25,27 @@ class GudangInspeksiKeluarDetail extends Model
     {
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
+
+    public static function createGudangInspeksiKeluarDetail($gdInspeksiKId, $gudangId, $gdDetailMaterialId, $purchaseId, $materialId, $gramasi, $diameter, $berat, $qty)
+    {
+        $keluarDetail = new GudangInspeksiKeluarDetail;
+        $keluarDetail->gdInspeksiKId = $gdInspeksiKId;
+        $keluarDetail->gudangId = $gudangId;
+        $keluarDetail->gdDetailMaterialId = $gdDetailMaterialId;
+        $keluarDetail->purchaseId = $purchaseId;
+        $keluarDetail->materialId = $materialId;
+        $keluarDetail->jenisId = $materialId;
+        $keluarDetail->gramasi = $gramasi;
+        $keluarDetail->diameter = $diameter;
+        $keluarDetail->berat = $berat;
+        $keluarDetail->qty = $qty;
+        $keluarDetail->userId = \Auth::user()->id;
+        $keluarDetail->created_at = date('Y-m-d H:i:s');
+
+        if($keluarDetail->save()){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }

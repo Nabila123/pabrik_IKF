@@ -29,4 +29,13 @@ class PPICGudangRequest extends Model
             return 0;
         }
     }
+
+    public static function updateStatusDiterima($id, $statusDiterima)
+    {
+        $ppicRequestUpdated['statusDiterima'] = $statusDiterima;
+
+        self::where('id', $id)->update($ppicRequestUpdated);
+
+        return 1;
+    }
 }
