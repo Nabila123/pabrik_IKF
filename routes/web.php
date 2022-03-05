@@ -174,7 +174,7 @@ Route::get('ppic/Gudang/detail/{id}', [App\Http\Controllers\PPICController::clas
 Route::get('/ppic/Gudang/detail/delete/{detailId}/{ppicRequestId}', [App\Http\Controllers\PPICController::class, 'gdRequestDetailDelete'])->name('adminPO.poOrder.detail.delete');
 Route::get('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdate'])->name('ppic.gdRequest.update');
 Route::post('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdateStore'])->name('ppic.gdRequest.update');
-Route::delete('/ppic/Gudang//delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
+Route::delete('/ppic/Gudang/delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
 
 /* Gudang Potong */
 Route::get('/GPotong', [App\Http\Controllers\GudangPotongController::class, 'index'])->name('GPotong');
@@ -193,5 +193,9 @@ Route::get('/GPotong/proses/create', [App\Http\Controllers\GudangPotongControlle
 Route::post('/GPotong/proses/create', [App\Http\Controllers\GudangPotongController::class, 'gProsesStore'])->name('GPotong.proses.create');
 Route::get('/GPotong/proses/getDetailMaterial/{purchaseId}/{materialId}/{diameter}/{gramasi}', [App\Http\Controllers\GudangPotongController::class, 'getDataDetailMaterial'])->name('GPotong.proses.detailMaterial');
 Route::get('/GPotong/proses/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesDetail'])->name('GPotong.proses.detail');
+Route::get('GPotong/proses/update/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdate'])->name('GPotong.proses.update');
+Route::post('GPotong/proses/update/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdatePotong'])->name('GPotong.proses.update');
+Route::get('GPotong/proses/update/delete/{detailId}/{inspeksiId}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdateDelete'])->name('GPotong.proses.update.delete');
+Route::delete('/GPotong/proses/delete', [App\Http\Controllers\GudangPotongController::class, 'gProsesDelete'])->name('GPotong.proses.delete');
 
 Auth::routes();

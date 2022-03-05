@@ -26,6 +26,11 @@ class GudangPotongProses extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function prosesPotongDetail()
+    {
+        return $this->hasOne('App\Models\GudangPotongProsesDetail','gdPotongProsesId','id');
+    }
+
     public static function createPotongProses($gdPotongKId, $purchaseId, $materialId, $jenisId, $qty, $tanggal, $userId){
         $addPotongProses = new GudangPotongProses;
         $addPotongProses->gPotongKId = $gdPotongKId;

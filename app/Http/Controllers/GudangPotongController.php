@@ -170,4 +170,40 @@ class GudangPotongController extends Controller
 
         return view('gudangPotong.proses.detail', ['gdPotong' => $gdPotong, 'gdPotongDetail' => $gdPotongDetail]);
     }
+
+    public function gProsesUpdate($id)
+    {
+        $gdPotongProses = GudangPotongProses::where('id', $id)->first();
+        $gdPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotongProses->id)->get();
+
+        return view('gudangPotong.proses.update', ['gdPotongProses' => $gdPotongProses, 'gdPotongProsesDetail' => $gdPotongProsesDetail]);
+    }
+
+    public function gProsesUpdatePotong(Request $request)
+    {
+       if ($request->jumlah_data > 0) {
+            for ($i = 0; $i < $request->jumlah_data; $i++) {
+                GudangPotongProsesDetail::createPotongProsesDetail($request->id, $request->jmlPotong[$i], $request->beratPotong[$i],  $request->diameter, $request->gramasi, $request->beratRoll[$i], $request->jnsBaju[$i], $request->size[$i], $request->totalDZ[$i], $request->totalKG[$i], $request->skb[$i], $request->bs[$i], $request->kecil[$i], $request->ketek[$i], $request->ketekPot[$i], $request->sumbu[$i], $request->bunder[$i], $request->tKecil[$i], $request->tBesar[$i], $request->tangan[$i], $request->kPutih[$i], $request->kBelang[$i], \Auth::user()->id);                
+            }
+            return redirect('GPotong/proses');
+        } else {
+            return redirect('GPotong/proses');
+        }
+    }
+
+    public function gProsesUpdateDelete($detailId, $potongProsesId)
+    {
+        $inspeksiDetail = GudangPotongProsesDetail::where('id', $detailId)->delete();
+        if ($inspeksiDetail) {
+            return redirect('GPotong/proses/update/' . $potongProsesId . '');
+        }
+    }
+
+    public function gProsesDelete(Request $request)
+    {
+        GudangPotongProsesDetail::where('gdPotongProsesId', $request['gdPotongProsesId'])->delete();        
+        GudangPotongProses::where('id', $request['gdPotongProsesId'])->delete();   
+                
+        return redirect('GPotong/proses');
+    }
 }
