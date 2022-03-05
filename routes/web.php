@@ -181,6 +181,8 @@ Route::get('/GPotong', [App\Http\Controllers\GudangPotongController::class, 'ind
 Route::post('/GPotong/getData', [App\Http\Controllers\GudangPotongController::class, 'getData'])->name('GPotong.getData');
 
 Route::get('/GPotong/request', [App\Http\Controllers\GudangPotongController::class, 'gRequest'])->name('GPotong.request');
+Route::get('/GPotong/request/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gReqDetail'])->name('GPotong.request.detail');
+Route::get('/GPotong/request/terima/{id}', [App\Http\Controllers\GudangPotongController::class, 'gReqTerima'])->name('GPotong.request.terima');
 
 Route::get('/GPotong/keluar', [App\Http\Controllers\GudangPotongController::class, 'gKeluar'])->name('GPotong.keluar');
 Route::get('/GPotong/keluar/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarDetail'])->name('GPotong.keluar.detail');

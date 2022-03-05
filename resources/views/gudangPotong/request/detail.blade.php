@@ -33,7 +33,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Bahan Baku Request</h1>
+                    <h1>Detail Gudang Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -54,10 +54,10 @@
                         <div class="card-header">
                             <table class="table">
                                 <tr>
-                                    <td> <b>Nama Barang :</b> Kain Putih</td>
+                                    <td> <b>Status Pemrosesan :</b> <span style="color:{{ $gdPotongRequest->color }};">{{ $gdPotongRequest->status }}</span></td>
                                 </tr>
                                 <tr>
-                                    <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangPotong->tanggal)) }}</td>
+                                    <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gdPotongRequest->tanggal)) }}</td>
                                 </tr>
                             </table>
                         </div>                       
@@ -65,22 +65,21 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Bahan</th>
-                                        <th class="textAlign">Kode Purchase</th>
-                                        <th class="textAlign">Gramasi</th>
-                                        <th class="textAlign">Diamater</th>
-                                        <th class="textAlign">Berat</th>
-                                        <th class="textAlign">Jumlah</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                        <th colspan="2" class="textAlign">Jumlah</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="textAlign">Pcs</th>
+                                        <th class="textAlign">Dz</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gudangPotongDetail as $detail)
+                                    @foreach ($gdPotongRequestDetail as $detail)
                                         <tr>
-                                            <td>{{ $detail->material->nama }}</td>
-                                            <td>{{ $detail->purchase->kode }}</td>
-                                            <td>{{ $detail->gramasi }}</td>
-                                            <td>{{ $detail->diameter }}</td>
-                                            <td>{{ $detail->berat }}</td>
+                                            <td>{{ $detail->jenisBaju }}</td>
+                                            <td>{{ $detail->ukuranBaju }}</td>
+                                            <td>{{ $detail->pcs }}</td>
                                             <td>{{ $detail->qty }}</td>
                                         </tr>
                                     @endforeach

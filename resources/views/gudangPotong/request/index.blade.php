@@ -33,7 +33,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Potong Request Gudang Bahan Jadi</h1>
+                    <h1>Gudang Bahan Jadi Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -54,13 +54,29 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Tanggal Pengambilan </th>
-                                        <th class="textAlign">Operator Bahan Baku</th>
+                                        <th class="textAlign">Tanggal Request </th>
+                                        <th class="textAlign">Operator Bahan Jadi</th>
                                         <th class="textAlign">Status Keterangan</th>
                                         <th class="textAlign">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
+                                    @foreach ($gdPotongReq as $req)
+                                        <tr>
+                                            <td>{{ date('d F Y', strtotime($req->tanggal)) }}</td>
+                                            <td>{{ $req->user->nama }}</td>
+                                            <td>
+                                                @if ($req->statusDiterima == 0)
+                                                    <a href="{{ route('GPotong.request.terima', [$req->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                @else
+                                                    <span style="color: green; font-size: 15px">Barang Sudah DiProses</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('GPotong.request.detail', [$req->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

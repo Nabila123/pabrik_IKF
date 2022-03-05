@@ -7,6 +7,8 @@ use App\Models\GudangPotongKeluar;
 use App\Models\GudangPotongKeluarDetail;
 use App\Models\GudangPotongProses;
 use App\Models\GudangPotongProsesDetail;
+use App\Models\GudangPotongRequest;
+use App\Models\GudangPotongRequestDetail;
 
 class GudangPotongController extends Controller
 {
@@ -22,11 +24,46 @@ class GudangPotongController extends Controller
         return json_encode($gdPotong);
     }
 
+    //Gudang Potong Request Bahan Jadi
     public function gRequest()
     {
-        return view('gudangPotong.request.index');
+        $gdPotongReq = GudangPotongRequest::all();
+        return view('gudangPotong.request.index', ['gdPotongReq' => $gdPotongReq]);
     }
 
+    public function gReqDetail($id)
+    {
+        $gdPotongRequest = GudangPotongRequest::where('id', $id)->first();
+        $gdPotongRequestDetail = GudangPotongRequestDetail::where('gdPotongReqId', $gdPotongRequest->id)->get();
+        
+        if ($gdPotongRequest->statusDiterima == 0) {
+            $gdPotongRequest->status = "Barang Belum Diproses";
+            $gdPotongRequest->color = "#dc3545";
+        }else{
+            $gdPotongRequest->status = "Barang Sedang Diproses";
+            $gdPotongRequest->color = "#28a745";
+        }
+
+        foreach ($gdPotongRequestDetail as $detail) {
+            $detail->pcs = $detail->qty*12;
+        }
+
+        return view('gudangPotong.request.detail', ['gdPotongRequest' => $gdPotongRequest, 'gdPotongRequestDetail' => $gdPotongRequestDetail]);
+    }
+
+    public function gReqTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 1;  
+
+        $gudangRajutTerima = GudangPotongRequest::updateStatusDiterima($id, $statusDiterima);
+
+        if ($gudangRajutTerima == 1) {
+            return redirect('GPotong/request');
+        }
+    }
+
+    //Gudang Potong Keluar Bahan Baku
     public function gKeluar()
     {
         $gudangPotong = GudangPotongKeluar::all();
@@ -81,6 +118,7 @@ class GudangPotongController extends Controller
         dd($request);
     }
 
+    //Gudang Potong Proses
     public function gProses()
     {
         $gudangPotongProses = GudangPotongProses::all();
