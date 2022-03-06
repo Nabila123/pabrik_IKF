@@ -26,6 +26,11 @@ class gudangInspeksiStokOpname extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function gudangDetailmaterial()
+    {
+        return $this->hasOne('App\Models\GudangBahanBakuDetailMaterial','id','gdDetailMaterialId');
+    }
+
     public function inspeksiKeluar()
     {
         return $this->hasOne('App\Models\GudangInspeksiKeluar','id','gdInspeksiKId');
@@ -56,6 +61,16 @@ class gudangInspeksiStokOpname extends Model
             return $addInspeksi->id;
         } else {
             return 0;
+        }
+    }
+
+    public static function detailMaterialUpdateField($fieldName, $updatedField, $id)
+    {
+        $detailMaterialFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($detailMaterialFieldUpdated);
+
+        if ($success) {
+            return 1;
         }
     }
 

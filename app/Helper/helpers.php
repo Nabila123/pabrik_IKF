@@ -8,6 +8,8 @@
     use App\Models\GudangCompactMasuk;
     use App\Models\GudangInspeksiKeluar;
     use App\Models\GudangInspeksiMasuk;
+    use App\Models\GudangPotongKeluar;
+    use App\Models\GudangPotongRequest;
 
     function checkPermission($id_menu='', $id_role='') {
         $id_role = $id_role == '' ? \Session::get('id_role') : $id_role;
@@ -149,6 +151,25 @@
                 $notif[31] = $notif;
                 return $notif;
             }
+        }
+
+        if ($mains->nama == "Gudang Potong") {
+            if ($user == 38) { //Gudang Potong Keluar
+                $notifKeluar = GudangPotongKeluar::where('statusDiterima', 0)->get();            
+            }
+
+            if ($user == 38) { //Gudang Potong Request Bahan Jadi
+                $notifRequest = GudangPotongRequest::where('statusDiterima', 0)->get();            
+            }
+
+            if (count($notifRequest) != 0) {
+                $notif[36] = count($notifRequest);
+            }
+            
+            if (count($notifKeluar) != 0) {
+                $notif[37] = count($notifKeluar);
+            }
+            return $notif;
         }
     }
 ?>

@@ -83,9 +83,11 @@ Route::get('/bahan_baku/ppicRequest/terima/{id}', [App\Http\Controllers\GudangBa
 //GUDANG KELUAR
 Route::get('/bahan_baku/keluar', [App\Http\Controllers\GudangBahanBakuController::class, 'keluarGudang'])->name('bahan_baku.keluar');
 Route::get('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'createKeluarGudang'])->name('bahan_baku.keluar.create');
-Route::get('/bahan_baku/keluar/getMaterial/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataMaterial'])->name('bahan_baku.keluar.material');
+Route::get('/bahan_baku/keluar/getMaterial/{gudangRequest}/{jenisKain}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataMaterial'])->name('bahan_baku.keluar.material');
 Route::get('/bahan_baku/keluar/getGudang/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataGudang'])->name('bahan_baku.keluar.gudang');
+Route::get('/bahan_baku/keluar/getGudangInspeksi/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataGudangInspeksi'])->name('bahan_baku.keluar.gudangInspeksi');
 Route::get('/bahan_baku/keluar/getDetailMaterial/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataDetailMaterial'])->name('bahan_baku.keluar.detailMaterial');
+Route::get('/bahan_baku/keluar/getDetailMaterialInspeksi/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanBakuController::class, 'getDataDetailMaterialInspeksi'])->name('bahan_baku.keluar.detailMaterialInspeksi');
 Route::post('/bahan_baku/keluar/create', [App\Http\Controllers\GudangBahanBakuController::class, 'storeKeluarGudang'])->name('bahan_baku.keluar.store');
 Route::get('/bahan_baku/keluar/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'detailKeluarGudang'])->name('bahan_baku.keluar.detail');
 Route::get('/bahan_baku/keluar/detail/delete/{gudangId}/{detailId}/{gudangRequest}', [App\Http\Controllers\GudangBahanBakuController::class, 'deleteDetailGudang'])->name('bahan_baku.keluar.detail.delete');
@@ -172,7 +174,30 @@ Route::get('ppic/Gudang/detail/{id}', [App\Http\Controllers\PPICController::clas
 Route::get('/ppic/Gudang/detail/delete/{detailId}/{ppicRequestId}', [App\Http\Controllers\PPICController::class, 'gdRequestDetailDelete'])->name('adminPO.poOrder.detail.delete');
 Route::get('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdate'])->name('ppic.gdRequest.update');
 Route::post('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdateStore'])->name('ppic.gdRequest.update');
-Route::delete('/ppic/Gudang//delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
+Route::delete('/ppic/Gudang/delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');
 
+/* Gudang Potong */
+Route::get('/GPotong', [App\Http\Controllers\GudangPotongController::class, 'index'])->name('GPotong');
+Route::post('/GPotong/getData', [App\Http\Controllers\GudangPotongController::class, 'getData'])->name('GPotong.getData');
+
+Route::get('/GPotong/request', [App\Http\Controllers\GudangPotongController::class, 'gRequest'])->name('GPotong.request');
+Route::get('/GPotong/request/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gReqDetail'])->name('GPotong.request.detail');
+Route::get('/GPotong/request/terima/{id}', [App\Http\Controllers\GudangPotongController::class, 'gReqTerima'])->name('GPotong.request.terima');
+
+Route::get('/GPotong/keluar', [App\Http\Controllers\GudangPotongController::class, 'gKeluar'])->name('GPotong.keluar');
+Route::get('/GPotong/keluar/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarDetail'])->name('GPotong.keluar.detail');
+Route::get('/GPotong/keluar/Terima/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarTerima'])->name('GPotong.keluar.terima');
+Route::get('/GPotong/keluar/kembali/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarKembali'])->name('GPotong.keluar.kembali');
+Route::Post('/GPotong/keluar/kembali/{id}', [App\Http\Controllers\GudangPotongController::class, 'gKeluarKembaliStore'])->name('GPotong.keluar.kembali');
+
+Route::get('/GPotong/proses', [App\Http\Controllers\GudangPotongController::class, 'gProses'])->name('GPotong.proses');
+Route::get('/GPotong/proses/create', [App\Http\Controllers\GudangPotongController::class, 'gProsesCreate'])->name('GPotong.proses.create');
+Route::post('/GPotong/proses/create', [App\Http\Controllers\GudangPotongController::class, 'gProsesStore'])->name('GPotong.proses.create');
+Route::get('/GPotong/proses/getDetailMaterial/{purchaseId}/{materialId}/{diameter}/{gramasi}', [App\Http\Controllers\GudangPotongController::class, 'getDataDetailMaterial'])->name('GPotong.proses.detailMaterial');
+Route::get('/GPotong/proses/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesDetail'])->name('GPotong.proses.detail');
+Route::get('GPotong/proses/update/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdate'])->name('GPotong.proses.update');
+Route::post('GPotong/proses/update/{id}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdatePotong'])->name('GPotong.proses.update');
+Route::get('GPotong/proses/update/delete/{detailId}/{inspeksiId}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdateDelete'])->name('GPotong.proses.update.delete');
+Route::delete('/GPotong/proses/delete', [App\Http\Controllers\GudangPotongController::class, 'gProsesDelete'])->name('GPotong.proses.delete');
 
 Auth::routes();

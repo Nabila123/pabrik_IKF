@@ -67,16 +67,19 @@
                                                                     <option value=1>Gudang Rajut</option>
                                                                     <option value=2>Gudang Cuci</option>
                                                                     <option value=3>Gudang Inspeksi</option>
+                                                                    <option value=4>Gudang Potong</option>
                                                             </select>                                           
                                                         </div>
                                                     </div>
 
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Barang</label>
-                                                            <input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly> 
-                                                            <input type="hidden" name="jenisId" id="jenisId" class="jenisId">            
-                                                            <input type="hidden" name="materialId" id="materialId" class="materialId">                                        
+                                                            <div id="checkGudang">
+                                                                <label>Barang</label>
+                                                                <input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly> 
+                                                                <input type="hidden" name="jenisId" id="jenisId" class="jenisId">            
+                                                                <input type="hidden" name="materialId" id="materialId" class="materialId">                                        
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -194,10 +197,51 @@
         $(document).on("change", ".gudangRequest", function(){
             var gudangRequest = $('#gudangRequest').val();
             var _token = $('#_token').val();
+
+            if(gudangRequest == 4){
+                var html =  '<label>Jenis Kain</label>';
+                    html += '<input type="hidden" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly>';
+                    html += '<input type="hidden" name="jenisId" id="jenisId" class="jenisId">';
+                    html += '<input type="hidden" name="materialId" id="materialId" class="materialId">';
+                    html +=  '<select class="form-control jenisKain" id="jenisKain" name="jenisKain" style="width: 100%; height: 38px;">';
+                        html +=  '<option value="">Pilih Jenis Kain</option>';
+                        html +=  '<option value="1">Kain Putih</option>';
+                        html +=  '<option value="2">Kain Putih Inspeksi</option>';
+                    html +=  '</select>';                       
+            }else{
+                var html = '<label>Barang</label>';
+                    html += '<input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly>';
+                    html += '<input type="hidden" name="jenisId" id="jenisId" class="jenisId">';
+                    html += '<input type="hidden" name="materialId" id="materialId" class="materialId">';
+            }
+            $('#checkGudang').html(html);
+            
+            if(gudangRequest == 1){
+                var dt = '<table>';
+                        dt += '<tr>';
+                            dt += '<th>Jumlah <sub>Kg</sub></th>';
+                            dt += '<th>Jumlah <sub>Bal</sub></th>';
+                        dt += '</tr>';
+                        dt += '<tr>';
+                            dt += '<td>';
+                                dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="KG" />'; 
+                            dt += '</td>';
+                            dt += '<td>';                                                            
+                                dt += '<input type="text" class="form-control bal" id="bal" name="bal"placeholder="Bal" />'; 
+                            dt += '</td>';
+                        dt += '</tr>';
+                    dt += '</table>';
+                    dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
+            }else{                    
+                var dt = '<label>Jumlah</label>';
+                    dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" />';
+                    dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
+            }
+            $('#Jumlah').html(dt);
             
             $.ajax({
                 type: "get",
-                url: '{{ url("bahan_baku/keluar/getMaterial") }}/'+gudangRequest,
+                url: '{{ url("bahan_baku/keluar/getMaterial") }}/'+gudangRequest+'/'+null,
                 success: function(response){
                     var data = JSON.parse(response);
                     {{--  console.log(data.material);  --}}
@@ -208,117 +252,190 @@
                     for(var i =0;i < data.purchase.length;i++){
                         opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
                     }
-                    $('#kodePurchase').html(opt);   
-                    
-                    if(gudangRequest == 1){
-                        var dt = '<table>';
-                                dt += '<tr>';
-                                    dt += '<th>Jumlah <sub>Kg</sub></th>';
-                                    dt += '<th>Jumlah <sub>Bal</sub></th>';
-                                dt += '</tr>';
-                                dt += '<tr>';
-                                    dt += '<td>';
-                                        dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="KG" />'; 
-                                    dt += '</td>';
-                                    dt += '<td>';                                                            
-                                        dt += '<input type="text" class="form-control bal" id="bal" name="bal"placeholder="Bal" />'; 
-                                    dt += '</td>';
-                                dt += '</tr>';
-                            dt += '</table>';
-                            dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
-                    }else{
-                        var dt = '<label>Jumlah</label>';
-                            dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" />';
-                            dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
-                    }
-
-                    $('#Jumlah').html(dt);
+                    $('#kodePurchase').html(opt);                   
                 }
             })
 
+        });
+
+        $(document).on("change", ".jenisKain", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var jenisKain = $('#jenisKain').val();
+            var _token = $('#_token').val();
+
+            $('#kodePurchase').find('option[value=""]').attr('selected','selected');
+            $('#kodePurchase').val('');
+
+            $.ajax({
+                type: "get",
+                url: '{{ url("bahan_baku/keluar/getMaterial") }}/'+gudangRequest+'/'+jenisKain,
+                success: function(response){
+                    var data = JSON.parse(response);
+                    {{--  console.log(data.material);  --}}
+                    $('#materialId').val(data.material.id);
+                    $('#material').val(data.material.nama);
+                    $('#jenisId').val(gudangRequest);
+                    var opt ='<option value="">Pilih Kode Purchase</option>';
+                    for(var i =0;i < data.purchase.length;i++){
+                        opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
+                    }
+                    $('#kodePurchase').html(opt);                   
+                }
+            })            
         });
 
         $(document).on("change", ".kodePurchase", function(){
             var purchaseId = $('#kodePurchase').val();
             var materialId = $('#materialId').val();
+            var jenisKain = $('#jenisKain').val();
             var _token = $('#_token').val();
             
-            $.ajax({
-                type: "get",
-                url: '{{ url("bahan_baku/keluar/getGudang") }}/'+materialId+'/'+purchaseId,
-                success: function(response){
-                    var data = JSON.parse(response);
-                    {{--  console.log(data)  --}}
-                    var diameter ="<option value=''>Pilih Diameter</option>";
-                    for(var i = 0;i < data.diameter.length;i++){
-                        diameter += "<option value="+data.diameter[i]+">"+data.diameter[i]+"</option>";
+            if(jenisKain == null || (jenisKain != null && jenisKain == 1)){
+                console.log(jenisKain)
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getGudang") }}/'+materialId+'/'+purchaseId,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        {{--  console.log(data)  --}}
+                        var diameter ="<option value=''>Pilih Diameter</option>";
+                        for(var i = 0;i < data.diameter.length;i++){
+                            diameter += "<option value="+data.diameter[i]+">"+data.diameter[i]+"</option>";
+                        }
+                        $('#diameter').html(diameter);   
+                        $('#gudangId').val(data.gudangId); 
                     }
-                    $('#diameter').html(diameter);   
-                    $('#gudangId').val(data.gudangId); 
-                }
-            })
+                })
+            }else{
+                console.log(jenisKain)
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getGudangInspeksi") }}/'+materialId+'/'+purchaseId,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        {{--  console.log(data)  --}}
+                        var diameter ="<option value=''>Pilih Diameter</option>";
+                        for(var i = 0;i < data.diameter.length;i++){
+                            diameter += "<option value="+data.diameter[i]+">"+data.diameter[i]+"</option>";
+                        }
+                        $('#diameter').html(diameter);   
+                        $('#gudangId').val(data.gudangId); 
+                    }
+                })
+            }
         });
 
         $(document).on("change", ".diameter", function(){
+            var jenisKain = $('#jenisKain').val();
             var purchaseId = $('#kodePurchase').val();
             var materialId = $('#materialId').val();
             var diameter = $('#diameter').val();
             var _token = $('#_token').val();
             
-            $.ajax({
-                type: "get",
-                url: '{{ url("bahan_baku/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+null+'/'+null,
-                success: function(response){
-                    var data = JSON.parse(response);
-                    var gramasi ="<option value=''>Pilih Gramasi</option>";
-                    for(var i = 0;i < data.length;i++){
-                        gramasi += "<option value="+data[i]+">"+data[i]+"</option>";
+            if(jenisKain == null || (jenisKain != null && jenisKain == 1)){
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+null+'/'+null,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        var gramasi ="<option value=''>Pilih Gramasi</option>";
+                        for(var i = 0;i < data.length;i++){
+                            gramasi += "<option value="+data[i]+">"+data[i]+"</option>";
+                        }
+                        $('#gramasi').html(gramasi);  
                     }
-                    $('#gramasi').html(gramasi);  
-                }
-            })
+                })
+            }else{
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getDetailMaterialInspeksi") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+null+'/'+null,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        var gramasi ="<option value=''>Pilih Gramasi</option>";
+                        for(var i = 0;i < data.length;i++){
+                            gramasi += "<option value="+data[i]+">"+data[i]+"</option>";
+                        }
+                        $('#gramasi').html(gramasi);  
+                    }
+                })
+            }
+            
         });
 
         $(document).on("change", ".gramasi", function(){
+            var jenisKain = $('#jenisKain').val();
             var purchaseId = $('#kodePurchase').val();
             var materialId = $('#materialId').val();
             var diameter = $('#diameter').val();
             var gramasi = $('#gramasi').val();
             var _token = $('#_token').val();
             
-            $.ajax({
-                type: "get",
-                url: '{{ url("bahan_baku/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+null,
-                success: function(response){
-                    var data = JSON.parse(response);
-                    var berat ="<option value=''>Pilih Berat</option>";
-                    for(var i = 0;i < data.length;i++){
-                        berat += "<option value="+data[i]+">"+data[i]+"</option>";
+            if(jenisKain == null || (jenisKain != null && jenisKain == 1)){
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+null,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        var berat ="<option value=''>Pilih Berat</option>";
+                        for(var i = 0;i < data.length;i++){
+                            berat += "<option value="+data[i]+">"+data[i]+"</option>";
+                        }
+                        $('#berat').html(berat);     
                     }
-                    $('#berat').html(berat);     
-                }
-            })
+                })
+            }else{
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getDetailMaterialInspeksi") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+null,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        var berat ="<option value=''>Pilih Berat</option>";
+                        for(var i = 0;i < data.length;i++){
+                            berat += "<option value="+data[i]+">"+data[i]+"</option>";
+                        }
+                        $('#berat').html(berat);     
+                    }
+                })
+            }
+            
         });
 
         $(document).on("change", ".berat", function(){
+            var jenisKain = $('#jenisKain').val();
             var purchaseId = $('#kodePurchase').val();
             var materialId = $('#materialId').val();
             var diameter = $('#diameter').val();
             var gramasi = $('#gramasi').val();
             var berat = $('#berat').val();
             var _token = $('#_token').val();
+
+            if(jenisKain == null || (jenisKain != null && jenisKain == 1)){
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+berat,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        console.log(data)
+                        $('#qty').val(data.qty);    
+                        $('#qtyHidden').val(data.qty);    
+                        $('#gudangMaterialDetail').val(data.gudangMaterialDetail);    
+                    }
+                })
+            }else{
+                $.ajax({
+                    type: "get",
+                    url: '{{ url("bahan_baku/keluar/getDetailMaterialInspeksi") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+berat,
+                    success: function(response){
+                        var data = JSON.parse(response);
+                        console.log(data)
+                        $('#qty').val(data.qty);    
+                        $('#qtyHidden').val(data.qty);    
+                        $('#gudangMaterialDetail').val(data.gudangMaterialDetail);    
+                    }
+                })
+            }
             
-            $.ajax({
-                type: "get",
-                url: '{{ url("bahan_baku/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+berat,
-                success: function(response){
-                    var data = JSON.parse(response);
-                    console.log(data)
-                    $('#qty').val(data.qty);    
-                    $('#qtyHidden').val(data.qty);    
-                    $('#gudangMaterialDetail').val(data.gudangMaterialDetail);    
-                }
-            })
+            
         });
 
         $(document).on("keyup", ".qty", function(){

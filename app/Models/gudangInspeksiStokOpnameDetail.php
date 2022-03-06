@@ -11,6 +11,11 @@ class gudangInspeksiStokOpnameDetail extends Model
 
     protected $table = 'gd_inspeksi_stokopname_detail';
 
+    public function inspeksiStok()
+    {
+        return $this->hasOne('App\Models\gudangInspeksiStokOpname','id','gdInspeksiStokId');
+    }
+
     public static function createInspeksiProsesDetail($gudangInspeksi, $roll, $berat, $panjang, $lubang, $plex, $belang, $tanah, $sambung, $jarum, $ket)
     {
         $AddDetailInspeksiProses = new gudangInspeksiStokOpnameDetail;
