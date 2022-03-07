@@ -25,7 +25,6 @@ class CreateGdJahitDetailMaterial extends Migration
             $table->foreign('gdBajuStokOpnameId')->references('id')->on('gd_baju_stok_opname');
             $table->foreign('gdJahitDetailId')->references('id')->on('gd_jahit_detail');
             $table->foreign('userId')->references('id')->on('users');
-            $table->index(['gdBajuStokOpnameId','gdJahitDetailId', 'userId']);
         });
     }
 

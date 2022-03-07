@@ -29,7 +29,6 @@ class CreateTableGdJahitRequest extends Migration
             $table->foreign('gdBajuStokOpnameId')->references('id')->on('gd_baju_stok_opname');
             $table->foreign('purchaseId')->references('id')->on('purchase');
             $table->foreign('userId')->references('id')->on('users');
-            $table->index(['gdPotongDetailId', 'purchaseId', 'userId']);
         });
     }
 

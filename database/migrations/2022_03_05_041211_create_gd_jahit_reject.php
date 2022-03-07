@@ -18,6 +18,7 @@ class CreateGdJahitReject extends Migration
             $table->string('gudangRequest');
             $table->datetime('tanggal');
             $table->integer('totalBaju');
+            $table->boolean('statusProses')->default(0);
             $table->unsignedBigInteger('userId');
             $table->timestamps();
         });
