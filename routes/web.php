@@ -200,4 +200,10 @@ Route::post('GPotong/proses/update/{id}', [App\Http\Controllers\GudangPotongCont
 Route::get('GPotong/proses/update/delete/{detailId}/{inspeksiId}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdateDelete'])->name('GPotong.proses.update.delete');
 Route::delete('/GPotong/proses/delete', [App\Http\Controllers\GudangPotongController::class, 'gProsesDelete'])->name('GPotong.proses.delete');
 
+/* Gudang Jahit */
+Route::get('/GJahit', [App\Http\Controllers\GudangJahitController::class, 'index'])->name('GJahit');
+Route::get('/GJahit/request', [App\Http\Controllers\GudangJahitController::class, 'gRequest'])->name('GJahit.request');
+Route::get('/GJahit/operator', [App\Http\Controllers\GudangJahitController::class, 'gOperator'])->name('GJahit.operator');
+Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
+
 Auth::routes();
