@@ -26,6 +26,7 @@ class CreateGdJahitMasukTable extends Migration
 
         Schema::create('gd_jahitMasuk_Detail', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('gdJahitMId');
             $table->unsignedBigInteger('gdPotongProsesId');
             $table->unsignedBigInteger('purchaseId');
             $table->string('jenisBaju')->nullable();
@@ -34,6 +35,7 @@ class CreateGdJahitMasukTable extends Migration
 
             $table->timestamps();
 
+            $table->foreign('gdJahitMId')->references('id')->on('gd_jahitMasuk');
             $table->foreign('gdPotongProsesId')->references('id')->on('gd_potongproses_detail');
             $table->foreign('purchaseId')->references('id')->on('purchase');
         });

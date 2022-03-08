@@ -176,12 +176,12 @@
                                                     <td> 
                                                         <select class="form-control" name="jnsBaju" id="jnsBaju" style="width: 150px">
                                                             <option> Pilih Jenis Baju</option>    
-                                                            <option value="singlet"> J - Singlet </option>    
-                                                            <option value="oblong"> J - Oblong </option>    
-                                                            <option value="oblong tk"> J - Oblong TK </option> 
-                                                            <option value="dj-singlet"> DJ - Singlet </option>    
-                                                            <option value="dj-oblong"> DJ - Oblong </option>    
-                                                            <option value="dj-oblong tk"> DJ - Oblong TK </option>   
+                                                            <option value="Singlet"> J - Singlet </option>    
+                                                            <option value="Oblong"> J - Oblong </option>    
+                                                            <option value="Oblong TK"> J - Oblong TK </option> 
+                                                            <option value="DJ - Singlet"> DJ - Singlet </option>    
+                                                            <option value="DJ - Oblong"> DJ - Oblong </option>    
+                                                            <option value="DJ - Oblong tk"> DJ - Oblong TK </option>   
                                                         </select>    
                                                     </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="size" id="size"> </td>

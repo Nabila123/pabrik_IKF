@@ -21,20 +21,15 @@ class GudangJahitMasukDetail extends Model
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
     }
 
-    public static function createGudangInspeksiKeluarDetail($gdInspeksiKId, $gudangId, $gdDetailMaterialId, $purchaseId, $materialId, $gramasi, $diameter, $berat, $qty)
+    public static function createGudangJahitMasukDetail($gdJahitMId, $gdPotongProsesId, $purchaseId, $jenisBaju, $ukuranBaju, $qty)
     {
-        $keluarDetail = new GudangInspeksiKeluarDetail;
-        $keluarDetail->gdInspeksiKId = $gdInspeksiKId;
-        $keluarDetail->gudangId = $gudangId;
-        $keluarDetail->gdDetailMaterialId = $gdDetailMaterialId;
+        $keluarDetail = new GudangJahitMasukDetail;
+        $keluarDetail->gdJahitMId = $gdJahitMId;
+        $keluarDetail->gdPotongProsesId = $gdPotongProsesId;
         $keluarDetail->purchaseId = $purchaseId;
-        $keluarDetail->materialId = $materialId;
-        $keluarDetail->jenisId = $materialId;
-        $keluarDetail->gramasi = $gramasi;
-        $keluarDetail->diameter = $diameter;
-        $keluarDetail->berat = $berat;
+        $keluarDetail->jenisBaju = $jenisBaju;
+        $keluarDetail->ukuranBaju = $ukuranBaju;
         $keluarDetail->qty = $qty;
-        $keluarDetail->userId = \Auth::user()->id;
         $keluarDetail->created_at = date('Y-m-d H:i:s');
 
         if($keluarDetail->save()){

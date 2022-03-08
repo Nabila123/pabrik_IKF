@@ -9,6 +9,8 @@ use App\Models\GudangPotongProses;
 use App\Models\GudangPotongProsesDetail;
 use App\Models\GudangPotongRequest;
 use App\Models\GudangPotongRequestDetail;
+use App\Models\GudangJahitMasuk;
+use App\Models\GudangJahitMasukDetail;
 
 class GudangPotongController extends Controller
 {
@@ -69,11 +71,16 @@ class GudangPotongController extends Controller
         $gudangPotong = GudangPotongKeluar::all();
         foreach ($gudangPotong as $request) {
             $cekDetail = GudangPotongProses::where('gPotongKId', $request->id)->first();
-                
+            $cekJahit = GudangJahitMasukDetail::where('gdPotongProsesId', $cekDetail->id)->first();
+                    
             if ($cekDetail != null) {
                 $request->cekPotong = 1;
             }else {
                 $request->cekPotong = 0;
+            }
+
+            if ($cekJahit != null) {
+                $request->cekJahit = 1;
             }
         }
 
@@ -102,7 +109,6 @@ class GudangPotongController extends Controller
 
     public function gKeluarKembali($id)
     {
-        $materials = MaterialModel::get();
         $gPotong = GudangPotongKeluar::where('id', $id)->first();
         $gPotongKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $id)->get();
 
@@ -110,12 +116,28 @@ class GudangPotongController extends Controller
             $purchaseId[] = $detail->purchaseId;
         }
 
-        return view('gudangPotong.keluar.create', ['purchaseId' => $purchaseId, 'materials' => $materials, 'gPotong' => $gPotong, 'gPotongKeluarDetail' => $gPotongKeluarDetail]);
+        return view('gudangPotong.keluar.create', ['purchaseId' => $purchaseId, 'gPotong' => $gPotong, 'gPotongKeluarDetail' => $gPotongKeluarDetail]);
     }
 
     public function gKeluarKembaliStore(Request $request)
     {
-        dd($request);
+        $jahitMasuk = new GudangJahitMasuk;
+        $jahitMasuk->tanggal = date('Y-m-d');
+        $jahitMasuk->userId = \Auth::user()->id;
+        $jahitMasuk->created_at = date('Y-m-d H:i:s');
+        if ($jahitMasuk->save()) {
+            for ($i=0; $i < count($request->purchaseId); $i++) { 
+                $gdPotongProses = GudangPotongProses::where('gPotongKId', $request->id)->where('purchaseId', $request['purchaseId'][$i])->first();
+                $gdPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotongProses->id)->get();
+                foreach ($gdPotongProsesDetail as $detail) {
+                    $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $detail->id, $gdPotongProses->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, $detail->hasilDz);
+                }
+            }
+
+            if ($gdJahitDetail == 1) {
+                return redirect('GPotong/keluar');
+            }
+        }
     }
 
     //Gudang Potong Proses

@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GudangJahitMasuk extends Model
+class GudangJahitBasis extends Model
 {
     use HasFactory;
-
-    protected $table = 'gd_jahitmasuk';
+    protected $table = 'gd_jahit_basis';
 
     public function user()
     {
@@ -18,11 +17,10 @@ class GudangJahitMasuk extends Model
 
     public static function updateStatusDiterima($id, $statusDiterima)
     {
-        $inspeksiUpdated['statusProses'] = $statusDiterima;
+        $inspeksiUpdated['statusDiterima'] = $statusDiterima;
 
         self::where('id', $id)->update($inspeksiUpdated);
 
         return 1;
     }
-    
 }

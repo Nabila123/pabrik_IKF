@@ -33,12 +33,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Jahit Request</h1>
+                    <h1>Detail Pemindahan Barang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Jahit Request</li>
+                        <li class="breadcrumb-item">Gudang Jahit Pemindahan</li>
+                        <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
             </div>
@@ -49,32 +50,31 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">                        
+                    <div class="card"> 
+                        <div class="card-header">
+                            <table class="table">
+                                <tr>
+                                    <td> <b>Tanggal Pemindahan :</b> {{ date('d F Y', strtotime($gdJahit->tanggal)) }}</td>
+                                </tr>
+                            </table>
+                        </div>                       
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Tanggal Pengambilan </th>
-                                        <th class="textAlign">Operator Gudang Potong</th>
-                                        <th class="textAlign">Status Keterangan</th>
-                                        <th class="textAlign">Action</th>
+                                        <th class="textAlign">Kode Purchase</th>
+                                        <th class="textAlign">Jenis Baju</th>
+                                        <th class="textAlign">Ukuran Baju</th>
+                                        <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gudangJahit as $detail)
+                                    @foreach ($gdJahitDetail as $detail)
                                         <tr>
-                                            <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
-                                            <td>{{ $detail->user->nama }}</td>
-                                            <td>
-                                                @if ($detail->statusProses == 0)
-                                                    <a href="{{ route('GJahit.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
-                                                @else
-                                                    <span style="color: green; font-size: 15px">Barang Sudah Diterima</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('GJahit.request.detail', [$detail->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            </td>
+                                            <td>{{ $detail->purchase->kode }}</td>
+                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
+                                            <td>{{ $detail->ukuranBaju }}</td>
+                                            <td>{{ $detail->qty }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
