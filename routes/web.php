@@ -203,6 +203,7 @@ Route::delete('/GPotong/proses/delete', [App\Http\Controllers\GudangPotongContro
 /* Gudang Jahit */
 Route::get('/GJahit', [App\Http\Controllers\GudangJahitController::class, 'index'])->name('GJahit');
 Route::post('/GJahit/getData', [App\Http\Controllers\GudangJahitController::class, 'getData'])->name('GJahit.getData');
+Route::post('/GJahit/getBasis', [App\Http\Controllers\GudangJahitController::class, 'getBasis'])->name('GJahit.getBasis');
 
 Route::get('/GJahit/request', [App\Http\Controllers\GudangJahitController::class, 'gRequest'])->name('GJahit.request');
 Route::get('/GJahit/request/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRequestTerima'])->name('GJahit.request.terima');
@@ -213,6 +214,10 @@ Route::get('/GJahit/operator/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Control
 Route::get('/GJahit/operator/create', [App\Http\Controllers\GudangJahitController::class, 'gOperatorCreate'])->name('GJahit.operator.create');
 Route::post('/GJahit/operator/create', [App\Http\Controllers\GudangJahitController::class, 'gOperatorStore'])->name('GJahit.operator.create');
 Route::get('/GJahit/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDataMaterial'])->name('GJahit.operator.detailMaterial');
+
+Route::get('/GJahit/basis/create', [App\Http\Controllers\GudangJahitController::class, 'gBasisCreate'])->name('GJahit.basis.create');
+Route::post('/GJahit/basis/create', [App\Http\Controllers\GudangJahitController::class, 'gBasisStore'])->name('GJahit.basis.create');
+Route::get('/GJahit/operator/detail/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gBasisDetail'])->name('GJahit.basis.detail');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
 

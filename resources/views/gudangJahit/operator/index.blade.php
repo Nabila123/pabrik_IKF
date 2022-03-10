@@ -51,34 +51,72 @@
                 <div class="col-12">
                     <div class="card">   
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('GJahit.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
-                            </h3>
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" href="#userTweet" data-toggle="tab">Operator</a></li>
+                                <li class="nav-item"><a class="nav-link retweetByClick" href="#retweetBy" data-toggle="tab">Basis</a></li>
+                            </ul>                            
                         </div>                   
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="textAlign">
-                                    @foreach ($operatorRequest as $detail)
-                                        <tr>
-                                            <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
-                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
-                                            <td>{{ $detail->ukuranBaju }}</td>
-                                            
-                                            <td>
-                                                <a href="{{ route('GJahit.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="userTweet">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GJahit.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
+                                    </h3>
+                                    <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            @foreach ($operatorRequest as $detail)
+                                                <tr>
+                                                    <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
+                                                    <td>{{ strtoupper($detail->jenisBaju) }}</td>
+                                                    <td>{{ $detail->ukuranBaju }}</td>
+                                                    
+                                                    <td>
+                                                        <a href="{{ route('GJahit.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="retweetBy">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GJahit.basis.create') }}" class='btn btn-info btn-flat-right'>Tambah Basis</a>
+                                    </h3>
+                                    <table id="basis" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Posisi</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Target Posisi</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Saat Ini</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            @foreach ($jahitBasis as $basis)
+                                                <tr>
+                                                    <td>{{ date('d F Y', strtotime($basis->created_at)) }}</td>
+                                                    <td>{{ strtoupper($basis->posisi) }}</td>
+                                                    <td>{{ $basis->qtyTarget }}</td>
+                                                    <td>{{ $basis->total }}</td>
+                                                    
+                                                    <td>
+                                                        <a href="{{ route('GJahit.basis.detail', [$basis->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,8 +129,12 @@
 @push('page_scripts') 
     <script type="text/javascript">
         $(document).ready( function () {
-            $('#example2').DataTable( {
+            $('#operator').DataTable( {
                 "responsive": true,
+            });
+            $('#basis').DataTable( {
+                "responsive": true,
+                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });
         });
     </script>

@@ -9,19 +9,41 @@ class GudangJahitDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'gd_jahit_detail';
+    protected $table = 'gd_jahitbasis_pegawai';
 
     public function user()
     {
         return $this->hasOne('App\Models\User','id','userId');
     }
 
-    public static function updateStatusDiterima($id, $statusDiterima)
+    public function pegawai()
     {
-        $inspeksiUpdated['statusDiterima'] = $statusDiterima;
+        return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
+    }
 
-        self::where('id', $id)->update($inspeksiUpdated);
+    public static function CreateGudangBasisPegawai($gdJahitBasisId, $pegawaiId, $total)
+    {
+        $addGdBasisPegawai = NEW GudangJahitDetail;
+        $addGdBasisPegawai->gdJahitBasisId = $gdJahitBasisId;
+        $addGdBasisPegawai->pegawaiId = $pegawaiId;
+        $addGdBasisPegawai->tanggal = date('Y-m-d');
+        $addGdBasisPegawai->total = $total;
+        $addGdBasisPegawai->created_at = date('Y-m-d H:i:s');
 
-        return 1;
+        if ($addGdBasisPegawai->save()) {
+            return $addGdBasisPegawai->id;
+        } else {
+            return 0;
+        }
+    }
+
+    public static function GudangBasisPegawaiUpdateField($fieldName, $updatedField, $id)
+    {
+        $GudangBasisPegawaiFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($GudangBasisPegawaiFieldUpdated);
+
+        if ($success) {
+            return 1;
+        }
     }
 }

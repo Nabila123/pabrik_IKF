@@ -8,19 +8,37 @@ use Illuminate\Database\Eloquent\Model;
 class GudangJahitBasis extends Model
 {
     use HasFactory;
-    protected $table = 'gd_jahit_basis';
+    protected $table = 'gd_jahitbasis';
 
     public function user()
     {
         return $this->hasOne('App\Models\User','id','userId');
     }
 
-    public static function updateStatusDiterima($id, $statusDiterima)
+    public static function CreateGudangBasis($posisi, $qtyTarget, $total, $userId)
     {
-        $inspeksiUpdated['statusDiterima'] = $statusDiterima;
+        $addGdBasis = NEW GudangJahitBasis;
+        $addGdBasis->posisi = $posisi;
+        $addGdBasis->qtyTarget = $qtyTarget;
+        $addGdBasis->total = $total;
+        $addGdBasis->userId = $userId;
+        $addGdBasis->created_at = date('Y-m-d H:i:s');
 
-        self::where('id', $id)->update($inspeksiUpdated);
+        if ($addGdBasis->save()) {
+            return $addGdBasis->id;
+        } else {
+            return 0;
+        }
 
-        return 1;
+    }
+
+    public static function GudangBasisUpdateField($fieldName, $updatedField, $id)
+    {
+        $GudangBasisFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($GudangBasisFieldUpdated);
+
+        if ($success) {
+            return 1;
+        }
     }
 }
