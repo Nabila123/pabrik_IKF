@@ -222,6 +222,58 @@ class GudangJahitController extends Controller
         
     }
 
+    public function gOperatorUpdate($date)
+    {
+        $jenisBaju = GudangBajuStokOpname::select('jenisBaju')->groupBy('jenisBaju')->get();
+        $gdRequestOperator = GudangJahitRequestOperator::selectRaw('* ,count(*) as total')->whereDate('created_at', $date)->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        $gdJahitBasis = GudangJahitBasis::whereDate('created_at', date('Y-m-d'))->first();
+
+        return view('gudangJahit.operator.update', ['gdRequestOperator' => $gdRequestOperator, 'operatorRequest' => $jenisBaju, 'gdJahitBasis' => $gdJahitBasis]);
+    }
+
+    public function gOperatorUpdateSave(Request $request)
+    {
+        // dd($request);
+        $gdBajuStokOpnameId = [];
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $gdRequestOperator = GudangBajuStokOpname::where('purchaseId', $request['purchaseId'][$i])->where('jenisBaju', $request['jenisBaju'][$i])->where('ukuranBaju', $request['ukuranBaju'][$i])->where('soom', 0)->where('jahit', 0)->where('bawahan', 0)->get();
+                foreach ($gdRequestOperator as $value) {
+                   $gdBajuStokOpnameId[] = $value->id;
+                }
+
+                for ($j=0; $j < $request['jumlah'][$i]; $j++) { 
+                    $createOperator = GudangJahitRequestOperator::OperatorBajuCreate($gdBajuStokOpnameId[$j], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], 0, 0, 0, \Auth::user()->id);
+                }
+            }
+
+            if ($createOperator) {
+                return redirect('GJahit/operator');
+            }
+            // dd($gdBajuStokOpnameId);
+        }else{
+            $gdRequestOperator = GudangBajuStokOpname::select('jenisBaju')->groupBy('jenisBaju')->get();
+            return view('gudangJahit.operator.create', ['operatorRequest' => $gdRequestOperator, 'message'=>'Data Belum Diisi']);
+        }
+    }
+
+    public function gOperatorUpdateDelete($purchaseId, $jenisBaju, $ukuranBaju)
+    {
+        $gdRequestOperatorDelete = GudangJahitRequestOperator::where('purchaseId', $purchaseId)->where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->whereDate('created_at', date('Y-m-d'))->delete();
+        if ($gdRequestOperatorDelete) {
+            return redirect('GJahit/operator/update/' . date('Y-m-d') . '');
+        }
+    }
+
+    public function gOperatorDelete(Request $request)
+    {
+        $gdRequestOperatorDelete = GudangJahitRequestOperator::where('jenisBaju', $request->jenisBaju)->where('ukuranBaju', $request->ukuranBaju)->whereDate('created_at', date('Y-m-d'))->delete();
+        if ($gdRequestOperatorDelete) {
+            return redirect('GJahit/operator');
+        }
+
+    }
+
     //Gudang Jahit Basis (Proses Jahit)
     public function gBasisCreate()
     {
@@ -274,6 +326,21 @@ class GudangJahitController extends Controller
             }
             
         }
+    }
+
+    public function gBasisUpdate($id)
+    {
+       dd($id);
+    }
+
+    public function gBasisUpdateSave(Request $request)
+    {
+        dd($request);
+    }
+
+    public function gBasisDelete(Request $request)
+    {
+        dd($request);
     }
 
     //Gudang Jahit Reject From Gudang Batil & Control
