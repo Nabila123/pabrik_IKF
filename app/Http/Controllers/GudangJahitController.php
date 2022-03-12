@@ -10,6 +10,8 @@ use App\Models\GudangJahitRequestOperator;
 use App\Models\GudangJahitBasis;
 use App\Models\GudangJahitDetail;
 use App\Models\GudangJahitDetailMaterial;
+use App\Models\GudangJahitRekap;
+use App\Models\GudangJahitRekapDetail;
 use App\Models\Pegawai;
 
 class GudangJahitController extends Controller
@@ -328,19 +330,75 @@ class GudangJahitController extends Controller
         }
     }
 
-    public function gBasisUpdate($id)
+    public function gBasisUpdate($posisi)
     {
-       dd($id);
+    //    dd($posisi);
+       $gdBasisDetail= [];
+       $i = 0;
+       $gdJahitBasis = GudangJahitBasis::where('posisi', $posisi)->whereDate('created_at', date('Y-m-d'))->first();
+       $gdJahitPegawai = GudangJahitDetail::where('gdJahitBasisId', $gdJahitBasis->id)->whereDate('created_at', date('Y-m-d'))->get();
+       foreach ($gdJahitPegawai as $pegawai) {
+           $j = 0; $k = 0;
+            $gdBasisDetail[$i] = [
+                'posisiJahit' => $gdJahitBasis->id,
+                'nama' => $pegawai->pegawai->nama,
+                'basisId' => $pegawai->id,
+                'jam' => [],
+                'total' => []
+            ];
+            $gdJahitPegawaiDetail = GudangJahitDetailMaterial::where('gdJahitBasisPegawaiId', $pegawai->id)->orderBy('created_at', 'asc')->get();
+            foreach ($gdJahitPegawaiDetail as $detail) {
+                $gdBasisDetail[$i]['jam'][$k++] = date("H:i", strtotime($detail->created_at));
+                $gdBasisDetail[$i]['total'][$j]['detailId'] = $detail->id;
+                $gdBasisDetail[$i]['total'][$j]['total'] = $detail->total;
+                $j++;
+            }
+        $i++;
+       }
+
+    //    dd($gdBasisDetail);
+       return view('gudangJahit.basis.update', ['gdBasisDetail' => $gdBasisDetail, 'gdJahitBasis' => $gdJahitBasis]);
+
     }
 
     public function gBasisUpdateSave(Request $request)
     {
-        dd($request);
+        // dd($request);
+        for ($i=0; $i < count($request->basisId); $i++) { 
+            $gdJahitPegawaiDetail = GudangJahitDetailMaterial::GudangBasisPegawaiDetailUpdateField('total', $request['total'][$i], $request['detailMaterialId'][$i]);
+            if ($gdJahitPegawaiDetail) {
+                $gdBasisPegawai = GudangJahitDetail::GudangBasisPegawaiUpdateField('total', $request['total'][$i], $request['basisId'][$i]);
+            }
+        }
+
+        if ($gdBasisPegawai) {
+            $gdBasis = GudangJahitBasis::GudangBasisUpdateField('total', array_sum($request['total']), $request->posisiId);
+            if ($gdBasis) {
+                return redirect('GJahit/operator');
+            }
+        }
+
     }
 
     public function gBasisDelete(Request $request)
     {
-        dd($request);
+        // dd($request);
+        $gdBasis = GudangJahitBasis::where('posisi', $request->jenisBaju)->whereDate('created_at', date('Y-m-d'))->first();
+        $gdBasisPegawai = GudangJahitDetail::where('gdJahitBasisId', $gdBasis->id)->get();
+        foreach ($gdBasisPegawai as $pegawai) {
+           $gdBasisPegawaiDetail = GudangJahitDetailMaterial::where('gdJahitBasisPegawaiId', $pegawai->id)->delete();
+        }
+
+        if ($gdBasisPegawaiDetail) {
+            $gdBasisPegawai = GudangJahitDetail::where('gdJahitBasisId', $gdBasis->id)->delete();
+            if ($gdBasisPegawai) {
+                $gdBasis = GudangJahitBasis::where('posisi', $request->jenisBaju)->whereDate('created_at', date('Y-m-d'))->delete();
+                if ($gdBasis) {
+                    return redirect('GJahit/operator');
+                }
+            }
+        }
+        
     }
 
     //Gudang Jahit Reject From Gudang Batil & Control

@@ -222,8 +222,8 @@ Route::delete('/GJahit/operator/delete', [App\Http\Controllers\GudangJahitContro
 Route::get('/GJahit/basis/create', [App\Http\Controllers\GudangJahitController::class, 'gBasisCreate'])->name('GJahit.basis.create');
 Route::post('/GJahit/basis/create', [App\Http\Controllers\GudangJahitController::class, 'gBasisStore'])->name('GJahit.basis.create');
 Route::get('/GJahit/basis/detail/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gBasisDetail'])->name('GJahit.basis.detail');
-Route::get('/GJahit/basis/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gBasisUpdate'])->name('GJahit.basis.update');
-Route::post('/GJahit/basis/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gBasisUpdateSave'])->name('GJahit.basis.update');
+Route::get('/GJahit/basis/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gBasisUpdate'])->name('GJahit.basis.update');
+Route::post('/GJahit/basis/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gBasisUpdateSave'])->name('GJahit.basis.update');
 Route::delete('/GJahit/basis/delete', [App\Http\Controllers\GudangJahitController::class, 'gBasisDelete'])->name('GJahit.basis.delete');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');

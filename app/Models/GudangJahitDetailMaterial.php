@@ -31,12 +31,13 @@ class GudangJahitDetailMaterial extends Model
         }
     }
 
-    public static function updateStatusDiterima($id, $statusDiterima)
+    public static function GudangBasisPegawaiDetailUpdateField($fieldName, $updatedField, $id)
     {
-        $inspeksiUpdated['statusDiterima'] = $statusDiterima;
+        $GudangBasisPegawaiDetailFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($GudangBasisPegawaiDetailFieldUpdated);
 
-        self::where('id', $id)->update($inspeksiUpdated);
-
-        return 1;
+        if ($success) {
+            return 1;
+        }
     }
 }

@@ -52,13 +52,14 @@
                     <div class="card">   
                         <div class="card-header">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#userTweet" data-toggle="tab">Operator</a></li>
-                                <li class="nav-item"><a class="nav-link retweetByClick" href="#retweetBy" data-toggle="tab">Basis</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#BasisLink" data-toggle="tab">Basis</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="active tab-pane" id="userTweet">
+                                <div class="active tab-pane" id="OperatorLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
                                         <a href="{{ route('GJahit.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
                                     </h3>
@@ -81,14 +82,18 @@
                                                     <td>
                                                         <a href="{{ route('GJahit.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         <a href="{{ route('GJahit.operator.update', date('Y-m-d', strtotime($detail->created_at))) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                        @if (count($jahitBasis) == 0)
+                                                            <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                        @else
+                                                            <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="tab-pane" id="retweetBy">
+                                <div class="tab-pane" id="BasisLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
                                         <a href="{{ route('GJahit.basis.create') }}" class='btn btn-info btn-flat-right'>Tambah Basis</a>
                                     </h3>
@@ -112,8 +117,40 @@
                                                     
                                                     <td>
                                                         <a href="{{ route('GJahit.basis.detail', [$basis->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GJahit.basis.update', $basis->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        <button type="button" data-toggle="modal" requestId='{{ $basis->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $basis->id }}", "basis", "basis")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                        <a href="{{ route('GJahit.basis.update', $basis->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        <button type="button" data-toggle="modal" requestId='{{ $basis->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $basis->posisi }}", "basis", "basis")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="RekapanLink">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GJahit.basis.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
+                                    </h3>
+                                    <table id="basis" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Posisi</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Target Posisi</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Saat Ini</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            @foreach ($jahitBasis as $basis)
+                                                <tr>
+                                                    <td>{{ date('d F Y', strtotime($basis->created_at)) }}</td>
+                                                    <td>{{ strtoupper($basis->posisi) }}</td>
+                                                    <td>{{ $basis->qtyTarget }}</td>
+                                                    <td>{{ $basis->total }}</td>
+                                                    
+                                                    <td>
+                                                        <a href="{{ route('GJahit.basis.detail', [$basis->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GJahit.basis.update', $basis->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        <button type="button" data-toggle="modal" requestId='{{ $basis->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $basis->posisi }}", "basis", "basis")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -167,7 +204,8 @@
                 var url = '{{ route('GJahit.basis.delete') }}';
                 // url = url.replace(':id', id);
                 console.log(id);
-                $('#requestId').val(id);
+                $('#jenisBaju').val(jenisBaju);
+                $('#ukuranBaju').val(ukuranBaju);
                 $("#deleteForm").attr('action', url);
 
             }else{
