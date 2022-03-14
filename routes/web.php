@@ -204,6 +204,7 @@ Route::delete('/GPotong/proses/delete', [App\Http\Controllers\GudangPotongContro
 Route::get('/GJahit', [App\Http\Controllers\GudangJahitController::class, 'index'])->name('GJahit');
 Route::post('/GJahit/getData', [App\Http\Controllers\GudangJahitController::class, 'getData'])->name('GJahit.getData');
 Route::post('/GJahit/getBasis', [App\Http\Controllers\GudangJahitController::class, 'getBasis'])->name('GJahit.getBasis');
+Route::post('/GJahit/getPegawai', [App\Http\Controllers\GudangJahitController::class, 'getPegawai'])->name('GJahit.getPegawai');
 
 Route::get('/GJahit/request', [App\Http\Controllers\GudangJahitController::class, 'gRequest'])->name('GJahit.request');
 Route::get('/GJahit/request/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRequestTerima'])->name('GJahit.request.terima');
@@ -225,6 +226,13 @@ Route::get('/GJahit/basis/detail/{posisi}', [App\Http\Controllers\GudangJahitCon
 Route::get('/GJahit/basis/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gBasisUpdate'])->name('GJahit.basis.update');
 Route::post('/GJahit/basis/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gBasisUpdateSave'])->name('GJahit.basis.update');
 Route::delete('/GJahit/basis/delete', [App\Http\Controllers\GudangJahitController::class, 'gBasisDelete'])->name('GJahit.basis.delete');
+
+Route::get('/GJahit/rekap/create', [App\Http\Controllers\GudangJahitController::class, 'gRekapCreate'])->name('GJahit.rekap.create');
+Route::post('/GJahit/rekap/create', [App\Http\Controllers\GudangJahitController::class, 'gRekapStore'])->name('GJahit.rekap.create');
+Route::get('/GJahit/rekap/detail/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapDetail'])->name('GJahit.rekap.detail');
+Route::get('/GJahit/rekap/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdate'])->name('GJahit.rekap.update');
+Route::post('/GJahit/rekap/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateSave'])->name('GJahit.rekap.update');
+Route::delete('/GJahit/rekap/delete', [App\Http\Controllers\GudangJahitController::class, 'gRekapDelete'])->name('GJahit.rekap.delete');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
 

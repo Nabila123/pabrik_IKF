@@ -15,4 +15,22 @@ class GudangJahitRekapDetail extends Model
     {
         return $this->hasOne('App\Models\User','id','userId');
     }
+
+    public static function JahitRekapDetailCreate($gdJahitKId, $tanggal, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
+    {
+        $addJahitDetailRekap = New GudangJahitRekapDetail();
+        $addJahitDetailRekap->gdJahitKId = $gdJahitKId;
+        $addJahitDetailRekap->tanggal = $tanggal;
+        $addJahitDetailRekap->gdBajuStokOpnameId = $gdBajuStokOpnameId;
+        $addJahitDetailRekap->purchaseId = $purchaseId;
+        $addJahitDetailRekap->jenisBaju = $jenisBaju;
+        $addJahitDetailRekap->ukuranBaju = $ukuranBaju;
+        $addJahitDetailRekap->created_at = date('Y-m-d H:i:s');
+
+        if ($addJahitDetailRekap->save()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

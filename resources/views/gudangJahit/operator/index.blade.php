@@ -127,30 +127,28 @@
                                 </div>
                                 <div class="tab-pane" id="RekapanLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GJahit.basis.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
+                                        <a href="{{ route('GJahit.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
                                     </h3>
-                                    <table id="basis" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                    <table id="rekap" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Posisi</th>
-                                                <th class="textAlign" style="vertical-align: middle;">Target Posisi</th>
-                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Saat Ini</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Pegawai Jahit</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="textAlign">
-                                            @foreach ($jahitBasis as $basis)
+                                            @foreach ($jahitRekap as $rekap)
                                                 <tr>
-                                                    <td>{{ date('d F Y', strtotime($basis->created_at)) }}</td>
-                                                    <td>{{ strtoupper($basis->posisi) }}</td>
-                                                    <td>{{ $basis->qtyTarget }}</td>
-                                                    <td>{{ $basis->total }}</td>
-                                                    
+                                                    <td>{{ date('d F Y', strtotime($rekap->created_at)) }}</td>
+                                                    <td>{{ strtoupper($rekap->posisi) }}</td>
+                                                    <td>{{ $rekap->pegawai->nama }}</td>
+                                                   
                                                     <td>
-                                                        <a href="{{ route('GJahit.basis.detail', [$basis->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GJahit.basis.update', $basis->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        <button type="button" data-toggle="modal" requestId='{{ $basis->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $basis->posisi }}", "basis", "basis")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                        <a href="{{ route('GJahit.rekap.detail', [$rekap->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GJahit.rekap.update', $rekap->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        <button type="button" data-toggle="modal" requestId='{{ $rekap->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $rekap->posisi }}", "rekap", "rekap")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -229,6 +227,10 @@
                 "responsive": true,
             });
             $('#basis').DataTable( {
+                "responsive": true,
+                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
+            });
+            $('#rekap').DataTable( {
                 "responsive": true,
                 "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });

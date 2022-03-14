@@ -40,6 +40,16 @@ class GudangJahitRequestOperator extends Model
         return 1;
     }
 
+    public static function GudangOperatorBajuUpdateField($fieldName, $updatedField, $id)
+    {
+        $GudangOperatorBajuFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($GudangOperatorBajuFieldUpdated);
+
+        if ($success) {
+            return 1;
+        }
+    }
+
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $inspeksiUpdated['statusDiterima'] = $statusDiterima;

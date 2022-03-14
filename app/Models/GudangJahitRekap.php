@@ -15,4 +15,25 @@ class GudangJahitRekap extends Model
     {
         return $this->hasOne('App\Models\User','id','userId');
     }
+
+    public function pegawai()
+    {
+        return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
+    }
+
+    public static function JahitRekapCreate($posisi, $tanggal, $pegawaiId, $userId)
+    {
+        $addJahitRekap = New GudangJahitRekap;
+        $addJahitRekap->posisi = $posisi;
+        $addJahitRekap->tanggal = $tanggal;
+        $addJahitRekap->pegawaiId = $pegawaiId;
+        $addJahitRekap->userId = $userId;
+        $addJahitRekap->created_at = date('Y-m-d H:i:s');
+
+        if ($addJahitRekap->save()) {
+            return $addJahitRekap->id;
+        } else {
+            return 0;
+        }
+    }
 }

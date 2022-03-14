@@ -112,6 +112,63 @@ class GudangJahitController extends Controller
         return json_encode($data);
     }
 
+
+    public function getPegawai(Request $request)
+    {
+        // dd($request);
+        $data = [];
+        $pegawai = Pegawai::where('kodeBagian', $request->posisi)->get();
+        foreach ($pegawai as $value) {
+            $data['pegawai'][] = [
+                'id' => $value->id, 
+                'nip' => $value->nip, 
+                'nama' => $value->nama
+            ];
+        } 
+
+        if (isset($request->purchaseId)) {
+            $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->where('purchaseId', $request->purchaseId)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        if (isset($request->jenisBaju)) {
+            $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        if (isset($request->ukuranBaju)) {
+            $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->where('ukuranBaju', $request->ukuranBaju)->whereDate('created_at', date('Y-m-d'))->first();
+        }
+        if (!isset($request->purchaseId) && !isset($request->jenisBaju) && !isset($request->ukuranBaju)){
+            $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        
+
+        if (isset($gdRequestOperator)) {
+            foreach ($gdRequestOperator as $operator) {
+                if ($request->groupBy == "purchaseId") {
+                    $data['operator'][] = [
+                        'purchaseId' => $operator->purchaseId, 
+                        'kodePurchase' => $operator->purchase->kode
+                    ];
+                }elseif ($request->groupBy == "jenisBaju") {
+                    $data['operator'][] = [
+                        'jenisBaju' => $operator->jenisBaju
+                    ];
+                }elseif ($request->groupBy == "ukuranBaju") {
+                    $data['operator'][] = [
+                        'ukuranBaju' => $operator->ukuranBaju
+                    ];
+                }
+            }
+
+            if ($request->groupBy == "id"){
+                $data['operator'][] = [
+                    'requestOperatorId' => $gdRequestOperator->id
+                ];
+            }
+        }
+        
+
+        return json_encode($data);
+    }
+
     //Gudang Request From Gudang Potong
     public function gRequest()
     {
@@ -155,8 +212,9 @@ class GudangJahitController extends Controller
     {
         $gdRequestOperator = GudangJahitRequestOperator::groupBy('jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
         $gdJahitBasis = GudangJahitBasis::groupBy('posisi')->whereDate('created_at', date('Y-m-d'))->get();
+        $gdJahitRekap = GudangJahitRekap::orderBy('created_at', 'asc')->get();
 
-        return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis]);
+        return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap]);
     }
 
     public function gOperatorDetail($jenisBaju, $ukuranBaju)
@@ -397,6 +455,44 @@ class GudangJahitController extends Controller
                     return redirect('GJahit/operator');
                 }
             }
+        }
+        
+    }
+
+
+    public function gRekapCreate()
+    {
+        return view('gudangJahit.rekap.create');
+    }
+
+    public function gRekapStore(Request $request)
+    {
+        // dd($request);        
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $checkPegawai = GudangJahitRekap::where('posisi', $request['posisi'][$i])->where('pegawaiId',$request['pegawaiId'][$i])->where('tanggal', $request['tanggal'][$i])->first();
+                if ($checkPegawai == null) {
+                    $jahitRekap = GudangJahitRekap::JahitRekapCreate($request['posisi'][$i], $request['tanggal'][$i], $request['pegawaiId'][$i], \Auth::user()->id);
+                } else {
+                    $jahitRekap = $checkPegawai->id;
+                }
+                $operatorReq = GudangJahitRequestOperator::where('id', $request['operatorReqId'][$i])->first();
+                if ($operatorReq != null) {
+                    $operatorReqUpdate = GudangJahitRequestOperator::GudangOperatorBajuUpdateField($request['posisi'][$i], 1, $operatorReq->id);
+                    if ($operatorReqUpdate == 1) {
+                        $bajuStokOpname = GudangBajuStokOpname::bajuUpdateField($request['posisi'][$i], 1, $operatorReq->gdBajuStokOpnameId);
+                        if ($bajuStokOpname == 1) {
+                            $jahitRekapDetail = GudangJahitRekapDetail::JahitRekapDetailCreate($jahitRekap, $request['tanggal'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
+                        }
+                    }                    
+                }                
+            }
+
+            if ($jahitRekapDetail == 1) {
+                return redirect('GJahit/operator');
+            }
+        } else {
+            return redirect('rekap/create');
         }
         
     }
