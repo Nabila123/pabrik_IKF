@@ -291,7 +291,7 @@ class GudangJahitController extends Controller
     {
         $gdRequestOperator = GudangJahitRequestOperator::groupBy('jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
         $gdJahitBasis = GudangJahitBasis::groupBy('posisi')->whereDate('created_at', date('Y-m-d'))->get();
-        $gdJahitRekap = GudangJahitRekap::orderBy('created_at', 'desc')->get();
+        $gdJahitRekap = GudangJahitRekap::orderBy('tanggal', 'DESC')->groupBy('posisi', 'tanggal')->get();
 
         return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap]);
     }
@@ -574,6 +574,74 @@ class GudangJahitController extends Controller
             return redirect('GJahit/rekap/create');
         }
         
+    }
+
+    public function gRekapDetail($posisi)
+    {
+        $getPegawai = GudangJahitRekap::where('posisi', $posisi)->whereDate('created_at', date('Y-m-d'))->get();
+        foreach ($getPegawai as $pegawai) {
+            $getDetailPegawai = GudangJahitRekapDetail::where('gdJahitKId', $pegawai->id)->get();
+            foreach ($getDetailPegawai as $detailPegawai) {
+                $pegawai->purchaseId = $detailPegawai->purchase->kode;
+                $pegawai->jenisBaju = $detailPegawai->jenisBaju;
+                $pegawai->ukuranBaju = $detailPegawai->ukuranBaju;
+            }
+        }
+
+        // dd($getPegawai);
+        return view('gudangJahit.rekap.detail', ['pegawai' => $getPegawai]);
+    }
+
+    public function gRekapUpdate($posisi)
+    {
+        $getPegawai = GudangJahitRekap::where('posisi', $posisi)->whereDate('created_at', date('Y-m-d'))->get();
+        foreach ($getPegawai as $pegawai) {
+            $getDetailPegawai = GudangJahitRekapDetail::where('gdJahitKId', $pegawai->id)->get();
+            foreach ($getDetailPegawai as $detailPegawai) {
+                $pegawai->rekapDetailId = $detailPegawai->id;
+                $pegawai->purchaseId = $detailPegawai->purchase->kode;
+                $pegawai->jenisBaju = $detailPegawai->jenisBaju;
+                $pegawai->ukuranBaju = $detailPegawai->ukuranBaju;
+                $pegawai->soom = $detailPegawai->operatorReq->soom;
+                $pegawai->jahit = $detailPegawai->operatorReq->jahit;
+                $pegawai->bawahan = $detailPegawai->operatorReq->bawahan;
+            }
+
+        }
+
+        // dd($getPegawai);
+
+        return view('gudangJahit.rekap.update', ['pegawai' => $getPegawai, 'posisi' => $posisi]);
+    }
+
+    public function gRekapUpdateDelete($rekapDetailId, $posisi)
+    {
+        $getDetailPegawai = GudangJahitRekapDetail::where('id', $rekapDetailId)->first();
+        $rekapId = $getDetailPegawai->gdJahitKId;
+        $getPegawai = GudangJahitRekap::where('id', $rekapId)->first();
+        $CheckPegawai = GudangJahitRekapDetail::where('gdJahitKId', $getPegawai->id)->get();
+
+        $operatorReq = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $getDetailPegawai->gdBajuStokOpnameId)->first();
+        if ($operatorReq != null) {
+            $operatorReqUpdate = GudangJahitRequestOperator::GudangOperatorBajuUpdateField($posisi, 0, $operatorReq->id);
+            if ($operatorReqUpdate == 1) {
+                $bajuStokOpname = GudangBajuStokOpname::bajuUpdateField($posisi, 0, $operatorReq->gdBajuStokOpnameId);
+                if ($bajuStokOpname == 1) {
+                    $deleteDetailPegawai = GudangJahitRekapDetail::where('id', $rekapDetailId)->delete();
+                    if (count($CheckPegawai) == 1) {
+                        $deletePegawai = GudangJahitRekap::where('id', $rekapId)->delete();
+
+                        if ($deletePegawai) {
+                            return redirect('GJahit/operator');
+                        }
+                    }
+
+                    if ($deleteDetailPegawai) {
+                        return redirect('GJahit/rekap/update/' . $posisi . '');
+                    }
+                }
+            }                    
+        }            
     }
 
     //Gudang Jahit Reject From Gudang Batil & Control

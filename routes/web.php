@@ -232,7 +232,7 @@ Route::post('/GJahit/rekap/create', [App\Http\Controllers\GudangJahitController:
 Route::get('/GJahit/rekap/detail/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapDetail'])->name('GJahit.rekap.detail');
 Route::get('/GJahit/rekap/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdate'])->name('GJahit.rekap.update');
 Route::post('/GJahit/rekap/update/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateSave'])->name('GJahit.rekap.update');
-Route::delete('/GJahit/rekap/delete', [App\Http\Controllers\GudangJahitController::class, 'gRekapDelete'])->name('GJahit.rekap.delete');
+Route::get('/GJahit/rekap/update/delete/{rekapDetailId}/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateDelete'])->name('GJahit.rekap.update.delete');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
 

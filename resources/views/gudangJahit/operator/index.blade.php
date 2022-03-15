@@ -134,21 +134,22 @@
                                             <tr>
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Posisi</th>
-                                                <th class="textAlign" style="vertical-align: middle;">Pegawai Jahit</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="textAlign">
                                             @foreach ($jahitRekap as $rekap)
                                                 <tr>
-                                                    <td>{{ date('d F Y', strtotime($rekap->created_at)) }}</td>
+                                                    <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
                                                     <td>{{ strtoupper($rekap->posisi) }}</td>
-                                                    <td>{{ $rekap->pegawai->nama }}</td>
                                                    
                                                     <td>
                                                         <a href="{{ route('GJahit.rekap.detail', [$rekap->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GJahit.rekap.update', $rekap->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        <button type="button" data-toggle="modal" requestId='{{ $rekap->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $rekap->posisi }}", "rekap", "rekap")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                        @if ($rekap->tanggal == date("Y-m-d"))
+                                                            <a href="{{ route('GJahit.rekap.update', $rekap->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        @else
+                                                            <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

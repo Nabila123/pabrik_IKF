@@ -25,7 +25,7 @@ class GudangJahitRekap extends Model
     {
         $addJahitRekap = New GudangJahitRekap;
         $addJahitRekap->posisi = $posisi;
-        $addJahitRekap->tanggal = $tanggal;
+        $addJahitRekap->tanggal = date('Y-m-d');
         $addJahitRekap->pegawaiId = $pegawaiId;
         $addJahitRekap->userId = $userId;
         $addJahitRekap->created_at = date('Y-m-d H:i:s');
