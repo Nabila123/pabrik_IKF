@@ -133,7 +133,86 @@ class GudangJahitController extends Controller
             $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->ukuranBaju)) {
-            $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->where('ukuranBaju', $request->ukuranBaju)->whereDate('created_at', date('Y-m-d'))->first();
+            $soom = $request->soom;
+            $jahit = $request->jahit;
+            $bawahan = $request->bawahan;
+            if ($request->posisi == "soom") {
+                $gdRequestOperator = GudangJahitRequestOperator::where('purchaseId', $request->purchaseId)
+                                                                ->where('jenisBaju', $request->jenisBaju)
+                                                                ->where('ukuranBaju', $request->ukuranBaju)
+                                                                ->Where(function ($d) use ($jahit, $bawahan) {
+                                                                    $d->where('soom', 0)
+                                                                      ->where('jahit', $jahit)
+                                                                      ->where('bawahan', $bawahan)
+                                                                      ->orWhere(function ($b) use ($jahit) {
+                                                                        $b->where('soom', 0)
+                                                                          ->where('jahit', $jahit)
+                                                                          ->where('bawahan', 0);
+                                                                    })
+                                                                    ->orWhere(function ($c) use ($bawahan) {
+                                                                        $c->where('soom', 0)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', $bawahan);
+                                                                    })
+                                                                    ->orwhere(function ($a) {
+                                                                        $a->where('soom', 0)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', 0);
+                                                                    });
+                                                                })    
+                                                                ->whereDate('created_at', date('Y-m-d'))->first();
+            }elseif ($request->posisi == "jahit") {
+                $gdRequestOperator = GudangJahitRequestOperator::where('purchaseId', $request->purchaseId)
+                                                                ->where('jenisBaju', $request->jenisBaju)
+                                                                ->where('ukuranBaju', $request->ukuranBaju)
+                                                                ->Where(function ($d) use ($soom, $bawahan) {
+                                                                    $d->where('soom', $soom)
+                                                                      ->where('jahit', 0)
+                                                                      ->where('bawahan', $bawahan)
+                                                                      ->orWhere(function ($b) use ($soom) {
+                                                                        $b->where('soom', $soom)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', 0);
+                                                                    })
+                                                                    ->orWhere(function ($c) use ($bawahan) {
+                                                                        $c->where('soom', 0)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', $bawahan);
+                                                                    })
+                                                                    ->orwhere(function ($a) {
+                                                                        $a->where('soom', 0)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', 0);
+                                                                    });
+                                                                })                                                                
+                                                                ->whereDate('created_at', date('Y-m-d'))->first();
+            }else {
+                $gdRequestOperator = GudangJahitRequestOperator::where('purchaseId', $request->purchaseId)
+                                                                ->where('jenisBaju', $request->jenisBaju)
+                                                                ->where('ukuranBaju', $request->ukuranBaju)
+                                                                ->Where(function ($d) use ($soom, $jahit) {
+                                                                    $d->where('soom', $soom)
+                                                                      ->where('jahit', $jahit)
+                                                                      ->where('bawahan', 0)
+                                                                      ->orWhere(function ($b) use ($soom) {
+                                                                        $b->where('soom', $soom)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', 0);
+                                                                    })
+                                                                    ->orWhere(function ($c) use ($jahit) {
+                                                                        $c->where('soom', 0)
+                                                                          ->where('jahit', $jahit)
+                                                                          ->where('bawahan', 0);
+                                                                    })
+                                                                    ->orwhere(function ($a) {
+                                                                        $a->where('soom', 0)
+                                                                          ->where('jahit', 0)
+                                                                          ->where('bawahan', 0);
+                                                                    });
+                                                                })                                                                
+                                                                ->whereDate('created_at', date('Y-m-d'))->first();
+            }
+            // dd($gdRequestOperator);
         }
         if (!isset($request->purchaseId) && !isset($request->jenisBaju) && !isset($request->ukuranBaju)){
             $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
@@ -212,7 +291,7 @@ class GudangJahitController extends Controller
     {
         $gdRequestOperator = GudangJahitRequestOperator::groupBy('jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
         $gdJahitBasis = GudangJahitBasis::groupBy('posisi')->whereDate('created_at', date('Y-m-d'))->get();
-        $gdJahitRekap = GudangJahitRekap::orderBy('created_at', 'asc')->get();
+        $gdJahitRekap = GudangJahitRekap::orderBy('created_at', 'desc')->get();
 
         return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap]);
     }
@@ -492,7 +571,7 @@ class GudangJahitController extends Controller
                 return redirect('GJahit/operator');
             }
         } else {
-            return redirect('rekap/create');
+            return redirect('GJahit/rekap/create');
         }
         
     }

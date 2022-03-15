@@ -119,7 +119,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">  
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Kode Purchase </label>
                                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
@@ -127,7 +127,7 @@
                                                             </select> 
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Jenis Baju</label>
                                                             <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
@@ -135,7 +135,15 @@
                                                             </select> 
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label>Keterangan Selesai Jahit </label>                                                            
+                                                            <div class="form-group clearfix ketJahit" id="ketJahit">  
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Ukuran Baju </label>
                                                             <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
@@ -143,7 +151,7 @@
                                                             </select>
                                                             <input type="hidden" name="requestOperatorId" id="requestOperatorId">
                                                         </div>
-                                                    </div>
+                                                    </div>                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -164,13 +172,19 @@
                                         <table id="JahitData" class="table table-bordered dataTables_scrollBody textAlign JahitData">
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
-                                                    <th>Posisi Jahit</th>
-                                                    <th>Nama Pegawai</th>
-                                                    <th>Kode Purchase</th>
-                                                    <th>Jenis Baju</th>
-                                                    <th>Ukuran Baju</th>
-                                                    <th>Action</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">No</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Posisi Jahit</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Nama Pegawai</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Kode Purchase</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th colspan="3" style="vertical-align: middle;">Keterangan</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Action</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="vertical-align: middle;">Soom</th>
+                                                    <th style="vertical-align: middle;">Jahit</th>
+                                                    <th style="vertical-align: middle;">Bawahan</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data textAlign">
@@ -204,6 +218,46 @@
         $(document).on("change", ".posisi", function(){
             var posisi = $('#posisi').val();
             var _token = $('#_token').val();
+            var jahit = ['soom', 'jahit', 'bawahan']
+            $('#ketJahit').html('');
+
+            if(posisi == "soom"){
+                    for(i=1; i<3; i++){
+                        var dt = '<div class="icheck-primary">';
+                            dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
+                            dt += "<label for='"+jahit[i]+"'>";
+                                dt += ""+jahit[i].toLowerCase()+"";
+                            dt += '</label>';
+    
+                        dt += '</div>';
+
+                    $('#ketJahit').append(dt);
+                }
+            }else if(posisi == "jahit"){
+                for(i=0; i<3; i++){
+                    if(i == 1) continue;
+                    var dt = '<div class="icheck-primary">';
+                        dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
+                        dt += "<label for='"+jahit[i]+"'>";
+                            dt += ""+jahit[i].toLowerCase()+"";
+                        dt += '</label>';
+
+                    dt += '</div>';
+
+                $('#ketJahit').append(dt);
+                }
+            }else{
+                for(i=0; i<2; i++){
+                    var dt = '<div class="icheck-primary">';
+                        dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
+                        dt += "<label for='"+jahit[i]+"'>";
+                            dt += ""+jahit[i].toLowerCase()+"";
+                        dt += '</label>';
+
+                    dt += '</div>';
+                $('#ketJahit').append(dt);
+                }
+            }
             
             $.ajax({
                 type: "post",
@@ -283,11 +337,16 @@
         });
 
         $(document).on("change", ".ukuranBaju", function(){
-            var posisi = $('#posisi').val();
-            var purchaseId = $('#purchaseId').val();
-            var jenisBaju = $('#jenisBaju').val();
-            var ukuranBaju = $('#ukuranBaju').val();
+            var posisi      = $('#posisi').val();
+            var purchaseId  = $('#purchaseId').val();
+            var jenisBaju   = $('#jenisBaju').val();
+            var ukuranBaju  = $('#ukuranBaju').val();
+            var soom        = $('#soom').is(":checked")?1:0;
+            var jahit       = $('#jahit').is(":checked")?1:0;
+            var bawahan     = $('#bawahan').is(":checked")?1:0;
             var _token = $('#_token').val();
+
+            console.log(soom+" "+jahit+" "+bawahan)
             
             $.ajax({
                 type: "post",
@@ -297,6 +356,9 @@
                     'purchaseId' : purchaseId,
                     'jenisBaju' : jenisBaju,
                     'ukuranBaju' : ukuranBaju,
+                    'soom' : soom,
+                    'jahit' : jahit,
+                    'bawahan' : bawahan,
                     'groupBy' : "id",
                     '_token': _token
                 },
@@ -318,7 +380,12 @@
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var jenisBaju       = $('#jenisBaju').val();
                 var ukuranBaju      = $('#ukuranBaju').val();
+                var soom            = $('#soom').is(":checked")?1:0;
+                var jahit           = $('#jahit').is(":checked")?1:0;
+                var bawahan         = $('#bawahan').is(":checked")?1:0;
                 var operatorReqId   = $('#requestOperatorId').val();
+
+                console.log(soom+" "+jahit+" "+bawahan)
 
                 var jumlah_data     = $('#jumlah_data').val();
 
@@ -333,6 +400,10 @@
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
+                            
+                            table += "<td>"+soom+"<input type='hidden' name='soom[]' value='"+soom+"' id='soom_"+jumlah_data+"'></td>";
+                            table += "<td>"+jahit+"<input type='hidden' name='jahit[]' value='"+jahit+"' id='jahit_"+jumlah_data+"'></td>";
+                            table += "<td>"+bawahan+"<input type='hidden' name='bawahan[]' value='"+bawahan+"' id='bawahan_"+jumlah_data+"'></td>";    
                             
                             table += "<td>";
                             table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
@@ -353,6 +424,12 @@
 
                         $('#ukuranBaju').val('');
                         $('#ukuranBaju option[value=""]').attr('selected','selected');
+
+                        $('#soom').prop('checked', false);
+                        $('#jahit').prop('checked', false);
+                        $('#bawahan').prop('checked', false);
+
+                        $('#ketJahit').html('');
 
                 }else{
                     alert("Inputan Tidak Boleh Ada Yang Kosong");
