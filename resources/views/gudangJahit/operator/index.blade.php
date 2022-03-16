@@ -144,9 +144,9 @@
                                                     <td>{{ strtoupper($rekap->posisi) }}</td>
                                                    
                                                     <td>
-                                                        <a href="{{ route('GJahit.rekap.detail', [$rekap->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GJahit.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         @if ($rekap->tanggal == date("Y-m-d"))
-                                                            <a href="{{ route('GJahit.rekap.update', $rekap->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            <a href="{{ route('GJahit.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                         @else
                                                             <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
                                                         @endif

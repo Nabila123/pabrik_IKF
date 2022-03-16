@@ -119,7 +119,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">  
-                                                    <div class="col-3">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Kode Purchase </label>
                                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
@@ -127,7 +127,7 @@
                                                             </select> 
                                                         </div>
                                                     </div>
-                                                    <div class="col-3">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Jenis Baju</label>
                                                             <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
@@ -135,7 +135,7 @@
                                                             </select> 
                                                         </div>
                                                     </div>
-                                                    <div class="col-3">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Keterangan Selesai Jahit </label>                                                            
                                                             <div class="form-group clearfix ketJahit" id="ketJahit">  
@@ -143,15 +143,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-3">
+                                                    <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Ukuran Baju </label>
                                                             <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
                                                             </select>
-                                                            <input type="hidden" name="requestOperatorId" id="requestOperatorId">
                                                         </div>
-                                                    </div>                                                    
+                                                    </div>       
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label>Jumlah Baju </label>                                                            
+                                                            <input type="text" style="width:100px;" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
+                                                            <input type="hidden" style="width:100px;" id="jumlahBajuOld">
+                                                        </div>
+                                                        <div id="requestOperatorId">
+
+                                                        </div>
+                                                    </div>                                            
                                                 </div>
                                             </div>
                                         </div>
@@ -178,6 +187,7 @@
                                                     <th rowspan="2" style="vertical-align: middle;">Kode Purchase</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Jumlah Baju</th>
                                                     <th colspan="3" style="vertical-align: middle;">Keterangan</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Action</th>
                                                 </tr>
@@ -215,6 +225,42 @@
             theme: 'bootstrap4'
         });
 
+        $(document).on("change", "#soom", function(){
+            if ($(this).is(':checked')) {
+                $('#jumlahBaju').val('');
+                $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }else{
+                 $('#jumlahBaju').val('');
+                 $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }
+        });
+
+        $(document).on("change", "#jahit", function(){
+            if ($(this).is(':checked')) {
+                $('#jumlahBaju').val('');
+                $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }else{
+                 $('#jumlahBaju').val('');
+                 $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }
+        });
+
+        $(document).on("change", "#bawahan", function(){
+            if ($(this).is(':checked')) {
+                $('#jumlahBaju').val('');
+                $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }else{
+                 $('#jumlahBaju').val('');
+                 $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }
+        });
+
         $(document).on("change", ".posisi", function(){
             var posisi = $('#posisi').val();
             var _token = $('#_token').val();
@@ -223,10 +269,10 @@
 
             if(posisi == "soom"){
                     for(i=1; i<3; i++){
-                        var dt = '<div class="icheck-primary">';
+                        var dt = '<div class="icheck-primary d-inline" style="margin-right:50px;">';
                             dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
                             dt += "<label for='"+jahit[i]+"'>";
-                                dt += ""+jahit[i].toLowerCase()+"";
+                                dt += ""+jahit[i].toUpperCase()+"";
                             dt += '</label>';
     
                         dt += '</div>';
@@ -236,10 +282,10 @@
             }else if(posisi == "jahit"){
                 for(i=0; i<3; i++){
                     if(i == 1) continue;
-                    var dt = '<div class="icheck-primary">';
+                    var dt = '<div class="icheck-primary d-inline" style="margin-right:50px;">';
                         dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
                         dt += "<label for='"+jahit[i]+"'>";
-                            dt += ""+jahit[i].toLowerCase()+"";
+                            dt += ""+jahit[i].toUpperCase()+"";
                         dt += '</label>';
 
                     dt += '</div>';
@@ -248,10 +294,10 @@
                 }
             }else{
                 for(i=0; i<2; i++){
-                    var dt = '<div class="icheck-primary">';
+                    var dt = '<div class="icheck-primary d-inline" style="margin-right:50px;">';
                         dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
                         dt += "<label for='"+jahit[i]+"'>";
-                            dt += ""+jahit[i].toLowerCase()+"";
+                            dt += ""+jahit[i].toUpperCase()+"";
                         dt += '</label>';
 
                     dt += '</div>';
@@ -341,10 +387,13 @@
             var purchaseId  = $('#purchaseId').val();
             var jenisBaju   = $('#jenisBaju').val();
             var ukuranBaju  = $('#ukuranBaju').val();
+            var jumlahBaju  = $('#jumlahBaju').val();
             var soom        = $('#soom').is(":checked")?1:0;
             var jahit       = $('#jahit').is(":checked")?1:0;
             var bawahan     = $('#bawahan').is(":checked")?1:0;
             var _token = $('#_token').val();
+
+            $('#requestOperatorId').html('');
 
             console.log(soom+" "+jahit+" "+bawahan)
             
@@ -364,9 +413,64 @@
                 },
                 success: function(response){
                     var data = JSON.parse(response) 
-                    $('#requestOperatorId').val(data['operator'][0]['requestOperatorId']);             
+                    console.log(data);
+                    $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                    $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
+                    for(var i = 0;i < data.operator.requestOperatorId.length; i++){
+                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                        $('#requestOperatorId').append(dt);  
+                    }
+
                 }
             })
+        });
+
+        $(document).on("change", ".jumlahBaju", function(){
+            var posisi      = $('#posisi').val();
+            var purchaseId  = $('#purchaseId').val();
+            var jenisBaju   = $('#jenisBaju').val();
+            var ukuranBaju  = $('#ukuranBaju').val();
+            var jumlahBaju  = $('#jumlahBaju').val();
+            var jumlahBajuOld  = $('#jumlahBajuOld').val();
+            var soom        = $('#soom').is(":checked")?1:0;
+            var jahit       = $('#jahit').is(":checked")?1:0;
+            var bawahan     = $('#bawahan').is(":checked")?1:0;
+            var _token = $('#_token').val();
+
+            $('#requestOperatorId').html('');
+
+            console.log(soom+" "+jahit+" "+bawahan)
+            
+            if(jumlahBaju <= jumlahBajuOld){
+                $.ajax({
+                    type: "post",
+                    url: '{{ url('GJahit/getPegawai') }}',
+                    data: {
+                        'posisi' : posisi,
+                        'purchaseId' : purchaseId,
+                        'jenisBaju' : jenisBaju,
+                        'ukuranBaju' : ukuranBaju,
+                        'jumlahBaju' : jumlahBaju,
+                        'soom' : soom,
+                        'jahit' : jahit,
+                        'bawahan' : bawahan,
+                        'groupBy' : "id",
+                        '_token': _token
+                    },
+                    success: function(response){
+                        var data = JSON.parse(response) 
+                        console.log(data);
+                        $('#jumlahBaju').css({'border':'1px solid #ced4da'});
+                        $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                        for(var i = 0;i < data.operator.requestOperatorId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
+                    }
+                })
+            }else{
+                $('#jumlahBaju').css({'border':'2px solid #e74c3c'});
+            }
         });
 
         $(document).ready( function () {             
@@ -380,16 +484,20 @@
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var jenisBaju       = $('#jenisBaju').val();
                 var ukuranBaju      = $('#ukuranBaju').val();
+                var jumlahBaju      = $('#jumlahBaju').val();
                 var soom            = $('#soom').is(":checked")?1:0;
                 var jahit           = $('#jahit').is(":checked")?1:0;
                 var bawahan         = $('#bawahan').is(":checked")?1:0;
-                var operatorReqId   = $('#requestOperatorId').val();
+                var operatorReqId   = [];
+                for(i=0; i<jumlahBaju; i++){
+                    operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
+                }
 
-                console.log(soom+" "+jahit+" "+bawahan)
+                console.log(operatorReqId)
 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(posisi != "" && pegawaiId != "" && purchaseId != "" && jenisBaju != "" && ukuranBaju != ""){
+                if(posisi != "" && pegawaiId != "" && purchaseId != "" && jenisBaju != "" && ukuranBaju != "" && jumlahBaju != ""){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
@@ -400,6 +508,7 @@
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
+                            table += "<td>"+jumlahBaju+"<input type='hidden' name='jumlahBaju[]' value='"+jumlahBaju+"' id='jumlahBaju_"+jumlah_data+"'></td>";
                             
                             table += "<td>"+soom+"<input type='hidden' name='soom[]' value='"+soom+"' id='soom_"+jumlah_data+"'></td>";
                             table += "<td>"+jahit+"<input type='hidden' name='jahit[]' value='"+jahit+"' id='jahit_"+jumlah_data+"'></td>";
@@ -424,6 +533,8 @@
 
                         $('#ukuranBaju').val('');
                         $('#ukuranBaju option[value=""]').attr('selected','selected');
+                        
+                        $('#jumlahBaju').val('');
 
                         $('#soom').prop('checked', false);
                         $('#jahit').prop('checked', false);

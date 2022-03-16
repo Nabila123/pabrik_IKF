@@ -9,7 +9,7 @@ class GudangJahitRekapDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'gd_jahitkeluar_detail';
+    protected $table = 'gd_jahitrekap_detail';
 
     public function user()
     {
@@ -26,10 +26,16 @@ class GudangJahitRekapDetail extends Model
         return $this->hasOne('App\Models\GudangJahitRequestOperator','gdBajuStokOpnameId','gdBajuStokOpnameId');
     }
 
-    public static function JahitRekapDetailCreate($gdJahitKId, $tanggal, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
+    public function pegawai()
+    {
+        return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
+    }
+    
+    public static function JahitRekapDetailCreate($gdJahitRekapId, $pegawaiId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
     {
         $addJahitDetailRekap = New GudangJahitRekapDetail();
-        $addJahitDetailRekap->gdJahitKId = $gdJahitKId;
+        $addJahitDetailRekap->gdJahitRekapId = $gdJahitRekapId;
+        $addJahitDetailRekap->pegawaiId = $pegawaiId;
         $addJahitDetailRekap->tanggal = date('Y-m-d');
         $addJahitDetailRekap->gdBajuStokOpnameId = $gdBajuStokOpnameId;
         $addJahitDetailRekap->purchaseId = $purchaseId;

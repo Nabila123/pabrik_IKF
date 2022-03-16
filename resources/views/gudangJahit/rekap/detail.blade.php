@@ -61,18 +61,20 @@
                                         <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     <?php $no = 1; ?>
-                                    @foreach ($pegawai as $detail)
+                                    @foreach ($pegawais as $detail)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $detail->posisi }}</td>
                                             <td>{{ $detail->pegawai->nama }}</td>
-                                            <td>{{ $detail->purchaseId }}</td>
+                                            <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
+                                            <td>{{ $detail->jumlah }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
