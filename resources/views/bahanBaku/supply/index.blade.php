@@ -69,9 +69,9 @@
                                             <td>{{$value->namaSuplier}}</td>
                                             <!-- <td>{{$value->total}}</td> -->
                                             <td>
-                                                <a href="{{ route('bahan_baku.supply.detail',['id'=>$value->id])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('bahan_baku.supply.update',['id'=>$value->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" dataId='{{ $value->id }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
+                                                <a href="{{ route('bahan_baku.supply.detail',['id'=>$value->purchaseId])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('bahan_baku.supply.update',['id'=>$value->purchaseId])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                <button type="button" data-toggle="modal" dataId='{{ $value->purchaseId }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
                                             </td>
                                         </tr>
                                     @endforeach                                    
