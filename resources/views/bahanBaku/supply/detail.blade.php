@@ -79,104 +79,105 @@
                                                         </div>
                                                     </div>
 
-
-                                                    <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="{{count($dataDetail)}}">
-                                                    <div class="col-12 right">
-                                                        <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="textAlign" style="width: 7%;">No</th>
-                                                                    <th class="textAlign">Nama Barang</th>
-                                                                    <th class="textAlign">Jumlah Permintaan</th>
-                                                                    <th class="textAlign">Jumlah Saat Ini</th>
-                                                                    <th class="textAlign">Satuan </th>
-                                                                    <th class="textAlign">Diameter </th>
-                                                                    <th class="textAlign">Gramasi </th>
-                                                                    <th class="textAlign">Bruto </th>
-                                                                    <th class="textAlign">Netto </th>
-                                                                    <th class="textAlign">Tarra</th>
-                                                                    <!-- <th class="textAlign">Harga Satuan</th>
-                                                                    <th class="textAlign">Amount</th>
-                                                                    <th class="textAlign">Remark</th> -->
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="data textAlign">
-                                                                @php $i=1; @endphp
-                                                                @foreach($dataDetail as $key=>$detail)
+                                                    @foreach($barangDatang as $value)
+                                                        <p>Waktu Kedatangan : {{date('j F Y H:i:s', strtotime($value->created_at))}}</p>
+                                                        <div class="col-12 right">
+                                                            <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                                                                <thead>
                                                                     <tr>
-                                                                        <td>
-                                                                            {{$i}}
-                                                                        </td>
-                                                                        <td>
-                                                                            {{$detail->materialNama}}
-                                                                        </td>
-                                                                        <td>
-                                                                            {{$detail->qtyPermintaan}}
-                                                                        </td>
-                                                                        <td>
-                                                                            {{$detail->qtySaatIni}}
-                                                                        </td>
-                                                                        <td>
-                                                                            {{$detail->material->satuan}}
-                                                                        </td>
-                                                                        @if($detail->materialId == 1)
-                                                                             @foreach($detail->bahanBakuDetailMaterial as $key2=>$detailMaterial)
-                                                                                <td>
-                                                                                    {{$detailMaterial->diameter}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->gramasi}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->brutto}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->netto}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->tarra}}
-                                                                                </td>
-                                                                            @endforeach
-                                                                            <!-- <td>
-                                                                                <input type="text" name="unitPrice[]" value="{{$detail->unitPrice}}" style="width: 90px;">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" name="amount[]" value="{{$detail->amount}}" style="width: 90px;">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" name="remark[]" value="{{$detail->remark}}" style="width: 70px;">
-                                                                            </td> -->
-                                                                        @else
-                                                                            <td colspan="5">
-                                                                                Data Per Roll
-                                                                            </td>
-                                                                            @foreach($detail->bahanBakuDetailMaterial as $detailMaterial)
-                                                                            <tr>
-                                                                                <td colspan="5"></td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->diameter}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->gramasi}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->brutto}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->netto}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {{$detailMaterial->tarra}}
-                                                                                </td>
-                                                                            </tr>
-                                                                            @endforeach
-                                                                        @endif
+                                                                        <th class="textAlign" style="width: 7%;">No</th>
+                                                                        <th class="textAlign">Nama Barang</th>
+                                                                        <th class="textAlign">Jumlah Permintaan</th>
+                                                                        <th class="textAlign">Jumlah Datang</th>
+                                                                        <th class="textAlign">Satuan </th>
+                                                                        <th class="textAlign">Diameter </th>
+                                                                        <th class="textAlign">Gramasi </th>
+                                                                        <th class="textAlign">Bruto </th>
+                                                                        <th class="textAlign">Netto </th>
+                                                                        <th class="textAlign">Tarra</th>
+                                                                        <!-- <th class="textAlign">Harga Satuan</th>
+                                                                        <th class="textAlign">Amount</th>
+                                                                        <th class="textAlign">Remark</th> -->
                                                                     </tr>
-                                                                    @php $i++; @endphp
-                                                                @endforeach
-                                                            </tbody>                                                                                       
-                                                        </table>
-                                                    </div>
+                                                                </thead>
+                                                                <tbody class="data textAlign">
+                                                                    @php $i=1; @endphp
+                                                                    @foreach($value->detail as $key=>$detail)
+                                                                        <tr>
+                                                                            <td>
+                                                                                {{$i}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$detail->material->nama}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$detail->qtyPermintaan}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$detail->jumlah_datang}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$detail->material->satuan}}
+                                                                            </td>
+                                                                            @if($detail->materialId == 1)
+                                                                                 @foreach($detail->detailMaterial as $key2=>$detailMaterial)
+                                                                                    <td>
+                                                                                        {{$detailMaterial->diameter}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->gramasi}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->brutto}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->netto}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->tarra}}
+                                                                                    </td>
+                                                                                @endforeach
+                                                                                <!-- <td>
+                                                                                    <input type="text" name="unitPrice[]" value="{{$detail->unitPrice}}" style="width: 90px;">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" name="amount[]" value="{{$detail->amount}}" style="width: 90px;">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" name="remark[]" value="{{$detail->remark}}" style="width: 70px;">
+                                                                                </td> -->
+                                                                            @else
+                                                                                <td colspan="5">
+                                                                                    Data Per Roll
+                                                                                </td>
+                                                                                @foreach($detail->detailMaterial as $detailMaterial)
+                                                                                <tr>
+                                                                                    <td colspan="5"></td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->diameter}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->gramasi}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->brutto}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->netto}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{$detailMaterial->tarra}}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </tr>
+                                                                        @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>                                                                                       
+                                                            </table>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
