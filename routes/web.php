@@ -244,4 +244,13 @@ Route::get('/GJahit/reject/detail/{id}', [App\Http\Controllers\GudangJahitContro
 Route::get('/GJahit/reject/create', [App\Http\Controllers\GudangJahitController::class, 'gRejectCreate'])->name('GJahit.reject.create');
 Route::post('/GJahit/reject/create', [App\Http\Controllers\GudangJahitController::class, 'gRejectStore'])->name('GJahit.reject.create');
 
+/* Gudang Jahit */
+Route::get('/GBatil', [App\Http\Controllers\GudangBatilController::class, 'index'])->name('GBatil');
+
+Route::get('/GBatil/request', [App\Http\Controllers\GudangBatilController::class, 'gRequest'])->name('GBatil.request');
+
+Route::get('/GBatil/operator', [App\Http\Controllers\GudangBatilController::class, 'gOperator'])->name('GBatil.operator');
+
+Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');
+
 Auth::routes();

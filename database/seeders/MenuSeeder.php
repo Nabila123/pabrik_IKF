@@ -82,6 +82,13 @@ class MenuSeeder extends Seeder
             ['id' => 42, 'parentId' => 39, 'urutan' => 3, 'nama' => 'Operator Jahit', 'alias' => 'GJahit.operator', 'directori' => 'gudangJahit/operator/index', 'isActive' => 1],
             ['id' => 43, 'parentId' => 39, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GJahit.reject', 'directori' => 'gudangJahit/reject/index', 'isActive' => 1],
 
+            //Gudang Batil
+            ['id' => 44, 'parentId' => 0, 'urutan' => 9, 'nama' => 'Gudang Batil', 'alias' => 'GBatil', 'directori' => 'gudangBatil', 'isActive' => 1],
+            ['id' => 45, 'parentId' => 44, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GBatil', 'directori' => 'gudangBatil', 'isActive' => 1],
+            ['id' => 46, 'parentId' => 44, 'urutan' => 2, 'nama' => 'Request Gudang Jahit', 'alias' => 'GBatil.request', 'directori' => 'gudangBatil/request/index', 'isActive' => 1],
+            ['id' => 47, 'parentId' => 44, 'urutan' => 3, 'nama' => 'Operator Batil', 'alias' => 'GBatil.operator', 'directori' => 'gudangBatil/operator/index', 'isActive' => 1],
+            ['id' => 48, 'parentId' => 44, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GBatil.reject', 'directori' => 'gudangBatil/reject/index', 'isActive' => 1],
+
         ];
 
         DB::table('mst_menu')->insert($menu);
