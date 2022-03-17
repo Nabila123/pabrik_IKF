@@ -55,6 +55,7 @@
                                 <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#BasisLink" data-toggle="tab">Basis</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Batil</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
@@ -156,6 +157,36 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="tab-pane" id="PindahLink">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GJahit.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
+                                    </h3>
+                                    <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            @foreach ($dataPemindahan as $detail)
+                                                <tr>
+                                                    <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
+                                                    <td>{{ strtoupper($detail->jenisBaju) }}</td>
+                                                    <td>{{ $detail->ukuranBaju }}</td>
+                                                    <td>{{ $detail->jumlah }}</td>
+                                                    
+                                                    <td>
+                                                        <a href="{{ route('GJahit.keluar.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -234,6 +265,9 @@
             $('#rekap').DataTable( {
                 "responsive": true,
                 "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
+            });
+            $('#pemindahan').DataTable( {
+                "responsive": true,
             });
         });
     </script>

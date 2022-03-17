@@ -16,6 +16,11 @@ class GudangJahitRekapDetail extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function rekap()
+    {
+        return $this->hasOne('App\Models\GudangJahitRekap','id','gdJahitRekapId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');

@@ -18,9 +18,9 @@ class GudangJahitReject extends Model
 
     public static function updateStatusDiterima($id, $statusDiterima)
     {
-        $inspeksiUpdated['statusDiterima'] = $statusDiterima;
+        $jahitRejectUpdated['statusProses'] = $statusDiterima;
 
-        self::where('id', $id)->update($inspeksiUpdated);
+        self::where('id', $id)->update($jahitRejectUpdated);
 
         return 1;
     }

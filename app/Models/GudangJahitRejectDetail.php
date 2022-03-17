@@ -16,6 +16,16 @@ class GudangJahitRejectDetail extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function bajuOpname()
+    {
+        return $this->hasOne('App\Models\GudangBajuStokOpname','id','gdBajuStokOpnameId');
+    }
+
+    public function reject()
+    {
+        return $this->hasOne('App\Models\GudangJahitReject','id','gdJahitRejectId');
+    }
+
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $inspeksiUpdated['statusDiterima'] = $statusDiterima;
