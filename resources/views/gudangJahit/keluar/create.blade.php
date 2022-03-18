@@ -52,33 +52,39 @@
                 <div class="col-12">
                     <div class="card">                   
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="textAlign">
-                                    @foreach ($pemindahan as $detail)
-                                        <tr>
-                                            <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
-                                            <td>{{ $detail->purchase->kode }}</td>
-                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
-                                            <td>{{ $detail->ukuranBaju }}</td>
-                                            <td>{{ $detail->jumlah }}</td>
-                                            
-                                            <td>
-                                                <a href="{{ route('GJahit.keluar.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data"> 
+                                <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
+                   
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="textAlign">
+                                                @for ($i = 0; $i < count($pemindahan); $i++)                                                    
+                                                    <tr>
+                                                        <td>{{ $pemindahan[$i]['tanggal'] }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $pemindahan[$i]['gdBajuStokOpnameId'] }}"></td>
+                                                        <td>{{ $pemindahan[$i]['purchase'] }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $pemindahan[$i]['purchaseId'] }}"> </td>
+                                                        <td>{{ strtoupper($pemindahan[$i]['jenisBaju']) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $pemindahan[$i]['jenisBaju'] }}"> </td>
+                                                        <td>{{ $pemindahan[$i]['ukuranBaju'] }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $pemindahan[$i]['ukuranBaju'] }}"> </td>                                                        
+                                                    </tr>
+                                                @endfor
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-12 mt-5">
+                                        <div class="form-group">
+                                            <button type="submit" id="Simpan" style="float: right" class='btn btn-info btn-flat-right Simpan'>Pindahkan Baju</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

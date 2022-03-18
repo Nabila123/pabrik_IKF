@@ -69,35 +69,35 @@
                                 </thead>
                                 <tbody class="textAlign">
                                     <?php $no = 1; ?>
-                                    @foreach ($operatorRequest as $detail)
+                                    @for ($i = 0; $i < count($operatorRequest); $i++)                                        
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $detail->purchase->kode }}</td>
-                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
-                                            <td>{{ $detail->ukuranBaju }}</td>
+                                            <td>{{ $operatorRequest[$i]['purchase'] }}</td>
+                                            <td>{{ strtoupper($operatorRequest[$i]['jenisBaju']) }}</td>
+                                            <td>{{ $operatorRequest[$i]['ukuranBaju'] }}</td>
                                             <td>
-                                                @if ($detail->soom == 1)
-                                                    {{ $detail->soomName }}
+                                                @if ($operatorRequest[$i]['soom'] == 1)
+                                                    {{ $operatorRequest[$i]['soomName'] }}
                                                 @else
                                                     <i class="fas fa-xmark"></i>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($detail->jahit == 1)
-                                                    {{ $detail->jahitName }}
+                                                @if ($operatorRequest[$i]['jahit'] == 1)
+                                                    {{ $operatorRequest[$i]['jahitName'] }}
                                                 @else
                                                     <i class="fas fa-xmark"></i>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($detail->bawahan == 1)
-                                                    {{ $detail->bawahanName }}
+                                                @if ($operatorRequest[$i]['bawahan'] == 1)
+                                                    {{ $operatorRequest[$i]['bawahanName'] }}
                                                 @else
                                                     <i class="fas fa-xmark"></i>
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endfor
                                 </tbody>
                             </table>
                         </div>

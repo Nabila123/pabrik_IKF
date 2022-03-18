@@ -158,34 +158,67 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="PindahLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GJahit.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
-                                    </h3>
-                                    <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
-                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
-                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
-                                                <th class="textAlign" style="vertical-align: middle;">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="textAlign">
-                                            @foreach ($dataPemindahan as $detail)
-                                                <tr>
-                                                    <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
-                                                    <td>{{ strtoupper($detail->jenisBaju) }}</td>
-                                                    <td>{{ $detail->ukuranBaju }}</td>
-                                                    <td>{{ $detail->jumlah }}</td>
-                                                    
-                                                    <td>
-                                                        <a href="{{ route('GJahit.keluar.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active" href="#pindahkanData" data-toggle="tab">Pindahkan Data</a> <hr></li>
+                                        <li class="nav-item"><a class="nav-link" href="#DataDipindahkan" data-toggle="tab">Data Sudah Dipindahkan</a><hr></li>
+                                    </ul>  
+                                    
+                                    <div class="tab-content">
+                                        <div class="active tab-pane mt-5" id="pindahkanData">
+                                            <h3 class="card-title mb-4" style="width: 100%">
+                                                <a href="{{ route('GJahit.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
+                                            </h3>
+                                            <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="textAlign">
+                                                    @for ($i = 0; $i < count($dataPemindahan); $i++)                                                        
+                                                        <tr>
+                                                            <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
+                                                            <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju'] }}</td>
+                                                            
+                                                            <td>
+                                                                <a href="{{ route('GJahit.keluar.detail', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    @endfor
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="tab-pane mt-5" id="DataDipindahkan">
+                                            <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="textAlign">
+                                                    @foreach ($gdBatilMasuk as $detail)
+                                                        <tr>
+                                                            <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
+                                                            <td>{{ $detail->purchase->kode }}</td>
+                                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
+                                                            <td>{{ $detail->ukuranBaju }}</td>
+                                                            <td>{{ $detail->jumlah }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
