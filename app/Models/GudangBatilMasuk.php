@@ -32,7 +32,7 @@ class GudangBatilMasuk extends Model
 
     public static function updateStatusDiterima($id, $statusDiterima)
     {
-        $inspeksiUpdated['statusProses'] = $statusDiterima;
+        $inspeksiUpdated['statusDiterima'] = $statusDiterima;
 
         self::where('id', $id)->update($inspeksiUpdated);
 
