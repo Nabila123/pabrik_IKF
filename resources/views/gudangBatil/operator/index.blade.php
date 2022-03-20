@@ -102,7 +102,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
-                                                <th class="textAlign" style="vertical-align: middle;">Posisi</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Operator Rekap</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
@@ -110,7 +110,7 @@
                                             @foreach ($batilRekap as $rekap)
                                                 <tr>
                                                     <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
-                                                    <td>{{ strtoupper($rekap->posisi) }}</td>
+                                                    <td>{{ $rekap->user->nama }}</td>
                                                    
                                                     <td>
                                                         <a href="{{ route('GBatil.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

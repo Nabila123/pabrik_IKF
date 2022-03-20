@@ -686,7 +686,7 @@ class GudangJahitController extends Controller
                 return redirect('GJahit/operator');
             }
         } else {
-            return redirect('GJahit/rekap/create');
+            return redirect('GJahit/rekap/update/' . $request->id . '');
         }
     }
 

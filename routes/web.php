@@ -265,6 +265,11 @@ Route::get('/GBatil/operator/update/delete/{purchaseId}/{jenisBaju}/{ukuranBaju}
 Route::delete('/GBatil/operator/delete', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDelete'])->name('GBatil.operator.delete');
 
 Route::get('/GBatil/rekap/create', [App\Http\Controllers\GudangBatilController::class, 'gRekapCreate'])->name('GBatil.rekap.create');
+Route::post('/GBatil/rekap/create', [App\Http\Controllers\GudangBatilController::class, 'gRekapStore'])->name('GBatil.rekap.create');
+Route::get('/GBatil/rekap/detail/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapDetail'])->name('GBatil.rekap.detail');
+Route::get('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdate'])->name('GBatil.rekap.update');
+Route::post('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateSave'])->name('GBatil.rekap.update');
+Route::get('/GBatil/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateDelete'])->name('GBatil.rekap.update.delete');
 
 Route::get('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
 

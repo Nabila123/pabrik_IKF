@@ -8,6 +8,7 @@ use App\Models\GudangBatilMasuk;
 use App\Models\GudangBatilMasukDetail;
 use App\Models\GudangBatilRekap;
 use App\Models\GudangBatilRekapDetail;
+use App\Models\Pegawai;
 
 use DB;
 
@@ -29,6 +30,128 @@ class GudangBatilController extends Controller
             $dataStok[$value->jenisBaju]['qty'] = $dataStok[$value->jenisBaju]['qty'] + 1;
         }
         return view('gudangBatil.index', ['dataStok' => $dataStok]);
+    }
+
+    public function getPegawai(Request $request)
+    {
+        // dd($request);
+        $data = [];
+
+        if (isset($request->purchaseId)) {
+            $gdRequestOperator = GudangBatilStokOpname::where('statusBatil', 0)->where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        if (isset($request->jenisBaju)) {
+            $gdRequestOperator = GudangBatilStokOpname::where('statusBatil', 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        if (isset($request->ukuranBaju)) {
+            $reqOperatorId = []; 
+
+            $checkId = [];   
+            $index = 0;    
+            $checkId[$index]['operatorReqId'] = [];
+            $checkId[$index]['purchase'] = [];
+            $checkId[$index]['jumlah'] = [];
+
+            $gdRequestOperator = GudangBatilStokOpname::where('purchaseId', $request->purchaseId)
+                                                            ->where('jenisBaju', $request->jenisBaju)
+                                                            ->where('ukuranBaju', $request->ukuranBaju)
+                                                            ->where('statusBatil', 0)                                                             
+                                                            ->whereDate('tanggal', date('Y-m-d'))->get();
+
+            if (isset($request->operatorReqPurchaseId)) {
+                for ($i=0; $i < count($request['operatorReqPurchaseId']); $i++) { 
+                    if ($request['operatorReqPurchaseId'][$i] == null) {
+                        continue;
+                    }                    
+                    
+                    if ($index != 0 && $request['operatorReqPurchaseId'][$i] == $checkId[$index-1]['purchase']) {
+                        $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                        for ($j=0; $j < count($operatorReqId); $j++) { 
+                            if (!in_array($operatorReqId[$j], $checkId[$index-1]['operatorReqId'])) {
+                                $checkId[$index-1]['operatorReqId'][] = $operatorReqId[$j];
+                                $checkId[$index-1]['jumlah'] += 1;
+                            }            
+                        }
+                    }else {
+                        $checkId[$index]['purchase'] = $request['operatorReqPurchaseId'][$i];
+                        $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                        for ($j=0; $j < count($operatorReqId); $j++) { 
+                            $checkId[$index]['operatorReqId'][] = $operatorReqId[$j];
+                        }
+                        $checkId[$index]['jumlah'] = count($operatorReqId);
+                        $index++;
+                    }    
+                }
+            }
+
+            
+            if (!isset($request->jumlahBaju)) {
+                $request->jumlahBaju = count($gdRequestOperator);
+            } 
+            
+            $i = 0;
+            foreach ($gdRequestOperator as $operator) {
+                if (isset($request->operatorReqPurchaseId)) {
+                    $cek = false;
+                    for ($j=0; $j < count($checkId); $j++) { 
+                        if ($operator->purchaseId == $checkId[$j]['purchase']) {
+                            $cek = true;
+                            if (!isset($request->jumlahBaju)) {
+                                $request->jumlahBaju -= $checkId[$j]['jumlah'];
+                            }
+                            
+                            if (!in_array($operator->id, $checkId[$j]['operatorReqId'])) {
+                                if (!in_array($operator->id, $reqOperatorId)) {
+                                    if ($i < $request->jumlahBaju) {
+                                        $reqOperatorId[$i] = $operator->id;
+                                        $i++;                                    
+                                    }                                   
+                                }
+                            }
+                        }                        
+                    }
+                    if ($cek == false) {
+                        if (!in_array($operator->id, $reqOperatorId) && $i < $request->jumlahBaju) {
+                            $reqOperatorId[$i] = $operator->id;
+                            $i++;
+                        }
+                    }
+                } else {
+                    if (!in_array($operator->id, $reqOperatorId) && $i < $request->jumlahBaju) {
+                        $reqOperatorId[$i] = $operator->id;
+                        $i++;
+                    }
+                }
+            }            
+        }        
+
+        if (isset($gdRequestOperator)) {
+            foreach ($gdRequestOperator as $operator) {
+                if ($request->groupBy == "purchaseId") {
+                    $data['operator'][] = [
+                        'purchaseId' => $operator->purchaseId, 
+                        'kodePurchase' => $operator->purchase->kode
+                    ];
+                }elseif ($request->groupBy == "jenisBaju") {
+                    $data['operator'][] = [
+                        'jenisBaju' => $operator->jenisBaju
+                    ];
+                }elseif ($request->groupBy == "ukuranBaju") {
+                    $data['operator'][] = [
+                        'ukuranBaju' => $operator->ukuranBaju
+                    ];
+                }
+            }
+
+            if ($request->groupBy == "id"){
+                $data['operator'] = [
+                    'requestOperatorId' => $reqOperatorId,
+                    'jumlahBaju' => count($reqOperatorId)
+                ];
+            }
+        }
+        
+        return json_encode($data);
     }
 
     public function getData(Request $request)
@@ -231,6 +354,125 @@ class GudangBatilController extends Controller
         if ($batilStokOpname == 1) {
             return redirect('GBatil/operator');
         }
+    }   
+
+    public function gRekapCreate()
+    {
+        $pegawai = Pegawai::where('kodeBagian', 'batil')->get();
+        $purchaseId = GudangBatilStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+
+        return view('gudangBatil.rekap.create', ['pegawais' => $pegawai, 'purchases' => $purchaseId]);
+    }
+
+    public function gRekapStore(Request $request)
+    {
+        // dd($request);
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $checkPegawai = GudangBatilRekap::where('tanggal', date('Y-m-d'))->first();
+                if ($checkPegawai == null) {
+                    $batilRekap = GudangBatilRekap::BatilRekapCreate(\Auth::user()->id);
+                } else {
+                    $batilRekap = $checkPegawai->id;
+                }
+
+                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                for($j=0; $j < count($operatorReqId); $j++){
+                    $operatorReq = GudangBatilStokOpname::where('id', $operatorReqId[$j])->first();
+                    if ($operatorReq != null) {
+                        $bajuStokOpname = GudangBatilStokOpname::bajuUpdateField('statusBatil', 1, $operatorReq->id);
+                        if ($bajuStokOpname == 1) {
+                            $batilRekapDetail = GudangBatilRekapDetail::BatilRekapDetailCreate($batilRekap, $request['pegawaiId'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
+                        }              
+                    } 
+                }                                             
+            }
+
+            if ($batilRekapDetail == 1) {
+                return redirect('GBatil/operator');
+            }
+        } else {
+            return redirect('GBatil/rekap/create');
+        }
+    }
+
+    public function gRekapDetail($id)
+    {
+        $getPegawai = GudangBatilRekap::where('id', $id)->first();
+        $getDetailPegawai = GudangBatilRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdBatilRekapId', $getPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+
+        return view('gudangBatil.rekap.detail', ['pegawais' => $getDetailPegawai]);
+    }
+
+    public function gRekapUpdate($id)
+    {
+        $pegawai = Pegawai::where('kodeBagian', 'batil')->get();
+        $purchaseId = GudangBatilStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+
+        $getRekapanPegawai = GudangBatilRekap::where('id', $id)->first();
+        $getDetailRekapanPegawai = GudangBatilRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdBatilRekapId', $getRekapanPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+
+        return view('gudangBatil.rekap.update', ['id' => $getRekapanPegawai->id, 'rekapanPegawai' => $getDetailRekapanPegawai, 'pegawais' => $pegawai, 'purchases' => $purchaseId]);
+    }
+
+    public function gRekapUpdateSave(Request $request)
+    {
+        // dd($request);
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $checkPegawai = GudangBatilRekap::where('id', $request->id)->first();
+                if ($checkPegawai == null) {
+                    $batilRekap = GudangBatilRekap::BatilRekapCreate(\Auth::user()->id);
+                } else {
+                    $batilRekap = $checkPegawai->id;
+                }
+
+                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                for($j=0; $j < count($operatorReqId); $j++){
+                    $operatorReq = GudangBatilStokOpname::where('id', $operatorReqId[$j])->first();
+                    if ($operatorReq != null) {
+                        $bajuStokOpname = GudangBatilStokOpname::bajuUpdateField('statusBatil', 1, $operatorReq->id);
+                        if ($bajuStokOpname == 1) {
+                            $batilRekapDetail = GudangBatilRekapDetail::BatilRekapDetailCreate($batilRekap, $request['pegawaiId'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
+                        }              
+                    } 
+                }                                             
+            }
+
+            if ($batilRekapDetail == 1) {
+                return redirect('GBatil/operator');
+            }
+        } else {
+            return redirect('GBatil/rekap/update/' . $request->id . '');
+        }
+    }
+
+    public function gRekapUpdateDelete($rekapId, $rekapDetailId)
+    {
+        $getDetailPegawai = GudangBatilRekapDetail::where('id', $rekapDetailId)->first();
+
+        $getPegawai = GudangBatilRekap::where('id', $rekapId)->first();
+        $CheckPegawai = GudangBatilRekapDetail::where('gdBatilRekapId', $getPegawai->id)->get();
+
+        $operatorReq = GudangBatilStokOpname::where('gdBajuStokOpnameId', $getDetailPegawai->gdBajuStokOpnameId)->first();
+        if ($operatorReq != null) {
+            $operatorReqUpdate = GudangBatilStokOpname::bajuUpdateField('statusBatil', 0, $operatorReq->id);
+            if ($operatorReqUpdate == 1) {
+                $deleteDetailPegawai = GudangBatilRekapDetail::where('id', $rekapDetailId)->delete();
+                if (count($CheckPegawai) == 1) {
+                    $deletePegawai = GudangBatilRekap::where('id', $rekapId)->delete();
+
+                    if ($deletePegawai) {
+                        return redirect('GBatil/operator');
+                    }
+                }
+
+                if ($deleteDetailPegawai) {
+                    return redirect('GBatil/rekap/update/' . $rekapId . '');
+                }
+                
+            }                    
+        } 
     }
 
     public function gReject()
