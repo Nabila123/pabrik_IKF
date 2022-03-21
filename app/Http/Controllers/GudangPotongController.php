@@ -12,6 +12,8 @@ use App\Models\GudangPotongRequestDetail;
 use App\Models\GudangJahitMasuk;
 use App\Models\GudangJahitMasukDetail;
 
+use App\Models\Pegawai;
+
 class GudangPotongController extends Controller
 {
     public function index()
@@ -152,9 +154,11 @@ class GudangPotongController extends Controller
         $purchasePotong = [];
         $material = [];
         $index = 0;
+        $pegawai = Pegawai::where('kodeBagian', 'potong')->get();
         $gudangKeluar = GudangPotongKeluar::all();
         foreach ($gudangKeluar as $keluar) {
             $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
+            // dd($gudangKeluarDetail);
             foreach ($gudangKeluarDetail as $detail) {
                 $prosesPotong = GudangPotongProses::where('gPotongKId', $keluar->id)->where('purchaseId', $detail->purchaseId)->first();
                 if ($prosesPotong == null) {
@@ -184,13 +188,14 @@ class GudangPotongController extends Controller
             }
         }
 
-        return view('gudangPotong.proses.create', ['purchaseId' => $purchasePotong, 'material' => $material]);
+        return view('gudangPotong.proses.create', ['pegawai' => $pegawai, 'purchaseId' => $purchasePotong, 'material' => $material]);
     }
 
     public function gProsesStore(Request $request)
     {
+        // dd($request);
         $dataId = explode("-",$request->purchaseId);
-        $gudangPotong = GudangPotongProses::createPotongProses($request->gdPotongKId, $dataId[0], $request->materialId, $request->jenisId, $request->jumlah, date('Y-m-d H:i:s'), \Auth::user()->id);
+        $gudangPotong = GudangPotongProses::createPotongProses($request->gdPotongKId, $request->pegawaiId, $dataId[0], $request->materialId, $request->jenisId, $request->jumlah, date('Y-m-d H:i:s'), \Auth::user()->id);
         if ($gudangPotong) {
             $potongProsesId = $gudangPotong;
 

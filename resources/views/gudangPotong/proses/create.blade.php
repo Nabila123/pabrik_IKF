@@ -91,7 +91,13 @@
                                     <div class="col-4">
                                         <label>Operator</label>
                                         <div class="input-group">                                            
-                                            <input type="text" id="namaOperator" name="namaOperator" value="{{ \Auth::user()->nama }}" class="form-control namaOperator disabled" readonly>
+                                            {{--  <input type="text" id="namaOperator" name="namaOperator" value="{{ \Auth::user()->nama }}" class="form-control namaOperator disabled" readonly>  --}}
+                                            <select class="form-control col-md-7 col-xs-12 pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" required>
+                                                <option> Pilih Satu </option>
+                                                    @foreach ($pegawai as $val)
+                                                        <option value="{{ $val->id }}">{{ $val->nama }}</option>
+                                                    @endforeach   
+                                            </select>
                                         </div>
                                     </div> 
 
@@ -271,6 +277,10 @@
     <script type="text/javascript"> 
         
         $('#purchaseId').select2({
+            theme: 'bootstrap4'
+        });
+        
+        $('#pegawaiId').select2({
             theme: 'bootstrap4'
         });
 

@@ -31,9 +31,10 @@ class GudangPotongProses extends Model
         return $this->hasOne('App\Models\GudangPotongProsesDetail','gdPotongProsesId','id');
     }
 
-    public static function createPotongProses($gdPotongKId, $purchaseId, $materialId, $jenisId, $qty, $tanggal, $userId){
+    public static function createPotongProses($gdPotongKId, $pegawaiId, $purchaseId, $materialId, $jenisId, $qty, $tanggal, $userId){
         $addPotongProses = new GudangPotongProses;
         $addPotongProses->gPotongKId = $gdPotongKId;
+        $addPotongProses->pegawaiId = $pegawaiId;
         $addPotongProses->purchaseId = $purchaseId;
         $addPotongProses->materialId = $materialId;
         $addPotongProses->jenisId = $jenisId;
