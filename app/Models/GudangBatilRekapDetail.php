@@ -18,7 +18,7 @@ class GudangBatilRekapDetail extends Model
 
     public function rekap()
     {
-        return $this->hasOne('App\Models\GudangJahitRekap','id','gdJahitRekapId');
+        return $this->hasOne('App\Models\GudangBatilRekap','id','gdBatilRekapId');
     }
 
     public function purchase()

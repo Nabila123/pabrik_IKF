@@ -148,18 +148,18 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    @foreach ($dataPemindahan as $detail)
+                                                    @for ($i = 0; $i < count($dataPemindahan); $i++)                                                        
                                                         <tr>
-                                                            <td>{{ date('d F y', strtotime($detail->tanggal)) }}</td>
-                                                            <td>{{ $detail->jenisBaju }}</td>
-                                                            <td>{{ $detail->ukuranBaju }}</td>
-                                                            <td>{{ $detail->jumlah }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
+                                                            <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju'] }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GBatil.keluar.detail', [$detail->tanggal]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                                <a href="{{ route('GBatil.keluar.detail', [$dataPemindahan[$i]['tanggal']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
-                                                    @endforeach   
+                                                    @endfor  
                                                 </tbody>
                                             </table>
                                         </div>
@@ -175,7 +175,15 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    
+                                                    @foreach ($gdControlMasuk as $detail)
+                                                        <tr>
+                                                            <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
+                                                            <td>{{ $detail->purchase->kode }}</td>
+                                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
+                                                            <td>{{ $detail->ukuranBaju }}</td>
+                                                            <td>{{ $detail->jumlah }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

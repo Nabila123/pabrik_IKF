@@ -244,7 +244,7 @@ Route::get('/GJahit/reject/detail/{id}', [App\Http\Controllers\GudangJahitContro
 Route::get('/GJahit/reject/create', [App\Http\Controllers\GudangJahitController::class, 'gRejectCreate'])->name('GJahit.reject.create');
 Route::post('/GJahit/reject/create', [App\Http\Controllers\GudangJahitController::class, 'gRejectStore'])->name('GJahit.reject.create');
 
-/* Gudang Jahit */
+/* Gudang Batil */
 Route::get('/GBatil', [App\Http\Controllers\GudangBatilController::class, 'index'])->name('GBatil');
 Route::post('/GBatil/getData', [App\Http\Controllers\GudangBatilController::class, 'getData'])->name('GBatil.getData');
 Route::post('/GBatil/getBasis', [App\Http\Controllers\GudangBatilController::class, 'getBasis'])->name('GBatil.getBasis');
@@ -255,7 +255,7 @@ Route::get('/GBatil/request/terima/{id}', [App\Http\Controllers\GudangBatilContr
 Route::get('/GBatil/request/detail/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRequestDetail'])->name('GBatil.request.detail');
 
 Route::get('/GBatil/operator', [App\Http\Controllers\GudangBatilController::class, 'gOperator'])->name('GBatil.operator');
-Route::get('/GJahit/operator/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDetail'])->name('GBatil.operator.detail');
+Route::get('/GBatil/operator/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDetail'])->name('GBatil.operator.detail');
 Route::get('/GBatil/operator/create', [App\Http\Controllers\GudangBatilController::class, 'gOperatorCreate'])->name('GBatil.operator.create');
 Route::post('/GBatil/operator/create', [App\Http\Controllers\GudangBatilController::class, 'gOperatorStore'])->name('GBatil.operator.create');
 Route::get('/GBatil/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}/{jumlahBaju}', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDataMaterial'])->name('GBatil.operator.detailMaterial');
@@ -272,8 +272,19 @@ Route::post('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilContro
 Route::get('/GBatil/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateDelete'])->name('GBatil.rekap.update.delete');
 
 Route::get('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
+Route::post('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarStore'])->name('GBatil.keluar.create');
 Route::get('/GBatil/keluar/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
 
 Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');
+
+/* Gudang Control */
+Route::get('/GControl', [App\Http\Controllers\GudangControlController::class, 'index'])->name('GControl');
+Route::post('/GControl/getPegawai', [App\Http\Controllers\GudangControlController::class, 'getPegawai'])->name('GControl.getPegawai');
+
+Route::get('/GControl/request', [App\Http\Controllers\GudangControlController::class, 'gRequest'])->name('GControl.request');
+
+Route::get('/GControl/operator', [App\Http\Controllers\GudangControlController::class, 'gOperator'])->name('GControl.operator');
+
+Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');
 
 Auth::routes();
