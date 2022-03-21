@@ -96,7 +96,7 @@
                                 
                                 <div class="tab-pane" id="RekapanLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GBatil.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
+                                        <a href="{{ route('GBatil.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Batil</a>
                                     </h3>
                                     <table id="rekap" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>

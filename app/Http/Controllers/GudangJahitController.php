@@ -113,14 +113,12 @@ class GudangJahitController extends Controller
             ];
         }
                
-
         return json_encode($data);
     }
 
 
     public function getPegawai(Request $request)
     {
-        // dd($request);
         $data = [];
         $pegawai = Pegawai::where('kodeBagian', $request->posisi)->get();
         foreach ($pegawai as $value) {
@@ -138,10 +136,18 @@ class GudangJahitController extends Controller
             $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->ukuranBaju)) {
+            // dd($request);
             $reqOperatorId = [];
             $soom = $request->soom;
             $jahit = $request->jahit;
-            $bawahan = $request->bawahan;           
+            $bawahan = $request->bawahan; 
+            
+            $checkId = [];   
+            $index = 0;    
+            $checkId[$index]['operatorReqId'] = [];
+            $checkId[$index]['purchase'] = [];
+            $checkId[$index]['jumlah'] = [];
+
             if ($request->posisi == "soom") {
                 $gdRequestOperator = GudangJahitRequestOperator::where('purchaseId', $request->purchaseId)
                                                                 ->where('jenisBaju', $request->jenisBaju)
@@ -219,18 +225,70 @@ class GudangJahitController extends Controller
                                                                 ->whereDate('created_at', date('Y-m-d'))->get();
             }
 
+            if (isset($request->operatorReqPurchaseId)) {
+                for ($i=0; $i < count($request['operatorReqPurchaseId']); $i++) { 
+                    if ($request['operatorReqPurchaseId'][$i] == null) {
+                        continue;
+                    }                    
+                    
+                    if ($index != 0 && $request['operatorReqPurchaseId'][$i] == $checkId[$index-1]['purchase']) {
+                        $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                        for ($j=0; $j < count($operatorReqId); $j++) { 
+                            if (!in_array($operatorReqId[$j], $checkId[$index-1]['operatorReqId'])) {
+                                $checkId[$index-1]['operatorReqId'][] = $operatorReqId[$j];
+                                $checkId[$index-1]['jumlah'] += 1;
+                            }            
+                        }
+                    }else {
+                        $checkId[$index]['purchase'] = $request['operatorReqPurchaseId'][$i];
+                        $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                        for ($j=0; $j < count($operatorReqId); $j++) { 
+                            $checkId[$index]['operatorReqId'][] = $operatorReqId[$j];
+                        }
+                        $checkId[$index]['jumlah'] = count($operatorReqId);
+                        $index++;
+                    }    
+                }
+            }
+            // dd($checkId);
             if (!isset($request->jumlahBaju)) {
                 $request->jumlahBaju = count($gdRequestOperator);
             } 
             $i = 0;
             foreach ($gdRequestOperator as $operator) {
-                if (!in_array($operator->id, $reqOperatorId) && $i < $request->jumlahBaju) {
-                    $reqOperatorId[$i] = $operator->id;
-                    $i++;
+                if (isset($request->operatorReqPurchaseId)) {
+                    $cek = false;
+                    for ($j=0; $j < count($checkId); $j++) { 
+                        if ($operator->purchaseId == $checkId[$j]['purchase']) {
+                            $cek = true;
+                            if (!isset($request->jumlahBaju)) {
+                                $request->jumlahBaju -= $checkId[$j]['jumlah'];
+                            }
+                            
+                            if (!in_array($operator->id, $checkId[$j]['operatorReqId'])) {
+                                if (!in_array($operator->id, $reqOperatorId)) {
+                                    if ($i < $request->jumlahBaju) {
+                                        $reqOperatorId[$i] = $operator->id;
+                                        $i++;                                    
+                                    }                                   
+                                }
+                            }
+                        }                        
+                    }
+                    if ($cek == false) {
+                        if (!in_array($operator->id, $reqOperatorId) && $i < $request->jumlahBaju) {
+                            $reqOperatorId[$i] = $operator->id;
+                            $i++;
+                        }
+                    }
+                } else {
+                    if (!in_array($operator->id, $reqOperatorId) && $i < $request->jumlahBaju) {
+                        $reqOperatorId[$i] = $operator->id;
+                        $i++;
+                    }
                 }
             }            
             
-            // dd($gdRequestOperator);
         }
         if (!isset($request->purchaseId) && !isset($request->jenisBaju) && !isset($request->ukuranBaju)){
             $gdRequestOperator = GudangJahitRequestOperator::where($request->posisi, 0)->whereDate('created_at', date('Y-m-d'))->groupBy($request->groupBy)->get();
@@ -258,7 +316,7 @@ class GudangJahitController extends Controller
             if ($request->groupBy == "id"){
                 $data['operator'] = [
                     'requestOperatorId' => $reqOperatorId,
-                    'jumlahBaju' => $request->jumlahBaju
+                    'jumlahBaju' => count($reqOperatorId)
                 ];
             }
         }

@@ -391,6 +391,14 @@
             var soom        = $('#soom').is(":checked")?1:0;
             var jahit       = $('#jahit').is(":checked")?1:0;
             var bawahan     = $('#bawahan').is(":checked")?1:0;
+            var jumlah_data  = $('#jumlah_data').val();
+
+            var operatorReqId   = [];
+            var operatorReqPurchaseId = [];
+            for(i=1; i<=jumlah_data; i++){
+                operatorReqId[i]   = $('#operatorReqId_'+i+'').val();
+                operatorReqPurchaseId[i]   = $('#purchaseId_'+i+'').val();
+            }
             var _token = $('#_token').val();
 
             $('#requestOperatorId').html('');
@@ -408,6 +416,8 @@
                     'soom' : soom,
                     'jahit' : jahit,
                     'bawahan' : bawahan,
+                    'operatorReqId' : operatorReqId,
+                    'operatorReqPurchaseId' : operatorReqPurchaseId,
                     'groupBy' : "id",
                     '_token': _token
                 },
@@ -417,7 +427,7 @@
                     $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
-                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                        var dt ="<input type='text' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                         $('#requestOperatorId').append(dt);  
                     }
 
@@ -435,13 +445,21 @@
             var soom        = $('#soom').is(":checked")?1:0;
             var jahit       = $('#jahit').is(":checked")?1:0;
             var bawahan     = $('#bawahan').is(":checked")?1:0;
+            var jumlah_data  = $('#jumlah_data').val();
+
+            var operatorReqId   = [];
+            var operatorReqPurchaseId = [];
+            for(i=1; i<=jumlah_data; i++){
+                operatorReqId[i]   = $('#operatorReqId_'+i+'').val();
+                operatorReqPurchaseId[i]   = $('#purchaseId_'+i+'').val();
+            }
             var _token = $('#_token').val();
 
             $('#requestOperatorId').html('');
 
             console.log(soom+" "+jahit+" "+bawahan)
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GJahit/getPegawai') }}',
@@ -454,6 +472,8 @@
                         'soom' : soom,
                         'jahit' : jahit,
                         'bawahan' : bawahan,
+                        'operatorReqId' : operatorReqId,
+                        'operatorReqPurchaseId' : operatorReqPurchaseId,
                         'groupBy' : "id",
                         '_token': _token
                     },
@@ -463,7 +483,7 @@
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
                         $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){
-                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            var dt ="<input type='text' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
                         }
                     }
