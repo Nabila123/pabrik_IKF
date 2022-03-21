@@ -272,6 +272,7 @@ Route::post('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilContro
 Route::get('/GBatil/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateDelete'])->name('GBatil.rekap.update.delete');
 
 Route::get('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
+Route::get('/GBatil/keluar/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
 
 Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');
 

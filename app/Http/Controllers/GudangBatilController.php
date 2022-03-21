@@ -211,7 +211,7 @@ class GudangBatilController extends Controller
         $gdRequestOperator = GudangBatilStokOpname::groupBy('jenisBaju', 'ukuranBaju')->whereDate('tanggal', date('Y-m-d'))->get();
         $gdBatil = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         $gdJahitRekap = GudangBatilRekap::orderBy('tanggal', 'DESC')->groupBy('tanggal')->get();
-        $pindahan = GudangBatilStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusBatil', 1)->whereDate('created_at', date('Y-m-d'))->get();
+        $pindahan = GudangBatilStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         // foreach ($pindahan as $detail) {
         //     $jumlahBaju = 0;
         //     $checkBatilDetail = GudangBatilMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
@@ -473,6 +473,34 @@ class GudangBatilController extends Controller
                 
             }                    
         } 
+    }
+
+    public function gKeluarDetail($date)
+    {
+        $dataPemindahan = [];
+        $gdKeluarBatil = GudangBatilStokOpname::where('tanggal', $date)->get();
+        foreach ($gdKeluarBatil as $detail) {
+            if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
+                $dataPemindahan[] = [
+                    'tanggal' => date('d F Y', strtotime($detail->tanggal)),
+                    'gdBajuStokOpnameId' => $detail->gdBajuStokOpnameId,
+                    'purchase' => $detail->purchase->kode,
+                    'jenisBaju' => $detail->jenisBaju,
+                    'ukuranBaju' => $detail->ukuranBaju,
+                    'statusBatil' => $detail->statusBatil,
+                ];
+            }            
+        }
+
+        for ($i=0; $i < count($dataPemindahan); $i++) { 
+            $gdRekapDetail = GudangBatilRekapDetail::where('gdBajuStokOpnameId', $dataPemindahan[$i]['gdBajuStokOpnameId'])->get();
+            foreach ($gdRekapDetail as $detail) {
+                $dataPemindahan[$i]['batilName'] = $detail->pegawai->nama;                
+            }
+        }
+
+        return view('gudangBatil.keluar.detail', ['gdKeluarBatil' => $dataPemindahan]);
+
     }
 
     public function gReject()

@@ -156,7 +156,7 @@
                                                             <td>{{ $detail->jumlah }}</td>
                                                             
                                                             <td>
-                                                                <a href="" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                                <a href="{{ route('GBatil.keluar.detail', [$detail->tanggal]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
                                                     @endforeach   
