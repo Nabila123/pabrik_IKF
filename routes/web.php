@@ -304,6 +304,13 @@ Route::post('/GControl/operator/update/{jenisBaju}/{ukuranBaju}', [App\Http\Cont
 Route::get('/GControl/operator/update/delete/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorUpdateDelete'])->name('GControl.operator.update.delete');
 Route::delete('/GControl/operator/delete', [App\Http\Controllers\GudangControlController::class, 'gOperatorDelete'])->name('GControl.operator.delete');
 
+Route::get('/GControl/rekap/create', [App\Http\Controllers\GudangControlController::class, 'gRekapCreate'])->name('GControl.rekap.create');
+Route::post('/GControl/rekap/create', [App\Http\Controllers\GudangControlController::class, 'gRekapStore'])->name('GControl.rekap.create');
+Route::get('/GControl/rekap/detail/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapDetail'])->name('GControl.rekap.detail');
+Route::get('/GControl/rekap/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdate'])->name('GControl.rekap.update');
+Route::post('/GControl/rekap/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateSave'])->name('GControl.rekap.update');
+Route::get('/GControl/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateDelete'])->name('GControl.rekap.update.delete');
+
 Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');
 
 Auth::routes();

@@ -33,18 +33,18 @@ class PegawaiSeeder extends Seeder
             
 
             //Pegawai Gudang Kontrol
-            ['nip' => 1, 'nama' => 'Emi F', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 2, 'nama' => 'Trisyanti', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 3, 'nama' => 'Suharningsih', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 4, 'nama' => 'Supriyanti', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 5, 'nama' => 'Nunung', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 6, 'nama' => 'Tumini', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 7, 'nama' => 'Sri Suharti', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 8, 'nama' => 'Tri Mulyani', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 9, 'nama' => 'Suparmi', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 10, 'nama' => 'Paryatun', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 11, 'nama' => 'Kusrini', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
-            ['nip' => 12, 'nama' => 'Sukini', 'kodeBagian' => 'kontrol', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 1, 'nama' => 'Emi F', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 2, 'nama' => 'Trisyanti', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 3, 'nama' => 'Suharningsih', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 4, 'nama' => 'Supriyanti', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 5, 'nama' => 'Nunung', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 6, 'nama' => 'Tumini', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 7, 'nama' => 'Sri Suharti', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 8, 'nama' => 'Tri Mulyani', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 9, 'nama' => 'Suparmi', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 10, 'nama' => 'Paryatun', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 11, 'nama' => 'Kusrini', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
+            ['nip' => 12, 'nama' => 'Sukini', 'kodeBagian' => 'control', 'jenisKelamin' => 'P', 'userId' => 1],
         
 
             //Pegawai Gudang Potong

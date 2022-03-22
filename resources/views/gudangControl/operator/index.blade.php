@@ -54,7 +54,7 @@
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Batil</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Setrika</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
@@ -96,7 +96,7 @@
                                 
                                 <div class="tab-pane" id="RekapanLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GBatil.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Batil</a>
+                                        <a href="{{ route('GControl.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Control</a>
                                     </h3>
                                     <table id="rekap" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
@@ -113,9 +113,9 @@
                                                     <td>{{ $rekap->user->nama }}</td>
                                                    
                                                     <td>
-                                                        <a href="{{ route('GBatil.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GControl.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         @if ($rekap->tanggal == date("Y-m-d"))
-                                                            <a href="{{ route('GBatil.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            <a href="{{ route('GControl.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                         @else
                                                             <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
                                                         @endif
