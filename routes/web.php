@@ -316,5 +316,11 @@ Route::post('/GControl/keluar/create', [App\Http\Controllers\GudangControlContro
 Route::get('/GControl/keluar/detail/{date}', [App\Http\Controllers\GudangControlController::class, 'gKeluarDetail'])->name('GControl.keluar.detail');
 
 Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');
-
+Route::get('/GControl/reject/create', [App\Http\Controllers\GudangControlController::class, 'gRejectTJCreate'])->name('GControl.reject.create');
+Route::post('/GControl/reject/create', [App\Http\Controllers\GudangControlController::class, 'gRejectTJStore'])->name('GControl.reject.create');
+Route::get('/GControl/reject/detail/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJDetail'])->name('GControl.reject.detail');
+Route::get('/GControl/reject/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJUpdate'])->name('GControl.reject.update');
+Route::post('/GControl/reject/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJUpdateSave'])->name('GControl.reject.update');
+Route::get('/GControl/reject/update/delete/{rejectId}/{detailRejectId}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJUpdateDelete'])->name('GControl.reject.update.delete');
+Route::delete('/GControl/reject/delete', [App\Http\Controllers\GudangControlController::class, 'gRejectTJDelete'])->name('GControl.reject.delete');
 Auth::routes();

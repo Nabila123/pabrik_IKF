@@ -16,10 +16,10 @@ class GudangJahitReject extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
-    public static function CreateGudangJahitReject($tanggal, $totalBaju, $userId)
+    public static function CreateGudangJahitReject($gudangRequest, $tanggal, $totalBaju, $userId)
     {
         $addGdReject = NEW GudangJahitReject;
-        $addGdReject->gudangRequest = "Gudang Batil";
+        $addGdReject->gudangRequest = $gudangRequest;
         $addGdReject->tanggal = $tanggal;
         $addGdReject->totalBaju = $totalBaju;
         $addGdReject->userId = $userId;
