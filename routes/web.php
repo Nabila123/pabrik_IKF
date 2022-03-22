@@ -241,14 +241,13 @@ Route::get('/GJahit/keluar/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Controlle
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
 Route::get('/GJahit/reject/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRejectTerima'])->name('GJahit.reject.terima');
 Route::get('/GJahit/reject/detail/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRejectDetail'])->name('GJahit.reject.detail');
-Route::get('/GJahit/reject/create', [App\Http\Controllers\GudangJahitController::class, 'gRejectCreate'])->name('GJahit.reject.create');
-Route::post('/GJahit/reject/create', [App\Http\Controllers\GudangJahitController::class, 'gRejectStore'])->name('GJahit.reject.create');
 
 /* Gudang Batil */
 Route::get('/GBatil', [App\Http\Controllers\GudangBatilController::class, 'index'])->name('GBatil');
 Route::post('/GBatil/getData', [App\Http\Controllers\GudangBatilController::class, 'getData'])->name('GBatil.getData');
 Route::post('/GBatil/getBasis', [App\Http\Controllers\GudangBatilController::class, 'getBasis'])->name('GBatil.getBasis');
 Route::post('/GBatil/getPegawai', [App\Http\Controllers\GudangBatilController::class, 'getPegawai'])->name('GBatil.getPegawai');
+Route::post('/GBatil/getReject', [App\Http\Controllers\GudangBatilController::class, 'getReject'])->name('GBatil.getReject');
 
 Route::get('/GBatil/request', [App\Http\Controllers\GudangBatilController::class, 'gRequest'])->name('GBatil.request');
 Route::get('/GBatil/request/terima/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRequestTerima'])->name('GBatil.request.terima');
@@ -276,6 +275,13 @@ Route::post('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController
 Route::get('/GBatil/keluar/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
 
 Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');
+Route::get('/GBatil/reject/create', [App\Http\Controllers\GudangBatilController::class, 'gRejectCreate'])->name('GBatil.reject.create');
+Route::post('/GBatil/reject/create', [App\Http\Controllers\GudangBatilController::class, 'gRejectStore'])->name('GBatil.reject.create');
+Route::get('/GBatil/reject/detail/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRejectDetail'])->name('GBatil.reject.detail');
+Route::get('/GBatil/reject/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRejectUpdate'])->name('GBatil.reject.update');
+Route::post('/GBatil/reject/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRejectUpdateSave'])->name('GBatil.reject.update');
+Route::get('/GBatil/reject/update/delete/{rejectId}/{detailRejectId}', [App\Http\Controllers\GudangBatilController::class, 'gRejectUpdateDelete'])->name('GBatil.reject.update.delete');
+Route::delete('/GBatil/reject/delete', [App\Http\Controllers\GudangBatilController::class, 'gRejectDelete'])->name('GBatil.reject.delete');
 
 /* Gudang Control */
 Route::get('/GControl', [App\Http\Controllers\GudangControlController::class, 'index'])->name('GControl');

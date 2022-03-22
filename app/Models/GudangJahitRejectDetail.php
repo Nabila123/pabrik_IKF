@@ -21,9 +21,30 @@ class GudangJahitRejectDetail extends Model
         return $this->hasOne('App\Models\GudangBajuStokOpname','id','gdBajuStokOpnameId');
     }
 
+    public function purchase()
+    {
+        return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
+    }
+
     public function reject()
     {
         return $this->hasOne('App\Models\GudangJahitReject','id','gdJahitRejectId');
+    }
+
+    public static function createGudangJahitRejectDetail($gdJahitRejectId, $gdBajuStokOpnameId, $keterangan)
+    {
+        $keluarDetail = new GudangJahitRejectDetail;
+        $keluarDetail->gdJahitRejectId = $gdJahitRejectId;
+        $keluarDetail->gdBajuStokOpnameId = $gdBajuStokOpnameId;
+        $keluarDetail->keterangan = $keterangan;
+        $keluarDetail->userId = \Auth::user()->id;
+        $keluarDetail->created_at = date('Y-m-d H:i:s');
+
+        if($keluarDetail->save()){
+            return 1;
+        }else{
+            return 0;
+        }
     }
 
     public static function updateStatusDiterima($id, $statusDiterima)
