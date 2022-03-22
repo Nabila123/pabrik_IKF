@@ -285,11 +285,24 @@ Route::delete('/GBatil/reject/delete', [App\Http\Controllers\GudangBatilControll
 
 /* Gudang Control */
 Route::get('/GControl', [App\Http\Controllers\GudangControlController::class, 'index'])->name('GControl');
+Route::post('/GControl/getData', [App\Http\Controllers\GudangControlController::class, 'getData'])->name('GControl.getData');
+Route::post('/GControl/getBasis', [App\Http\Controllers\GudangControlController::class, 'getBasis'])->name('GControl.getBasis');
 Route::post('/GControl/getPegawai', [App\Http\Controllers\GudangControlController::class, 'getPegawai'])->name('GControl.getPegawai');
+Route::post('/GControl/getReject', [App\Http\Controllers\GudangControlController::class, 'getReject'])->name('GControl.getReject');
 
 Route::get('/GControl/request', [App\Http\Controllers\GudangControlController::class, 'gRequest'])->name('GControl.request');
+Route::get('/GControl/request/terima/{id}', [App\Http\Controllers\GudangControlController::class, 'gRequestTerima'])->name('GControl.request.terima');
+Route::get('/GControl/request/detail/{id}', [App\Http\Controllers\GudangControlController::class, 'gRequestDetail'])->name('GControl.request.detail');
 
 Route::get('/GControl/operator', [App\Http\Controllers\GudangControlController::class, 'gOperator'])->name('GControl.operator');
+Route::get('/GControl/operator/detail/{date}', [App\Http\Controllers\GudangControlController::class, 'gOperatorDetail'])->name('GControl.operator.detail');
+Route::get('/GControl/operator/create', [App\Http\Controllers\GudangControlController::class, 'gOperatorCreate'])->name('GControl.operator.create');
+Route::post('/GControl/operator/create', [App\Http\Controllers\GudangControlController::class, 'gOperatorStore'])->name('GControl.operator.create');
+Route::get('/GControl/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}/{jumlahBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorDataMaterial'])->name('GControl.operator.detailMaterial');
+Route::get('/GControl/operator/update/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorupdate'])->name('GControl.operator.update');
+Route::post('/GControl/operator/update/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorupdateSave'])->name('GControl.operator.update');
+Route::get('/GControl/operator/update/delete/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorUpdateDelete'])->name('GControl.operator.update.delete');
+Route::delete('/GControl/operator/delete', [App\Http\Controllers\GudangControlController::class, 'gOperatorDelete'])->name('GControl.operator.delete');
 
 Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');
 

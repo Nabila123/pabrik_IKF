@@ -92,7 +92,7 @@ class MenuSeeder extends Seeder
             //Gudang Control
             ['id' => 49, 'parentId' => 0, 'urutan' => 9, 'nama' => 'Gudang Control', 'alias' => 'GControl', 'directori' => 'gudangControl', 'isActive' => 1],
             ['id' => 50, 'parentId' => 49, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GControl', 'directori' => 'gudangControl', 'isActive' => 1],
-            ['id' => 51, 'parentId' => 49, 'urutan' => 2, 'nama' => 'Request Gudang Jahit', 'alias' => 'GControl.request', 'directori' => 'gudangControl/request/index', 'isActive' => 1],
+            ['id' => 51, 'parentId' => 49, 'urutan' => 2, 'nama' => 'Request Gudang Batil', 'alias' => 'GControl.request', 'directori' => 'gudangControl/request/index', 'isActive' => 1],
             ['id' => 52, 'parentId' => 49, 'urutan' => 3, 'nama' => 'Operator Control', 'alias' => 'GControl.operator', 'directori' => 'gudangControl/operator/index', 'isActive' => 1],
             ['id' => 53, 'parentId' => 49, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GControl.reject', 'directori' => 'gudangControl/reject/index', 'isActive' => 1],
 
