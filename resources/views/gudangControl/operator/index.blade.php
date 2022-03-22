@@ -135,7 +135,7 @@
                                     <div class="tab-content">
                                         <div class="active tab-pane mt-5" id="pindahkanData">
                                             <h3 class="card-title mb-4" style="width: 100%">
-                                                <a href="{{ route('GBatil.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
+                                                <a href="{{ route('GControl.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
                                             </h3>
                                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                 <thead>
@@ -153,10 +153,10 @@
                                                             <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
                                                             <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
                                                             <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
-                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju'] }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['jumlah'] }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GBatil.keluar.detail', [$dataPemindahan[$i]['tanggal']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                                <a href="{{ route('GControl.keluar.detail', [$dataPemindahan[$i]['tanggal']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
                                                     @endfor  

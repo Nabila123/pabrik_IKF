@@ -311,6 +311,10 @@ Route::get('/GControl/rekap/update/{id}', [App\Http\Controllers\GudangControlCon
 Route::post('/GControl/rekap/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateSave'])->name('GControl.rekap.update');
 Route::get('/GControl/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateDelete'])->name('GControl.rekap.update.delete');
 
+Route::get('/GControl/keluar/create', [App\Http\Controllers\GudangControlController::class, 'gKeluarCreate'])->name('GControl.keluar.create');
+Route::post('/GControl/keluar/create', [App\Http\Controllers\GudangControlController::class, 'gKeluarStore'])->name('GControl.keluar.create');
+Route::get('/GControl/keluar/detail/{date}', [App\Http\Controllers\GudangControlController::class, 'gKeluarDetail'])->name('GControl.keluar.detail');
+
 Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');
 
 Auth::routes();
