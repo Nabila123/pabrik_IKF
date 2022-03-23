@@ -8,6 +8,8 @@ use App\Models\GudangControlMasuk;
 use App\Models\GudangControlMasukDetail;
 use App\Models\GudangControlRekap;
 use App\Models\GudangControlRekapDetail;
+use App\Models\GudangControlReject;
+use App\Models\GudangControlRejectDetail;
 use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
@@ -660,9 +662,10 @@ class GudangControlController extends Controller
 
     public function gReject()
     {
+        $gdControlReject  = GudangControlReject::all();
         $gdJahitReject = GudangJahitReject::where('gudangRequest', 'Gudang Control')->get();
 
-        return view('gudangControl.reject.index', ['jahitReject' => $gdJahitReject]);
+        return view('gudangControl.reject.index', ['gdControlReject' => $gdControlReject, 'jahitReject' => $gdJahitReject]);
     }
 
     public function gRejectTJCreate()
@@ -699,10 +702,15 @@ class GudangControlController extends Controller
         }
     }
 
-    public function gRejectTJDetail($id)
+    public function gRejectTJDetail($id, $request)
     {
-        $gdJahitReject = GudangJahitReject::where('id', $id)->first();
-        $gdJahitRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $gdJahitReject->id)->get();
+        if ($request == "Jahit") {
+            $gdJahitReject = GudangJahitReject::where('id', $id)->first();
+            $gdJahitRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $gdJahitReject->id)->get();
+        }elseif ($request == "Control") {
+            $gdJahitReject = GudangControlReject::where('id', $id)->first();
+            $gdJahitRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $gdJahitReject->id)->get();
+        }
 
         return view('gudangControl.reject.detail', ['jahitRejectDetail' => $gdJahitRejectDetail]);
     }

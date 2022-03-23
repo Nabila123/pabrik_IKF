@@ -72,7 +72,7 @@
                                         </thead>
                                         <tbody class="textAlign">
                                             <?php $no = 1; ?>
-                                            @foreach ($jahitReject as $reject)
+                                            @foreach ($gdControlReject as $reject)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $reject->gudangRequest }}</td>
@@ -86,7 +86,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('GControl.reject.detail', [$reject->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GControl.reject.detail', [$reject->id, 'Control']) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -124,7 +124,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('GControl.reject.detail', [$reject->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GControl.reject.detail', [$reject->id, 'Jahit']) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         @if ($reject->statusProses == 0)
                                                             <a href="{{ route('GControl.reject.update', [$reject->id]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                             <button type="button" data-toggle="modal" requestId='{{ $reject->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $reject->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        

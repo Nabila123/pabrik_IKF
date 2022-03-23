@@ -23,7 +23,7 @@ class GudangControlRejectDetail extends Model
 
     public function reject()
     {
-        return $this->hasOne('App\Models\GudangJahitReject','id','gdJahitRejectId');
+        return $this->hasOne('App\Models\GudangControlReject','id','gdControlRejectId');
     }
 
     public static function updateStatusDiterima($id, $statusDiterima)
