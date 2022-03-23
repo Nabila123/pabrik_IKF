@@ -323,4 +323,10 @@ Route::get('/GControl/reject/update/{id}', [App\Http\Controllers\GudangControlCo
 Route::post('/GControl/reject/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJUpdateSave'])->name('GControl.reject.update');
 Route::get('/GControl/reject/update/delete/{rejectId}/{detailRejectId}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJUpdateDelete'])->name('GControl.reject.update.delete');
 Route::delete('/GControl/reject/delete', [App\Http\Controllers\GudangControlController::class, 'gRejectTJDelete'])->name('GControl.reject.delete');
+
+//Packing
+Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index'])->name('GPacking');
+Route::get('/GPacking/operator', [App\Http\Controllers\PackingController::class, 'gOperator'])->name('GPacking.operator');
+Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
+
 Auth::routes();

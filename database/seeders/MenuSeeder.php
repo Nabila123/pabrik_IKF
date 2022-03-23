@@ -76,25 +76,32 @@ class MenuSeeder extends Seeder
             ['id' => 38, 'parentId' => 34, 'urutan' => 4, 'nama' => 'Proses Potong', 'alias' => 'GPotong.proses', 'directori' => 'gudangPotong/proses/index', 'isActive' => 1],
 
             //Gudang Jahit
-            ['id' => 39, 'parentId' => 0, 'urutan' => 9, 'nama' => 'Gudang Jahit', 'alias' => 'GJahit', 'directori' => 'gudangJahit', 'isActive' => 1],
+            ['id' => 39, 'parentId' => 0, 'urutan' => 10, 'nama' => 'Gudang Jahit', 'alias' => 'GJahit', 'directori' => 'gudangJahit', 'isActive' => 1],
             ['id' => 40, 'parentId' => 39, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GJahit', 'directori' => 'gudangJahit', 'isActive' => 1],
             ['id' => 41, 'parentId' => 39, 'urutan' => 2, 'nama' => 'Request Gudang Potong', 'alias' => 'GJahit.request', 'directori' => 'gudangJahit/request/index', 'isActive' => 1],
             ['id' => 42, 'parentId' => 39, 'urutan' => 3, 'nama' => 'Operator Jahit', 'alias' => 'GJahit.operator', 'directori' => 'gudangJahit/operator/index', 'isActive' => 1],
             ['id' => 43, 'parentId' => 39, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GJahit.reject', 'directori' => 'gudangJahit/reject/index', 'isActive' => 1],
 
             //Gudang Batil
-            ['id' => 44, 'parentId' => 0, 'urutan' => 9, 'nama' => 'Gudang Batil', 'alias' => 'GBatil', 'directori' => 'gudangBatil', 'isActive' => 1],
+            ['id' => 44, 'parentId' => 0, 'urutan' => 11, 'nama' => 'Gudang Batil', 'alias' => 'GBatil', 'directori' => 'gudangBatil', 'isActive' => 1],
             ['id' => 45, 'parentId' => 44, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GBatil', 'directori' => 'gudangBatil', 'isActive' => 1],
             ['id' => 46, 'parentId' => 44, 'urutan' => 2, 'nama' => 'Request Gudang Jahit', 'alias' => 'GBatil.request', 'directori' => 'gudangBatil/request/index', 'isActive' => 1],
             ['id' => 47, 'parentId' => 44, 'urutan' => 3, 'nama' => 'Operator Batil', 'alias' => 'GBatil.operator', 'directori' => 'gudangBatil/operator/index', 'isActive' => 1],
             ['id' => 48, 'parentId' => 44, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GBatil.reject', 'directori' => 'gudangBatil/reject/index', 'isActive' => 1],
 
             //Gudang Control
-            ['id' => 49, 'parentId' => 0, 'urutan' => 9, 'nama' => 'Gudang Control', 'alias' => 'GControl', 'directori' => 'gudangControl', 'isActive' => 1],
+            ['id' => 49, 'parentId' => 0, 'urutan' => 12, 'nama' => 'Gudang Control', 'alias' => 'GControl', 'directori' => 'gudangControl', 'isActive' => 1],
             ['id' => 50, 'parentId' => 49, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GControl', 'directori' => 'gudangControl', 'isActive' => 1],
             ['id' => 51, 'parentId' => 49, 'urutan' => 2, 'nama' => 'Request Gudang Batil', 'alias' => 'GControl.request', 'directori' => 'gudangControl/request/index', 'isActive' => 1],
             ['id' => 52, 'parentId' => 49, 'urutan' => 3, 'nama' => 'Operator Control', 'alias' => 'GControl.operator', 'directori' => 'gudangControl/operator/index', 'isActive' => 1],
             ['id' => 53, 'parentId' => 49, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GControl.reject', 'directori' => 'gudangControl/reject/index', 'isActive' => 1],
+
+            
+            //Gudang Packing
+            ['id' => 54, 'parentId' => 0, 'urutan' => 13, 'nama' => 'Packing', 'alias' => 'GPacking', 'directori' => 'gudangPacking', 'isActive' => 1],
+            ['id' => 55, 'parentId' => 54, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GPacking', 'directori' => 'gudangPacking', 'isActive' => 1],
+            ['id' => 56, 'parentId' => 54, 'urutan' => 2, 'nama' => 'Operator Packing', 'alias' => 'GPacking.operator', 'directori' => 'gudangPacking/operator/index', 'isActive' => 1],
+            ['id' => 57, 'parentId' => 54, 'urutan' => 3, 'nama' => 'Request Baju Reject', 'alias' => 'GPacking.reject', 'directori' => 'gudangPacking/reject/index', 'isActive' => 1],
 
         ];
 
