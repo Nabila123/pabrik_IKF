@@ -78,17 +78,17 @@ class AdminPurchase extends Model
         $data = [];
         $i = 0;
         $purchase = Self::where('id', $purchaseId)->first();
-        $gudang = GudangBahanBaku::where('purchaseId', $purchase->id)->first();
-
+        $gudang = BarangDatang::where('purchaseId', $purchase->id)->first();
+        
         $data["purchase"] = [
             'gudangId' => $gudang->id,
             'suplierName' => $purchase->suplierName,
             'catatan' => $purchase->note
         ];
-
-        $gudangDetail = GudangBahanBakuDetail::where('gudangId', $gudang->id)->get();
+        
+        $gudangDetail = BarangDatangDetail::where('barangDatangId', $gudang->id)->get();
        foreach ($gudangDetail as $detail) {
-            $gudangMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detail->id)->get();
+            $gudangMaterial = BarangDatangDetailMaterial::where('barangDatangDetailId', $detail->id)->get();
             foreach ($gudangMaterial as $material) {
                 $data["material"][$i++] = [
                     'nama'      => $detail->material->nama,

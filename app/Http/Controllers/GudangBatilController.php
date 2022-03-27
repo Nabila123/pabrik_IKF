@@ -327,10 +327,11 @@ class GudangBatilController extends Controller
         }
 
         $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
+        
         if ($gdControlMasuk != null) {
             $gdControlMasukDetail = GudangControlMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlMId', $gdControlMasuk->id)->groupBy('gdControlMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
         }else {
-            $gdControlMasukDetail = null;
+            $gdControlMasukDetail = [];
         }
 
         return view('gudangBatil.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdBatil' => $gdBatil, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdControlMasuk' => $gdControlMasukDetail]);
@@ -339,7 +340,7 @@ class GudangBatilController extends Controller
     public function gOperatorDetail($date)
     {
         $gdRequestOperator = GudangBatilStokOpname::where('tanggal', $date)->get();
-
+        
         return view('gudangBatil.operator.detail', ['operatorRequest' => $gdRequestOperator]);
     }
 

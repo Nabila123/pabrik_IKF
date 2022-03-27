@@ -156,6 +156,7 @@ class GudangBahanBakuController extends Controller
                         $dataDetail['brutto'] = $bahanBakuDetailMaterial->brutto + $brutto[0];
                         $dataDetail['netto'] = $bahanBakuDetailMaterial->netto + $netto[0];
                         $dataDetail['tarra'] = $bahanBakuDetailMaterial->tarra + $tarra[0];
+                        $dataDetail['qty'] = $bahanBakuDetailMaterial->qty + 1;
 
                         $updateBahanBakuDetailMaterial =  GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanBakuDetail->id)->update($dataDetail);
                     }else{
@@ -166,6 +167,7 @@ class GudangBahanBakuController extends Controller
                         $bahanBakuDetailMaterial->brutto = $brutto[0];
                         $bahanBakuDetailMaterial->netto = $netto[0];
                         $bahanBakuDetailMaterial->tarra = $tarra[0];
+                        $bahanBakuDetailMaterial->qty = 1;
                         $bahanBakuDetailMaterial->unit = $request['unit'][$i];
                         $bahanBakuDetailMaterial->unitPrice = $request['unitPrice'][$i];
                         $bahanBakuDetailMaterial->amount = $request['amount'][$i];
@@ -188,6 +190,7 @@ class GudangBahanBakuController extends Controller
                         $bahanBakuDetailMaterial->brutto = $brutto[$j];
                         $bahanBakuDetailMaterial->netto = $netto[$j];
                         $bahanBakuDetailMaterial->tarra = $tarra[$j];
+                        $bahanBakuDetailMaterial->qty = 1;
                         $bahanBakuDetailMaterial->unit = $request['unit'][$i];
                         $bahanBakuDetailMaterial->unitPrice = $request['unitPrice'][$i];
                         $bahanBakuDetailMaterial->amount = $request['amount'][$i];

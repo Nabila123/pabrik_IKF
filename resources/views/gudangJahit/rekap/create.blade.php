@@ -86,7 +86,7 @@
                                         <div class="form-group">
                                             <label>Posisi Jahit </label>
                                             <select class="form-control posisi" id="posisi" name="posisi" style="width: 100%; height: 38px;" >
-                                                <option> Pilih Satu </option>
+                                                <option value=""> Pilih Satu </option>
                                                 <option value="soom">Soom</option>
                                                 <option value="jahit">Jahit</option>
                                                 <option value="bawahan">Bawahan</option>
@@ -220,10 +220,6 @@
 
 @push('page_scripts') 
     <script type="text/javascript"> 
-        
-        $('#posisi').select2({
-            theme: 'bootstrap4'
-        });
 
         $(document).on("change", "#soom", function(){
             if ($(this).is(':checked')) {

@@ -324,7 +324,7 @@
 
             $('#requestOperatorId').html('');
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GBatil/getPegawai') }}',
