@@ -52,7 +52,7 @@
                     <div class="card">   
                         <div class="card-header">
                             <h3 class="card-title" style="width: 100%">
-                                <a href="{{ route('GBatil.reject.create') }}" class='btn btn-info btn-flat-right'>Kembalikan Barang</a>
+                                <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
                             </h3>                           
                         </div>                   
                         <div class="card-body">
@@ -61,7 +61,8 @@
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Operator Rekap</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Pegawai Packing</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Operator</th>
                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                     </tr>
                                 </thead>
@@ -71,12 +72,13 @@
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
+                                            <td>{{ $rekap->pegawai->nama }}</td>
                                             <td>{{ $rekap->user->nama }}</td>
                                             
                                             <td>
-                                                <a href="{{ route('GBatil.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('GPacking.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 @if ($rekap->tanggal == date("Y-m-d"))
-                                                    <a href="{{ route('GBatil.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    <a href="{{ route('GPacking.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 @else
                                                     <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
                                                 @endif

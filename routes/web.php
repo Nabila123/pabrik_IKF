@@ -326,7 +326,16 @@ Route::delete('/GControl/reject/delete', [App\Http\Controllers\GudangControlCont
 
 //Packing
 Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index'])->name('GPacking');
+Route::post('/GPacking/getPegawai', [App\Http\Controllers\PackingController::class, 'getPegawai'])->name('GPacking.getPegawai');
+
 Route::get('/GPacking/operator', [App\Http\Controllers\PackingController::class, 'gOperator'])->name('GPacking.operator');
+Route::get('/GPacking/rekap/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRekapDetail'])->name('GPacking.rekap.detail');
+Route::get('/GPacking/rekap/create', [App\Http\Controllers\PackingController::class, 'gRekapCreate'])->name('GPacking.rekap.create');
+Route::post('/GPacking/rekap/create', [App\Http\Controllers\PackingController::class, 'gRekapStore'])->name('GPacking.rekap.create');
+Route::get('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdate'])->name('GPacking.rekap.update');
+Route::post('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateSave'])->name('GPacking.rekap.update');
+Route::get('/GPacking/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateDelete'])->name('GPacking.rekap.update.delete');
+
 Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
 
 Auth::routes();
