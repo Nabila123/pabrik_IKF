@@ -154,6 +154,92 @@ class PackingController extends Controller
         return json_encode($data);
     }
 
+    public function getReject(Request $request)
+    {
+        $data = [];
+
+        if (isset($request->purchaseId)) {
+            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 1)->where('statusPacking', 1)->where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        if (isset($request->jenisBaju)) {
+            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 1)->where('statusPacking', 1)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+        }
+        if (isset($request->ukuranBaju)) {
+            // dd($request);
+            $reqOperatorId = []; 
+
+            $checkId = [];   
+            // $index = 0;    
+            // $checkId[$index]['operatorReqId'] = [];
+            // $checkId[$index]['purchase'] = [];
+            // $checkId[$index]['jumlah'] = [];
+
+            $gdRequestOperator = GudangSetrikaStokOpname::where('purchaseId', $request->purchaseId)
+                                                            ->where('jenisBaju', $request->jenisBaju)
+                                                            ->where('ukuranBaju', $request->ukuranBaju)
+                                                            ->where('statusSetrika', 1)
+                                                            ->where('statusPacking', 1)                                                             
+                                                            ->whereDate('tanggal', date('Y-m-d'))->get();
+
+            $gdBatilReject = GudangControlReject::where('gudangRequest', 'Gudang Packing')->whereDate('tanggal', date('Y-m-d'))->first();
+            if ($gdBatilReject != null) {
+                $gdBatilRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $gdBatilReject->id)->get();
+                if ($gdBatilRejectDetail != null) {
+                    foreach ($gdBatilRejectDetail as $detail) {
+                        if (!in_array($detail->gdBajuStokOpnameId, $checkId)) {
+                            $checkId[] = $detail->gdBajuStokOpnameId;
+                        }
+                    }
+                }
+            }
+            
+            if (!isset($request->jumlahBaju)) {
+                $request->jumlahBaju = count($gdRequestOperator);
+            } 
+            
+            $i = 0;            
+            foreach ($gdRequestOperator as $operator) {
+                // dd($operator->gdBajuStokOpnameId, $checkId);
+                if (!in_array($operator->gdBajuStokOpnameId, $checkId)) {
+                    if (!in_array($operator->gdBajuStokOpnameId, $reqOperatorId)) {
+                        if ($i < $request->jumlahBaju) {
+                            $reqOperatorId[$i] = $operator->gdBajuStokOpnameId;
+                            $i++;                                    
+                        }
+                    }
+                }
+            }            
+        }        
+
+        if (isset($gdRequestOperator)) {
+            foreach ($gdRequestOperator as $operator) {
+                if ($request->groupBy == "purchaseId") {
+                    $data['operator'][] = [
+                        'purchaseId' => $operator->purchaseId, 
+                        'kodePurchase' => $operator->purchase->kode
+                    ];
+                }elseif ($request->groupBy == "jenisBaju") {
+                    $data['operator'][] = [
+                        'jenisBaju' => $operator->jenisBaju
+                    ];
+                }elseif ($request->groupBy == "ukuranBaju") {
+                    $data['operator'][] = [
+                        'ukuranBaju' => $operator->ukuranBaju
+                    ];
+                }
+            }
+
+            if ($request->groupBy == "id"){
+                $data['operator'] = [
+                    'requestOperatorId' => $reqOperatorId,
+                    'jumlahBaju' => count($reqOperatorId)
+                ];
+            }
+        }
+        
+        return json_encode($data);
+    }
+
     public function gOperator()
     {
         $gdPackingRekap = GudangPackingRekap::where('tanggal', date('Y-m-d'))->get();
@@ -277,6 +363,126 @@ class PackingController extends Controller
 
     public function gReject()
     {
-        return view('packing.reject.index');
+        $gdControlReject  = GudangControlReject::where('gudangRequest', 'Gudang Packing')->get();
+
+        return view('packing.reject.index', ['gdControlReject' => $gdControlReject]);
+    }
+
+    public function gRejectCreate()
+    {
+        $purchaseId = GudangSetrikaStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+
+        return view('packing.reject.create', ['purchases' => $purchaseId]);
+
+    }
+
+    public function gRejectStore(Request $request)
+    {
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $checkPegawai = GudangControlReject::where('gudangRequest', 'Gudang Packing')->where('tanggal', date('Y-m-d'))->first();
+                if ($checkPegawai == null) {
+                    $batilReject = GudangControlReject::CreateGudangControlReject('Gudang Packing', date('Y-m-d'), $request['jumlahBaju'][$i], \Auth::user()->id);
+                } else {
+                    $batilReject = $checkPegawai->id;
+                }
+
+                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                for($j=0; $j < count($operatorReqId); $j++){
+                    $batilRekapDetail = GudangControlRejectDetail::createGudangControlRejectDetail($batilReject, $operatorReqId[$j], $request['keterangan'][$i]);
+                }                                             
+            }
+
+            if ($batilRekapDetail == 1) {
+                return redirect('GPacking/reject');
+            }
+        } else {
+            return redirect('GPacking/reject/create');
+        }
+    }
+
+    public function gRejectDetail($id)
+    {
+        $gdJahitReject = GudangControlReject::where('id', $id)->first();
+        $gdJahitRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $gdJahitReject->id)->get();
+
+        return view('packing.reject.detail', ['jahitRejectDetail' => $gdJahitRejectDetail]);
+    }
+
+    public function gRejectUpdate($id)
+    {
+        $purchaseId = [];
+        $i = 0;
+        $checkPurchaseId = GudangSetrikaStokOpname::whereDate('tanggal', date('Y-m-d'))->get();
+        foreach ($checkPurchaseId as $purchase) {
+            $gdJahitRejectDetail = GudangControlRejectDetail::where('gdBajuStokOpnameId', $purchase->gdBajuStokOpnameId)->whereDate('created_at', date('Y-m-d'))->first();
+            if ($gdJahitRejectDetail == null) {
+                if (!in_array($purchase->purchaseId, $purchaseId)) {
+                    $purchaseId[$i]['purchaseId'] = $purchase->purchaseId;
+                    $purchaseId[$i]['kodePurchase'] = $purchase->purchase->kode;
+                }
+            }
+        }
+        $gdJahitReject = GudangControlReject::where('id', $id)->first();
+        $gdJahitRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $gdJahitReject->id)->get();
+        foreach ($gdJahitRejectDetail as $detail) {
+            $checkBaju = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
+            $detail->kodePurchase = $checkBaju->purchase->kode;
+            $detail->jenisBaju = $checkBaju->jenisBaju;
+            $detail->ukuranBaju = $checkBaju->ukuranBaju;
+            if ($detail->keterangan == null) {
+                $detail->keterangan = " - ";
+            }
+        }
+        return view('packing.reject.update', ['purchases' => $purchaseId, 'gdJahitReject' => $gdJahitReject, 'jahitRejectDetail' => $gdJahitRejectDetail]);
+    }
+
+    public function gRejectUpdateSave(Request $request)
+    {
+        if ($request->jumlah_data != 0) {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $checkPegawai = GudangControlReject::where('id', $request->id)->first();
+                
+                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                for($j=0; $j < count($operatorReqId); $j++){
+                    $batilRekapDetail = GudangControlRejectDetail::CreateGudangControlRejectDetail($checkPegawai->id, $operatorReqId[$j], $request['keterangan'][$i]);
+                }                                             
+            }
+
+            if ($batilRekapDetail == 1) {
+                return redirect('GPacking/reject');
+            }
+        } else {
+            return redirect('GPacking/reject/create');
+        }
+    }
+
+    public function gRejectUpdateDelete($rejectId, $detailRejectId)
+    {
+        $gdJahitRejectDetail = GudangControlRejectDetail::where('id', $detailRejectId)->delete();
+        if ($gdJahitRejectDetail) {
+            return redirect('GPacking/reject/update/'.$rejectId);
+        }else{
+            return redirect('GPacking/reject/update/' . $rejectId . '');
+        }
+
+    }
+
+    public function gRejectDelete(Request $request)
+    {
+        // dd($request);
+        $batilReject = GudangControlReject::where('id', $request->rejectId)->first();
+        $batilRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $batilReject->id)->get();
+        if (count($batilRejectDetail) != 0) {
+            $batilRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $batilReject->id)->delete();
+            if ($batilRejectDetail) {
+                GudangControlReject::where('id', $request->rejectId)->delete();
+                return redirect('GPacking/reject');
+            }
+        }else{
+            GudangControlReject::where('id', $request->rejectId)->delete();
+            return redirect('GPacking/reject');
+        }
+
     }
 }

@@ -327,6 +327,7 @@ Route::delete('/GControl/reject/delete', [App\Http\Controllers\GudangControlCont
 //Packing
 Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index'])->name('GPacking');
 Route::post('/GPacking/getPegawai', [App\Http\Controllers\PackingController::class, 'getPegawai'])->name('GPacking.getPegawai');
+Route::post('/GPacking/getReject', [App\Http\Controllers\PackingController::class, 'getReject'])->name('GPacking.getReject');
 
 Route::get('/GPacking/operator', [App\Http\Controllers\PackingController::class, 'gOperator'])->name('GPacking.operator');
 Route::get('/GPacking/rekap/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRekapDetail'])->name('GPacking.rekap.detail');
@@ -337,5 +338,12 @@ Route::post('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingControll
 Route::get('/GPacking/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateDelete'])->name('GPacking.rekap.update.delete');
 
 Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
+Route::get('/GPacking/reject/create', [App\Http\Controllers\PackingController::class, 'gRejectCreate'])->name('GPacking.reject.create');
+Route::post('/GPacking/reject/create', [App\Http\Controllers\PackingController::class, 'gRejectStore'])->name('GPacking.reject.create');
+Route::get('/GPacking/reject/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRejectDetail'])->name('GPacking.reject.detail');
+Route::get('/GPacking/reject/update/{id}', [App\Http\Controllers\PackingController::class, 'gRejectUpdate'])->name('GPacking.reject.update');
+Route::post('/GPacking/reject/update/{id}', [App\Http\Controllers\PackingController::class, 'gRejectUpdateSave'])->name('GPacking.reject.update');
+Route::get('/GPacking/reject/update/delete/{rejectId}/{detailRejectId}', [App\Http\Controllers\PackingController::class, 'gRejectUpdateDelete'])->name('GPacking.reject.update.delete');
+Route::delete('/GPacking/reject/delete', [App\Http\Controllers\PackingController::class, 'gRejectDelete'])->name('GPacking.reject.delete');
 
 Auth::routes();
