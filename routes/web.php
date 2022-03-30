@@ -329,6 +329,10 @@ Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index']
 Route::post('/GPacking/getPegawai', [App\Http\Controllers\PackingController::class, 'getPegawai'])->name('GPacking.getPegawai');
 Route::post('/GPacking/getReject', [App\Http\Controllers\PackingController::class, 'getReject'])->name('GPacking.getReject');
 
+Route::get('/GPacking/request', [App\Http\Controllers\PackingController::class, 'gRequest'])->name('GPacking.request');
+Route::get('/GPacking/request/terima/{id}', [App\Http\Controllers\PackingController::class, 'gRequestTerima'])->name('GPacking.request.terima');
+Route::get('/GPacking/request/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRequestDetail'])->name('GPacking.request.detail');
+
 Route::get('/GPacking/operator', [App\Http\Controllers\PackingController::class, 'gOperator'])->name('GPacking.operator');
 Route::get('/GPacking/rekap/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRekapDetail'])->name('GPacking.rekap.detail');
 Route::get('/GPacking/rekap/create', [App\Http\Controllers\PackingController::class, 'gRekapCreate'])->name('GPacking.rekap.create');

@@ -240,6 +240,20 @@ class PackingController extends Controller
         return json_encode($data);
     }
 
+    public function gRequest()
+    {
+        $gdPackingRequest = GudangSetrikaStokOpname::where('statusPacking', 0)->groupby('tanggal')->get();
+
+        return view('packing.request.index', ['packingRequest' => $gdPackingRequest]);
+    }
+
+    public function gRequestDetail($date)
+    {
+        $gdPackingRequest = GudangSetrikaStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusPacking', 0)->where('tanggal', $date)->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+
+        return view('packing.request.detail', ['gdPackingRequestDetail' => $gdPackingRequest]);
+    }
+
     public function gOperator()
     {
         $gdPackingRekap = GudangPackingRekap::where('tanggal', date('Y-m-d'))->get();
@@ -258,7 +272,7 @@ class PackingController extends Controller
     public function gRekapCreate()
     {
         $pegawai = Pegawai::where('kodeBagian', 'bungkus')->get();
-        $purchaseId = GudangSetrikaStokOpname::select('purchaseId')->where('statusSetrika', 1)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+        $purchaseId = GudangSetrikaStokOpname::select('purchaseId')->where('statusSetrika', 1)->where('statusPacking', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
         
         return view('packing.operator.create', ['pegawais' => $pegawai, 'purchases' => $purchaseId]);
     }
