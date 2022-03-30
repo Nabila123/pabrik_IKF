@@ -51,12 +51,14 @@
         $mains = \DB::table('mst_menu')->where('id','=', $id)->first();
         $notif = [];
 
-        if ($mains->nama == "PPIC" && $user == 38) { //PPIC Gudang Request
-            $PPIC = PPICGudangRequest::where('statusDiterima', 1)->get();               
-            if (count($PPIC) != 0) {
-                $notif[5] = count($PPIC);
+        if ($mains->nama == "PPIC") { //PPIC Gudang Request
+            if ($user == 38) {
+                $PPIC = PPICGudangRequest::where('statusDiterima', 1)->get();               
+                if (count($PPIC) != 0) {
+                    $notif[5] = count($PPIC);
+                }
+                return $notif;
             }
-            return $notif;
         }
 
         if ($mains->nama == "Purchase") {
@@ -91,10 +93,11 @@
         }
 
         if ($mains->nama == "Gudang Bahan Baku") {
-            if ($user == 38) { //Gudang Rajut Masuk
+            if ($user == 26) { //Gudang Rajut Masuk
                 $notifRajut = GudangRajutMasuk::where('statusDiterima', 0)->get();          
                 $notifCompact = GudangCompactMasuk::where('statusDiterima', 0)->get();  
                 $notifInspeksi = GudangInspeksiMasuk::where('statusDiterima', 0)->get();  
+                $notifPPICReq = PPICGudangRequest::where('statusDiterima', 0)->get();  
 
                 if (count($notifRajut) != 0){
                     $notif[] = $notifRajut;
@@ -105,10 +108,15 @@
                 if (count($notifInspeksi) != 0) {
                     $notif[] = $notifInspeksi;
                 }
-                
+
                 if (count($notif) != 0) {
                     $notif[16] = $notif;
                 }
+
+                if (count($notifPPICReq) != 0) {
+                    $notif[14] = count($notifPPICReq);
+                }
+                
             }          
 
             // dd($notif);

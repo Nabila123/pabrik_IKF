@@ -13,6 +13,7 @@ use App\Models\GudangCuciKeluarDetail;
 use App\Models\GudangCompactKeluar;
 use App\Models\GudangCompactMasuk;
 use App\Models\GudangCompactMasukDetail;
+use App\Models\PPICGudangRequest;
 use App\Models\PPICGudangRequestDetail;
 use App\Models\MaterialModel;
 

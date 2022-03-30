@@ -33,7 +33,7 @@ class PPICGudangRequestDetail extends Model
         $addPPICRequestDetail->materialId = $materialId;
         $addPPICRequestDetail->jenisId = $jenisId;
         $addPPICRequestDetail->gramasi = $gramasi;
-        $addPPICRequestDetail->diameter = $gdPpicRequestId;
+        $addPPICRequestDetail->diameter = $diameter;
         $addPPICRequestDetail->qty = $qty;
         $addPPICRequestDetail->userId = \Auth::user()->id;
         $addPPICRequestDetail->created_at = date('Y-m-d H:i:s');
