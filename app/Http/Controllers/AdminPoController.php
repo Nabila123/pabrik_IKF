@@ -8,7 +8,9 @@ use App\Models\adminPurchaseInvoice;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;
+use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
+use App\Models\BarangDatangDetailMaterial;
 use PDF;
 
 use Illuminate\Http\Request;
@@ -134,23 +136,47 @@ class AdminPoController extends Controller
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
         
         $gudangDatang = [];
-        $gudang = GudangBahanBaku::select('id')->where('purchaseId', $getPurchaseId->id)->first();
-        if ($gudang) {
-            $gudangDetail = GudangBahanBakuDetail::select('materialId', 'brutto', 'netto', 'tarra')->where('gudangId', $gudang->id)->get();
-            foreach ($gudangDetail as $detail) {
-                $gudangDatang = [
-                    'datang'     => true                
-                ];
-    
-                $gudangDatang[] = [
-                    'materialId' => $detail->materialId,
-                    'brutto'     => $detail->brutto,
-                    'netto'      => $detail->netto,
-                    'tarra'      => $detail->tarra
-                ];
+        $barang = BarangDatang::select('id')->where('purchaseId', $getPurchaseId->id)->get();
+        if (count($barang) != 0) {
+            foreach ($barang as $Gbarang) {
+                $barangDetail = BarangDatangDetail::where('barangDatangId', $Gbarang->id)->get();
+                if (count($barangDetail) != 0) {
+                    foreach ($barangDetail as $detail) {
+                        $barangDetailMaterial = BarangDatangDetailMaterial::where('barangDatangDetailId', $detail->id)->get();
+                        foreach ($barangDetailMaterial as $detailMaterial) { 
+                            if (count($gudangDatang) != 0 && $detail->materialId == 1) {
+                                for ($i=0; $i < count($gudangDatang)-1; $i++) { 
+                                   if ($detail->materialId == $gudangDatang[$i]['materialId']) {
+                                       $gudangDatang[$i]['brutto'] += $detailMaterial->brutto;
+                                       $gudangDatang[$i]['netto'] += $detailMaterial->netto;
+                                       $gudangDatang[$i]['tarra'] += $detailMaterial->tarra;
+                                   }
+                                }
+                            } else {
+                                $gudangDatang['datang'] = true;
+                                $gudangDatang[] = [
+                                    'materialId' => $detail->materialId,
+                                    'diameter'     => $detailMaterial->diameter==0?'-':$detailMaterial->diameter,
+                                    'gramasi'     => $detailMaterial->gramasi==0?'-':$detailMaterial->gramasi,
+                                    'brutto'     => $detailMaterial->brutto,
+                                    'netto'      => $detailMaterial->netto,
+                                    'tarra'      => $detailMaterial->tarra
+                                ];
+                            }
+                            
+                        }                    
+                    }
+                }
             }
         }
-        
+
+        for ($i=0; $i < count($gudangDatang)-1; $i++) { 
+            if ( $gudangDatang[$i]['materialId'] == 1) {
+                $netto = $gudangDatang[$i]['netto']/181.44;
+                $gudangDatang[$i]['netto'] = (int)$netto;
+            }
+        }
+        // dd($gudangDatang);
         return view('adminPO.purchaseOrder.detail', ['purchase' => $getPurchaseId, 'purchaseDetails' => $getPurchaseDetailId, 'datang' => $gudangDatang]);
     }
 
@@ -254,8 +280,7 @@ class AdminPoController extends Controller
         $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
         foreach ($poRequest as $request) {
             $cek = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $request->kode)->first();
-            $cekDatang = GudangBahanBaku::select('id')->where('purchaseId', $request->id)->first();
-
+            $cekDatang = BarangDatang::where('purchaseId', $cek->id)->first();
             if ($cek != null) {
                 $request['prosesOrder'] = true;
                 $request['prosesOrderAt'] = $cek->tanggal;
@@ -425,29 +450,52 @@ class AdminPoController extends Controller
     }
 
     public function poRequestDetail($id){
-        $getPurchaseId = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
+        $getPurchaseRequest = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
+        $getPurchaseId = AdminPurchase::where('kode', $getPurchaseRequest->kode)->where('jenisPurchase', 'Purchase Order')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
 
         $gudangDatang = [];
-        $gudang = GudangBahanBaku::select('id')->where('purchaseId', $getPurchaseId->id)->first();
-        if ($gudang) {
-            $gudangDetail = GudangBahanBakuDetail::select('materialId', 'brutto', 'netto', 'tarra')->where('gudangId', $gudang->id)->get();
-
-            foreach ($gudangDetail as $detail) {
-                $gudangDatang = [
-                    'datang'     => true                
-                ];
-
-                $gudangDatang[] = [
-                    'materialId' => $detail->materialId,
-                    'brutto'     => $detail->brutto,
-                    'netto'      => $detail->netto,
-                    'tarra'      => $detail->tarra
-                ];
+        $barang = BarangDatang::select('id')->where('purchaseId', $getPurchaseId->id)->get();
+        if (count($barang) != 0) {
+            foreach ($barang as $Gbarang) {
+                $barangDetail = BarangDatangDetail::where('barangDatangId', $Gbarang->id)->get();
+                if (count($barangDetail) != 0) {
+                    foreach ($barangDetail as $detail) {
+                        $barangDetailMaterial = BarangDatangDetailMaterial::where('barangDatangDetailId', $detail->id)->get();
+                        foreach ($barangDetailMaterial as $detailMaterial) { 
+                            if (count($gudangDatang) != 0 && $detail->materialId == 1) {
+                                for ($i=0; $i < count($gudangDatang)-1; $i++) { 
+                                   if ($detail->materialId == $gudangDatang[$i]['materialId']) {
+                                       $gudangDatang[$i]['brutto'] += $detailMaterial->brutto;
+                                       $gudangDatang[$i]['netto'] += $detailMaterial->netto;
+                                       $gudangDatang[$i]['tarra'] += $detailMaterial->tarra;
+                                   }
+                                }
+                            } else {
+                                $gudangDatang['datang'] = true;
+                                $gudangDatang[] = [
+                                    'materialId' => $detail->materialId,
+                                    'diameter'     => $detailMaterial->diameter==0?'-':$detailMaterial->diameter,
+                                    'gramasi'     => $detailMaterial->gramasi==0?'-':$detailMaterial->gramasi,
+                                    'brutto'     => $detailMaterial->brutto,
+                                    'netto'      => $detailMaterial->netto,
+                                    'tarra'      => $detailMaterial->tarra
+                                ];
+                            }
+                            
+                        }                    
+                    }
+                }
             }
         }
 
-        return view('adminPO.purchaseRequest.detail', ['request' => $getPurchaseId, 'requestDetail' => $getPurchaseDetailId, 'datang' => $gudangDatang]);
+        for ($i=0; $i < count($gudangDatang)-1; $i++) { 
+            if ( $gudangDatang[$i]['materialId'] == 1) {
+                $netto = $gudangDatang[$i]['netto']/181.44;
+                $gudangDatang[$i]['netto'] = (int)$netto;
+            }
+        }
+        return view('adminPO.purchaseRequest.detail', ['request' => $getPurchaseRequest, 'requestDetail' => $getPurchaseDetailId, 'datang' => $gudangDatang]);
     }
 
     public function poRequestUnduh($id)

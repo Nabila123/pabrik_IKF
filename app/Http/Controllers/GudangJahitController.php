@@ -94,7 +94,7 @@ class GudangJahitController extends Controller
             ];
         } 
 
-        $gdBasis = GudangJahitBasis::where('posisi', $request->posisi)->first();
+        $gdBasis = GudangJahitBasis::where('posisi', $request->posisi)->whereDate('created_at', date('Y-m-d'))->first();
         if ($gdBasis != null) {
             $gdBasisPegawai = GudangJahitDetail::where('gdJahitBasisId', $gdBasis->id)->get();
             foreach ($gdBasisPegawai as $pegawai) {

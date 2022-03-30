@@ -148,7 +148,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    @for ($i = 0; $i < count($dataPemindahan); $i++)                                                        
+                                                    {{--  @for ($i = 0; $i < count($dataPemindahan); $i++)                                                        
                                                         <tr>
                                                             <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
                                                             <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
@@ -159,7 +159,7 @@
                                                                 <a href="{{ route('GControl.keluar.detail', [$dataPemindahan[$i]['tanggal']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
-                                                    @endfor  
+                                                    @endfor    --}}
                                                 </tbody>
                                             </table>
                                         </div>

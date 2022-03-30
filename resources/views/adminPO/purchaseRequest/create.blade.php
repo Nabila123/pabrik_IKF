@@ -286,7 +286,6 @@
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                        table += "<td>"+jumlah_data+"</td>";
                         table += "<td>"+nama_material+"<input type='hidden' name='material[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
                         table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                         table += "<td>"+satuan+"<input type='hidden' name='satuan[]' value='"+satuan+"' id='satuan_"+jumlah_data+"'></td>";

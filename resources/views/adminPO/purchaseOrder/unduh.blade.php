@@ -85,7 +85,7 @@
     <table class="text-center" style="width: 100%; margin-bottom:6em;">
         <tr>
             <td colspan="2" style="font-size: 12px"> Approve </td>
-            <td rowspan="2" style="font-size: 12px; vertical-align: middle;"> Purchasing Dept. </td>
+            <td rowspan="2" style="font-size: 12px; vertical-align: middle;"> Dept. Purchase Order </td>
         </tr>
         <tr>
             <td style="font-size: 12px"> Kepala Divisi Purchase Order </td>
