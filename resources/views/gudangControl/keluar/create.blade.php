@@ -67,12 +67,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="textAlign">
-                                                @for ($i = 0; $i < count($gdKeluarBatil); $i++)                                                    
+                                                @for ($i = 0; $i < count($gdKeluarControl); $i++)                                                    
                                                     <tr>
-                                                        <td>{{ $gdKeluarBatil[$i]['tanggal'] }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $gdKeluarBatil[$i]['gdBajuStokOpnameId'] }}"></td>
-                                                        <td>{{ $gdKeluarBatil[$i]['purchase'] }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $gdKeluarBatil[$i]['purchaseId'] }}"> </td>
-                                                        <td>{{ strtoupper($gdKeluarBatil[$i]['jenisBaju']) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $gdKeluarBatil[$i]['jenisBaju'] }}"> </td>
-                                                        <td>{{ $gdKeluarBatil[$i]['ukuranBaju'] }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $gdKeluarBatil[$i]['ukuranBaju'] }}"> </td>                                                        
+                                                        <td>{{ $gdKeluarControl[$i]['tanggal'] }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $gdKeluarControl[$i]['gdBajuStokOpnameId'] }}"></td>
+                                                        <td>{{ $gdKeluarControl[$i]['purchase'] }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $gdKeluarControl[$i]['purchaseId'] }}"> </td>
+                                                        <td>{{ strtoupper($gdKeluarControl[$i]['jenisBaju']) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $gdKeluarControl[$i]['jenisBaju'] }}"> </td>
+                                                        <td>{{ $gdKeluarControl[$i]['ukuranBaju'] }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $gdKeluarControl[$i]['ukuranBaju'] }}"> </td>                                                        
                                                     </tr>
                                                 @endfor
                                             </tbody>
@@ -97,10 +97,6 @@
 @push('page_scripts') 
     <script type="text/javascript">
         $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
-            });
         });
     </script>
 @endpush

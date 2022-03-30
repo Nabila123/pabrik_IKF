@@ -10,6 +10,8 @@ use App\Models\GudangControlRekap;
 use App\Models\GudangControlRekapDetail;
 use App\Models\GudangControlReject;
 use App\Models\GudangControlRejectDetail;
+use App\Models\GudangSetrikaMasuk;
+use App\Models\GudangSetrikaMasukDetail;
 use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
@@ -300,44 +302,42 @@ class GudangControlController extends Controller
     {
         $dataPemindahan = [];
         $i = 0;        
+        $tempJenisBaju = '';        
+        $tempUkuranBaju = '';
+
         $gdRequestOperator = GudangControlStokOpname::groupBy('jenisBaju', 'ukuranBaju')->whereDate('tanggal', date('Y-m-d'))->get();
         $gdControl = GudangControlStokOpname::where('statusControl', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         $gdJahitRekap = GudangControlRekap::orderBy('tanggal', 'DESC')->groupBy('tanggal')->get();
-        $pindahan = GudangControlStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusControl', 1)->whereDate('tanggal', date('Y-m-d'))->get();
+        $pindahan = GudangControlStokOpname::where('statusControl', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         foreach ($pindahan as $detail) {
             $jumlahBaju = 0;
-            $checkBatilDetail = GudangControlMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
-            if ($checkBatilDetail == null) {
-                $target = [$detail->jenisBaju, $detail->ukuranBaju];                
-                if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) {  
-                    if ($dataPemindahan != null && count(array_intersect($dataPemindahan[$i-1], $target)) == count($target)) {
-                        $jumlahBaju = 1;
-                    }        
-
-                    if($jumlahBaju != 0){
-                        $dataPemindahan[$i-1]['jumlahBaju'] += $jumlahBaju;
-                    }else{
-                        $dataPemindahan[$i] = [
-                            'tanggal' => date('d F Y', strtotime($detail->created_at)),
-                            'jenisBaju' => $detail->jenisBaju,
-                            'ukuranBaju' => $detail->ukuranBaju,
-                            'jumlahBaju' => 1,
-                        ];
-                        $i++;
-                    }
+            $checkSetrikaDetail = GudangSetrikaMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
+            if ($checkSetrikaDetail == null) {
+                if ($i != 0 && $detail->jenisBaju == $tempJenisBaju && $detail->ukuranBaju == $tempUkuranBaju) {
+                    $dataPemindahan[$i-1]['jumlahBaju'] += 1;
+                } else {
+                    $dataPemindahan[$i] = [
+                        'tanggal' => date('d F Y', strtotime($detail->created_at)),
+                        'jenisBaju' => $detail->jenisBaju,
+                        'ukuranBaju' => $detail->ukuranBaju,
+                        'jumlahBaju' => 1,
+                    ];
+                    $i++;
                 }
+                
+                $tempJenisBaju = $detail->jenisBaju;        
+                $tempUkuranBaju = $detail->ukuranBaju;
             }
         }
 
-        $gdSetrikaMasuk = NULL;
-        // $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
-        // if ($gdControlMasuk != null) {
-        //     $gdControlMasukDetail = GudangControlMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlMId', $gdControlMasuk->id)->groupBy('gdControlMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
-        // }else {
-        //     $gdControlMasukDetail = null;
-        // }
+        $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
+        if ($gdControlMasuk != null) {
+            $gdControlMasukDetail = GudangControlMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlMId', $gdControlMasuk->id)->groupBy('gdControlMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        }else {
+            $gdControlMasukDetail = null;
+        }
 
-        return view('gudangControl.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdControl' => $gdControl, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $pindahan, 'gdControlMasuk' => $gdSetrikaMasuk]);
+        return view('gudangControl.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdControl' => $gdControl, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdControlMasuk' => $gdControlMasukDetail]);
     }
 
     public function gOperatorDataMaterial($purchaseId, $jenisBaju, $ukuranBaju, $jumlahBaju)
@@ -462,7 +462,7 @@ class GudangControlController extends Controller
     public function gRekapCreate()
     {
         $pegawai = Pegawai::where('kodeBagian', 'control')->get();
-        $purchaseId = GudangControlStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+        $purchaseId = GudangControlStokOpname::select('purchaseId')->where('statusControl', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
 
         return view('gudangControl.rekap.create', ['pegawais' => $pegawai, 'purchases' => $purchaseId]);
     }
@@ -610,6 +610,7 @@ class GudangControlController extends Controller
 
     public function gKeluarStore(Request $request)
     {
+        dd($request);
         if (count($request->gdBajuStokOpnameId) != 0) {
             $checkBatilMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
             if ($checkBatilMasuk != null) {
@@ -630,10 +631,10 @@ class GudangControlController extends Controller
         }
     }
 
-    public function gKeluarDetail($date)
+    public function gKeluarDetail($jenisBaju, $ukuranBaju, $date)
     {
         $dataPemindahan = [];
-        $gdKeluarBatil = GudangControlStokOpname::where('tanggal', $date)->get();
+        $gdKeluarBatil = GudangControlStokOpname::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('tanggal', $date)->get();
         foreach ($gdKeluarBatil as $detail) {
             if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
                 $dataPemindahan[] = [
@@ -646,6 +647,8 @@ class GudangControlController extends Controller
                 ];
             }            
         }
+
+        // dd($gdKeluarBatil);
 
         for ($i=0; $i < count($dataPemindahan); $i++) { 
             $gdRekapDetail = GudangControlRekapDetail::where('gdBajuStokOpnameId', $dataPemindahan[$i]['gdBajuStokOpnameId'])->get();
