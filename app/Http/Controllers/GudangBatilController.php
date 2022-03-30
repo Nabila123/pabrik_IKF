@@ -295,39 +295,35 @@ class GudangBatilController extends Controller
     public function gOperator()
     {
         $dataPemindahan = [];
-        $i = 0;        
+        $i = 0;       
+        $tempJenisBaju = '';        
+        $tempUkuranBaju = '';
+
         $gdRequestOperator = GudangBatilStokOpname::groupBy('jenisBaju', 'ukuranBaju')->whereDate('tanggal', date('Y-m-d'))->get();
         $gdBatil = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         $gdJahitRekap = GudangBatilRekap::orderBy('tanggal', 'DESC')->groupBy('tanggal')->get();
-        $pindahan = GudangBatilStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
+        $pindahan = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         foreach ($pindahan as $detail) {
             // dd($pindahan);
-            $jumlahBaju = 0;
             $checkBatilDetail = GudangControlMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
             if ($checkBatilDetail == null) {
-                $target = [$detail->jenisBaju, $detail->ukuranBaju];                
-                if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) {  
-                    if ($dataPemindahan != null && count(array_intersect($dataPemindahan[$i-1], $target)) == count($target)) {
-                        $jumlahBaju = 1;
-                    }        
-
-                    if($jumlahBaju != 0){
-                        $dataPemindahan[$i-1]['jumlahBaju'] += $jumlahBaju;
-                    }else{
-                        $dataPemindahan[$i] = [
-                            'tanggal' => date('d F Y', strtotime($detail->created_at)),
-                            'jenisBaju' => $detail->jenisBaju,
-                            'ukuranBaju' => $detail->ukuranBaju,
-                            'jumlahBaju' => 1,
-                        ];
-                        $i++;
-                    }
+                if ($i != 0 && $detail->jenisBaju == $tempJenisBaju && $detail->ukuranBaju == $tempUkuranBaju) {
+                    $dataPemindahan[$i-1]['jumlahBaju'] += 1;
+                } else {
+                    $dataPemindahan[$i] = [
+                        'tanggal' => date('d F Y', strtotime($detail->created_at)),
+                        'jenisBaju' => $detail->jenisBaju,
+                        'ukuranBaju' => $detail->ukuranBaju,
+                        'jumlahBaju' => 1,
+                    ];
+                    $i++;
                 }
+                
+                $tempJenisBaju = $detail->jenisBaju;        
+                $tempUkuranBaju = $detail->ukuranBaju;
             }
         }
-
-        $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
-        
+        $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();        
         if ($gdControlMasuk != null) {
             $gdControlMasukDetail = GudangControlMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlMId', $gdControlMasuk->id)->groupBy('gdControlMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
         }else {
@@ -456,7 +452,7 @@ class GudangBatilController extends Controller
     public function gRekapCreate()
     {
         $pegawai = Pegawai::where('kodeBagian', 'batil')->get();
-        $purchaseId = GudangBatilStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+        $purchaseId = GudangBatilStokOpname::select('purchaseId')->where('statusBatil', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
 
         return view('gudangBatil.rekap.create', ['pegawais' => $pegawai, 'purchases' => $purchaseId]);
     }

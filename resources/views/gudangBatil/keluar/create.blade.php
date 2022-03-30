@@ -97,10 +97,6 @@
 @push('page_scripts') 
     <script type="text/javascript">
         $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
-            });
         });
     </script>
 @endpush

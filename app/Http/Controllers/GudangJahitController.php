@@ -377,7 +377,6 @@ class GudangJahitController extends Controller
         // $dataPemindahan = GudangJahitRequestOperator::select('*', DB::raw('count(*) as jumlah'))->groupBy('jenisBaju', 'ukuranBaju')->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->get();
         $pindahan = GudangJahitRequestOperator::where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->orderby('jenisBaju', 'asc')->get();
         foreach ($pindahan as $detail) {
-            $jumlahBaju = 0;
             $checkBatilDetail = GudangBatilMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
             if ($checkBatilDetail == null) {
                 if ($i != 0 && $detail->jenisBaju == $tempJenisBaju && $detail->ukuranBaju == $tempUkuranBaju) {
