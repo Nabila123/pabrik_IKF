@@ -510,7 +510,7 @@
 
                 var jumlah_data = $('#jumlah_data').val();
                 var qtyHidden = $('#qtyHidden').val();
-                if (parseFloat(qty) > parseFloat(qtyHidden)){
+                if (parseFloat(qty) > parseFloat(berat)){
                     alert("Jumlah tidak dapat melebihi stok di Gudang saat ini!\nStok di Gudang : "+qtyHidden);
                 }else{
                     if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){

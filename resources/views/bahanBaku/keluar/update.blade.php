@@ -346,6 +346,53 @@
             })
         });
 
+        $(document).on("keyup", ".qty", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var berat = $('#berat').val();
+            var qty = $('#qty').val();
+            
+           if(gudangRequest == 1){
+               var cek = berat-qty;
+                
+                if(berat != 0 && berat != null && cek >= 0){
+                    $('#qty').css({'border':'1px solid #ced4da'});
+                    $('#bal').css({'border':'1px solid #ced4da'});
+
+                    var bal = (qty/181.44);
+                
+                    $('#bal').val(bal.toFixed(2));    
+                    $('#qtyHidden').val(qty);
+                }else{
+                    $('#qty').css({'border':'2px solid #e74c3c'});
+                    $('#bal').css({'border':'2px solid #e74c3c'});
+                }
+           }      
+                
+        });
+
+        $(document).on("keyup", ".bal", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var berat = $('#berat').val();
+            var bal = $('#bal').val();
+            
+           if(gudangRequest == 1){
+               var qty = (bal*181.44);
+               var cek = berat-qty;
+                
+                if(berat != 0 && berat != null && cek >= 0){
+                    $('#qty').css({'border':'1px solid #ced4da'});
+                    $('#bal').css({'border':'1px solid #ced4da'});
+                                   
+                    $('#qty').val(qty.toFixed(2));    
+                    $('#qtyHidden').val(qty);
+                }else{
+                    $('#qty').css({'border':'2px solid #e74c3c'});
+                    $('#bal').css({'border':'2px solid #e74c3c'});
+                }
+           }      
+                
+        });
+
         $(document).ready( function () {
             $(document).on("click", "button.TBarang", function(e){
                 e.preventDefault();
@@ -366,8 +413,9 @@
 
                 var jumlah_data = $('#jumlah_data').val();
                 var qtyHidden = $('#qtyHidden').val();
-                if (qty > qtyHidden){
-                    alert("Jumlah tidak dapat melebihi stok di Gudang saat ini!\nStok di Gudang : "+qtyHidden);
+                if (parseFloat(qty) > parseFloat(berat)){
+                    console.log(qty)
+                    console.log(qtyHidden)
                 }else{
                     if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){
                         jumlah_data++;
