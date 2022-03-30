@@ -60,8 +60,8 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" id="purchaseId" name="purchaseId" value="{{ $purchase->purchaseId }}" placeholder="Nama Suplier" readonly>                                                                                      
-                                <input type="hidden" name="gudangId" id="gudangId">        
+                                <input type="hidden" id="barangDatangId" name="barangDatangId" value="{{ $purchase->id }}" readonly>                                                                                      
+                                <input type="hidden" name="purchaseId" id="purchaseId">        
                                 <input type="hidden" name="id" id="id" value="{{ $invoice->id }}">        
                                 
                                 <div class="row"> 
@@ -149,7 +149,7 @@
         
 
         $(document).ready( function () { 
-            var purchaseId = $('#purchaseId').val();
+            var purchaseId = $('#barangDatangId').val();
             var _token = $('#_token').val();
 
             console.log(purchaseId)
@@ -163,7 +163,7 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     console.log(data)
-                    $('#gudangId').val(data['purchase']['gudangId']);
+                    $('#purchaseId').val(data['purchase']['purchaseId']);
                     $('#suplierName').val(data['purchase']['suplierName']);
                     $('#notePesan').val(data['purchase']['catatan']);                    
                     for(var i =0;i < data['material'].length;i++){

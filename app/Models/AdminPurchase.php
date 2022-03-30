@@ -73,15 +73,15 @@ class AdminPurchase extends Model
         return $data;
     }
 
-    public static function getDataInvoice($purchaseId)
+    public static function getDataInvoice($barangDatangId)
     {
         $data = [];
         $i = 0;
-        $purchase = Self::where('id', $purchaseId)->first();
-        $gudang = BarangDatang::where('purchaseId', $purchase->id)->first();
+        $gudang = BarangDatang::where('id', $barangDatangId)->first();
+        $purchase = Self::where('id', $gudang->purchaseId)->first();
         
         $data["purchase"] = [
-            'gudangId' => $gudang->id,
+            'purchaseId' => $gudang->purchaseId,
             'suplierName' => $purchase->suplierName,
             'catatan' => $purchase->note
         ];

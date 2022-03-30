@@ -29,7 +29,7 @@ class adminPurchaseInvoice extends Model
     public static function createInvoicePurchase($request)
     {
        $AddInvoice = new adminPurchaseInvoice;
-        $AddInvoice->gudangId = $request['gudangId'];
+        $AddInvoice->gudangId = $request['barangDatangId'];
         $AddInvoice->purchaseId = $request['purchaseId'];
         $AddInvoice->total = $request['total'];
         $AddInvoice->paymentDue = $request['paymentDue'];
@@ -45,7 +45,7 @@ class adminPurchaseInvoice extends Model
 
     public static function updateInvoicePurchase($request)
     {
-        $invoiceUpdate['gudangId'] = $request['gudangId'];
+        $invoiceUpdate['gudangId'] = $request['barangDatangId'];
         $invoiceUpdate['purchaseId'] = $request['purchaseId'];
         $invoiceUpdate['total'] = $request['total'];
         $invoiceUpdate['paymentDue'] = $request['paymentDue'];

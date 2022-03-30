@@ -529,10 +529,10 @@ class AdminPoController extends Controller
         $data = [];
         $i = 0;
         $invoice = adminPurchaseInvoice::where('id', $id)->first();
-        $gudang = GudangBahanBaku::where('purchaseId', $invoice->purchaseId)->first();
-        $gudangDetail = GudangBahanBakuDetail::where('gudangId', $gudang->id)->get();
+        $gudang = BarangDatang::where('purchaseId', $invoice->purchaseId)->first();
+        $gudangDetail = BarangDatangDetail::where('barangDatangId', $gudang->id)->get();
        foreach ($gudangDetail as $detail) {
-            $gudangMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detail->id)->get();
+            $gudangMaterial = BarangDatangDetailMaterial::where('barangDatangDetailId', $detail->id)->get();
             foreach ($gudangMaterial as $material) {
                 $data["material"][$i++] = [
                     'nama'      => $detail->material->nama,
@@ -553,15 +553,30 @@ class AdminPoController extends Controller
 
     public function poInvoiceCreate()
     {
-        $purchaseId = GudangBahanBaku::select('purchaseId')->where('total', 0)->get();
+        $purchaseId = BarangDatang::where('total', 0)->get();
+        $i = 1;
+        $temp = '';
+        foreach ($purchaseId as $value) {
+            
+            if ($value->purchaseId == $temp) {
+                $value->kedatangan = 'Kedatangan Ke - '.$i++;
+            }else{
+                $i = 1;
+                $value->kedatangan = 'Kedatangan Ke - '.$i++;
+            }
+            
+            $temp = $value->purchaseId;
+        }
+
         return view('adminPO.purchaseInvoice.create', ['purchaseId' => $purchaseId]);
     }
 
     public function poInvoiceStore(Request $request)
     {
+
         $invoice = adminPurchaseInvoice::createInvoicePurchase($request);
         if ($invoice == 1) {
-            $gudangUpdate = GudangBahanBaku::updateFieldGudang('Total', $request['total'], $request['gudangId']);
+            $gudangUpdate = BarangDatang::updateFieldGudang('Total', $request['total'], $request['barangDatangId']);
         }
 
 
@@ -573,16 +588,16 @@ class AdminPoController extends Controller
     public function poInvoiceUpdate($id)
     {
         $invoice = adminPurchaseInvoice::where('id', $id)->first();
-        $purchaseId = GudangBahanBaku::select('purchaseId')->where('id', $invoice->gudangId)->first();
+        $barangDatangId = BarangDatang::where('id', $invoice->gudangId)->first();
 
-        return view('adminPO.purchaseInvoice.update', ['invoice' => $invoice, 'purchase' => $purchaseId]);
+        return view('adminPO.purchaseInvoice.update', ['invoice' => $invoice, 'purchase' => $barangDatangId]);
     }
 
     public function poInvoiceUpdateSave(Request $request)
     {
         $invoice = adminPurchaseInvoice::updateInvoicePurchase($request);
         if ($invoice == 1) {
-            $gudangUpdate = GudangBahanBaku::updateFieldGudang('Total', $request['total'], $request['gudangId']);
+            $gudangUpdate = BarangDatang::updateFieldGudang('Total', $request['total'], $request['barangDatangId']);
         }
 
         $invoice = adminPurchaseInvoice::all();
@@ -593,7 +608,7 @@ class AdminPoController extends Controller
     {
         $invoice = adminPurchaseInvoice::where('id', $request['invoiceId'])->first();  
         if ($invoice) {
-           GudangBahanBaku::updateFieldGudang('Total', 0, $invoice->gudangId);
+            BarangDatang::updateFieldGudang('Total', 0, $invoice->gudangId);
            adminPurchaseInvoice::where('id', $request['invoiceId'])->delete();  
         }
 
