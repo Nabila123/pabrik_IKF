@@ -236,7 +236,7 @@ Route::get('/GJahit/rekap/update/delete/{rekapId}/{rekapDetailId}/{posisi}', [Ap
 
 Route::get('/GJahit/keluar/create', [App\Http\Controllers\GudangJahitController::class, 'gKeluarCreate'])->name('GJahit.keluar.create');
 Route::post('/GJahit/keluar/create', [App\Http\Controllers\GudangJahitController::class, 'gKeluarStore'])->name('GJahit.keluar.create');
-Route::get('/GJahit/keluar/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarDetail'])->name('GJahit.keluar.detail');
+Route::get('/GJahit/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarDetail'])->name('GJahit.keluar.detail');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
 Route::get('/GJahit/reject/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRejectTerima'])->name('GJahit.reject.terima');
@@ -272,7 +272,7 @@ Route::get('/GBatil/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Co
 
 Route::get('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
 Route::post('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarStore'])->name('GBatil.keluar.create');
-Route::get('/GBatil/keluar/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
+Route::get('/GBatil/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
 
 Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');
 Route::get('/GBatil/reject/create', [App\Http\Controllers\GudangBatilController::class, 'gRejectCreate'])->name('GBatil.reject.create');

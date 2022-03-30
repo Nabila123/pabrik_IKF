@@ -618,10 +618,10 @@ class GudangBatilController extends Controller
         }
     }
 
-    public function gKeluarDetail($date)
+    public function gKeluarDetail($jenisBaju, $ukuranBaju, $date)
     {
         $dataPemindahan = [];
-        $gdKeluarBatil = GudangBatilStokOpname::where('tanggal', $date)->get();
+        $gdKeluarBatil = GudangBatilStokOpname::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('tanggal', $date)->get();
         foreach ($gdKeluarBatil as $detail) {
             if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
                 $dataPemindahan[] = [

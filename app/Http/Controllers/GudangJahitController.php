@@ -842,10 +842,10 @@ class GudangJahitController extends Controller
         
     }
 
-    public function gKeluarDetail($jenisBaju, $ukuranBaju)
+    public function gKeluarDetail($jenisBaju, $ukuranBaju, $date)
     {
         $dataPemindahan = [];
-        $pindahan = GudangJahitRequestOperator::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->get();
+        $pindahan = GudangJahitRequestOperator::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', $date)->get();
         foreach ($pindahan as $detail) {
             $checkBatilDetail = GudangBatilMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
             if ($checkBatilDetail == null) {
