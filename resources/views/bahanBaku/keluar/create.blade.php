@@ -57,8 +57,7 @@
                                     <div class="col-12">
                                         <div class="card card-info">
                                             <div class="card-body">
-                                                <div class="row
-                                                ">
+                                                <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Gudang Request</label>
@@ -511,7 +510,7 @@
 
                 var jumlah_data = $('#jumlah_data').val();
                 var qtyHidden = $('#qtyHidden').val();
-                if (qty > qtyHidden){
+                if (parseFloat(qty) > parseFloat(qtyHidden)){
                     alert("Jumlah tidak dapat melebihi stok di Gudang saat ini!\nStok di Gudang : "+qtyHidden);
                 }else{
                     if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){
