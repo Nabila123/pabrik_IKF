@@ -382,16 +382,14 @@ class GudangBahanBakuController extends Controller
                 $gudangRequest = 3;
             }
             $data['material'] = MaterialModel::where('jenisId',$gudangRequest)->first();
-            $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->get();
-
+            $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->groupby('purchaseId')->get();
             $data['purchase'] = [];
             foreach($datas as $val){
                 $data['purchase'][] = $val->purchase;
             }
         }else{
             $data['material'] = MaterialModel::where('jenisId',3)->first();
-            $datas = GudangInspeksiStokOpname::where('materialId', $data['material']->id)->get();
-
+            $datas = GudangInspeksiStokOpname::where('materialId', $data['material']->id)->groupby('purchaseId')->get();
             $data['purchase'] = [];
             foreach($datas as $val){
                 $data['purchase'][] = $val->purchase;
@@ -421,7 +419,7 @@ class GudangBahanBakuController extends Controller
     public function getDataGudangInspeksi($materialId,$purchaseId)
     {
         $datas['diameter'] = [];
-        $detailGudangInspeksi = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->get();
+        $detailGudangInspeksi = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('qty','!=',0)->get();
         
         foreach ($detailGudangInspeksi as $detail) {
             $datas['gudangId'] = $detail->gudangDetailmaterial->bahanBakuDetail->gudangId;
@@ -499,7 +497,6 @@ class GudangBahanBakuController extends Controller
 
     public function storeKeluarGudang(Request $request)
     {
-        // dd($request);
         $jumlahData = $request['jumlah_data'];        
         switch ($request['jenisId']) {
             case 1:
@@ -606,6 +603,12 @@ class GudangBahanBakuController extends Controller
                 $data = GudangInspeksiKeluar::find($id);
                 $data->gudangRequest = $gudangRequest;
                 $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$id)->get();
+                break;
+
+            case 'Gudang Potong':
+                $data = GudangPotongKeluar::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangPotongKeluarDetail::where('gdPotongKId',$id)->get();
                 break;
 
             //MASUK
