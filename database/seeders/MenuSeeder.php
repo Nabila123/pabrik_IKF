@@ -96,9 +96,16 @@ class MenuSeeder extends Seeder
             ['id' => 52, 'parentId' => 49, 'urutan' => 3, 'nama' => 'Operator Control', 'alias' => 'GControl.operator', 'directori' => 'gudangControl/operator/index', 'isActive' => 1],
             ['id' => 53, 'parentId' => 49, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GControl.reject', 'directori' => 'gudangControl/reject/index', 'isActive' => 1],
 
-            
+            //Gudang Setrika
+            ['id' => 58, 'parentId' => 0, 'urutan' => 13, 'nama' => 'Gudang Setrika', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
+            ['id' => 59, 'parentId' => 58, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
+            ['id' => 60, 'parentId' => 58, 'urutan' => 2, 'nama' => 'Request Gudang Control', 'alias' => 'GSetrika.request', 'directori' => 'gudangSetrika/request/index', 'isActive' => 1],
+            ['id' => 61, 'parentId' => 58, 'urutan' => 3, 'nama' => 'Operator Setrika', 'alias' => 'GSetrika.operator', 'directori' => 'gudangSetrika/operator/index', 'isActive' => 1],
+            ['id' => 62, 'parentId' => 58, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GSetrika.reject', 'directori' => 'gudangSetrika/reject/index', 'isActive' => 1],
+
+
             //Gudang Packing
-            ['id' => 54, 'parentId' => 0, 'urutan' => 13, 'nama' => 'Packing', 'alias' => 'GPacking', 'directori' => 'gudangPacking', 'isActive' => 1],
+            ['id' => 54, 'parentId' => 0, 'urutan' => 14, 'nama' => 'Packing', 'alias' => 'GPacking', 'directori' => 'gudangPacking', 'isActive' => 1],
             ['id' => 55, 'parentId' => 54, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GPacking', 'directori' => 'gudangPacking', 'isActive' => 1],
             ['id' => 56, 'parentId' => 54, 'urutan' => 2, 'nama' => 'Operator Packing', 'alias' => 'GPacking.operator', 'directori' => 'gudangPacking/operator/index', 'isActive' => 1],
             ['id' => 57, 'parentId' => 54, 'urutan' => 3, 'nama' => 'Request Baju Reject', 'alias' => 'GPacking.reject', 'directori' => 'gudangPacking/reject/index', 'isActive' => 1],

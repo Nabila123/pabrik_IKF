@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Jahit Reject</h1>
+                    <h1>Detail Control Reject</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Jahit Reject</li>
+                        <li class="breadcrumb-item">Control Reject</li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
@@ -64,7 +64,7 @@
                                 </thead>
                                 <tbody class="textAlign">
                                     <?php $no = 1; ?>
-                                    @foreach ($jahitRejectDetail as $detail)
+                                    @foreach ($controlRejectDetail as $detail)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $detail->reject->gudangRequest }}</td>

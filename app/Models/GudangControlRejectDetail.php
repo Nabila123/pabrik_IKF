@@ -26,6 +26,22 @@ class GudangControlRejectDetail extends Model
         return $this->hasOne('App\Models\GudangControlReject','id','gdControlRejectId');
     }
 
+    public static function createGudangControlRejectDetail($gdControlRejectId, $gdBajuStokOpnameId, $keterangan)
+    {
+        $keluarDetail = new GudangControlRejectDetail;
+        $keluarDetail->gdControlRejectId = $gdControlRejectId;
+        $keluarDetail->gdBajuStokOpnameId = $gdBajuStokOpnameId;
+        $keluarDetail->keterangan = $keterangan;
+        $keluarDetail->userId = \Auth::user()->id;
+        $keluarDetail->created_at = date('Y-m-d H:i:s');
+
+        if($keluarDetail->save()){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $inspeksiUpdated['statusDiterima'] = $statusDiterima;

@@ -175,15 +175,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    @foreach ($gdControlMasuk as $detail)
-                                                        <tr>
-                                                            <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
-                                                            <td>{{ $detail->purchase->kode }}</td>
-                                                            <td>{{ strtoupper($detail->jenisBaju) }}</td>
-                                                            <td>{{ $detail->ukuranBaju }}</td>
-                                                            <td>{{ $detail->jumlah }}</td>
-                                                        </tr>
-                                                    @endforeach
+                                                    @if($gdControlMasuk !== null)
+                                                        @foreach ($gdControlMasuk as $detail)
+                                                            <tr>
+                                                                <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
+                                                                <td>{{ $detail->purchase->kode }}</td>
+                                                                <td>{{ strtoupper($detail->jenisBaju) }}</td>
+                                                                <td>{{ $detail->ukuranBaju }}</td>
+                                                                <td>{{ $detail->jumlah }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>

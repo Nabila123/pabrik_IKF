@@ -43,12 +43,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1> Rekapan Control</h1>
+                    <h1> Rekapan Setrika</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Rekapan Control</li>
+                        <li class="breadcrumb-item">Rekapan Setrika</li>
                         <li class="breadcrumb-item active">Update Data</li>
                     </ol>
                 </div>
@@ -79,7 +79,7 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-control operator">        
+                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-Setrika operator">        
                                 <input type="hidden" id="id" name="id" value="{{ $id }}">        
                                 
                                 <div class="row">                                 
@@ -87,7 +87,7 @@
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label>Nama Pegawai</label>
-                                            <select class="form-control pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" >
+                                            <select class="form-Setrika pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" >
                                                 <option> Pilih Satu Pegawai</option>
                                                 @foreach ($pegawais as $pegawai)
                                                     <option value="{{ $pegawai->id }}"> {{ $pegawai->nama }}</option>
@@ -99,7 +99,7 @@
                                     <div class="col-4">
                                         <label>Tanggal</label>
                                         <div class="input-group">                                            
-                                            <input type="text" id="tanggal" name="tanggal" value="{{ date('d F Y') }}" class="form-control tanggal disable" readonly>
+                                            <input type="text" id="tanggal" name="tanggal" value="{{ date('d F Y') }}" class="form-Setrika tanggal disable" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Kode Purchase </label>
-                                                            <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
+                                                            <select class="form-Setrika purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                                 <option> Pilih Salah Satu</option>
                                                                 @foreach ($purchases as $purchase)
                                                                     <option value="{{ $purchase->purchaseId }}"> {{ $purchase->purchase->kode }}</option>
@@ -126,7 +126,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Jenis Baju</label>
-                                                            <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
+                                                            <select class="form-Setrika jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
                                                                 
                                                             </select> 
                                                         </div>
@@ -134,7 +134,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Ukuran Baju </label>
-                                                            <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
+                                                            <select class="form-Setrika ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
                                                             </select>
                                                         </div>
@@ -142,7 +142,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Jumlah Baju </label>                                                            
-                                                            <input type="text" style="width:100px;" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
+                                                            <input type="text" style="width:100px;" class="form-Setrika jumlahBaju" name="jumlahBaju" id="jumlahBaju">
                                                             <input type="hidden" style="width:100px;" id="jumlahBajuOld">
                                                         </div>
                                                         <div id="requestOperatorId">
@@ -186,7 +186,7 @@
                                                         <td>{{ $detail->ukuranBaju }}</td>
                                                         <td>{{ $detail->jumlah }}</td>
                                                         <td>
-                                                            <a href="{{ route('GControl.rekap.update.delete', [$id, $detail->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                            <a href="{{ route('GSetrika.rekap.update.delete', [$id, $detail->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -223,7 +223,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getPegawai') }}',
+                url: '{{ url('GSetrika/getPegawai') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -249,7 +249,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getPegawai') }}',
+                url: '{{ url('GSetrika/getPegawai') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -291,7 +291,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getPegawai') }}',
+                url: '{{ url('GSetrika/getPegawai') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -338,7 +338,7 @@
             if(jumlahBaju <= jumlahBajuOld){
                 $.ajax({
                     type: "post",
-                    url: '{{ url('GControl/getPegawai') }}',
+                    url: '{{ url('GSetrika/getPegawai') }}',
                     data: {
                         'posisi' : posisi,
                         'purchaseId' : purchaseId,

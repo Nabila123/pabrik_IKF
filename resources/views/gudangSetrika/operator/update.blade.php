@@ -69,13 +69,13 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-control operator">        
+                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-Setrika operator">        
                                 
                                 <div class="row mb-5">
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Jenis Baju </label>
-                                            <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
+                                            <select class="form-Setrika jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
                                                 <option value="{{ $jenisBaju }} ">{{ strtoupper($jenisBaju) }} </option>
                                             </select>                                                                                  
                                         </div>
@@ -83,7 +83,7 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Kode Purchase</label>
-                                            <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
+                                            <select class="form-Setrika purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
                                         </div>
@@ -92,7 +92,7 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Ukuran Baju</label>
-                                            <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
+                                            <select class="form-Setrika ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
                                         </div>
@@ -101,7 +101,7 @@
                                     <div class="col-3">
                                         <label>Jumlah Baju</label>
                                         <div class="input-group">                                            
-                                            <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
+                                            <input type="number" id="jumlah" name="jumlah" class="form-Setrika jumlah " >
                                         </div>
                                         <div id="requestOperatorId">
 
@@ -139,8 +139,8 @@
                                                         <td>{{ $detail->ukuranBaju }}</td>
                                                         <td>{{ $detail->jumlah }}</td>
                                                         <td align="center">
-                                                            @if ($gdControl == null)
-                                                                <a href="{{ route('GControl.operator.update.delete', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                            @if ($gdSetrika == null)
+                                                                <a href="{{ route('GSetrika.operator.update.delete', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
                                                             @else
                                                                 <button type="button" class="btn btn-sm btn-block btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
                                                             @endif
@@ -181,7 +181,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getData') }}',
+                url: '{{ url('GSetrika/getData') }}',
                 data: {
                     'jenisBaju' : jenisBaju,
                     '_token': _token
@@ -206,7 +206,7 @@
             
             $.ajax({
                 type: "get",
-                url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+null+'/'+null,
+                url: '{{ url('GSetrika/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+null+'/'+null,
                 
                 success: function(response){
                     var data = JSON.parse(response)
@@ -229,7 +229,7 @@
             
             $.ajax({
                 type: "get",
-                url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+null,
+                url: '{{ url('GSetrika/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+null,
                 
                 success: function(response){
                     var data = JSON.parse(response)
@@ -254,7 +254,7 @@
             
             $.ajax({
                 type: "get",
-                url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
+                url: '{{ url('GSetrika/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
                 
                 success: function(response){
                     var data = JSON.parse(response)

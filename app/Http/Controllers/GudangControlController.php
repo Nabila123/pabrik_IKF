@@ -336,7 +336,7 @@ class GudangControlController extends Controller
         // }else {
         //     $gdControlMasukDetail = null;
         // }
-
+        dd($pindahan);
         return view('gudangControl.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdControl' => $gdControl, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $pindahan, 'gdControlMasuk' => $gdSetrikaMasuk]);
     }
 

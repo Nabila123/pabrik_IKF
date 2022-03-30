@@ -329,4 +329,46 @@ Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index']
 Route::get('/GPacking/operator', [App\Http\Controllers\PackingController::class, 'gOperator'])->name('GPacking.operator');
 Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
 
+//Setrika
+Route::get('/GSetrika', [App\Http\Controllers\GudangSetrikaController::class, 'index'])->name('GSetrika');
+Route::post('/GSetrika/getData', [App\Http\Controllers\GudangSetrikaController::class, 'getData'])->name('GSetrika.getData');
+Route::post('/GSetrika/getBasis', [App\Http\Controllers\GudangSetrikaController::class, 'getBasis'])->name('GSetrika.getBasis');
+Route::post('/GSetrika/getPegawai', [App\Http\Controllers\GudangSetrikaController::class, 'getPegawai'])->name('GSetrika.getPegawai');
+Route::post('/GSetrika/getReject', [App\Http\Controllers\GudangSetrikaController::class, 'getReject'])->name('GSetrika.getReject');
+
+Route::get('/GSetrika/request', [App\Http\Controllers\GudangSetrikaController::class, 'gRequest'])->name('GSetrika.request');
+Route::get('/GSetrika/request/terima/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRequestTerima'])->name('GSetrika.request.terima');
+Route::get('/GSetrika/request/detail/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRequestDetail'])->name('GSetrika.request.detail');
+
+Route::get('/GSetrika/operator', [App\Http\Controllers\GudangSetrikaController::class, 'gOperator'])->name('GSetrika.operator');
+Route::get('/GSetrika/operator/detail/{date}', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorDetail'])->name('GSetrika.operator.detail');
+Route::get('/GSetrika/operator/create', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorCreate'])->name('GSetrika.operator.create');
+Route::post('/GSetrika/operator/create', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorStore'])->name('GSetrika.operator.create');
+Route::get('/GSetrika/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}/{jumlahBaju}', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorDataMaterial'])->name('GSetrika.operator.detailMaterial');
+Route::get('/GSetrika/operator/update/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorupdate'])->name('GSetrika.operator.update');
+Route::post('/GSetrika/operator/update/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorupdateSave'])->name('GSetrika.operator.update');
+Route::get('/GSetrika/operator/update/delete/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorUpdateDelete'])->name('GSetrika.operator.update.delete');
+Route::delete('/GSetrika/operator/delete', [App\Http\Controllers\GudangSetrikaController::class, 'gOperatorDelete'])->name('GSetrika.operator.delete');
+
+Route::get('/GSetrika/rekap/create', [App\Http\Controllers\GudangSetrikaController::class, 'gRekapCreate'])->name('GSetrika.rekap.create');
+Route::post('/GSetrika/rekap/create', [App\Http\Controllers\GudangSetrikaController::class, 'gRekapStore'])->name('GSetrika.rekap.create');
+Route::get('/GSetrika/rekap/detail/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRekapDetail'])->name('GSetrika.rekap.detail');
+Route::get('/GSetrika/rekap/update/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRekapUpdate'])->name('GSetrika.rekap.update');
+Route::post('/GSetrika/rekap/update/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRekapUpdateSave'])->name('GSetrika.rekap.update');
+Route::get('/GSetrika/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangSetrikaController::class, 'gRekapUpdateDelete'])->name('GSetrika.rekap.update.delete');
+
+Route::get('/GSetrika/keluar/create', [App\Http\Controllers\GudangSetrikaController::class, 'gKeluarCreate'])->name('GSetrika.keluar.create');
+Route::post('/GSetrika/keluar/create', [App\Http\Controllers\GudangSetrikaController::class, 'gKeluarStore'])->name('GSetrika.keluar.create');
+Route::get('/GSetrika/keluar/detail/{date}', [App\Http\Controllers\GudangSetrikaController::class, 'gKeluarDetail'])->name('GSetrika.keluar.detail');
+
+Route::get('/GSetrika/reject', [App\Http\Controllers\GudangSetrikaController::class, 'gReject'])->name('GSetrika.reject');
+Route::get('/GSetrika/reject/create', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectCreate'])->name('GSetrika.reject.create');
+Route::post('/GSetrika/reject/create', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectStore'])->name('GSetrika.reject.create');
+Route::get('/GSetrika/reject/detail/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectDetail'])->name('GSetrika.reject.detail');
+Route::get('/GSetrika/reject/update/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectUpdate'])->name('GSetrika.reject.update');
+Route::post('/GSetrika/reject/update/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectUpdateSave'])->name('GSetrika.reject.update');
+Route::get('/GSetrika/reject/update/delete/{rejectId}/{detailRejectId}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectUpdateDelete'])->name('GSetrika.reject.update.delete');
+Route::delete('/GSetrika/reject/delete', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectDelete'])->name('GSetrika.reject.delete');
+
+
 Auth::routes();

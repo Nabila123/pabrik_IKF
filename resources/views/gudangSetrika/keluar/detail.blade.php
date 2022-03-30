@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Batil Pemindahan</h1>
+                    <h1>Detail Control Pemindahan</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Batil Pemindahan</li>
+                        <li class="breadcrumb-item">Control Pemindahan</li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
@@ -59,20 +59,20 @@
                                         <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Keterangan Batil</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Keterangan Control</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
                                     <?php $no = 1; ?>
-                                    @for ($i = 0; $i < count($gdKeluarBatil); $i++)                                        
+                                    @for ($i = 0; $i < count($gdKeluarControl); $i++)                                        
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $gdKeluarBatil[$i]['purchase'] }}</td>
-                                            <td>{{ strtoupper($gdKeluarBatil[$i]['jenisBaju']) }}</td>
-                                            <td>{{ $gdKeluarBatil[$i]['ukuranBaju'] }}</td>
+                                            <td>{{ $gdKeluarControl[$i]['purchase'] }}</td>
+                                            <td>{{ strtoupper($gdKeluarControl[$i]['jenisBaju']) }}</td>
+                                            <td>{{ $gdKeluarControl[$i]['ukuranBaju'] }}</td>
                                             <td>
-                                                @if ($gdKeluarBatil[$i]['statusControl'] == 1)
-                                                    {{ $gdKeluarBatil[$i]['batilName'] }}
+                                                @if ($gdKeluarControl[$i]['statusSetrika'] == 1)
+                                                    {{ $gdKeluarControl[$i]['ControlName'] }}
                                                 @else
                                                     <i class="fas fa-xmark"></i>
                                                 @endif

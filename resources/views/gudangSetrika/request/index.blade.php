@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Control Request</h1>
+                    <h1>Gudang Setrika Request</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Control Request</li>
+                        <li class="breadcrumb-item active">Gudang Setrika Request</li>
                     </ol>
                 </div>
             </div>
@@ -60,18 +60,18 @@
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gdControlMasuk as $detail)
+                                    @foreach ($gdSetrikaMasuk as $detail)
                                         <tr>
                                             <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
                                             <td>
                                                 @if ($detail->statusDiterima == 0)
-                                                     <a href="{{ route('GControl.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                     <a href="{{ route('GSetrika.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                 @else
                                                      <span style="color: green; font-size: 13px">Sudah Diterima</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('GControl.request.detail', [$detail->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <a href="{{ route('GSetrika.request.detail', [$detail->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

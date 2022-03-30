@@ -43,12 +43,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1> Reject From Control</h1>
+                    <h1> Reject From Setrika</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Reject From Control</li>
+                        <li class="breadcrumb-item">Reject From Setrika</li>
                         <li class="breadcrumb-item active">Tambah Data</li>
                     </ol>
                 </div>
@@ -195,7 +195,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getReject') }}',
+                url: '{{ url('GSetrika/getReject') }}',
                 data: {
                     'purchaseId' : purchaseId,
                     'groupBy' : "jenisBaju",
@@ -220,7 +220,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getReject') }}',
+                url: '{{ url('GSetrika/getReject') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -262,7 +262,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getReject') }}',
+                url: '{{ url('GSetrika/getReject') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -309,7 +309,7 @@
             if(jumlahBaju <= jumlahBajuOld){
                 $.ajax({
                     type: "post",
-                    url: '{{ url('GControl/getReject') }}',
+                    url: '{{ url('GSetrika/getReject') }}',
                     data: {
                         'posisi' : posisi,
                         'purchaseId' : purchaseId,

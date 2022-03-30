@@ -73,17 +73,17 @@ class GudangPotongController extends Controller
         $gudangPotong = GudangPotongKeluar::all();
         foreach ($gudangPotong as $request) {
             $cekDetail = GudangPotongProses::where('gPotongKId', $request->id)->first();
-            $cekJahit = GudangJahitMasukDetail::where('gdPotongProsesId', $cekDetail->id)->first();
                     
             if ($cekDetail != null) {
                 $request->cekPotong = 1;
+                 $cekJahit = GudangJahitMasukDetail::where('gdPotongProsesId', $cekDetail->id)->first();
+                 if ($cekJahit != null) {
+                    $request->cekJahit = 1;
+                }
             }else {
                 $request->cekPotong = 0;
             }
 
-            if ($cekJahit != null) {
-                $request->cekJahit = 1;
-            }
         }
 
         return view('gudangPotong.keluar.index', ['gudangPotong' => $gudangPotong]);

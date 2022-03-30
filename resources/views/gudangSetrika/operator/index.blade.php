@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Control Operator</h1>
+                    <h1>Gudang Setrika Operator</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Control Operator</li>
+                        <li class="breadcrumb-item active">Gudang Setrika Operator</li>
                     </ol>
                 </div>
             </div>
@@ -54,14 +54,14 @@
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Setrika</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Packing</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="OperatorLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GControl.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
+                                        <a href="{{ route('GSetrika.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
                                     </h3>
                                     <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
@@ -80,9 +80,9 @@
                                                     <td>{{ $detail->ukuranBaju }}</td>
                                                     
                                                     <td>
-                                                        <a href="{{ route('GControl.operator.detail', date('Y-m-d', strtotime($detail->tanggal))) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GControl.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                            @if (count($gdControl) == 0)
+                                                        <a href="{{ route('GSetrika.operator.detail', date('Y-m-d', strtotime($detail->tanggal))) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GSetrika.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            @if (count($gdSetrika) == 0)
                                                                 <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                             @else
                                                                 <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
@@ -96,7 +96,7 @@
                                 
                                 <div class="tab-pane" id="RekapanLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GControl.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Control</a>
+                                        <a href="{{ route('GSetrika.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Setrika</a>
                                     </h3>
                                     <table id="rekap" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
@@ -107,15 +107,15 @@
                                             </tr>
                                         </thead>
                                         <tbody class="textAlign">
-                                            @foreach ($batilRekap as $rekap)
+                                            @foreach ($setrikaRekap as $rekap)
                                                 <tr>
                                                     <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
                                                     <td>{{ $rekap->user->nama }}</td>
                                                    
                                                     <td>
-                                                        <a href="{{ route('GControl.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GSetrika.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         @if ($rekap->tanggal == date("Y-m-d"))
-                                                            <a href="{{ route('GControl.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            <a href="{{ route('GSetrika.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                         @else
                                                             <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
                                                         @endif
@@ -135,7 +135,7 @@
                                     <div class="tab-content">
                                         <div class="active tab-pane mt-5" id="pindahkanData">
                                             <h3 class="card-title mb-4" style="width: 100%">
-                                                <a href="{{ route('GControl.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
+                                                <a href="{{ route('GSetrika.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
                                             </h3>
                                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                 <thead>
@@ -148,18 +148,18 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    @for ($i = 0; $i < count($dataPemindahan); $i++)                                                        
+                                                    @foreach ($dataPemindahan as $pindahan)
                                                         <tr>
-                                                            <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
-                                                            <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
-                                                            <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
-                                                            <td>{{ $dataPemindahan[$i]['jumlah'] }}</td>
+                                                            <td>{{ $pindahan->tanggal }}</td>
+                                                            <td>{{ strtoupper($pindahan->jenisBaju) }}</td>
+                                                            <td>{{ $pindahan->ukuranBaju }}</td>
+                                                            <td>{{ $pindahan->jumlah }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GControl.keluar.detail', [$dataPemindahan[$i]['tanggal']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                                <a href="{{ route('GSetrika.keluar.detail', $pindahan->tanggal) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
-                                                    @endfor  
+                                                    @endforeach  
                                                 </tbody>
                                             </table>
                                         </div>
@@ -175,7 +175,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    {{--  @foreach ($gdControlMasuk as $detail)
+                                                    @foreach ($gdPackingMasuk as $detail)
                                                         <tr>
                                                             <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                             <td>{{ $detail->purchase->kode }}</td>
@@ -183,7 +183,7 @@
                                                             <td>{{ $detail->ukuranBaju }}</td>
                                                             <td>{{ $detail->jumlah }}</td>
                                                         </tr>
-                                                    @endforeach  --}}
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -233,7 +233,7 @@
         {
                 var jenisBaju = jenisBaju;
                 var ukuranBaju = ukuranBaju;
-                var url = '{{ route('GControl.operator.delete') }}';
+                var url = '{{ route('GSetrika.operator.delete') }}';
                 // url = url.replace(':id', id);
                 $('#jenisBaju').val(jenisBaju);
                 $('#ukuranBaju').val(ukuranBaju);

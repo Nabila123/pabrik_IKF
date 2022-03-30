@@ -43,13 +43,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1> Reject From Control</h1>
+                    <h1> Reject From Setrika</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Reject From Control</li>
-                        <li class="breadcrumb-item active">Update Data</li>
+                        <li class="breadcrumb-item">Reject From Setrika</li>
+                        <li class="breadcrumb-item active">Tambah Data</li>
                     </ol>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
                                 <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-control operator">        
-                                <input type="hidden" id="id" name="id" value="{{ $gdJahitReject->id }}" class="form-control id">        
+                                <input type="hidden" id="id" name="id" value="{{ $gdControlReject->id }}" class="form-control id">        
                                 
                                 <div class="row">
                                     <div class="col-12">
@@ -164,7 +164,7 @@
                                             </thead>
                                             <tbody class="data textAlign">
                                                 <?php $no = 1; ?>
-                                                @foreach ($jahitRejectDetail as $detail)
+                                                @foreach ($controlRejectDetail as $detail)
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
                                                         <td>{{ $detail->kodePurchase }}</td>
@@ -173,7 +173,7 @@
                                                         <td>1</td>
                                                         <td>{{ $detail->keterangan }}</td>
                                                         <td align="center">
-                                                            <a href="{{ route('GControl.reject.update.delete', [$gdJahitReject->id, $detail->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                            <a href="{{ route('GSetrika.reject.update.delete', [$gdControlReject->id, $detail->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -209,7 +209,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getReject') }}',
+                url: '{{ url('GSetrika/getReject') }}',
                 data: {
                     'purchaseId' : purchaseId,
                     'groupBy' : "jenisBaju",
@@ -234,7 +234,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getReject') }}',
+                url: '{{ url('GSetrika/getReject') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -276,7 +276,7 @@
             
             $.ajax({
                 type: "post",
-                url: '{{ url('GControl/getReject') }}',
+                url: '{{ url('GSetrika/getReject') }}',
                 data: {
                     'posisi' : posisi,
                     'purchaseId' : purchaseId,
@@ -323,7 +323,7 @@
             if(jumlahBaju <= jumlahBajuOld){
                 $.ajax({
                     type: "post",
-                    url: '{{ url('GControl/getReject') }}',
+                    url: '{{ url('GSetrika/getReject') }}',
                     data: {
                         'posisi' : posisi,
                         'purchaseId' : purchaseId,
