@@ -161,6 +161,9 @@
         $(document).on("change", ".posisi", function(){
             var posisi = $('#posisi').val();
             var _token = $('#_token').val();
+            $('#HasilJahitData thead.dataTHead').html('');
+            $('#HasilJahitData tbody.dataTBody').html('');
+            $('.qtyTarget').val('');
             
             $.ajax({
                 type: "post",

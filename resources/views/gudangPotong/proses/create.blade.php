@@ -184,10 +184,10 @@
                                                             <option> Pilih Jenis Baju</option>    
                                                             <option value="Singlet"> J - Singlet </option>    
                                                             <option value="Oblong"> J - Oblong </option>    
-                                                            <option value="Oblong TK"> J - Oblong TK </option> 
-                                                            <option value="DJ - Singlet"> DJ - Singlet </option>    
-                                                            <option value="DJ - Oblong"> DJ - Oblong </option>    
-                                                            <option value="DJ - Oblong tk"> DJ - Oblong TK </option>   
+                                                            <option value="Oblong-TK"> J - Oblong TK </option> 
+                                                            <option value="DJ-Singlet"> DJ - Singlet </option>    
+                                                            <option value="DJ-Oblong"> DJ - Oblong </option>    
+                                                            <option value="DJ-Oblong tk"> DJ - Oblong TK </option>   
                                                         </select>    
                                                     </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="size" id="size"> </td>
