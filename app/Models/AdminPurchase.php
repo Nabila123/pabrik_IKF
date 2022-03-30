@@ -64,10 +64,13 @@ class AdminPurchase extends Model
 
         $i = 0;
         foreach ($detailMaterial as $detail) {
-           if (!in_array($detail->diameter, $data['diameter'])) {
-            $data['diameter'][$i] = $detail->diameter;
-           }
-            $i++;
+            $inspeksiStokOpname = gudangInspeksiStokOpname::where('gdInspeksiKId', $detail->gdInspeksiKId)->where('gdDetailMaterialId', $detail->gdDetailMaterialId)->where('purchaseId', $detail->purchaseId)->first();
+            if ($inspeksiStokOpname == null) {
+                if (!in_array($detail->diameter, $data['diameter'])) {
+                    $data['diameter'][$i] = $detail->diameter;
+                }
+                    $i++;
+            }
         }      
         
         return $data;
