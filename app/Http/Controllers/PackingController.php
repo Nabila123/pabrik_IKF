@@ -339,6 +339,7 @@ class PackingController extends Controller
 
     public function gRekapUpdateSave(Request $request)
     {
+        // dd($request);
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
                 $checkPegawai = GudangPackingRekap::where('id', $request->id)->first();

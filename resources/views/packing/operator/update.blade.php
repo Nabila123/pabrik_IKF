@@ -102,6 +102,13 @@
                                             <input type="text" id="tanggal" name="tanggal" value="{{ date('d F Y') }}" class="form-control tanggal disable" readonly>
                                         </div>
                                     </div>
+
+                                    <div class="col-4">
+                                        <label>Kode Packing</label>
+                                        <div class="input-group">                                            
+                                            <input type="text" id="kodePacking" name="kodePacking" value="{{ $rekap->kodePacking }}" class="form-control kodePacking disable" readonly>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -180,7 +187,7 @@
                                             <tbody class="data textAlign">
                                                 @foreach ($rekapanPegawai as $detail)
                                                     <tr>
-                                                        <td>{{ $rekap->pegawai->nama }}</td>
+                                                        <td>{{ $detail->pegawai->nama }}</td>
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ $detail->jenisBaju }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
