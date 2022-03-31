@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Self_;
 
 class GudangPackingRekap extends Model
 {
@@ -20,10 +21,23 @@ class GudangPackingRekap extends Model
         return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
     }
 
-    public static function PackingRekapCreate($pegawaiId, $userId)
+    public static function kodePacking() {
+        $packingRekap =  Self::select('kodePacking')->get(); 
+        $kode = rand(0, 999999999999);
+        
+        foreach ($packingRekap as $value) {
+            if ($value->kodePacking == $kode) {
+                Self::kodePacking();
+            }            
+        }
+
+        return $kode;
+    }
+
+    public static function PackingRekapCreate($kodePacking, $userId)
     {
         $addPackingRekap = New GudangPackingRekap;
-        $addPackingRekap->pegawaiId = $pegawaiId;
+        $addPackingRekap->kodePacking = $kodePacking;
         $addPackingRekap->tanggal = date('Y-m-d');
         $addPackingRekap->userId = $userId;
         $addPackingRekap->created_at = date('Y-m-d H:i:s');

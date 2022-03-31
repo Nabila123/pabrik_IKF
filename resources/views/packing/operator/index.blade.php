@@ -53,6 +53,7 @@
                         <div class="card-header">
                             <h3 class="card-title" style="width: 100%">
                                 <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
+                                <a href="{{ route('GPacking.rekap.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
                             </h3>                           
                         </div>                   
                         <div class="card-body">
@@ -61,7 +62,8 @@
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Pegawai Packing</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Packing Pegawai </th>
+                                        <th class="textAlign" style="vertical-align: middle;">Kode Packing</th>
                                         <th class="textAlign" style="vertical-align: middle;">Operator</th>
                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                     </tr>
@@ -72,7 +74,8 @@
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
-                                            <td>{{ $rekap->pegawai->nama }}</td>
+                                            <td>{{ $rekap->pegawaiName}}</td>
+                                            <td>{{ $rekap->kodePacking}}</td>
                                             <td>{{ $rekap->user->nama }}</td>
                                             
                                             <td>

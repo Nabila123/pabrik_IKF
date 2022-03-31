@@ -30,11 +30,16 @@ class GudangPackingRekapDetail extends Model
         return $this->hasOne('App\Models\GudangSetrikaStokOpname','gdBajuStokOpnameId','gdBajuStokOpnameId');
     }
 
-    public static function PackingRekapDetailCreate($gdPackingRekapId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
+    public function pegawai()
+    {
+        return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
+    }
+
+    public static function PackingRekapDetailCreate($gdPackingRekapId, $gdBajuStokOpnameId, $pegawaiId, $purchaseId, $jenisBaju, $ukuranBaju)
     {
         $addPackingDetailRekap = New GudangPackingRekapDetail();
         $addPackingDetailRekap->gdPackingRekapId = $gdPackingRekapId;
-        $addPackingDetailRekap->kodeScan = 0;
+        $addPackingDetailRekap->pegawaiId = $pegawaiId;
         $addPackingDetailRekap->gdBajuStokOpnameId = $gdBajuStokOpnameId;
         $addPackingDetailRekap->purchaseId = $purchaseId;
         $addPackingDetailRekap->jenisBaju = $jenisBaju;

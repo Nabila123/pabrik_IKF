@@ -101,6 +101,13 @@
                                             <input type="text" id="tanggal" name="tanggal" value="{{ date('d F Y') }}" class="form-control tanggal disable" readonly>
                                         </div>
                                     </div>
+
+                                    <div class="col-4">
+                                        <label>Kode Packing</label>
+                                        <div class="input-group">                                            
+                                            <input type="text" id="kodePacking" name="kodePacking" value="{{ $kodePacking }}" class="form-control kodePacking disable" readonly>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -170,6 +177,7 @@
                                                 <tr>
                                                     <th style="vertical-align: middle;">No</th>
                                                     <th style="vertical-align: middle;">Nama Pegawai</th>
+                                                    <th style="vertical-align: middle;">Kode Packing</th>
                                                     <th style="vertical-align: middle;">Kode Purchase</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
@@ -358,27 +366,31 @@
 
                 var pegawaiId       = $('#pegawaiId').val();
                 var pegawaiName     = $('#pegawaiId').find('option:selected').text();
+                var kodePacking     = $('#kodePacking').val();
                 var purchaseId      = $('#purchaseId').val();
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var jenisBaju       = $('#jenisBaju').val();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlahBaju      = $('#jumlahBaju').val();
+                var jumlah_data     = $('#jumlah_data').val();
+                jumlah_data++;
+
                 var operatorReqId   = [];
                 for(i=0; i<jumlahBaju; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
-
-                console.log(pegawaiId)
-
-                var jumlah_data     = $('#jumlah_data').val();
-
+                               
                 if(pegawaiId != "Pilih Satu Pegawai" && purchaseId != "" && jenisBaju != "" && ukuranBaju != "" && jumlahBaju != ""){
-                    jumlah_data++;
+                    
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                            table += "<td>"+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
+                            table += "<td>";
+                            table +=    jumlah_data;
+                            table +=    "<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'>";
+                            table += "</td>";
                             table += "<td>"+pegawaiName+"<input type='hidden' name='pegawaiId[]' value='"+pegawaiId+"' id='pegawaiId_"+jumlah_data+"'></td>";
+                            table += "<td>"+kodePacking+"<input type='hidden' name='kodePacking[]' value='"+kodePacking+"' id='kodePacking_"+jumlah_data+"'></td>";
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
@@ -389,11 +401,10 @@
                             table += "</td>";
                         table += "</tr>";
 
-                        $('#posisi').val('');
-                        $('#posisi option[value=""]').attr('selected','selected');
+                        
 
                         $('#pegawaiId').val('');
-                        $('#pegawaiId option[value=""]').attr('selected','selected');
+                        $('#pegawaiId option[value=""]').attr('selected','selected');                        
 
                         $('#purchaseId').val('');
                         $('#purchaseId option[value=""]').attr('selected','selected');
@@ -406,17 +417,34 @@
                         
                         $('#jumlahBaju').val('');
 
-                        $('#soom').prop('checked', false);
-                        $('#jahit').prop('checked', false);
-                        $('#bawahan').prop('checked', false);
-
-                        $('#ketJahit').html('');
-
+                        $('#kodePacking').val('');
+                        
                 }else{
                     alert("Inputan Tidak Boleh Ada Yang Kosong");
                 }
 
                 $('#JahitData tbody.data').append(table);
+
+                var packingKode     = [];
+                if(jumlah_data == 1){
+                    packingKode = kodePacking;
+                }else{
+                    for(i=1; i<=jumlah_data; i++){
+                        packingKode[i]   = $('#kodePacking_'+i+'').val();
+                    }
+                }
+
+                console.log(packingKode)
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('GPacking/getKodePacking') }}/'+packingKode,
+                    
+                    success: function(response){
+                        var data = JSON.parse(response) 
+                        console.log(data);
+                        $('#kodePacking').val(data);
+                    }
+                })
             });
     
             $(document).on("click", "a.del", function(e){

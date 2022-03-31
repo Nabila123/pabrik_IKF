@@ -50,7 +50,22 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">                   
+                    <div class="card">  
+                        <div class="card-header">
+                            <div class="row mt-4">
+                                <div class="col-sm-4">
+                                    <div class="position-relative p-3 bg-light" style="height: 120px">
+                                        <div class="ribbon-wrapper ribbon-lg">
+                                            <div class="ribbon bg-success">
+                                                Barcode
+                                            </div>
+                                        </div>
+                                        <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($rekap->kodePacking, 'EAN13')}}" height="60" width="180"> <br />
+                                        <small style="letter-spacing: 9px;">{{$rekap->kodePacking }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                 
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
@@ -68,7 +83,7 @@
                                     @foreach ($pegawais as $detail)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $rekap->pegawai->nama }}</td>
+                                            <td>{{ $detail->pegawai->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>

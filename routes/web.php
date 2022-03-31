@@ -328,6 +328,7 @@ Route::delete('/GControl/reject/delete', [App\Http\Controllers\GudangControlCont
 Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index'])->name('GPacking');
 Route::post('/GPacking/getPegawai', [App\Http\Controllers\PackingController::class, 'getPegawai'])->name('GPacking.getPegawai');
 Route::post('/GPacking/getReject', [App\Http\Controllers\PackingController::class, 'getReject'])->name('GPacking.getReject');
+Route::get('/GPacking/getKodePacking/{kodePacking}', [App\Http\Controllers\PackingController::class, 'getKodePacking'])->name('GPacking.getKodePacking');
 
 Route::get('/GPacking/request', [App\Http\Controllers\PackingController::class, 'gRequest'])->name('GPacking.request');
 Route::get('/GPacking/request/terima/{id}', [App\Http\Controllers\PackingController::class, 'gRequestTerima'])->name('GPacking.request.terima');
@@ -340,6 +341,7 @@ Route::post('/GPacking/rekap/create', [App\Http\Controllers\PackingController::c
 Route::get('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdate'])->name('GPacking.rekap.update');
 Route::post('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateSave'])->name('GPacking.rekap.update');
 Route::get('/GPacking/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateDelete'])->name('GPacking.rekap.update.delete');
+Route::get('/GPacking/rekap/cetakBarcode', [App\Http\Controllers\PackingController::class, 'gRekapCetakBarcode'])->name('GPacking.rekap.cetakBarcode');
 
 Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
 Route::get('/GPacking/reject/create', [App\Http\Controllers\PackingController::class, 'gRejectCreate'])->name('GPacking.reject.create');
