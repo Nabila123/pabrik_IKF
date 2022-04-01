@@ -111,6 +111,10 @@ class MenuSeeder extends Seeder
             ['id' => 57, 'parentId' => 54, 'urutan' => 3, 'nama' => 'Operator Packing', 'alias' => 'GPacking.operator', 'directori' => 'gudangPacking/operator/index', 'isActive' => 1],
             ['id' => 58, 'parentId' => 54, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GPacking.reject', 'directori' => 'gudangPacking/reject/index', 'isActive' => 1],
 
+            //Master Materiao
+            ['id' => 63, 'parentId' => 0, 'urutan' => 15, 'nama' => 'Master Material', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
+            ['id' => 64, 'parentId' => 63, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1]
+
         ];
 
         DB::table('mst_menu')->insert($menu);

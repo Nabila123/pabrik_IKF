@@ -17,4 +17,10 @@ class MaterialModel extends Model
 
         return $materials;
     }
+
+    public function jenisBarang()
+    {
+        return $this->hasOne('App\Models\JenisBarang','id','jenisId');
+    }
+
 }
