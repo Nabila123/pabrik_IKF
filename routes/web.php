@@ -371,4 +371,14 @@ Route::get('/GSetrika/reject/update/delete/{rejectId}/{detailRejectId}', [App\Ht
 Route::delete('/GSetrika/reject/delete', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectDelete'])->name('GSetrika.reject.delete');
 
 
+//MATERIAL
+Route::get('/material', [App\Http\Controllers\MaterialController::class, 'index'])->name('Material');
+Route::get('/material/create', [App\Http\Controllers\MaterialController::class, 'create'])->name('Material.create');
+Route::post('material/create', [App\Http\Controllers\MaterialController::class, 'store'])->name('Material.store');
+Route::get('/material/edit/{id}', [App\Http\Controllers\MaterialController::class, 'edit'])->name('Material.edit');
+Route::post('material/edit/{id}', [App\Http\Controllers\MaterialController::class, 'update'])->name('Material.update');
+Route::get('material/detail/{id}', [App\Http\Controllers\MaterialController::class, 'detail'])->name('Material.detail');
+Route::delete('material/delete', [App\Http\Controllers\MaterialController::class, 'delete'])->name('Material.delete');
+
+
 Auth::routes();
