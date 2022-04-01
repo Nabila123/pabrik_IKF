@@ -5,6 +5,9 @@ use App\Models\MaterialModel;
 use App\Models\JenisBarang;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Gmail;
+use Carbon\Carbon;
 
 class MaterialController extends Controller
 {
@@ -15,6 +18,7 @@ class MaterialController extends Controller
 
     public function index(){
         $materials = MaterialModel::all();
+       dd($now = Carbon::today());
 
         return view('material.index')->with(['materials'=>$materials]);
     }
