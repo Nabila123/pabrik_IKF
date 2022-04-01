@@ -10,9 +10,32 @@ class GudangSetrikaStokOpname extends Model
     use HasFactory;
     protected $table = 'gd_setrika_stokopname';
 
+    public function user()
+    {
+        return $this->hasOne('App\Models\User','id','userId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
+    }
+
+    public static function SetrikaStokOpnameCreate($gdBajuStokOpnameId, $tanggal, $purchaseId, $jenisBaju, $ukuranBaju, $statusSetrika, $userId)
+    {
+        $AddSetrikaStokOpname = new GudangSetrikaStokOpname;
+        $AddSetrikaStokOpname->gdBajuStokOpnameId = $gdBajuStokOpnameId;
+        $AddSetrikaStokOpname->tanggal = $tanggal;
+        $AddSetrikaStokOpname->purchaseId = $purchaseId;
+        $AddSetrikaStokOpname->jenisBaju = $jenisBaju;
+        $AddSetrikaStokOpname->ukuranBaju = $ukuranBaju;
+        $AddSetrikaStokOpname->statusSetrika = $statusSetrika;
+
+        $AddSetrikaStokOpname->userId = $userId;
+        $AddSetrikaStokOpname->created_at = date('Y-m-d H:i:s');
+
+        $AddSetrikaStokOpname->save();        
+        
+        return 1;
     }
 
     public static function bajuUpdateField($fieldName, $updatedField, $id)

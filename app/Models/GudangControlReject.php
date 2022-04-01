@@ -30,7 +30,9 @@ class GudangControlReject extends Model
         } else {
             return 0;
         }
+
     }
+
 
     public static function updateStatusDiterima($id, $statusDiterima)
     {

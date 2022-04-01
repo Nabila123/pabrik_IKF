@@ -330,14 +330,15 @@ class GudangControlController extends Controller
             }
         }
 
-        $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
-        if ($gdControlMasuk != null) {
-            $gdControlMasukDetail = GudangControlMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlMId', $gdControlMasuk->id)->groupBy('gdControlMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
-        }else {
-            $gdControlMasukDetail = null;
-        }
-
-        return view('gudangControl.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdControl' => $gdControl, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdControlMasuk' => $gdControlMasukDetail]);
+        $gdSetrikaMasuk = NULL;
+        // $gdControlMasuk = GudangControlMasuk::where('tanggal', date('Y-m-d'))->first();
+        // if ($gdControlMasuk != null) {
+        //     $gdControlMasukDetail = GudangControlMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlMId', $gdControlMasuk->id)->groupBy('gdControlMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        // }else {
+        //     $gdControlMasukDetail = null;
+        // }
+        // dd($pindahan);
+        return view('gudangControl.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdControl' => $gdControl, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $pindahan, 'gdControlMasuk' => $gdSetrikaMasuk]);
     }
 
     public function gOperatorDataMaterial($purchaseId, $jenisBaju, $ukuranBaju, $jumlahBaju)

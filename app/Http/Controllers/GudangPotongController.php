@@ -82,6 +82,10 @@ class GudangPotongController extends Controller
                     
             if ($cekDetail != null) {
                 $request->cekPotong = 1;
+                 $cekJahit = GudangJahitMasukDetail::where('gdPotongProsesId', $cekDetail->id)->first();
+                 if ($cekJahit != null) {
+                    $request->cekJahit = 1;
+                }
             }else {
                 $request->cekPotong = 0;
             }

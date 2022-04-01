@@ -26,7 +26,7 @@ class GudangControlRejectDetail extends Model
         return $this->hasOne('App\Models\GudangControlReject','id','gdControlRejectId');
     }
 
-    public static function CreateGudangControlRejectDetail($gdControlRejectId, $gdBajuStokOpnameId, $keterangan)
+    public static function createGudangControlRejectDetail($gdControlRejectId, $gdBajuStokOpnameId, $keterangan)
     {
         $keluarDetail = new GudangControlRejectDetail;
         $keluarDetail->gdControlRejectId = $gdControlRejectId;
