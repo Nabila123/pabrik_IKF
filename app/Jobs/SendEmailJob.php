@@ -34,12 +34,19 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $packing = GudangPackingRekapDetail::whereDate('updated_at', Carbon::today())->get();
-        $details = [
-            'title' => 'Total Packing',
-            'body' => 'Total Baju yang dipacking hari ini adalah = '.count($packing)
+        $packings = GudangPackingRekapDetail::whereDate('updated_at', Carbon::today())->get();
+        $packingBaju = [];
+        $ukuranBaju = [];
+        foreach ($packings as $key => $packing) {
+            if(!array_key_exists($packing->ukuranBaju, $ukuranBaju)){
+                $ukuranBaju[$packing->ukuranBaju]['ukuran'] = $packing->ukuranBaju;
+                $ukuranBaju[$packing->ukuranBaju]['jumlah'] = 1;
+            }else{
+                $ukuranBaju[$packing->ukuranBaju]['jumlah'] += 1;
+            }
+            $packingBaju[$packing->jenisBaju] = $ukuranBaju;
+        }
 
-        ];
-        Mail::to('nuramalina.0296@gmail.com')->send(new Gmail($details));
+        Mail::to('nuramalina.0296@gmail.com')->send(new Gmail($packingBaju));
     }
 }
