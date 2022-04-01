@@ -393,7 +393,6 @@ Route::post('/GSetrika/reject/update/{id}', [App\Http\Controllers\GudangSetrikaC
 Route::get('/GSetrika/reject/update/delete/{rejectId}/{detailRejectId}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectUpdateDelete'])->name('GSetrika.reject.update.delete');
 Route::delete('/GSetrika/reject/delete', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectDelete'])->name('GSetrika.reject.delete');
 
-
 //MATERIAL
 Route::get('/material', [App\Http\Controllers\MaterialController::class, 'index'])->name('Material');
 Route::get('/material/create', [App\Http\Controllers\MaterialController::class, 'create'])->name('Material.create');
@@ -403,5 +402,14 @@ Route::post('material/edit/{id}', [App\Http\Controllers\MaterialController::clas
 Route::get('material/detail/{id}', [App\Http\Controllers\MaterialController::class, 'detail'])->name('Material.detail');
 Route::delete('material/delete', [App\Http\Controllers\MaterialController::class, 'delete'])->name('Material.delete');
 
+//Gudang Barang Jadi
+Route::get('/GBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'index'])->name('GBarangJadi');
+
+Route::get('/GBarangJadi/operator', [App\Http\Controllers\GudangBarangJadiController::class, 'gOperator'])->name('GBarangJadi.operator');
+
+Route::get('/GBarangJadi/requestPotong', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotong'])->name('GBarangJadi.requestPotong');
+Route::get('/GBarangJadi/requestPotong/detail/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongDetail'])->name('GBarangJadi.requestPotong.detail');
+Route::get('/GBarangJadi/requestPotong/create', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongcreate'])->name('GBarangJadi.requestPotong.create');
+Route::post('/GBarangJadi/requestPotong/create', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongstore'])->name('GBarangJadi.requestPotong.store');
 
 Auth::routes();
