@@ -171,7 +171,7 @@ class GudangInspeksiController extends Controller
             }
 
         }       
-
+        
         return view('gudangInspeksi.proses.create', ['purchaseId' => $purchaseInspeksi, 'gudangKeluar' => $purchaseMaterial, 'gdDetailMaterialId' => $gdDetailMaterialId]);
     }
 

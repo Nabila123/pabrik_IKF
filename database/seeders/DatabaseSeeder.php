@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(JenisBarangSeeder::class);
         // $this->call(MaterialSeeder::class);
         $this->call(MenuSeeder::class);
-        $this->call(PermissionSeeder::class);
+        $this->call(PegawaiSeeder::class);
     }
 }

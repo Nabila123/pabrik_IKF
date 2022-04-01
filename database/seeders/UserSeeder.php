@@ -26,6 +26,7 @@ class UserSeeder extends Seeder
             ['id' => 6, 'nama' => 'K Dept Prod', 'nip' => 'KDeptProd001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 8, 'created_at' => date('Y-m-d H:i:s')],
             ['id' => 7, 'nama' => 'K Dept Fin', 'nip' => 'KDeptFin001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 9, 'created_at' => date('Y-m-d H:i:s')],
             ['id' => 8, 'nama' => 'PPIC', 'nip' => 'PPIC001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 38, 'created_at' => date('Y-m-d H:i:s')],
+            ['id' => 9, 'nama' => 'Gudang Bahan Baku', 'nip' => 'GBB001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 26, 'created_at' => date('Y-m-d H:i:s')],
         ];
 
         DB::table('users')->insert($users);

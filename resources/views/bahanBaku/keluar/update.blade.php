@@ -59,8 +59,7 @@
                                     <div class="col-12">
                                         <div class="card card-info">
                                             <div class="card-body">
-                                                <div class="row
-                                                ">
+                                                <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label>Gudang Request</label>
@@ -72,10 +71,12 @@
 
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Barang</label>
-                                                            <input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly> 
-                                                            <input type="hidden" name="jenisId" id="jenisId" class="jenisId">            
-                                                            <input type="hidden" name="materialId" id="materialId" class="materialId">                                        
+                                                            <div id="checkGudang">
+                                                                <label>Barang</label>
+                                                                <input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly> 
+                                                                <input type="hidden" name="jenisId" id="jenisId" class="jenisId">            
+                                                                <input type="hidden" name="materialId" id="materialId" class="materialId">                                        
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -88,8 +89,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">                                                        
-
+                                                <div class="row">  
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Diameter</label>
@@ -119,9 +119,11 @@
 
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Jumlah</label>
-                                                            <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
-                                                            <input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/> 
+                                                            <div id="Jumlah">
+                                                                <label>Jumlah</label>
+                                                                <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
+                                                                <input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>    
+                                                            </div> 
                                                         </div>
                                                     </div>
 
@@ -197,13 +199,54 @@
         });  --}}
         
 
-        $(window).on('load', function() {
+        $(document).ready( function () {
             var gudangRequest = $('#gudangRequest').val();
             var _token = $('#_token').val();
+
+            if(gudangRequest == 4){
+                var html =  '<label>Jenis Kain</label>';
+                    html += '<input type="hidden" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly>';
+                    html += '<input type="hidden" name="jenisId" id="jenisId" class="jenisId">';
+                    html += '<input type="hidden" name="materialId" id="materialId" class="materialId">';
+                    html +=  '<select class="form-control jenisKain" id="jenisKain" name="jenisKain" style="width: 100%; height: 38px;">';
+                        html +=  '<option value="">Pilih Jenis Kain</option>';
+                        html +=  '<option value="1">Kain Putih</option>';
+                        html +=  '<option value="2">Kain Putih Inspeksi</option>';
+                    html +=  '</select>';                       
+            }else{
+                var html = '<label>Barang</label>';
+                    html += '<input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly>';
+                    html += '<input type="hidden" name="jenisId" id="jenisId" class="jenisId">';
+                    html += '<input type="hidden" name="materialId" id="materialId" class="materialId">';
+            }
+            $('#checkGudang').html(html);
+
+            if(gudangRequest == 1){
+                var dt = '<table>';
+                        dt += '<tr>';
+                            dt += '<th>Jumlah <sub>Kg</sub></th>';
+                            dt += '<th>Jumlah <sub>Bal</sub></th>';
+                        dt += '</tr>';
+                        dt += '<tr>';
+                            dt += '<td>';
+                                dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="KG" />'; 
+                            dt += '</td>';
+                            dt += '<td>';                                                            
+                                dt += '<input type="text" class="form-control bal" id="bal" name="bal"placeholder="Bal" />'; 
+                            dt += '</td>';
+                        dt += '</tr>';
+                    dt += '</table>';
+                    dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
+            }else{                    
+                var dt = '<label>Jumlah</label>';
+                    dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" />';
+                    dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
+            }
+            $('#Jumlah').html(dt);
             
             $.ajax({
                 type: "get",
-                url: '{{ url("bahan_baku/keluar/getMaterial") }}/'+gudangRequest,
+                url: '{{ url("bahan_baku/keluar/getMaterial") }}/'+gudangRequest+'/'+null,
                 success: function(response){
                     var data = JSON.parse(response);
                     {{--  console.log(data.material);  --}}
@@ -303,6 +346,53 @@
             })
         });
 
+        $(document).on("keyup", ".qty", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var berat = $('#berat').val();
+            var qty = $('#qty').val();
+            
+           if(gudangRequest == 1){
+               var cek = berat-qty;
+                
+                if(berat != 0 && berat != null && cek >= 0){
+                    $('#qty').css({'border':'1px solid #ced4da'});
+                    $('#bal').css({'border':'1px solid #ced4da'});
+
+                    var bal = (qty/181.44);
+                
+                    $('#bal').val(bal.toFixed(2));    
+                    $('#qtyHidden').val(qty);
+                }else{
+                    $('#qty').css({'border':'2px solid #e74c3c'});
+                    $('#bal').css({'border':'2px solid #e74c3c'});
+                }
+           }      
+                
+        });
+
+        $(document).on("keyup", ".bal", function(){
+            var gudangRequest = $('#gudangRequest').val();
+            var berat = $('#berat').val();
+            var bal = $('#bal').val();
+            
+           if(gudangRequest == 1){
+               var qty = (bal*181.44);
+               var cek = berat-qty;
+                
+                if(berat != 0 && berat != null && cek >= 0){
+                    $('#qty').css({'border':'1px solid #ced4da'});
+                    $('#bal').css({'border':'1px solid #ced4da'});
+                                   
+                    $('#qty').val(qty.toFixed(2));    
+                    $('#qtyHidden').val(qty);
+                }else{
+                    $('#qty').css({'border':'2px solid #e74c3c'});
+                    $('#bal').css({'border':'2px solid #e74c3c'});
+                }
+           }      
+                
+        });
+
         $(document).ready( function () {
             $(document).on("click", "button.TBarang", function(e){
                 e.preventDefault();
@@ -323,8 +413,9 @@
 
                 var jumlah_data = $('#jumlah_data').val();
                 var qtyHidden = $('#qtyHidden').val();
-                if (qty > qtyHidden){
-                    alert("Jumlah tidak dapat melebihi stok di Gudang saat ini!\nStok di Gudang : "+qtyHidden);
+                if (parseFloat(qty) > parseFloat(berat)){
+                    console.log(qty)
+                    console.log(qtyHidden)
                 }else{
                     if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){
                         jumlah_data++;

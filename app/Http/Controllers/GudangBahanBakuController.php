@@ -156,6 +156,7 @@ class GudangBahanBakuController extends Controller
                         $dataDetail['brutto'] = $bahanBakuDetailMaterial->brutto + $brutto[0];
                         $dataDetail['netto'] = $bahanBakuDetailMaterial->netto + $netto[0];
                         $dataDetail['tarra'] = $bahanBakuDetailMaterial->tarra + $tarra[0];
+                        $dataDetail['qty'] = $bahanBakuDetailMaterial->qty + 1;
 
                         $updateBahanBakuDetailMaterial =  GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanBakuDetail->id)->update($dataDetail);
                     }else{
@@ -166,6 +167,7 @@ class GudangBahanBakuController extends Controller
                         $bahanBakuDetailMaterial->brutto = $brutto[0];
                         $bahanBakuDetailMaterial->netto = $netto[0];
                         $bahanBakuDetailMaterial->tarra = $tarra[0];
+                        $bahanBakuDetailMaterial->qty = 1;
                         $bahanBakuDetailMaterial->unit = $request['unit'][$i];
                         $bahanBakuDetailMaterial->unitPrice = $request['unitPrice'][$i];
                         $bahanBakuDetailMaterial->amount = $request['amount'][$i];
@@ -188,6 +190,7 @@ class GudangBahanBakuController extends Controller
                         $bahanBakuDetailMaterial->brutto = $brutto[$j];
                         $bahanBakuDetailMaterial->netto = $netto[$j];
                         $bahanBakuDetailMaterial->tarra = $tarra[$j];
+                        $bahanBakuDetailMaterial->qty = 1;
                         $bahanBakuDetailMaterial->unit = $request['unit'][$i];
                         $bahanBakuDetailMaterial->unitPrice = $request['unitPrice'][$i];
                         $bahanBakuDetailMaterial->amount = $request['amount'][$i];
@@ -379,16 +382,14 @@ class GudangBahanBakuController extends Controller
                 $gudangRequest = 3;
             }
             $data['material'] = MaterialModel::where('jenisId',$gudangRequest)->first();
-            $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->get();
-
+            $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->groupby('purchaseId')->get();
             $data['purchase'] = [];
             foreach($datas as $val){
                 $data['purchase'][] = $val->purchase;
             }
         }else{
             $data['material'] = MaterialModel::where('jenisId',3)->first();
-            $datas = GudangInspeksiStokOpname::where('materialId', $data['material']->id)->get();
-
+            $datas = GudangInspeksiStokOpname::where('materialId', $data['material']->id)->groupby('purchaseId')->get();
             $data['purchase'] = [];
             foreach($datas as $val){
                 $data['purchase'][] = $val->purchase;
@@ -403,7 +404,7 @@ class GudangBahanBakuController extends Controller
     {
         $datas['diameter'] = [];
         $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-        $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->get();
+        $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('qty', '!=', 0)->get();
         
         $datas['gudangId'] = $detailGudang->gudangId;
         foreach ($gudangMaterialDetail as $detail) {
@@ -418,7 +419,7 @@ class GudangBahanBakuController extends Controller
     public function getDataGudangInspeksi($materialId,$purchaseId)
     {
         $datas['diameter'] = [];
-        $detailGudangInspeksi = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->get();
+        $detailGudangInspeksi = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('qty','!=',0)->get();
         
         foreach ($detailGudangInspeksi as $detail) {
             $datas['gudangId'] = $detail->gudangDetailmaterial->bahanBakuDetail->gudangId;
@@ -435,7 +436,7 @@ class GudangBahanBakuController extends Controller
         $datas = [];
         if ($gramasi == "null") {
             $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->get();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('qty', '!=', 0)->get();
         
             foreach ($gudangMaterialDetail as $detail) {
                 if (!in_array($detail->gramasi, $datas)) {
@@ -444,7 +445,7 @@ class GudangBahanBakuController extends Controller
             }
         }elseif ($berat == "null") {
             $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->get();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('qty', '!=', 0)->get();
         
             foreach ($gudangMaterialDetail as $detail) {
                 if (!in_array($detail->netto, $datas)) {
@@ -453,7 +454,7 @@ class GudangBahanBakuController extends Controller
             }
         }else{
             $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('netto', $berat)->first();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('netto', $berat)->where('qty', '!=', 0)->first();
             
             $datas['gudangMaterialDetail'] = $gudangMaterialDetail->id;
             $datas['qty'] = $gudangMaterialDetail->qty;
@@ -466,7 +467,7 @@ class GudangBahanBakuController extends Controller
     {
         $datas = [];
         if ($gramasi == "null") {
-            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->get();
+            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('qty', '!=', 0)->get();
         
             foreach ($detailGudang as $detail) {
                 if (!in_array($detail->gramasi, $datas)) {
@@ -474,7 +475,7 @@ class GudangBahanBakuController extends Controller
                 }
             }
         }elseif ($berat == "null") {
-            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('gramasi', $gramasi)->get();
+            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('qty', '!=', 0)->get();
             foreach ($detailGudang as $detail) {
                 $gudangMaterialDetail = gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $detail->id)->get();
                 foreach ($gudangMaterialDetail as $value) {
@@ -484,7 +485,7 @@ class GudangBahanBakuController extends Controller
                 }
             }
         }else{
-            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('gramasi', $gramasi)->first();
+            $detailGudang = gudangInspeksiStokOpname::where('materialId',$materialId)->where('purchaseId',$purchaseId)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('qty', '!=', 0)->first();
             $gudangMaterialDetail = gudangInspeksiStokOpnameDetail::where('gdInspeksiStokId', $detailGudang->id)->where('berat', $berat)->first();
             
             $datas['gudangMaterialDetail'] = $gudangMaterialDetail->inspeksiStok->id;
@@ -496,7 +497,6 @@ class GudangBahanBakuController extends Controller
 
     public function storeKeluarGudang(Request $request)
     {
-        // dd($request);
         $jumlahData = $request['jumlah_data'];        
         switch ($request['jenisId']) {
             case 1:
@@ -603,6 +603,12 @@ class GudangBahanBakuController extends Controller
                 $data = GudangInspeksiKeluar::find($id);
                 $data->gudangRequest = $gudangRequest;
                 $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$id)->get();
+                break;
+
+            case 'Gudang Potong':
+                $data = GudangPotongKeluar::find($id);
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangPotongKeluarDetail::where('gdPotongKId',$id)->get();
                 break;
 
             //MASUK

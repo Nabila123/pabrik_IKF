@@ -156,7 +156,7 @@
                                                             <td>{{ $dataPemindahan[$i]['jumlahBaju'] }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GBatil.keluar.detail', [$dataPemindahan[$i]['tanggal']]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                                <a href="{{ route('GBatil.keluar.detail', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
                                                     @endfor  

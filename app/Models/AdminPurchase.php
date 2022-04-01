@@ -64,31 +64,34 @@ class AdminPurchase extends Model
 
         $i = 0;
         foreach ($detailMaterial as $detail) {
-           if (!in_array($detail->diameter, $data['diameter'])) {
-            $data['diameter'][$i] = $detail->diameter;
-           }
-            $i++;
+            $inspeksiStokOpname = gudangInspeksiStokOpname::where('gdInspeksiKId', $detail->gdInspeksiKId)->where('gdDetailMaterialId', $detail->gdDetailMaterialId)->where('purchaseId', $detail->purchaseId)->first();
+            if ($inspeksiStokOpname == null) {
+                if (!in_array($detail->diameter, $data['diameter'])) {
+                    $data['diameter'][$i] = $detail->diameter;
+                }
+                    $i++;
+            }
         }      
         
         return $data;
     }
 
-    public static function getDataInvoice($purchaseId)
+    public static function getDataInvoice($barangDatangId)
     {
         $data = [];
         $i = 0;
-        $purchase = Self::where('id', $purchaseId)->first();
-        $gudang = GudangBahanBaku::where('purchaseId', $purchase->id)->first();
-
+        $gudang = BarangDatang::where('id', $barangDatangId)->first();
+        $purchase = Self::where('id', $gudang->purchaseId)->first();
+        
         $data["purchase"] = [
-            'gudangId' => $gudang->id,
+            'purchaseId' => $gudang->purchaseId,
             'suplierName' => $purchase->suplierName,
             'catatan' => $purchase->note
         ];
-
-        $gudangDetail = GudangBahanBakuDetail::where('gudangId', $gudang->id)->get();
+        
+        $gudangDetail = BarangDatangDetail::where('barangDatangId', $gudang->id)->get();
        foreach ($gudangDetail as $detail) {
-            $gudangMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detail->id)->get();
+            $gudangMaterial = BarangDatangDetailMaterial::where('barangDatangDetailId', $detail->id)->get();
             foreach ($gudangMaterial as $material) {
                 $data["material"][$i++] = [
                     'nama'      => $detail->material->nama,

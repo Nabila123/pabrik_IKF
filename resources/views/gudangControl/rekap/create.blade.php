@@ -200,10 +200,6 @@
 
 @push('page_scripts') 
     <script type="text/javascript"> 
-        
-        $('#pegawaiId').select2({
-            theme: 'bootstrap4'
-        });
 
         $(document).on("change", ".purchaseId", function(){
             var posisi = $('#posisi').val();
@@ -324,7 +320,7 @@
 
             $('#requestOperatorId').html('');
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GControl/getPegawai') }}',

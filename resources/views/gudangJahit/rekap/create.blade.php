@@ -86,7 +86,7 @@
                                         <div class="form-group">
                                             <label>Posisi Jahit </label>
                                             <select class="form-control posisi" id="posisi" name="posisi" style="width: 100%; height: 38px;" >
-                                                <option> Pilih Satu </option>
+                                                <option value=""> Pilih Satu </option>
                                                 <option value="soom">Soom</option>
                                                 <option value="jahit">Jahit</option>
                                                 <option value="bawahan">Bawahan</option>
@@ -220,10 +220,6 @@
 
 @push('page_scripts') 
     <script type="text/javascript"> 
-        
-        $('#posisi').select2({
-            theme: 'bootstrap4'
-        });
 
         $(document).on("change", "#soom", function(){
             if ($(this).is(':checked')) {
@@ -427,7 +423,7 @@
                     $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
-                        var dt ="<input type='text' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                         $('#requestOperatorId').append(dt);  
                     }
 
@@ -483,7 +479,7 @@
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
                         $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){
-                            var dt ="<input type='text' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
                         }
                     }

@@ -60,16 +60,16 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" name="gudangId" id="gudangId">        
+                                <input type="hidden" name="purchaseId" id="purchaseId">        
                                 
                                 <div class="row"> 
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Kode Purchase</label>
-                                            <select class="form-control col-md-7 col-xs-12 purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" required>
+                                            <select class="form-control col-md-7 col-xs-12 barangDatangId" id="barangDatangId" name="barangDatangId" style="width: 100%; height: 38px;" required>
                                                 <option value="">Pilih Kode Purchase</option>
                                                 @foreach($purchaseId as $purchase)
-                                                    <option value="{{$purchase->purchaseId}}">{{$purchase->purchase->kode}}</option>
+                                                    <option value="{{$purchase->id}}">{{$purchase->purchase->kode}} ( {{ $purchase->kedatangan }} )</option>
                                                 @endforeach
                                             </select>                                           
                                         </div>
@@ -149,13 +149,13 @@
 @push('page_scripts') 
 
     <script type="text/javascript">
-        $('#purchaseId').select2({
+        $('#barangDatangId').select2({
             theme: 'bootstrap4'
         });
         
 
-        $(document).on("change", ".purchaseId", function(){
-            var purchaseId = $('#purchaseId').val();
+        $(document).on("change", ".barangDatangId", function(){
+            var purchaseId = $('#barangDatangId').val();
             var _token = $('#_token').val();
             $('#invoice tbody.data').empty();
             $.ajax({
@@ -168,7 +168,7 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     console.log(data)
-                    $('#gudangId').val(data['purchase']['gudangId']);
+                    $('#purchaseId').val(data['purchase']['purchaseId']);
                     $('#suplierName').val(data['purchase']['suplierName']);
                     $('#notePesan').val(data['purchase']['catatan']);                    
                     for(var i =0;i < data['material'].length;i++){

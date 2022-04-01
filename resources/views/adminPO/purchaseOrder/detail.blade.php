@@ -61,7 +61,7 @@
                                 </thead>                               
                             </table>
 
-                            <table id="example2" class="table table-bordered dataTables_scrollBody text-center" style="width: 100%">
+                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody text-center" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%;">No</th>
@@ -69,6 +69,8 @@
                                         <th style="width: 5%;">Qty</th>
                                         <th style="width: 5%;">Satuan</th>
                                         @if (isset($datang['datang']))
+                                            <th style="width: 5%;">Diameter</th>
+                                            <th style="width: 5%;">Gramasi</th>
                                             <th style="width: 5%;">Brutto</th>
                                             <th style="width: 5%;">Netto</th>
                                             <th style="width: 5%;">Selisih </th>
@@ -83,22 +85,30 @@
                                     @foreach ($purchaseDetails as $detail)
                                     <?php $no++; ?>
                                         <tr>
-                                            <td>{{ $no }}</td>
-                                            <td class="text-left">{{ $detail->material->nama }}</td>
-                                            <td>{{ $detail->qty }}</td>
-                                            <td>{{ $detail->unit }}</td>
+                                            <td style="vertical-align: middle;">{{ $no }}</td>
+                                            <td style="vertical-align: middle;" class="text-left">{{ $detail->material->nama }}</td>
+                                            <td style="vertical-align: middle;">{{ $detail->qty }}</td>
+                                            <td style="vertical-align: middle;">{{ $detail->unit }}</td>
                                             @if (isset($datang['datang']))
-                                                @for ($i = 0; $i < count($datang)-1; $i++)
-                                                   @if ($datang[$i]['materialId'] == $detail->materialId)
-                                                        <td>{{ $datang[$i]['brutto'] }}</td>
-                                                        <td>{{ $datang[$i]['netto'] }}</td>
-                                                        <td>{{ $datang[$i]['tarra'] }}</td>
-                                                   @endif
-                                                @endfor
+                                                <td colspan="5" style="vertical-align: middle;">
+                                                    @for ($i = 0; $i < count($datang)-1; $i++)
+                                                        <table class="table table-bordered text-center">
+                                                            <tr>
+                                                                @if ($datang[$i]['materialId'] == $detail->materialId)
+                                                                    <td>{{ $datang[$i]['diameter'] }}</td>
+                                                                    <td>{{ $datang[$i]['gramasi'] }}</td>
+                                                                    <td>{{ $datang[$i]['brutto'] }}</td>
+                                                                    <td>{{ $datang[$i]['netto'] }}</td>
+                                                                    <td>{{ $datang[$i]['tarra'] }}</td>
+                                                                @endif
+                                                            </tr>
+                                                        </table>
+                                                    @endfor
+                                                </td>
                                             @endif
-                                            <td>{{ $detail->unitPrice }}</td>
-                                            <td>{{ $detail->amount }}</td>
-                                            <td class="text-left">{{ $detail->remark }}</td>
+                                            <td style="vertical-align: middle;">{{ $detail->unitPrice }}</td>
+                                            <td style="vertical-align: middle;">{{ $detail->amount }}</td>
+                                            <td style="vertical-align: middle;" class="text-left">{{ $detail->remark }}</td>
                                         </tr>
                                     @endforeach                                    
                                 </tbody>                                

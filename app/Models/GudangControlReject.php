@@ -42,4 +42,5 @@ class GudangControlReject extends Model
 
         return 1;
     }
+    
 }
