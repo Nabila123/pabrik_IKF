@@ -79,14 +79,14 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-Setrika operator">        
+                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-control operator">        
                                 
                                 <div class="row">                                 
 
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label>Nama Pegawai</label>
-                                            <select class="form-Setrika pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" >
+                                            <select class="form-control pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" >
                                                 <option> Pilih Satu Pegawai</option>
                                                 @foreach ($pegawais as $pegawai)
                                                     <option value="{{ $pegawai->id }}"> {{ $pegawai->nama }}</option>
@@ -98,7 +98,7 @@
                                     <div class="col-4">
                                         <label>Tanggal</label>
                                         <div class="input-group">                                            
-                                            <input type="text" id="tanggal" name="tanggal" value="{{ date('d F Y') }}" class="form-Setrika tanggal disable" readonly>
+                                            <input type="text" id="tanggal" name="tanggal" value="{{ date('d F Y') }}" class="form-control tanggal disable" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Kode Purchase </label>
-                                                            <select class="form-Setrika purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
+                                                            <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                                 <option> Pilih Salah Satu</option>
                                                                 @foreach ($purchases as $purchase)
                                                                     <option value="{{ $purchase->purchaseId }}"> {{ $purchase->purchase->kode }}</option>
@@ -125,7 +125,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Jenis Baju</label>
-                                                            <select class="form-Setrika jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
+                                                            <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
                                                                 
                                                             </select> 
                                                         </div>
@@ -133,7 +133,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Ukuran Baju </label>
-                                                            <select class="form-Setrika ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
+                                                            <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
                                                             </select>
                                                         </div>
@@ -141,7 +141,7 @@
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Jumlah Baju </label>                                                            
-                                                            <input type="text" style="width:100px;" class="form-Setrika jumlahBaju" name="jumlahBaju" id="jumlahBaju">
+                                                            <input type="text" style="width:100px;" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
                                                             <input type="hidden" style="width:100px;" id="jumlahBajuOld">
                                                         </div>
                                                         <div id="requestOperatorId">
@@ -200,10 +200,6 @@
 
 @push('page_scripts') 
     <script type="text/javascript"> 
-        
-        $('#pegawaiId').select2({
-            theme: 'bootstrap4'
-        });
 
         $(document).on("change", ".purchaseId", function(){
             var posisi = $('#posisi').val();

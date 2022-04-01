@@ -573,17 +573,20 @@ class GudangBatilController extends Controller
         $dataPemindahan = [];
         $gdKeluarBatil = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         foreach ($gdKeluarBatil as $detail) {
-            if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
-                $dataPemindahan[] = [
-                    'tanggal' => date('d F Y', strtotime($detail->tanggal)),
-                    'gdBajuStokOpnameId' => $detail->gdBajuStokOpnameId,
-                    'purchaseId' => $detail->purchaseId,
-                    'purchase' => $detail->purchase->kode,
-                    'jenisBaju' => $detail->jenisBaju,
-                    'ukuranBaju' => $detail->ukuranBaju,
-                    'statusBatil' => $detail->statusBatil,
-                ];
-            }            
+            $gdControlMasukDetail = GudangControlMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
+            if ($gdControlMasukDetail == null) {
+                if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
+                    $dataPemindahan[] = [
+                        'tanggal' => date('d F Y', strtotime($detail->tanggal)),
+                        'gdBajuStokOpnameId' => $detail->gdBajuStokOpnameId,
+                        'purchaseId' => $detail->purchaseId,
+                        'purchase' => $detail->purchase->kode,
+                        'jenisBaju' => $detail->jenisBaju,
+                        'ukuranBaju' => $detail->ukuranBaju,
+                        'statusBatil' => $detail->statusBatil,
+                    ];
+                }   
+            }         
         }
 
         for ($i=0; $i < count($dataPemindahan); $i++) { 

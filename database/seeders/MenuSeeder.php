@@ -97,11 +97,11 @@ class MenuSeeder extends Seeder
             ['id' => 53, 'parentId' => 49, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GControl.reject', 'directori' => 'gudangControl/reject/index', 'isActive' => 1],
 
             //Gudang Setrika
-            ['id' => 58, 'parentId' => 0, 'urutan' => 13, 'nama' => 'Gudang Setrika', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
-            ['id' => 59, 'parentId' => 58, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
-            ['id' => 60, 'parentId' => 58, 'urutan' => 2, 'nama' => 'Request Gudang Control', 'alias' => 'GSetrika.request', 'directori' => 'gudangSetrika/request/index', 'isActive' => 1],
-            ['id' => 61, 'parentId' => 58, 'urutan' => 3, 'nama' => 'Operator Setrika', 'alias' => 'GSetrika.operator', 'directori' => 'gudangSetrika/operator/index', 'isActive' => 1],
-            ['id' => 62, 'parentId' => 58, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GSetrika.reject', 'directori' => 'gudangSetrika/reject/index', 'isActive' => 1],
+            ['id' => 59, 'parentId' => 0, 'urutan' => 13, 'nama' => 'Gudang Setrika', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
+            ['id' => 60, 'parentId' => 59, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
+            ['id' => 61, 'parentId' => 59, 'urutan' => 2, 'nama' => 'Request Gudang Control', 'alias' => 'GSetrika.request', 'directori' => 'gudangSetrika/request/index', 'isActive' => 1],
+            ['id' => 62, 'parentId' => 59, 'urutan' => 3, 'nama' => 'Operator Setrika', 'alias' => 'GSetrika.operator', 'directori' => 'gudangSetrika/operator/index', 'isActive' => 1],
+            ['id' => 63, 'parentId' => 59, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GSetrika.reject', 'directori' => 'gudangSetrika/reject/index', 'isActive' => 1],
 
 
             //Gudang Packing

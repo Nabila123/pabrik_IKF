@@ -69,13 +69,13 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-Setrika operator">        
+                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-control operator">        
                                 
                                 <div class="row mb-5">
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Jenis Baju </label>
-                                            <select class="form-Setrika jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
+                                            <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
                                                 <option> Pilih Satu </option>
                                                 @foreach ($operatorRequest as $operator)
                                                     <option value="{{ $operator->jenisBaju }} ">{{ strtoupper($operator->jenisBaju) }} </option>
@@ -86,7 +86,7 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Kode Purchase</label>
-                                            <select class="form-Setrika purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
+                                            <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
                                         </div>
@@ -95,7 +95,7 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Ukuran Baju</label>
-                                            <select class="form-Setrika ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
+                                            <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
                                         </div>
@@ -104,7 +104,7 @@
                                     <div class="col-3">
                                         <label>Jumlah Baju</label>
                                         <div class="input-group">                                            
-                                            <input type="number" id="jumlah" name="jumlah" class="form-Setrika jumlah " >
+                                            <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
                                         </div>
                                         <div id="requestOperatorId">
 

@@ -175,7 +175,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
-                                                    {{--  @foreach ($gdControlMasuk as $detail)
+                                                    @foreach ($gdSetrikaMasuk as $detail)
                                                         <tr>
                                                             <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                             <td>{{ $detail->purchase->kode }}</td>
@@ -183,7 +183,7 @@
                                                             <td>{{ $detail->ukuranBaju }}</td>
                                                             <td>{{ $detail->jumlah }}</td>
                                                         </tr>
-                                                    @endforeach  --}}
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

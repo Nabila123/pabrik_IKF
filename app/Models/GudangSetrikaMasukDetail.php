@@ -18,7 +18,7 @@ class GudangSetrikaMasukDetail extends Model
     public static function createGudangSetrikaMasukDetail($gdSetrikaMId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
     {
         $masukDetail = new GudangSetrikaMasukDetail;
-        $masukDetail->gdControlMId = $gdSetrikaMId;
+        $masukDetail->gdSetrikaMId = $gdSetrikaMId;
         $masukDetail->gdBajuStokOpnameId = $gdBajuStokOpnameId;
         $masukDetail->purchaseId = $purchaseId;
         $masukDetail->jenisBaju = $jenisBaju;

@@ -278,7 +278,7 @@ class GudangSetrikaController extends Controller
 
         if ($gudangSetrikaTerima == 1) {
             foreach ($gudangSetrikaDetail as $value) {
-                $gdBajuStokOpname = GudangSetrikaStokOpname::SetrikaStokOpnameCreate($value->gdBajuStokOpnameId, date('Y-m-d'), $value->purchaseId, $value->jenisBaju, $value->ukuranBaju, 0, \Auth::user()->id);
+                $gdBajuStokOpname = GudangSetrikaStokOpname::SetrikaStokOpnameCreate($value->gdBajuStokOpnameId, null, $value->purchaseId, $value->jenisBaju, $value->ukuranBaju, 0, \Auth::user()->id);
             }
             if ($gdBajuStokOpname == 1) {
                 return redirect('GSetrika/request');
@@ -407,7 +407,7 @@ class GudangSetrikaController extends Controller
     {
         $gdRequestOperator = GudangSetrikaStokOpname::where('purchaseId', $purchaseId)->where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->whereDate('tanggal', date('Y-m-d'))->get();
         foreach ($gdRequestOperator as $detail) {
-            $setriksStokOpname = GudangSetrikaStokOpname::bajuUpdateField('tanggal', null, $detail->id);
+            $setrikaStokOpname = GudangSetrikaStokOpname::bajuUpdateField('tanggal', null, $detail->id);
         }
         if ($setrikaStokOpname == 1) {
             return redirect('GSetrika/operator/update/' . $jenisBaju . '/'. $ukuranBaju);
