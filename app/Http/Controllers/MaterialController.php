@@ -15,7 +15,6 @@ class MaterialController extends Controller
 
     public function index(){
         $materials = MaterialModel::all();
-
         return view('material.index')->with(['materials'=>$materials]);
     }
 
