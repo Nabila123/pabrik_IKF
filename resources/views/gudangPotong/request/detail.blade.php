@@ -79,8 +79,8 @@
                                         <tr>
                                             <td>{{ $detail->jenisBaju }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
-                                            <td>{{ $detail->pcs }}</td>
                                             <td>{{ $detail->qty }}</td>
+                                            <td>{{ $detail->dz }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

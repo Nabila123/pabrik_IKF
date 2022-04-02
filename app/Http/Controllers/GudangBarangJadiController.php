@@ -53,7 +53,10 @@ class GudangBarangJadiController extends Controller
         }
 
         foreach ($gdPotongRequestDetail as $detail) {
-            $detail->pcs = $detail->qty*12;
+            $dz = $detail->qty/12;
+            $sisa = $detail->qty % 12;
+
+            $detail->dz = (int)$dz." / ". $sisa;
         }
 
         return view('gudangBarangJadi.requestPotong.detail', ['gdPotongRequest' => $gdPotongRequest, 'gdPotongRequestDetail' => $gdPotongRequestDetail]);
@@ -62,6 +65,91 @@ class GudangBarangJadiController extends Controller
     public function gRequestPotongcreate()
     {
         return view('gudangBarangJadi.requestPotong.create');
+    }
+
+    public function gRequestPotongstore(Request $request)
+    {
+        if ($request->jumlah_data != 0) {
+            $checkPotongRequest = GudangPotongRequest::where('tanggal', date('Y-m-d'))->first();
+            if ($checkPotongRequest == null) {
+                $potongRequest = GudangPotongRequest::PotongRequestCreate(\Auth::user()->id);
+            } else {
+                $potongRequest = $checkPotongRequest->id;
+            }
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+
+                $potongRequestDetail = GudangPotongRequestDetail::createGudangPotongRequestDetail($potongRequest, $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['jumlahBaju'][$i]);
+            }
+
+            if ($potongRequestDetail == 1) {
+                return redirect('GBarangJadi/requestPotong');
+            }
+        }else{
+            return redirect('GBarangJadi/requestPotong/create');
+        }
+    }
+
+    public function gRequestPotongupdate($id)
+    {
+        $potongRequest = GudangPotongRequest::where('id', $id)->first();
+        $potongRequestDetail = GudangPotongRequestDetail::where('gdPotongReqId', $potongRequest->id)->get();
+
+        return view('gudangBarangJadi.requestPotong.update', ['request' => $potongRequest, 'potongRequestDetail' => $potongRequestDetail]);
+    }
+
+    public function gRequestPotongUpdateSave(Request $request)
+    {
+        if ($request->jumlah_data != 0) {
+            $checkPotongRequest = GudangPotongRequest::where('id', $request->requestId)->first();
+            
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+
+                $potongRequestDetail = GudangPotongRequestDetail::createGudangPotongRequestDetail($checkPotongRequest->id, $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['jumlahBaju'][$i]);
+            }
+
+            if ($potongRequestDetail == 1) {
+                return redirect('GBarangJadi/requestPotong');
+            }
+        }else{
+            return redirect('GBarangJadi/requestPotong/update/' . $request->requestId);
+        }
+    }
+
+    public function gRequestPotongUpdateDelete($requestId, $requestDetailId)
+    {
+        $RequestPotongDetail = GudangPotongRequestDetail::where('id', $requestDetailId)->delete();
+
+        $checkRequestPotong = GudangPotongRequest::where('id', $requestId)->first();
+        $checkRequestPotongDetail = GudangPotongRequestDetail::where('gdPotongReqId', $checkRequestPotong->id)->get();
+
+        if (count($checkRequestPotongDetail) == 0) {
+            $RequestPotong = GudangPotongRequest::where('id', $requestId)->delete();
+
+            if ($RequestPotong == 1) {
+                return redirect('GBarangJadi/requestPotong');
+            }
+
+        }else{
+            if ($RequestPotongDetail == 1) {
+                return redirect('GBarangJadi/requestPotong/update/' . $requestId);
+            }
+        }
+    }
+
+    public function gRequestPotongDelete(Request $request)
+    {
+        $requestPotong = GudangPotongRequest::where('id', $request->requestId)->first();
+        $requestPotongDetail = GudangPotongRequestDetail::where('gdPotongReqId', $requestPotong->id)->get();
+        if (count($requestPotongDetail) != 0) {
+            $requestPotongDetail = GudangPotongRequestDetail::where('gdPotongReqId', $requestPotong->id)->delete();
+            if ($requestPotongDetail) {
+                GudangPotongRequest::where('id', $request->requestId)->delete();
+                return redirect('GBarangJadi/requestPotong');
+            }
+        }else{
+            GudangPotongRequest::where('id', $request->requestId)->delete();
+            return redirect('GBarangJadi/requestPotong');
+        }
     }
 
 }

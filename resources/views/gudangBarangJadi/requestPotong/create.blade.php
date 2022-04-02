@@ -69,71 +69,61 @@
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label>Jenis Baju</label>
-                                            <select class="form-control col-md-7 col-xs-12 gudangRequest" id="gudangRequest" name="gudangRequest" style="width: 100%; height: 38px;">
-                                                <option value="">Pilih Gudang Request</option>
-                                                <option value="Gudang Rajut">Gudang Rajut </option>
-                                                <option value="Gudang Cuci">Gudang Cuci </option>
-                                                <option value="Gudang Inspeksi">Gudang Inspeksi </option>                                                
-                                            </select>                                            
+                                            <select class="form-control jenisBaju" name="jenisBaju" id="jenisBaju" style="width: 100%; height: 38px;">
+                                                <option> Pilih Jenis Baju</option>   
+                                                <optgroup label="Jupiter"></optgroup> 
+                                                <option value="Blong-Jupiter"> Blong Jupiter (BY) </option>    
+                                                <option value="Singlet-Jupiter"> Singlet Jupiter (SY) </option>    
+                                                <option value="Blong-Tempat-Kancing"> Blong Tempat Kancing Jupiter (BTK) </option> 
+                                                <option value="Blong-Tanpa-Lengan"> Blong Tanpa Lengan Jupiter (BTL) </option> 
+                                                
+                                                <optgroup label="Daun Jati"></optgroup>
+                                                <option value="Singlet-DJ"> Singlet DJ </option>    
+                                                <option value="Blong-TK-DJ"> Blong TK DJ </option>    
+                                                <option value="Singlet-Haji-DJ"> Singlet Haji DJ </option>   
+                                                <option value="Blong-Haji-DJ"> Blong Haji DJ </option>   
+                                            </select>                                          
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label>Gramasi</label>
-                                            <input class="form-control gramasi" type="text" id="gramasi" name="gramasi" placeholder="Gramasi">                                            
+                                            <label>Ukuran Baju</label>
+                                            <input class="form-control ukuranBaju" type="text" id="ukuranBaju" name="ukuranBaju" placeholder="Ukuran Baju">                                            
                                         </div>
                                     </div>
                                     <div class="col-4">
+                                        <div class="form-group center">
+                                            <label>Jumlah Baju</label>
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control jumlahBaju" type="text" id="jumlahBaju" name="jumlahBaju" placeholder="Jumlah Baju (Pcs)">                                            
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control jumlahDz" type="text" id="jumlahDz" name="jumlahDz" placeholder="Jumlah Baju (Dz)">                                            
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-5">
                                         <div class="form-group">
-                                            <label>Request Gudang</label>
-                                            <select class="form-control col-md-7 col-xs-12 gudangRequest" id="gudangRequest" name="gudangRequest" style="width: 100%; height: 38px;">
-                                                <option value="">Pilih Gudang Request</option>
-                                                <option value="Gudang Rajut">Gudang Rajut </option>
-                                                <option value="Gudang Cuci">Gudang Cuci </option>
-                                                <option value="Gudang Inspeksi">Gudang Inspeksi </option>                                                
-                                            </select>                                           
+                                            <button type="button" id="TBarang" class='btn btn-success btn-flat-right TBarang' style="float: left">Tambah Data</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label>Gramasi</label>
-                                            <input class="form-control gramasi" type="text" id="gramasi" name="gramasi" placeholder="Gramasi">                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label>Diameter</label>
-                                            <input class="form-control diameter" type="text" id="diameter" name="diameter" placeholder="Diameter">                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label>Jumlah</label>
-                                            <input class="form-control qty" type="number" id="qty" name="qty" placeholder="Jumlah">                                            
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 right">
-                                        <div class="form-group">
-                                            <button type="button" id="TBarang" class='btn btn-success btn-flat-right TBarang'>Tambah Barang</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="row">
                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
                                     <div class="col-12 right">
                                         <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                             <thead>
-                                                <th class="textAlign">Bahan Baku</th>
-                                                <th class="textAlign">Gudang Request</th>
-                                                <th class="textAlign">Gramasi</th>
-                                                <th class="textAlign">Diameter</th>
+                                                <th class="textAlign">Jenis Baju</th>
+                                                <th class="textAlign">ukuran Baju</th>
                                                 <th class="textAlign">Jumlah</th>
                                                 <th class="textAlign">Action</th>
                                             </thead>
-                                            <tbody class="data">
+                                            <tbody class="data textAlign">
 
                                             </tbody>
                                         </table>
@@ -156,49 +146,54 @@
 
 @push('page_scripts') 
     <script type="text/javascript">
-        $('#materialId').select2({
+        $('#jenisBaju').select2({
             theme: 'bootstrap4'
         });
-        $('#gudangRequest').select2({
-            theme: 'bootstrap4'
+
+        $(document).on("keyup", ".jumlahBaju", function(){
+            var jumlahBaju = $('#jumlahBaju').val();           
+            var jumlahDz = (jumlahBaju/12);
+        
+            $('#jumlahDz').val(jumlahDz.toFixed(1));    
+                
+        });
+
+        $(document).on("keyup", ".jumlahDz", function(){
+            var jumlahDz = $('#jumlahDz').val();
+            var jumlahBaju = (jumlahDz*12);
+                            
+            $('#jumlahBaju').val(jumlahBaju);    
+                
         });
 
         $(document).ready( function () {
             $(document).on("click", "button.TBarang", function(e){
                 e.preventDefault();
 
-                var materialId      = $('#materialId').val();
-                var nama_material   = $('#materialId').find('option:selected').text();
-                var gudangRequest   = $('#gudangRequest').val();
-                var nama_gudang     = $('#gudangRequest').find('option:selected').text();
-                var gramasi         = $('#gramasi').val();
-                var diameter        = $('#diameter').val();
-                var qty             = $('#qty').val();
+                var jenisBaju      = $('#jenisBaju').val();
+                var ukuranBaju     = $('#ukuranBaju').val();
+                var jumlahBaju     = $('#jumlahBaju').val();
 
                 var jumlah_data = $('#jumlah_data').val();
 
-                if((nama_material != "Pilih Bahan Baku" || materialId != "") && (nama_gudang != "Pilih Gudang Request" || gudangRequest != "") && gramasi != "" && diameter != "" && qty != ""){
+                if((jenisBaju != "") && (ukuranBaju != "") && jumlahBaju != ""){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                        table += "<td>"+nama_material+"<input type='hidden' name='materialId[]' value='"+materialId+"' id='materialId_"+jumlah_data+"'></td>";
-                        table += "<td>"+nama_gudang+"<input type='hidden' name='gudangRequest[]' value='"+gudangRequest+"' id='gudangRequest_"+jumlah_data+"'></td>";
-                        table += "<td>"+gramasi+"<input type='hidden' name='gramasi[]' value='"+gramasi+"' id='gramasi_"+jumlah_data+"'></td>";
-                        table += "<td>"+diameter+"<input type='hidden' name='diameter[]' value='"+diameter+"' id='diameter_"+jumlah_data+"'></td>";
-                        table += "<td>"+qty+"<input type='hidden' name='qty[]' value='"+qty+"' id='qty_"+jumlah_data+"'></td>";
+                        table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
+                        table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
+                        table += "<td>"+jumlahBaju+"<input type='hidden' name='jumlahBaju[]' value='"+jumlahBaju+"' id='jumlahBaju_"+jumlah_data+"'></td>";
                         table += "<td>";
                         table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
                         table += "</td>";
                         table += "</tr>";
 
-                    $('#materialId option[value=""]').attr('selected','selected');
-                    $('#materialId').val('');
-                    $('#gudangRequest option[value=""]').attr('selected','selected');
-                    $('#gudangRequest').val('');
-                    $('#gramasi').val('');
-                    $('#diameter').val('');
-                    $('#qty').val('');
+                    $('#jenisBaju option[value=""]').attr('selected','selected');
+                    $('#jenisBaju').val('');
+                    $('#ukuranBaju').val('');
+                    $('#jumlahBaju').val('');
+                    $('#jumlahDz').val('');
                 }else{
                     alert("Silahkan Isi Semua Data");
                 }

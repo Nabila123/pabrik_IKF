@@ -49,7 +49,10 @@ class GudangPotongController extends Controller
         }
 
         foreach ($gdPotongRequestDetail as $detail) {
-            $detail->pcs = $detail->qty*12;
+            $dz = $detail->qty/12;
+            $sisa = $detail->qty % 12;
+
+            $detail->dz = (int)$dz." / ". $sisa;
         }
 
         return view('gudangPotong.request.detail', ['gdPotongRequest' => $gdPotongRequest, 'gdPotongRequestDetail' => $gdPotongRequestDetail]);

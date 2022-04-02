@@ -21,6 +21,20 @@ class GudangPotongRequest extends Model
         return $this->hasOne('App\Models\GudangPotongRequestDetail','gdPotongReqId','id');
     }
 
+    public static function PotongRequestCreate($userId)
+    {
+        $addBatilRekap = New GudangPotongRequest;
+        $addBatilRekap->tanggal = date('Y-m-d');
+        $addBatilRekap->userId = $userId;
+        $addBatilRekap->created_at = date('Y-m-d H:i:s');
+
+        if ($addBatilRekap->save()) {
+            return $addBatilRekap->id;
+        } else {
+            return 0;
+        }
+    }
+
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $InspeksiUpdated['statusDiterima'] = $statusDiterima;

@@ -181,13 +181,18 @@
                                                     <td> <input class="form-control"  style='width:70px;' type="text" name="beratRoll" id="beratRoll"> </td>
                                                     <td> 
                                                         <select class="form-control" name="jnsBaju" id="jnsBaju" style="width: 150px">
-                                                            <option> Pilih Jenis Baju</option>    
-                                                            <option value="Singlet"> J - Singlet </option>    
-                                                            <option value="Oblong"> J - Oblong </option>    
-                                                            <option value="Oblong-TK"> J - Oblong TK </option> 
-                                                            <option value="DJ-Singlet"> DJ - Singlet </option>    
-                                                            <option value="DJ-Oblong"> DJ - Oblong </option>    
-                                                            <option value="DJ-Oblong tk"> DJ - Oblong TK </option>   
+                                                            <option> Pilih Jenis Baju</option>   
+                                                            <optgroup label="Jupiter"></optgroup> 
+                                                            <option value="Blong-Jupiter"> Blong Jupiter (BY) </option>    
+                                                            <option value="Singlet-Jupiter"> Singlet Jupiter (SY) </option>    
+                                                            <option value="Blong-Tempat-Kancing"> Blong Tempat Kancing Jupiter (BTK) </option> 
+                                                            <option value="Blong-Tanpa-Lengan"> Blong Tanpa Lengan Jupiter (BTL) </option> 
+                                                            
+                                                            <optgroup label="Daun Jati"></optgroup>
+                                                            <option value="Singlet-DJ"> Singlet DJ </option>    
+                                                            <option value="Blong-TK-DJ"> Blong TK DJ </option>    
+                                                            <option value="Singlet-Haji-DJ"> Singlet Haji DJ </option>   
+                                                            <option value="Blong-Haji-DJ"> Blong Haji DJ </option>   
                                                         </select>    
                                                     </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="size" id="size"> </td>

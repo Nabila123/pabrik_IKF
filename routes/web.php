@@ -411,5 +411,9 @@ Route::get('/GBarangJadi/requestPotong', [App\Http\Controllers\GudangBarangJadiC
 Route::get('/GBarangJadi/requestPotong/detail/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongDetail'])->name('GBarangJadi.requestPotong.detail');
 Route::get('/GBarangJadi/requestPotong/create', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongcreate'])->name('GBarangJadi.requestPotong.create');
 Route::post('/GBarangJadi/requestPotong/create', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongstore'])->name('GBarangJadi.requestPotong.store');
+Route::get('/GBarangJadi/requestPotong/update/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongupdate'])->name('GBarangJadi.requestPotong.update');
+Route::post('/GBarangJadi/requestPotong/update/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongUpdateSave'])->name('GBarangJadi.requestPotong.updateSave');
+Route::get('/GBarangJadi/requestPotong/update/delete/{requestId}/{detailRequestId}', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongUpdateDelete'])->name('GBarangJadi.requestPotong.update.delete');
+Route::delete('/GBarangJadi/requestPotong/delete', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongDelete'])->name('GBarangJadi.requestPotong.delete');
 
 Auth::routes();
