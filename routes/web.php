@@ -404,8 +404,16 @@ Route::delete('material/delete', [App\Http\Controllers\MaterialController::class
 
 //Gudang Barang Jadi
 Route::get('/GBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'index'])->name('GBarangJadi');
+Route::post('/GBarangJadi/getBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'getBarangJadi'])->name('GBarangJadi.getBarangJadi');
 
 Route::get('/GBarangJadi/operator', [App\Http\Controllers\GudangBarangJadiController::class, 'gOperator'])->name('GBarangJadi.operator');
+Route::get('/GBarangJadi/operator/create', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorcreate'])->name('GBarangJadi.operator.create');
+Route::post('/GBarangJadi/operator/create', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorstore'])->name('GBarangJadi.operator.store');
+Route::get('/GBarangJadi/operator/detail/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorDetail'])->name('GBarangJadi.operator.detail');
+Route::get('/GBarangJadi/operator/update/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorupdate'])->name('GBarangJadi.operator.update');
+Route::post('/GBarangJadi/operator/update/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorUpdateSave'])->name('GBarangJadi.operator.updateSave');
+Route::get('/GBarangJadi/operator/update/delete/{penjualanId}/{penjualanDetailId}/{jenisBaju}/{ukuranBaju}/{qty}', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorUpdateDelete'])->name('GBarangJadi.operator.update.delete');
+Route::delete('/GBarangJadi/operator/delete', [App\Http\Controllers\GudangBarangJadiController::class, 'goperatorDelete'])->name('GBarangJadi.operator.delete');
 
 Route::get('/GBarangJadi/requestPotong', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotong'])->name('GBarangJadi.requestPotong');
 Route::get('/GBarangJadi/requestPotong/detail/{id}', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongDetail'])->name('GBarangJadi.requestPotong.detail');

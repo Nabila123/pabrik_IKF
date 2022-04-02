@@ -23,28 +23,6 @@
                     ->count()>0?1:0;
     }
 
-
-    function notifApprovePurchase()
-    {
-        $user = \Auth::user()->roleId;
-        $purchaseNotif = [];
-
-        if ($user == 8) { //KDeptProd
-            $purchaseNotif = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('isKaDeptProd', 0)->where('isKaDeptPO', 0)->get();            
-        }
-        if ($user == 7) { //KDeptPO
-            $purchaseNotif = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('isKaDeptProd', 1)->where('isKaDeptPO', 0)->get();  
-        }
-        if ($user == 4) { //KDivPO
-            $purchaseNotif = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('isKaDivPO', 0)->where('isKaDivFin', 0)->get();  
-        }
-        if ($user == 6) { //KDivFin
-            $purchaseNotif = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('isKaDivPO', 1)->where('isKaDivFin', 0)->get();  
-        }
-
-        return $purchaseNotif;
-    }
-
     function notifMenu($id)
     {
         $user = \Auth::user()->roleId;
