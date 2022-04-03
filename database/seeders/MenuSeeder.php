@@ -112,7 +112,7 @@ class MenuSeeder extends Seeder
             ['id' => 58, 'parentId' => 54, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GPacking.reject', 'directori' => 'gudangPacking/reject/index', 'isActive' => 1],
 
             //Master Material
-            ['id' => 64, 'parentId' => 0, 'urutan' => 16, 'nama' => 'Master Material', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
+            ['id' => 64, 'parentId' => 0, 'urutan' => 17, 'nama' => 'Master Material', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
             ['id' => 65, 'parentId' => 64, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
 
             //Gudang Gudang Barang Jadi
@@ -120,6 +120,11 @@ class MenuSeeder extends Seeder
             ['id' => 67, 'parentId' => 66, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GBarangJadi', 'directori' => 'gudangBarangJadi', 'isActive' => 1],
             ['id' => 68, 'parentId' => 66, 'urutan' => 3, 'nama' => 'Operator Barang Jadi', 'alias' => 'GBarangJadi.operator', 'directori' => 'gudangBarangJadi/operator/index', 'isActive' => 1],
             ['id' => 69, 'parentId' => 66, 'urutan' => 4, 'nama' => 'Request Potong Baju', 'alias' => 'GBarangJadi.requestPotong', 'directori' => 'gudangBarangJadi/requestPotong/index', 'isActive' => 1],
+
+            //Keuangan
+            ['id' => 70, 'parentId' => 0, 'urutan' => 16, 'nama' => 'Keuangan', 'alias' => 'Keuangan', 'directori' => 'keuangan', 'isActive' => 1],
+            ['id' => 71, 'parentId' => 70, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'Keuangan', 'directori' => 'keuangan/index', 'isActive' => 1],
+            ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Keluar & Masuk', 'alias' => 'Keuangan.keluarMasuk', 'directori' => 'keuangan/keluarMasuk/index', 'isActive' => 1],
 
         ];
 
