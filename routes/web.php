@@ -425,8 +425,8 @@ Route::get('/GBarangJadi/requestPotong/update/delete/{requestId}/{detailRequestI
 Route::delete('/GBarangJadi/requestPotong/delete', [App\Http\Controllers\GudangBarangJadiController::class, 'gRequestPotongDelete'])->name('GBarangJadi.requestPotong.delete');
 
 //Keuangan
-Route::get('/Keuangan', [App\Http\Controllers\GudangBarangJadiController::class, 'index'])->name('Keuangan');
+Route::get('/Keuangan', [App\Http\Controllers\KeuanganController::class, 'index'])->name('Keuangan');
 
-Route::get('/Keuangan/keluarMasuk', [App\Http\Controllers\GudangBarangJadiController::class, 'KeluarMasuk'])->name('Keuangan.keluarMasuk');
+Route::get('/Keuangan/keluarMasuk', [App\Http\Controllers\KeuanganController::class, 'KeluarMasuk'])->name('Keuangan.keluarMasuk');
 
 Auth::routes();

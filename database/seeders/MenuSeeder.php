@@ -124,7 +124,8 @@ class MenuSeeder extends Seeder
             //Keuangan
             ['id' => 70, 'parentId' => 0, 'urutan' => 16, 'nama' => 'Keuangan', 'alias' => 'Keuangan', 'directori' => 'keuangan', 'isActive' => 1],
             ['id' => 71, 'parentId' => 70, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'Keuangan', 'directori' => 'keuangan/index', 'isActive' => 1],
-            ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Keluar & Masuk', 'alias' => 'Keuangan.keluarMasuk', 'directori' => 'keuangan/keluarMasuk/index', 'isActive' => 1],
+            ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Pemesanan Bahan Baku', 'alias' => 'Keuangan.keluarMasuk', 'directori' => 'keuangan/keluarMasuk/index', 'isActive' => 1],
+            ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Penjualan Baju', 'alias' => 'Keuangan.keluarMasuk', 'directori' => 'keuangan/keluarMasuk/index', 'isActive' => 1],
 
         ];
 
