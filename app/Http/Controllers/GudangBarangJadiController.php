@@ -146,6 +146,9 @@ class GudangBarangJadiController extends Controller
                     $barangJadi = GudangBarangJadiStokOpname::where('kodeProduct', $kodeProduct[$j])->first();
 
                     $BarangJadiPenjualanDetail = GudangBarangJadiPenjualanDetail::CreateBarangJadiPenjualanDetail($BarangJadiPenjualan, $barangJadi->kodeProduct, $barangJadi->purchaseId, $barangJadi->jenisBaju, $barangJadi->ukuranBaju, $request['jumlahBaju'][$i], $request['hargaBaju'][$i]);
+                    if ($BarangJadiPenjualanDetail == 1) {
+                        GudangBarangJadiStokOpname::where('kodeProduct', $kodeProduct[$j])->delete();
+                    }
                 }            
             }
 
