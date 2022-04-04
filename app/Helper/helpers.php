@@ -14,6 +14,13 @@
     use App\Models\GudangBatilMasuk;
     use App\Models\GudangControlMasuk;
 
+    function rupiah($angka){
+	
+        $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+        return $hasil_rupiah;
+     
+    }
+
     function checkPermission($id_menu='', $id_role='') {
         $id_role = $id_role == '' ? \Session::get('id_role') : $id_role;
         

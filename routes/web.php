@@ -426,7 +426,14 @@ Route::delete('/GBarangJadi/requestPotong/delete', [App\Http\Controllers\GudangB
 
 //Keuangan
 Route::get('/Keuangan', [App\Http\Controllers\KeuanganController::class, 'index'])->name('Keuangan');
+Route::post('/Keuangan/getPenjualan', [App\Http\Controllers\KeuanganController::class, 'getPenjualan'])->name('Keuangan.getPenjualan');
 
-Route::get('/Keuangan/keluarMasuk', [App\Http\Controllers\KeuanganController::class, 'KeluarMasuk'])->name('Keuangan.keluarMasuk');
+Route::get('/Keuangan/pesanan', [App\Http\Controllers\KeuanganController::class, 'pesanan'])->name('Keuangan.pesanan');
+
+Route::get('/Keuangan/penjualan', [App\Http\Controllers\KeuanganController::class, 'penjualan'])->name('Keuangan.penjualan');
+Route::get('/Keuangan/penjualan/create', [App\Http\Controllers\KeuanganController::class, 'penjualanCreate'])->name('Keuangan.penjualan.create');
+Route::post('/Keuangan/penjualan/create', [App\Http\Controllers\KeuanganController::class, 'penjualanStore'])->name('Keuangan.penjualan.create');
+Route::get('/Keuangan/penjualan/detail/{kodeTransaksi}', [App\Http\Controllers\KeuanganController::class, 'penjualanDetail'])->name('Keuangan.penjualan.detail');
+Route::delete('/Keuangan/penjualan/delete', [App\Http\Controllers\KeuanganController::class, 'penjualanDelete'])->name('Keuangan.penjualan.delete');
 
 Auth::routes();

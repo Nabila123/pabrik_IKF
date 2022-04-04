@@ -29,19 +29,19 @@ class GudangBarangJadiPembayaran extends Model
         return $kode;
     }
     
-    public Static function CreateBarangJadiPenjualan($kodeTransaksi, $customer, $tanggal, $totalHarga)
+    public Static function CreateBarangJadiPembayaran($kodeTransaksi, $customer, $tanggal, $totalHarga)
     {
-        $BarangJadiPenjualan = new GudangBarangJadiPenjualan;
-        $BarangJadiPenjualan->kodeTransaksi = $kodeTransaksi;
-        $BarangJadiPenjualan->customer = $customer;
-        $BarangJadiPenjualan->tanggal = $tanggal;
-        $BarangJadiPenjualan->totalHarga = $totalHarga;
+        $BarangJadiPembayaran = new GudangBarangJadiPembayaran;
+        $BarangJadiPembayaran->kodeTransaksi = $kodeTransaksi;
+        $BarangJadiPembayaran->customer = $customer;
+        $BarangJadiPembayaran->tanggal = $tanggal;
+        $BarangJadiPembayaran->totalHarga = $totalHarga;
 
-        $BarangJadiPenjualan->userId = \Auth::user()->id;
-        $BarangJadiPenjualan->created_at = date('Y-m-d H:i:s');
+        $BarangJadiPembayaran->userId = \Auth::user()->id;
+        $BarangJadiPembayaran->created_at = date('Y-m-d H:i:s');
 
-        if ($BarangJadiPenjualan->save()) {
-            return $BarangJadiPenjualan->id;
+        if ($BarangJadiPembayaran->save()) {
+            return 1;
         } else {
             return 0;
         }
