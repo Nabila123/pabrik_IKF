@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\GudangBarangJadiPenjualan;
 use App\Models\GudangBarangJadiPenjualanDetail;
 use App\Models\GudangBarangJadiPembayaran;
+use App\Models\AdminPurchase;
+use App\Models\adminPurchaseInvoice;
+use App\Models\GudangBahanBaku;
+
 
 class KeuanganController extends Controller
 {
@@ -25,6 +29,22 @@ class KeuanganController extends Controller
         }
 
         return json_encode($data);
+    }
+
+    public function pesanan()
+    {
+        $invoice = adminPurchaseInvoice::all();
+        $poOrder = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();        
+        foreach ($poOrder as $order) {
+            $cekDatang = GudangBahanBaku::select('id', 'created_at')->where('purchaseId', $order->id)->first();
+
+            if ($cekDatang != null) {
+                $order['barangDatang'] = true;
+                $order['barangDatangAt'] = $cekDatang->created_at;
+            }
+        }
+
+        return view('keuangan.pesanan.index', ['poOrder' => $poOrder, 'invoice' => $invoice]);
     }
 
     public function penjualan()
