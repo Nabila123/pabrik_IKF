@@ -100,8 +100,8 @@ class GudangCuciController extends Controller
     }
 
     public function KDetail($id){
-        $gCuciRequest = GudangKeluar::where('gudangRequest', 'Gudang Cuci')->where('id', $id)->first();
-        $gCuciRequestDetail = GudangKeluarDetail::where('gudangKeluarId', $id)->get();
+        $gCuciRequest = GudangCompactKeluar::where('id', $id)->first();
+        $gCuciRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $id)->get();
 
         return view('gudangCuci.kembali.detail', ['gudangKeluar' => $gCuciRequest, 'gudangKeluarDetail' => $gCuciRequestDetail]);
     }

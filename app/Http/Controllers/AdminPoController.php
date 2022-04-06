@@ -280,16 +280,18 @@ class AdminPoController extends Controller
         $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
         foreach ($poRequest as $request) {
             $cek = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $request->kode)->first();
-            $cekDatang = BarangDatang::where('purchaseId', $cek->id)->first();
             if ($cek != null) {
+                $cekDatang = BarangDatang::where('purchaseId', $cek->id)->first();
+                if ($cekDatang != null) {
+                    $request['barangDatang'] = true;
+                    $request['barangDatangAt'] = $cekDatang->created_at;
+                }
+                
                 $request['prosesOrder'] = true;
                 $request['prosesOrderAt'] = $cek->tanggal;
             }
 
-            if ($cekDatang != null) {
-                $request['barangDatang'] = true;
-                $request['barangDatangAt'] = $cekDatang->created_at;
-            }
+            
         }
 
         return view('adminPO.purchaseRequest.index', ['poRequest' => $poRequest]);
@@ -414,12 +416,13 @@ class AdminPoController extends Controller
         
         $harga = $request['harga'];
         $totalHarga = $request['totalHarga'];
-        $total = $request['total'];
+        $total = (int)$request['total'];
 
         $details = AdminPurchaseDetail::where('purchaseId', $purchaseid)->get();
+        
         foreach ($details as $key => $value) {
             if ($totalHarga[$value->id] != null) {
-                $total += $totalHarga[$value->id];
+                $total += (int)$totalHarga[$value->id];
             }
         }
 

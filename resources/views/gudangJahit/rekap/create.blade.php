@@ -178,7 +178,7 @@
                                 <div class="row mt-5">
                                     <div class="col-12">
                                         <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
-                                        <table id="JahitData" class="table table-bordered dataTables_scrollBody textAlign JahitData">
+                                        <table id="JahitData" class="table table-bordered table-responsive dataTables_scrollBody textAlign JahitData">
                                             <thead>
                                                 <tr>
                                                     <th rowspan="2" style="vertical-align: middle;">No</th>
@@ -431,7 +431,7 @@
             })
         });
 
-        $(document).on("change", ".jumlahBaju", function(){
+        $(document).on("keyup", ".jumlahBaju", function(){
             var posisi      = $('#posisi').val();
             var purchaseId  = $('#purchaseId').val();
             var jenisBaju   = $('#jenisBaju').val();

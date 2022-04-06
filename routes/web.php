@@ -329,6 +329,7 @@ Route::get('/GPacking', [App\Http\Controllers\PackingController::class, 'index']
 Route::post('/GPacking/getPegawai', [App\Http\Controllers\PackingController::class, 'getPegawai'])->name('GPacking.getPegawai');
 Route::post('/GPacking/getReject', [App\Http\Controllers\PackingController::class, 'getReject'])->name('GPacking.getReject');
 Route::get('/GPacking/getKodePacking/{kodePacking}', [App\Http\Controllers\PackingController::class, 'getKodePacking'])->name('GPacking.getKodePacking');
+Route::post('/GPacking/getKode', [App\Http\Controllers\PackingController::class, 'getKode'])->name('GPacking.getKode');
 
 Route::get('/GPacking/request', [App\Http\Controllers\PackingController::class, 'gRequest'])->name('GPacking.request');
 Route::get('/GPacking/request/terima/{id}', [App\Http\Controllers\PackingController::class, 'gRequestTerima'])->name('GPacking.request.terima');
@@ -342,6 +343,10 @@ Route::get('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingControlle
 Route::post('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateSave'])->name('GPacking.rekap.update');
 Route::get('/GPacking/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateDelete'])->name('GPacking.rekap.update.delete');
 Route::get('/GPacking/rekap/cetakBarcode', [App\Http\Controllers\PackingController::class, 'gRekapCetakBarcode'])->name('GPacking.rekap.cetakBarcode');
+
+Route::get('/GPacking/bahanBaku/create', [App\Http\Controllers\PackingController::class, 'gPackingBahanBakuCreate'])->name('GPacking.bahanBaku.create');
+Route::post('/GPacking/bahanBaku/create', [App\Http\Controllers\PackingController::class, 'gPackingBahanBakuStore'])->name('GPacking.bahanBaku.create');
+Route::delete('/GPacking/bahanBaku/delete', [App\Http\Controllers\PackingController::class, 'gPackingBahanBakuDelete'])->name('GPacking.bahanBaku.delete');
 
 Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
 Route::get('/GPacking/reject/create', [App\Http\Controllers\PackingController::class, 'gRejectCreate'])->name('GPacking.reject.create');
@@ -428,7 +433,9 @@ Route::delete('/GBarangJadi/requestPotong/delete', [App\Http\Controllers\GudangB
 Route::get('/Keuangan', [App\Http\Controllers\KeuanganController::class, 'index'])->name('Keuangan');
 Route::post('/Keuangan/getPenjualan', [App\Http\Controllers\KeuanganController::class, 'getPenjualan'])->name('Keuangan.getPenjualan');
 
-Route::get('/Keuangan/pesanan', [App\Http\Controllers\KeuanganController::class, 'pesanan'])->name('Keuangan.pesanan');
+Route::get('/Keuangan/purchaseOrder', [App\Http\Controllers\KeuanganController::class, 'purchaseOrder'])->name('Keuangan.purchaseOrder');
+
+Route::get('/Keuangan/purchaseInvoice', [App\Http\Controllers\KeuanganController::class, 'purchaseInvoice'])->name('Keuangan.purchaseInvoice');
 
 Route::get('/Keuangan/penjualan', [App\Http\Controllers\KeuanganController::class, 'penjualan'])->name('Keuangan.penjualan');
 Route::get('/Keuangan/penjualan/create', [App\Http\Controllers\KeuanganController::class, 'penjualanCreate'])->name('Keuangan.penjualan.create');

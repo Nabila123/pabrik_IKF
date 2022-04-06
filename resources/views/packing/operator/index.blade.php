@@ -51,45 +51,83 @@
                 <div class="col-12">
                     <div class="card">   
                         <div class="card-header">
-                            <h3 class="card-title" style="width: 100%">
-                                <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
-                                <a href="{{ route('GPacking.rekap.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
-                            </h3>                           
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Rekap Packing</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke G. Barang Jadi</a></li>
+                            </ul>                            
                         </div>                   
                         <div class="card-body">
-                            <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">No </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Packing Pegawai </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Kode Packing</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Operator</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="textAlign">
-                                    <?php $no = 1; ?>
-                                   @foreach ($packingRekap as $rekap)
-                                        <tr>
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
-                                            <td>{{ $rekap->pegawaiName}}</td>
-                                            <td>{{ $rekap->kodePacking}}</td>
-                                            <td>{{ $rekap->user->nama }}</td>
-                                            
-                                            <td>
-                                                <a href="{{ route('GPacking.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                @if ($rekap->tanggal == date("Y-m-d"))
-                                                    <a href="{{ route('GPacking.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                @else
-                                                    <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                   @endforeach
-                                </tbody>
-                            </table>
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="OperatorLink">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
+                                        <a href="{{ route('GPacking.rekap.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
+                                    </h3>
+                                    <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">No </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Packing Pegawai </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Kode Packing</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Operator</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            <?php $no = 1; ?>
+                                        @foreach ($packingRekap as $rekap)
+                                                <tr>
+                                                    <td>{{ $no++ }}</td>
+                                                    <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
+                                                    <td>{{ $rekap->pegawaiName}}</td>
+                                                    <td>{{ $rekap->kodePacking}}</td>
+                                                    <td>{{ $rekap->user->nama }}</td>
+                                                    
+                                                    <td>
+                                                        <a href="{{ route('GPacking.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        @if ($rekap->tanggal == date("Y-m-d"))
+                                                            <a href="{{ route('GPacking.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        @else
+                                                            <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="PindahLink">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GPacking.bahanBaku.create') }}" class='btn btn-info btn-flat-right'>Pindahkan Barang</a>
+                                    </h3>
+                                    <table id="barangJadi" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">No </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Kode Product</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Kode Purchase </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            <?php $no = 1; ?>
+                                            @foreach ($barangJadi as $detail)
+                                                <tr>
+                                                    <td>{{ $no++ }}</td>
+                                                    <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
+                                                    <td>{{ $detail->kodeProduct}}</td>
+                                                    <td>{{ $detail->purchase->kode}}</td>
+                                                    <td>{{ $detail->jenisBaju}}</td>
+                                                    <td>{{ $detail->ukuranBaju }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +182,11 @@
         }
 
         $(document).ready( function () {
-            $('#reject').DataTable( {
+            $('#operator').DataTable( {
+                "responsive": true,
+            });
+
+            $('#barangJadi').DataTable( {
                 "responsive": true,
             });
         });

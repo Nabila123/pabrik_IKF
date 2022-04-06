@@ -57,7 +57,7 @@
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Posisi</th>
-                                        <th class="textAlign" style="vertical-align: middle;">NIP</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Absen</th>
                                         <th class="textAlign" style="vertical-align: middle;">Nama Pegawai</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jumlah</th>
                                     </tr>

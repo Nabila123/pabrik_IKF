@@ -160,13 +160,13 @@
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 <label>Harga</label>
-                                                                <input class="form-control harga" id="harga" name="harga" type="number" placeholder="Harga">                                            
+                                                                <input class="form-control hargaBarang" id="hargaBarang" name="hargaBarang" type="text" placeholder="Harga">                                            
                                                             </div>
                                                         </div>
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 <label>Total Harga</label>
-                                                                <input class="form-control disable totalHarga" id="totalHarga" name="totalHarga" type="number" placeholder="Total Harga" readonly>                                            
+                                                                <input class="form-control disable total" id="total" name="total" type="text" placeholder="Total Harga" readonly>                                            
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -210,10 +210,12 @@
                                                                             </td>
                                                                             <td>{{ $detail->unit }}</td>
                                                                             <td>
-                                                                                <input class="form-control harga" purchaseDetail="{{ $detail->id }}" id="harga{{ $detail->id }}" name="harga[{{ $detail->id }}]" type="number" placeholder="Harga">                                            
+                                                                                <input class="form-control hargaBarang" purchaseDetail="{{ $detail->id }}" id="hargaBarang{{ $detail->id }}" name="hargaBarang[{{ $detail->id }}]" type="text" placeholder="Harga">                                            
+                                                                                <input class="form-control harga" purchaseDetail="{{ $detail->id }}" id="harga{{ $detail->id }}" name="harga[{{ $detail->id }}]" type="hidden" placeholder="Harga">                                            
                                                                             </td>
                                                                             <td>
-                                                                                <input class="form-control disable totalHarga" id="totalHarga{{ $detail->id }}" name="totalHarga[{{ $detail->id }}]" type="number" placeholder="Total Harga" readonly>
+                                                                                <input class="form-control disable total" id="total{{ $detail->id }}" name="total[{{ $detail->id }}]" type="text" placeholder="Total Harga" readonly>
+                                                                                <input class="form-control disable totalHarga" id="totalHarga{{ $detail->id }}" name="totalHarga[{{ $detail->id }}]" type="hidden" placeholder="Total Harga" readonly>
                                                                             </td>
                                                                             <td>{{ $detail->remark }}</td>
                                                                         </tr>                                                                    
@@ -288,16 +290,19 @@
             })
         });
 
-        $(document).on("focusout", ".harga", function(){
+        $(document).on("keyup", ".hargaBarang", function(){
             var id = $(this).attr('purchaseDetail');
-            var harga = $('#harga'+id).val();
+            var harga = $('#hargaBarang'+id).val();
             var jumlah = $('#jumlah'+id).val();
 
-            console.log(id)
-            
-            hargaTotal = (harga * jumlah);
+            hargaTotal = (parseInt(harga.replace(/[^,\d]/g, '')) * jumlah);
+            console.log(hargaTotal, harga)
+
+            $('#total'+id).val(formatRupiah(String(hargaTotal), 'Rp. '));
+            $('#hargaBarang'+id).val(formatRupiah(harga, 'Rp. '));
 
             $('#totalHarga'+id).val(hargaTotal);
+            $('#harga'+id).val(parseInt(harga.replace(/[^,\d]/g, '')));
         });
 
         $(document).ready( function () {

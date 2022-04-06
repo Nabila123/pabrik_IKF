@@ -105,6 +105,7 @@
                                         <label>Jumlah Baju</label>
                                         <div class="input-group">                                            
                                             <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
+                                            <input type="hidden" id="jumlahOld" name="jumlahOld">
                                         </div>
                                         <div id="requestOperatorId">
 
@@ -220,6 +221,7 @@
                     var data = JSON.parse(response)
                     console.log(data);
                     $('#jumlah').val(data['jumlah']);
+                    $('#jumlahOld').val(data['jumlah']);
                     console.log(data.operatorReqId.length)
                     for(var i = 0;i < data.operatorReqId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
@@ -229,28 +231,35 @@
             })
         });
 
-        $(document).on("change", ".jumlah", function(){
+        $(document).on("keyup", ".jumlah", function(){
             var purchaseId = $('#purchaseId').val();
             var jenisBaju = $('#jenisBaju').val();
             var ukuranBaju = $('#ukuranBaju').val();
             var jumlah = $('#jumlah').val();
+            var jumlahOld = $('#jumlahOld').val();
             var _token = $('#_token').val();
+
+            $('#jumlah').css({'border':'1px solid #ced4da'});
             $('#requestOperatorId').html('');
             
-            $.ajax({
-                type: "get",
-                url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
-                
-                success: function(response){
-                    var data = JSON.parse(response)
-                    console.log(data);
-                    $('#jumlah').val(data['jumlah']);
-                    for(var i = 0;i < data.operatorReqId.length; i++){
-                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
-                        $('#requestOperatorId').append(dt);  
+            if(parseInt(jumlah) <= parseInt(jumlahOld)){
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
+                    
+                    success: function(response){
+                        var data = JSON.parse(response)
+                        console.log(data);
+                        $('#jumlah').val(data['jumlah']);
+                        for(var i = 0;i < data.operatorReqId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                $('#jumlah').css({'border':'2px solid #e74c3c'});
+            }
         });
         
         $(document).ready( function () {             
@@ -263,6 +272,7 @@
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlah          = $('#jumlah').val();
+                var jumlahOld       = $('#jumlahOld').val();
                 var operatorReqId   = [];
                 for(i=0; i<jumlah; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
@@ -270,7 +280,7 @@
                 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0){
+                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0 && (parseInt(jumlah) <= parseInt(jumlahOld))){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 

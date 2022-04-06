@@ -70,7 +70,7 @@
                                      @foreach ($invoice as $val)
                                          <tr>
                                              <td>{{ $val->purchase->kode }}</td>
-                                             <td>{{ $val->total }}</td>
+                                             <td>{{ rupiah($val->total) }}</td>
                                              <td>{{ $val->paymentDue }}</td>
                                              <td>
                                                  <a href="{{ route('adminPO.poInvoice.detail', $val->id) }}"

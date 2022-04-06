@@ -8,6 +8,7 @@ use App\Models\GudangPackingRekap;
 use App\Models\GudangPackingRekapDetail;
 use App\Models\GudangControlReject;
 use App\Models\GudangControlRejectDetail;
+use App\Models\GudangBarangJadiStokOpname;
 use App\Models\Pegawai;
 use DB;
 use PDF;
@@ -254,6 +255,28 @@ class PackingController extends Controller
         return json_encode($GetKodePacking);
     }
 
+    public function getKode(Request $request)
+    {
+        $data = [];
+        $GetKodePacking = GudangBarangJadiStokOpname::where('kodeproduct', $request->kodeProduct)->first();
+        if ($GetKodePacking == null) {
+            $getPackingRekap = GudangPackingRekap::where('kodePacking', $request->kodeProduct)->first();
+            $getPackingRekapDetail = GudangPackingRekapDetail::where('gdPackingRekapId', $getPackingRekap->id)->get();
+            foreach ($getPackingRekapDetail as $detail) {
+                $addBarangJadiStokOpname = GudangBarangJadiStokOpname::CreateGudangBarangStokOpname($detail->gdBajuStokOpnameId, $getPackingRekap->kodePacking, $detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju);
+            }
+
+            if($addBarangJadiStokOpname == 1){
+                $getBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->groupBy('kodeProduct')->get();
+                foreach ($getBarangJadi as $value) {
+                    $data[] = $value;
+                }
+                return json_encode($data);
+            }
+
+        }
+    }
+
     public function gRequest()
     {
         $gdPackingRequest = GudangSetrikaStokOpname::where('statusPacking', 0)->groupby('tanggal')->get();
@@ -271,6 +294,7 @@ class PackingController extends Controller
     public function gOperator()
     {
         $gdPackingRekap = GudangPackingRekap::where('tanggal', date('Y-m-d'))->get();
+        $gdBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->groupBy('kodeProduct')->get();
         foreach ($gdPackingRekap as $packing) {
             $gdPackingRekapDetail = GudangPackingRekapDetail::where('gdPackingRekapId', $packing->id)->groupBy('pegawaiId')->get();
             foreach ($gdPackingRekapDetail as $packingDetail) {
@@ -278,7 +302,7 @@ class PackingController extends Controller
             }
         }
 
-        return view('packing.operator.index', ['packingRekap' => $gdPackingRekap]);
+        return view('packing.operator.index', ['packingRekap' => $gdPackingRekap, 'barangJadi' => $gdBarangJadi]);
     }
 
     public function gRekapDetail($id)
@@ -418,6 +442,29 @@ class PackingController extends Controller
     	return $pdf->stream();
 
         // return view('packing.operator.cetakBarcode', ['data' => $data]);
+    }
+
+    public function gPackingBahanBakuCreate()
+    {
+        return view('packing.bahanBaku.create');
+    }
+
+    public function gPackingBahanBakuDelete(Request $request)
+    {
+        $data = [];
+        $getBarangJadi = GudangBarangJadiStokOpname::where('kodeProduct', $request->kodeProduct)->delete();
+        if ($getBarangJadi) {
+            $getBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->groupBy('kodeProduct')->get();
+                foreach ($getBarangJadi as $value) {
+                    $data[] = $value;
+                }
+            return json_encode($data);
+        }
+    }
+
+    public function gPackingBahanBakuStore()
+    {
+        return redirect('GPacking/operator');
     }
 
     public function gReject()

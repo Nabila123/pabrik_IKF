@@ -49,7 +49,7 @@
                                         @if($cekMenu = notifMenu($main->id)) 
                                             @if (isset($cekMenu[$menu->id]))
                                                 <span class="badge bg" style="background-color: #1AAD19; ">
-                                                    {{ count($cekMenu) }}
+                                                    {{ $cekMenu[$menu->id] }}
                                                 </span>
                                             @endif
                                         @endif

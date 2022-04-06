@@ -99,7 +99,7 @@ class MenuSeeder extends Seeder
             //Gudang Setrika
             ['id' => 59, 'parentId' => 0, 'urutan' => 13, 'nama' => 'Gudang Setrika', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
             ['id' => 60, 'parentId' => 59, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GSetrika', 'directori' => 'gudangSetrika', 'isActive' => 1],
-            ['id' => 61, 'parentId' => 59, 'urutan' => 2, 'nama' => 'Request Gudang Control', 'alias' => 'GSetrika.request', 'directori' => 'gudangSetrika/request/index', 'isActive' => 1],
+            ['id' => 61, 'parentId' => 59, 'urutan' => 2, 'nama' => 'Request G. Control', 'alias' => 'GSetrika.request', 'directori' => 'gudangSetrika/request/index', 'isActive' => 1],
             ['id' => 62, 'parentId' => 59, 'urutan' => 3, 'nama' => 'Operator Setrika', 'alias' => 'GSetrika.operator', 'directori' => 'gudangSetrika/operator/index', 'isActive' => 1],
             ['id' => 63, 'parentId' => 59, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GSetrika.reject', 'directori' => 'gudangSetrika/reject/index', 'isActive' => 1],
 
@@ -124,8 +124,9 @@ class MenuSeeder extends Seeder
             //Keuangan
             ['id' => 70, 'parentId' => 0, 'urutan' => 16, 'nama' => 'Keuangan', 'alias' => 'Keuangan', 'directori' => 'keuangan', 'isActive' => 1],
             ['id' => 71, 'parentId' => 70, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'Keuangan', 'directori' => 'keuangan/index', 'isActive' => 1],
-            ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Pemesanan Bahan Baku', 'alias' => 'Keuangan.pesanan', 'directori' => 'keuangan/pesanan/index', 'isActive' => 1],
-            ['id' => 73, 'parentId' => 70, 'urutan' => 3, 'nama' => 'Penjualan Baju', 'alias' => 'Keuangan.penjualan', 'directori' => 'keuangan/penjualan/index', 'isActive' => 1],
+            ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Purchase Order', 'alias' => 'adminPO.poOrder', 'directori' => 'adminPO/purchaseOrder/poOrder', 'isActive' => 1],
+            ['id' => 73, 'parentId' => 70, 'urutan' => 3, 'nama' => 'Purchase Invoice', 'alias' => 'adminPO.poInvoice', 'directori' => 'adminPO/purchaseInvoice/index', 'isActive' => 1],
+            ['id' => 74, 'parentId' => 70, 'urutan' => 4, 'nama' => 'Penjualan Baju', 'alias' => 'Keuangan.penjualan', 'directori' => 'keuangan/penjualan/index', 'isActive' => 1],
 
         ];
 

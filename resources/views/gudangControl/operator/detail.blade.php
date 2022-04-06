@@ -71,7 +71,7 @@
                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
                                             <td>
-                                                @if ($detail->statusBatil == 1)
+                                                @if ($detail->statusControl == 1)
                                                     <i class="fa-solid fa-check"></i>
                                                 @else
                                                     <i class="fas fa-xmark"></i>

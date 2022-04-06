@@ -60,7 +60,7 @@
                                         <th>Note : {{ $invoice->purchase->note }} </th>
                                     </tr>
                                     <tr>
-                                        <th>Total : {{ $invoice->total }} </th>
+                                        <th>Total : {{ rupiah($invoice->total) }} </th>
                                     </tr>
                                 </thead>                               
                             </table>
@@ -92,7 +92,7 @@
                                             <td>{{ $detail['netto'] }}</td>
                                             <td>{{ $detail['tarra'] }}</td>
                                             <td>{{ $detail['satuan'] }}</td>
-                                            <td>{{ $detail['harga'] }}</td>
+                                            <td>{{ rupiah($detail['harga']) }}</td>
                                             <td>{{ $detail['note'] }}</td>
                                         </tr>
                                     @endforeach                               

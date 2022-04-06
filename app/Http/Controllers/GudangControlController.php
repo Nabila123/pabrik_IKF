@@ -333,7 +333,7 @@ class GudangControlController extends Controller
         if ($gdSetrikaMasuk != null) {
             $gdSetrikaMasukDetail = GudangSetrikaMasukDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdSetrikaMId', $gdSetrikaMasuk->id)->groupBy('gdSetrikaMId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
         }else {
-            $gdSetrikaMasukDetail = null;
+            $gdSetrikaMasukDetail = [];
         }
         // dd($pindahan);
         return view('gudangControl.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdControl' => $gdControl, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdSetrikaMasuk' => $gdSetrikaMasukDetail]);

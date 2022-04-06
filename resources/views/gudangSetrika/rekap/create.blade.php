@@ -301,7 +301,7 @@
             })
         });
 
-        $(document).on("change", ".jumlahBaju", function(){
+        $(document).on("keyup", ".jumlahBaju", function(){
             var posisi      = $('#posisi').val();
             var purchaseId  = $('#purchaseId').val();
             var jenisBaju   = $('#jenisBaju').val();
@@ -320,7 +320,7 @@
 
             $('#requestOperatorId').html('');
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GSetrika/getPegawai') }}',

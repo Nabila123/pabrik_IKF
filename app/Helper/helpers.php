@@ -13,6 +13,10 @@
     use App\Models\GudangJahitMasuk;
     use App\Models\GudangBatilMasuk;
     use App\Models\GudangControlMasuk;
+    use App\Models\GudangSetrikaMasuk;
+    use App\Models\GudangSetrikaStokOpname;
+    use App\Models\GudangJahitReject;
+    use App\Models\GudangControlReject;
 
     function rupiah($angka){
 	
@@ -51,30 +55,34 @@
                 $KDeptProd = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('isKaDeptProd', 0)->where('isKaDeptPO', 0)->get();            
                 if (count($KDeptProd) != 0) {
                     $notif[8] = count($KDeptProd);
+                    return $notif;
                 }
             }
             if ($user == 7) { //KDeptPO
                 $KDeptPO = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('isKaDeptProd', '!=', 0)->where('isKaDeptPO', 0)->get();  
                 if (count($KDeptPO) != 0) {
                     $notif[8] = count($KDeptPO);
+                    return $notif;
                 }
             }
             if ($user == 4 ) { //KDivPO
                 $KDivPO = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('isKaDivPO', 0)->where('isKaDivFin', 0)->get();  
                 if (count($KDivPO) != 0) {
                     $notif[9] = count($KDivPO);
+                    return $notif;
                 }
             }
             if ($user == 6) { //KDivFin
                 $KDivFin = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('isKaDivPO', '!=', 0)->where('isKaDivFin', 0)->get();  
                 if (count($KDivFin) != 0) {
                     $notif[9] = count($KDivFin);
+                    return $notif;
                 }
             }   
 
-            if (count($notif) != 0) {
-                return $notif;
-            }
+            // if (count($notif) != 0) {
+            //     return $notif;
+            // }
         }
 
         if ($mains->nama == "Gudang Bahan Baku") {
@@ -175,13 +183,19 @@
         if ($mains->nama == "Gudang Jahit") {
             if ($user == 38) { //Gudang Jahit
                 $notifJahitMasuk = GudangJahitMasuk::where('statusProses', 0)->get();            
+                $notifJahitReject = GudangJahitReject::where('statusProses', 0)->get();            
                 if (count($notifJahitMasuk) != 0) {
                     $notif[41] = count($notifJahitMasuk);
+                }
+
+                if (count($notifJahitReject) != 0) {
+                    $notif[43] = count($notifJahitReject);
                 }
             }
             
             return $notif;
         }
+        
 
         if ($mains->nama == "Gudang Batil") {
             if ($user == 38) { //Gudang Batil
@@ -197,8 +211,36 @@
         if ($mains->nama == "Gudang Control") {
             if ($user == 38) { //Gudang Control
                 $notifControlMasuk = GudangControlMasuk::where('statusDiterima', 0)->get();            
+                $notifControlReject = GudangControlReject::where('statusProses', 0)->get();            
+                
                 if (count($notifControlMasuk) != 0) {
                     $notif[51] = count($notifControlMasuk);
+                }
+
+                if (count($notifControlReject) != 0) {
+                    $notif[53] = count($notifControlReject);
+                }
+            }
+            
+            return $notif;
+        }
+
+        if ($mains->nama == "Gudang Setrika") {
+            if ($user == 38) { //Gudang Setrika
+                $notifSetrikaMasuk = GudangSetrikaMasuk::where('statusDiterima', 0)->get();            
+                if (count($notifSetrikaMasuk) != 0) {
+                    $notif[61] = count($notifSetrikaMasuk);
+                }
+            }
+            
+            return $notif;
+        }
+
+        if ($mains->nama == "Packing") {
+            if ($user == 38) { //Packing
+                $notifPackingMasuk = GudangSetrikaStokOpname::where('statusPacking', 0)->whereDate('tanggal', date('Y-m-d'))->get();            
+                if (count($notifPackingMasuk) != 0) {
+                    $notif[56] = count($notifPackingMasuk);
                 }
             }
             

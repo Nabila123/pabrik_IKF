@@ -23,12 +23,16 @@ class GudangPackingRekap extends Model
 
     public static function kodePacking() {
         $packingRekap =  Self::select('kodePacking')->get(); 
-        $kode = rand(0, 999999999999);
+        $kode = rand(100000000000, 999999999999);
         
-        foreach ($packingRekap as $value) {
-            if ($value->kodePacking == $kode) {
-                Self::kodePacking();
-            }            
+        if(strlen($kode) == 12){
+            foreach ($packingRekap as $value) {
+                if ($value->kodePacking == $kode) {
+                    Self::kodePacking();
+                }            
+            }
+        }else{
+            Self::kodePacking();
         }
 
         return $kode;

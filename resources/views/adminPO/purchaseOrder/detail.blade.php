@@ -75,8 +75,8 @@
                                             <th style="width: 5%;">Netto</th>
                                             <th style="width: 5%;">Selisih </th>
                                         @endif
-                                        <th style="width: 5%;">Harga</th>
-                                        <th style="width: 5%;">Total</th>
+                                        <th style="width: 15%;">Harga</th>
+                                        <th style="width: 15%;">Total</th>
                                         <th style="width: 25%;">Keterangan</th>
                                     </tr>
                                 </thead>
@@ -106,8 +106,8 @@
                                                     @endfor
                                                 </td>
                                             @endif
-                                            <td style="vertical-align: middle;">{{ $detail->unitPrice }}</td>
-                                            <td style="vertical-align: middle;">{{ $detail->amount }}</td>
+                                            <td style="vertical-align: middle;">{{ rupiah($detail->unitPrice) }}</td>
+                                            <td style="vertical-align: middle;">{{ rupiah($detail->amount) }}</td>
                                             <td style="vertical-align: middle;" class="text-left">{{ $detail->remark }}</td>
                                         </tr>
                                     @endforeach                                    

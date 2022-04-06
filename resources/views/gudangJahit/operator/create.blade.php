@@ -105,6 +105,7 @@
                                         <label>Jumlah Baju</label>
                                         <div class="input-group">                                            
                                             <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
+                                            <input type="hidden" id="jumlahOld" name="jumlahOld">
                                         </div>
                                     </div>
 
@@ -216,8 +217,21 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     $('#jumlah').val(data);
+                    $('#jumlahOld').val(data);
                 }
             })
+        });
+
+        $(document).on("keyup", ".jumlah", function(){
+            var jumlah  = $('#jumlah').val();
+            var jumlahOld  = $('#jumlahOld').val();
+            $('#jumlah').css({'border':'1px solid #ced4da'});
+
+            if(parseInt(jumlah) <= parseInt(jumlahOld)){
+                $('#jumlah').css({'border':'1px solid #ced4da'});
+            }else{
+                $('#jumlah').css({'border':'2px solid #e74c3c'});
+            }
         });
         
         $(document).ready( function () {             
@@ -230,10 +244,11 @@
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlah          = $('#jumlah').val();
+                var jumlahOld       = $('#jumlahOld').val();
 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0){
+                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0 && (parseInt(jumlah) <= parseInt(jumlahOld))){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
@@ -260,7 +275,7 @@
 
                         $('#jumlah').val('');
                 }else{
-                    alert("Inputan Tidak Boleh Ada Yang Kosong");
+                    alert("Inputan And Salah");
                 }
 
                 $('#JahitData tbody.data').append(table);

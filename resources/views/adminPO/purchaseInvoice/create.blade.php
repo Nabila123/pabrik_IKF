@@ -83,7 +83,8 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Total Harga</label>
-                                            <input class="form-control total" id="total" name="total" type="number" placeholder="Total Harga" required>                                            
+                                            <input class="form-control harga" id="harga" name="harga" type="text" placeholder="harga Harga" required>                                            
+                                            <input id="total" name="total" type="hidden">                                            
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -152,7 +153,14 @@
         $('#barangDatangId').select2({
             theme: 'bootstrap4'
         });
-        
+
+        $(document).on("keyup", ".harga", function(){
+            var rupiah      = $('#harga').val();
+            rupiah = formatRupiah(rupiah, 'Rp. ');
+
+            $('#harga').val(rupiah);
+            $('#total').val(rupiah.replace(/[^0-9]/g, ''));
+        });
 
         $(document).on("change", ".barangDatangId", function(){
             var purchaseId = $('#barangDatangId').val();
