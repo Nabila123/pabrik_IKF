@@ -120,7 +120,7 @@
                                                 <div class="row">  
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase </label>
+                                                            <label>Nomor PO </label>
                                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                                 
                                                             </select> 
@@ -183,7 +183,7 @@
                                                     <th rowspan="2" style="vertical-align: middle;">No</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Posisi Jahit</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Nama Pegawai</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Kode Purchase</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Nomor PO</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Ukuran Baju</th>
                                                     <th rowspan="2" style="vertical-align: middle;">Jumlah Baju</th>
@@ -337,7 +337,7 @@
                     }
                     $('#pegawaiId').html(pegawaiId);
 
-                    var purchaseId ="<option value=''>Pilih Kode Purchase</option>";
+                    var purchaseId ="<option value=''>Pilih Nomor PO</option>";
                     for(var i = 0;i < data.operator.length;i++){
                         purchaseId += "<option value="+data['operator'][i]['purchaseId']+">"+data['operator'][i]['kodePurchase']+"</option>";
                     }

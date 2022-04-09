@@ -65,7 +65,7 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Kode Purchase</th>
+                                        <th class="textAlign">Nomor PO</th>
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>

@@ -58,7 +58,7 @@
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Posisi Jahit</th>
                                         <th class="textAlign" style="vertical-align: middle;">Nama Pegawai</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>

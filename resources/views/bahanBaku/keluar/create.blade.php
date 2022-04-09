@@ -84,7 +84,7 @@
 
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase</label>
+                                                            <label>Nomor PO</label>
                                                             <select class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;">
                                                                 
                                                             </select>     
@@ -145,7 +145,7 @@
                                                                 <tr>
                                                                     <th class="textAlign">No</th>
                                                                     <th class="textAlign">Nama Barang</th>
-                                                                    <th class="textAlign">Kode Purchase </th>
+                                                                    <th class="textAlign">Nomor PO </th>
                                                                     <th class="textAlign">Diameter </th>
                                                                     <th class="textAlign">Gramasi </th>
                                                                     <th class="textAlign">berat </th>
@@ -247,7 +247,7 @@
                     $('#materialId').val(data.material.id);
                     $('#material').val(data.material.nama);
                     $('#jenisId').val(gudangRequest);
-                    var opt ='<option value="">Pilih Kode Purchase</option>';
+                    var opt ='<option value="">Pilih Nomor PO</option>';
                     for(var i =0;i < data.purchase.length;i++){
                         opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
                     }
@@ -274,7 +274,7 @@
                     $('#materialId').val(data.material.id);
                     $('#material').val(data.material.nama);
                     $('#jenisId').val(gudangRequest);
-                    var opt ='<option value="">Pilih Kode Purchase</option>';
+                    var opt ='<option value="">Pilih Nomor PO</option>';
                     for(var i =0;i < data.purchase.length;i++){
                         opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
                     }

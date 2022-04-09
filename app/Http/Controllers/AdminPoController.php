@@ -559,12 +559,16 @@ class AdminPoController extends Controller
         $purchaseId = BarangDatang::where('total', 0)->get();
         $i = 1;
         $temp = '';
-        foreach ($purchaseId as $value) {
-            
+        foreach ($purchaseId as $value) { 
             if ($value->purchaseId == $temp) {
                 $value->kedatangan = 'Kedatangan Ke - '.$i++;
             }else{
                 $i = 1;
+                $checkPurchase = BarangDatang::where('purchaseId', $value->purchaseId)->where('total', '!=', 0)->get();
+                if (count($checkPurchase) != 0) {
+                    $i += count($checkPurchase);
+                }
+
                 $value->kedatangan = 'Kedatangan Ke - '.$i++;
             }
             

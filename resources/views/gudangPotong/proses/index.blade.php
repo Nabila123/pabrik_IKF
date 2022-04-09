@@ -59,7 +59,7 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign">Kode Purchase </th>
+                                        <th class="textAlign">Nomor PO </th>
                                         <th class="textAlign">Bahan Baku</th>
                                         <th class="textAlign">Operator Proses</th>
                                         <th class="textAlign">Tanggal Proses</th>

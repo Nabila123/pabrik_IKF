@@ -60,7 +60,7 @@
                                                 <div class="row">                                                    
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase</label>
+                                                            <label>Nomor PO</label>
                                                             <input type="text" class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->purchase->kode}}" readonly />
                                                             <input type="hidden" class="form-control purchaseId" id="purchaseId" name="purchaseId" value="{{$data->purchaseId}}" readonly />                                                            
                                                         </div>

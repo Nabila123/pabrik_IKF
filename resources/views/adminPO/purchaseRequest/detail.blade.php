@@ -53,7 +53,7 @@
                             <table class="table" style="margin-bottom: 35px">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">Kode Purchase : {{ $request->kode }}</th>
+                                        <th style="width: 40%">Nomor PO : {{ $request->kode }}</th>
                                     </tr>
                                     <tr>
                                         <th>Note : {{ $request->note }}</th>
@@ -117,8 +117,8 @@
                                         <th rowspan="2" style="vertical-align: middle;">PPIC</th>
                                     </tr>
                                     <tr>
-                                        <th>K. Dept Prod</th>
-                                        <th>K. Dept PO</th>
+                                        <th>Managert Prod</th>
+                                        <th>Managert PO</th>
                                     </tr>
                                 </thead> 
                                 <tbody>

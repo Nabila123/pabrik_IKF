@@ -93,7 +93,7 @@
                                                 <tr>
                                                     <th>Bahan Baku</th>
                                                     <th>Hasil Bahan Baku</th>
-                                                    <th>Kode Purchase</th>
+                                                    <th>Nomor PO</th>
                                                     <th>Jumlah</th>
                                                     <th>Gramasi</th>
                                                     <th>Diameter</th>

@@ -65,8 +65,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode disable" value="{{ $purchase->kode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" readonly>                                            
+                                            <label>Nomor PO</label>
+                                            <input class="form-control purchaseKode disable" value="{{ $purchase->kode }}" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Nomor PO" readonly>                                            
                                         </div>
                                     </div>
                                     <div class="col-6">

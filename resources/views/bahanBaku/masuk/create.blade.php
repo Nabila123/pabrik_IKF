@@ -60,9 +60,9 @@
                                                 <div class="row">                                                    
                                                     <div class="col-6">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase</label>
+                                                            <label>Nomor PO</label>
                                                             <select class="form-control col-md-7 col-xs-12 kodePurchase" id="kodePurchase" name="kodePurchase" style="width: 100%; height: 38px;" required>
-                                                                <option value="">Pilih Kode Purchase</option>
+                                                                <option value="">Pilih Nomor PO</option>
                                                                 @foreach($purchases as $purchase)
                                                                     <option value="{{$purchase->kode}}">{{$purchase->kode}}</option>
                                                                 @endforeach

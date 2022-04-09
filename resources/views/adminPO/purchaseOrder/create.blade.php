@@ -68,8 +68,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Kode Purchase" required>                                            
+                                            <label>Nomor PO</label>
+                                            <input class="form-control purchaseKode" id="purchaseKode" name="purchaseKode"  type="text" placeholder="Nomor PO" required>                                            
                                         </div>
                                     </div>
                                     <div class="col-6">

@@ -60,7 +60,7 @@
                                                 <div class="row">                                                    
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase</label>
+                                                            <label>Nomor PO</label>
                                                             <input type="text" class="form-control kodePurchase" id="kodePurchase" name="kodePurchase" value="{{$data->purchase->kode}}" readonly />
                                                             <input type="hidden" class="form-control purchaseId" id="purchaseId" name="purchaseId" value="{{$data->purchaseId}}" readonly />                                                            
                                                         </div>
@@ -82,7 +82,7 @@
                                                     @foreach($barangDatang as $value)
                                                         <p>Waktu Kedatangan : {{date('j F Y H:i:s', strtotime($value->created_at))}}</p>
                                                         <div class="col-12 right">
-                                                            <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                                                            <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="textAlign" style="width: 7%;">No</th>

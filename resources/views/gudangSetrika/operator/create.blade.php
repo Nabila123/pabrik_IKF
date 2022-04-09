@@ -85,7 +85,7 @@
                                     </div>
                                     <div class="col-3">
                                         <div class="form-group">
-                                            <label>Kode Purchase</label>
+                                            <label>Nomor PO</label>
                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
@@ -127,7 +127,7 @@
                                                 <tr>
                                                     <th style="vertical-align: middle;">No</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
-                                                    <th style="vertical-align: middle;">Kode Purchase</th>
+                                                    <th style="vertical-align: middle;">Nomor PO</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
                                                     <th style="vertical-align: middle;">Jumlah</th>
                                                     <th style="vertical-align: middle;">Action</th>
@@ -175,7 +175,7 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     console.log(data);
-                    var purchaseId ="<option value=''>Pilih Kode Purchase</option>";
+                    var purchaseId ="<option value=''>Pilih Nomor PO</option>";
                     for(var i = 0;i < data.length;i++){
                         purchaseId += "<option value="+data[i]['purchaseId']+">"+data[i]['kode']+"</option>";
                     }

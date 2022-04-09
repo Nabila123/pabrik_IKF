@@ -76,7 +76,7 @@
                                 <div class="row mb-5">
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label>Kode Purchase </label>
+                                            <label>Nomor PO </label>
                                             <input type="text" id="purchaseId" name="purchaseId" value="{{ $gdPotongProses->purchase->kode }}" class="form-control purchaseId disabled" readonly>                                                                               
                                         </div>
                                     </div>

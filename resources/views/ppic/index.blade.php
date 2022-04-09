@@ -67,7 +67,7 @@
                                 <thead>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle; width:10%;">No</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">Bahan Baku</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Bahan Olahan</th>
                                         <th class="textAlign" style="vertical-align: middle;">Diameter</th>

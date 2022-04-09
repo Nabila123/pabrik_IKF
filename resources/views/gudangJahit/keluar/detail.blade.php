@@ -56,7 +56,7 @@
                                 <thead>
                                     <tr>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">No </th>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Keterangan</th>

@@ -56,7 +56,7 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th style="vertical-align: middle;">Kode Purchase</th>
+                                        <th style="vertical-align: middle;">Nomor PO</th>
                                         <th style="vertical-align: middle;">Nama Supplier</th>
                                         <!-- <th style="vertical-align: middle;">Total</th> -->
                                         <th style="vertical-align: middle;">action</th>

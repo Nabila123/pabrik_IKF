@@ -53,7 +53,7 @@
                             <table class="table" style="margin-bottom: 35px">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">Kode Purchase : {{ $purchase->kode }}</th>
+                                        <th style="width: 40%">Nomor PO : {{ $purchase->kode }}</th>
                                     </tr>
                                     <tr>
                                         <th>Note : {{ $purchase->note }}</th>
@@ -118,7 +118,7 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2" style="width: 60%">Approved By</th>
-                                        <th rowspan="2" style="vertical-align: middle;">K. Dep PO</th>
+                                        <th rowspan="2" style="vertical-align: middle;">Manager PO</th>
                                     </tr>
                                     <tr>
                                         <th>K. Div PO</th>

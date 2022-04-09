@@ -54,7 +54,7 @@
                             <table class="table" style="margin-bottom: 35px">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40%">Kode Purchase : {{ $invoice->purchase->kode }}</th>
+                                        <th style="width: 40%">Nomor PO : {{ $invoice->purchase->kode }}</th>
                                     </tr>
                                     <tr>
                                         <th>Note : {{ $invoice->purchase->note }} </th>

@@ -66,7 +66,7 @@
                                 <div class="row mb-5">
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label>Kode Purchase </label>
+                                            <label>Nomor PO </label>
                                             <select class="form-control col-md-7 col-xs-12 purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" required>
                                                 <option> Pilih Satu </option>
                                                 @for ($i = 0; $i < count($purchaseId); $i++)

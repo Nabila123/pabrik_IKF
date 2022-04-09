@@ -59,7 +59,7 @@
                             <div class="row mb-5">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>Kode Purchase </label>
+                                        <label>Nomor PO </label>
                                         <input type="text" value="{{ $gudangInspeksi->purchase->kode }}" class="form-control namaOperator disabled" readonly>                                                                                 
                                     </div>
                                 </div>

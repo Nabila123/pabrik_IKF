@@ -120,7 +120,7 @@
                                                 <div class="row">  
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Kode Purchase </label>
+                                                            <label>Nomor PO </label>
                                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                                 <option> Pilih Salah Satu</option>
                                                                 @foreach ($purchases as $purchase)
@@ -178,7 +178,7 @@
                                                     <th style="vertical-align: middle;">No</th>
                                                     <th style="vertical-align: middle;">Nama Pegawai</th>
                                                     <th style="vertical-align: middle;">Kode Packing</th>
-                                                    <th style="vertical-align: middle;">Kode Purchase</th>
+                                                    <th style="vertical-align: middle;">Nomor PO</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
                                                     <th style="vertical-align: middle;">Jumlah Baju</th>

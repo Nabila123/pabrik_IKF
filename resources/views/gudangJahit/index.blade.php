@@ -72,7 +72,7 @@
                                     <tr>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle; width:10%;">No</th>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle;">Tanggal</th>
-                                        <th class="textAlign" rowspan="2" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th class="textAlign" rowspan="2" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle;">Ukuran</th>
                                         <th class="textAlign" colspan="3" style="vertical-align: middle;">Keterangan</th>

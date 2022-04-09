@@ -88,7 +88,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="textAlign">Bahan</th>
-                                                    <th class="textAlign">Kode Purchase</th>
+                                                    <th class="textAlign">Nomor PO</th>
                                                     <th class="textAlign">Gramasi</th>
                                                     <th class="textAlign">Diamater</th>
                                                     <th class="textAlign">Berat</th>

@@ -54,14 +54,14 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Kode Purchase</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Tanggal Pengajuan</th>
                                         <th colspan="3" class="textAlign" style="vertical-align: middle;">Agreement </th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle;">Status Kedatangan</th>
                                         <th rowspan="2" class="textAlign" style="vertical-align: middle; width:11%;">action</th>
                                     </tr>
                                     <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">K. Dep PO</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Manager PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">K. Div PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">K. Div Fin</th>
                                     </tr>

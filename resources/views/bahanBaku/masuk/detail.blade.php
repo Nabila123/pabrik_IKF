@@ -61,7 +61,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="textAlign">Bahan</th>
-                                                                <th class="textAlign">Kode Purchase</th>
+                                                                <th class="textAlign">Nomor PO</th>
                                                                 @if ($data->gudangRequest != "Gudang Rajut")
                                                                     <th class="textAlign">Gramasi</th>
                                                                     <th class="textAlign">Diamater</th>

@@ -67,8 +67,8 @@
                                 <div class="row"> 
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Kode Purchase</label>
-                                            <input class="form-control purchaseKode disabled" type="text" id="purchaseKode" name="purchaseKode" value="{{ $purchase->purchase->kode }}" placeholder="Kode Purchase" readonly>                                                                                      
+                                            <label>Nomor PO</label>
+                                            <input class="form-control purchaseKode disabled" type="text" id="purchaseKode" name="purchaseKode" value="{{ $purchase->purchase->kode }}" placeholder="Nomor PO" readonly>                                                                                      
                                         </div>
                                     </div>
                                     <div class="col-6">
