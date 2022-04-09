@@ -118,10 +118,10 @@ class PPICController extends Controller
             if ($checkPPICRequest == null) {
                 $ppicRequest = PPICGudangRequest::CreatePPICGudangRequest($request['gudangRequest'][$i]);
                 if ($ppicRequest != 0) {
-                    $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['qty'][$i]);
+                    $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
                 }
             }else{
-                $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($checkPPICRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['qty'][$i]);
+                $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($checkPPICRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
             }
         }
 
@@ -136,6 +136,17 @@ class PPICController extends Controller
         $ppicRequest = PPICGudangRequest::where('id', $id)->first();
         $ppicRequestDetail = PPICGudangRequestDetail::where('gdPpicRequestId', $ppicRequest->id)->get();
 
+        foreach ($ppicRequestDetail as $detail) {
+            if ($ppicRequest->gudangRequest == "Gudang Potong") {
+                $detail->qty = $detail->qty." Dz";
+            }elseif ($ppicRequest->gudangRequest == "Gudang Rajut") {
+                $detail->qty = $detail->qty." Bal";
+            }else {
+                $detail->qty = $detail->qty." Roll";
+            }
+            
+        }
+
         return view('ppic.gudangRequest.detail', ['ppicRequest' => $ppicRequest, 'ppicRequestDetail' => $ppicRequestDetail]);
     }   
 
@@ -144,6 +155,15 @@ class PPICController extends Controller
         $materials = MaterialModel::where('keterangan', 'Bahan Baku')->get();
         $ppicRequest = PPICGudangRequest::where('id', $id)->first();
         $ppicRequestDetail = PPICGudangRequestDetail::where('gdPpicRequestId', $ppicRequest->id)->get();
+        foreach ($ppicRequestDetail as $detail) {
+            if ($detail->diameter == 0) {
+                $detail->diameter = "-";
+            }
+
+            if ($detail->gramasi == 0) {
+                $detail->gramasi = "-";
+            }
+        }
 
         return view('ppic.gudangRequest.update', ['materials' => $materials, 'ppicRequest' => $ppicRequest, 'ppicRequestDetail' => $ppicRequestDetail]);
     }
@@ -152,7 +172,7 @@ class PPICController extends Controller
     {
         $ppicRequest = PPICGudangRequest::where('id', $id)->first();
         for ($i=0; $i < $request->jumlah_data; $i++) {
-            $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['qty'][$i]);
+            $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
         }
 
         return redirect('ppic/Gudang');

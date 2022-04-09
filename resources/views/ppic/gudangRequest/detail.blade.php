@@ -71,8 +71,13 @@
                                     <tr>
                                         <th >No</th>
                                         <th >Bahan Baku</th>
-                                        <th >Gramasi</th>
-                                        <th >Diameter</th>
+                                        @if ($ppicRequest->gudangRequest == "Gudang Potong")
+                                            <th >Jenis Baju</th>
+                                            <th >Ukuran Baju</th>
+                                        @else
+                                            <th >Gramasi</th>
+                                            <th >Diameter</th>
+                                        @endif
                                         <th >Qty</th>
                                     </tr>
                                 </thead>
@@ -83,8 +88,13 @@
                                         <tr>
                                             <td>{{ $no }}</td>
                                             <td>{{ $detail->material->nama }}</td>
-                                            <td>{{ $detail->gramasi }}</td>
-                                            <td>{{ $detail->diameter }}</td>
+                                            @if ($ppicRequest->gudangRequest == "Gudang Potong")
+                                                <td>{{ $detail->jenisBaju }}</td>
+                                                <td>{{ $detail->ukuranBaju }}</td>
+                                            @else
+                                                <td>{{ $detail->gramasi }}</td>
+                                                <td>{{ $detail->diameter }}</td>
+                                            @endif
                                             <td>{{ $detail->qty }}</td>
                                         </tr> 
                                     @endforeach                                   

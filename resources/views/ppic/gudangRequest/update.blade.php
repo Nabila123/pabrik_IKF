@@ -68,6 +68,18 @@
                                 <div class="row"> 
                                     <div class="col-6">
                                         <div class="form-group">
+                                            <label>Request Gudang</label>
+                                            <select class="form-control col-md-7 col-xs-12 gudangRequest" id="gudangRequest" name="gudangRequest" style="width: 100%; height: 38px;">
+                                                <option value="">Pilih Gudang Request</option>
+                                                <option value="Gudang Rajut">Gudang Rajut </option>
+                                                <option value="Gudang Cuci">Gudang Cuci </option>
+                                                <option value="Gudang Inspeksi">Gudang Inspeksi </option>    
+                                                <option value="Gudang Potong">Gudang Potong </option>                                                                                            
+                                            </select>                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-6" id="parent">
+                                        <div class="form-group">
                                             <label>Bahan Baku</label>
                                             <select class="form-control col-md-7 col-xs-12 materialId" id="materialId" name="materialId" style="width: 100%; height: 38px;">
                                                 <option value="">Pilih Bahan Baku</option>
@@ -76,20 +88,9 @@
                                                 @endforeach
                                             </select>                                           
                                         </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label>Request Gudang</label>
-                                            <select class="form-control col-md-7 col-xs-12 gudangRequest" id="gudangRequest" name="gudangRequest" style="width: 100%; height: 38px;">
-                                                <option value="">Pilih Gudang Request</option>
-                                                <option value="Gudang Rajut">Gudang Rajut </option>
-                                                <option value="Gudang Cuci">Gudang Cuci </option>
-                                                <option value="Gudang Inspeksi">Gudang Inspeksi </option>                                                
-                                            </select>                                           
-                                        </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
-                                <div class="row">
+                                <div class="row child" id="child">
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label>Gramasi</label>
@@ -108,13 +109,16 @@
                                             <input class="form-control qty" type="number" id="qty" name="qty" placeholder="Jumlah">                                            
                                         </div>
                                     </div>
+                                </div>
 
+                                <div class="row">
                                     <div class="col-12 right">
                                         <div class="form-group">
                                             <button type="button" id="TBarang" class='btn btn-success btn-flat-right TBarang'>Tambah Barang</button>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
                                     <div class="col-12 right">
@@ -124,16 +128,20 @@
                                                 <th class="textAlign">Gudang Request</th>
                                                 <th class="textAlign">Gramasi</th>
                                                 <th class="textAlign">Diameter</th>
+                                                <th class="textAlign">Jenis Baju</th>
+                                                <th class="textAlign">Ukuran Baju</th>
                                                 <th class="textAlign">Jumlah</th>
                                                 <th class="textAlign">Action</th>
                                             </thead>
-                                            <tbody class="data">
+                                            <tbody class="data textAlign">
                                                 @foreach ($ppicRequestDetail as $detail)
                                                     <tr>
                                                         <td>{{ $detail->material->nama }}</td>
                                                         <td>{{ $detail->ppicRequest->gudangRequest }}</td>
                                                         <td>{{ $detail->gramasi }}</td>
                                                         <td>{{ $detail->diameter }}</td>
+                                                        <td>{{ $detail->jenisBaju }}</td>
+                                                        <td>{{ $detail->ukuranBaju }}</td>
                                                         <td>{{ $detail->qty }}</td>
                                                         <td>
                                                             <a href="{{ route('adminPO.poOrder.detail.delete', [$detail->id, $ppicRequest->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
@@ -168,6 +176,93 @@
             theme: 'bootstrap4'
         });
 
+        $(document).on("change", ".gudangRequest", function(){
+            var gudangRequest   = $('#gudangRequest').val();
+            if(gudangRequest == "Gudang Potong"){
+                var parent =  "<div class='form-group parent'>"; 
+                    parent += "<label>Bahan Baku</label>";
+                    parent += "<select class='form-control materialId' id='materialId' name='materialId' style='width: 100%; height: 38px;'>";
+                        parent += "<option value='3'>Kain Putih</option>";
+                    parent +=   "</select>";
+                parent +=   "</div>";
+            
+            $('#parent').html(parent);
+                
+                $('#parent').html(parent);
+
+                var child = "<div class='col-4'>";
+                    child += "<div class='form-group'>";
+                        child += "<label>Jenis Baju</label>";
+                        child += "<select class='form-control jenisBaju' id='jenisBaju' name='jenisBaju' style='width: 100%; height: 38px;'>";
+                            child +=  "<option value=''>Pilih Jenis Baju</option>";
+                            child +=  "<optgroup label='Jupiter'></optgroup>";
+                            child +=  "<option value='Blong-Jupiter'> Blong Jupiter (BY) </option>";
+                            child +=  "<option value='Singlet-Jupiter'> Singlet Jupiter (SY) </option>";
+                            child +=  "<option value='Blong-Tempat-Kancing'> Blong Tempat Kancing Jupiter (BTK) </option>";
+                            child +=  "<option value='Blong-Tanpa-Lengan'> Blong Tanpa Lengan Jupiter (BTL) </option>";
+                            
+                            child +=  "<optgroup label='Daun Jati'></optgroup>";
+                            child +=  "<option value='Singlet-DJ'> Singlet DJ </option>";
+                            child +=  "<option value='Blong-TK-DJ'> Blong TK DJ </option>";
+                            child +=  "<option value='Singlet-Haji-DJ'> Singlet Haji DJ </option>";
+                            child +=  "<option value='Blong-Haji-DJ'> Blong Haji DJ </option>";
+                        child +=   "</select>";
+                    child +="</div>";
+                child += "</div>";
+
+                child += "<div class='col-4'>";
+                    child += "<div class='form-group'>";
+                        child += "<label>Ukuran Baju</label>";
+                        child +="<input class='form-control ukuranBaju' type='text' id='ukuranBaju' name='ukuranBaju' placeholder='ukuranBaju'>";
+                    child +="</div>";
+                child += "</div>";
+
+                child += "<div class='col-4'>";
+                    child += "<div class='form-group'>";
+                        child += "<label>Jumlah (Lusin)</label>";
+                        child +="<input class='form-control qty' type='number' id='qty' name='qty' placeholder='Jumlah Dz (Lusin)'>";
+                    child +="</div>";
+                child += "</div>";
+            
+                $('#child').html(child);
+                
+            }else{
+                var parent =  "<div class='form-group parent'>"; 
+                        parent += "<label>Bahan Baku</label>";
+                        parent += "<select class='form-control materialId' id='materialId' name='materialId' style='width: 100%; height: 38px;'>";
+                            parent +=  "<option value=''>Pilih Bahan Baku</option>";
+                            parent +=        "@foreach($materials as $material)";
+                            parent +=            "<option value='{{$material->id}}'>{{$material->nama}}</option>";
+                            parent +=       "@endforeach";
+                        parent +=   "</select>";
+                    parent +=   "</div>";
+                
+                $('#parent').html(parent);
+
+                var child = "<div class='col-4'>";
+                        child += "<div class='form-group'>";
+                            child += "<label>Gramasi</label>";
+                            child +="<input class='form-control gramasi' type='text' id='gramasi' name='gramasi' placeholder='Gramasi'>";
+                        child +="</div>";
+                    child += "</div>";
+                    child += "<div class='col-4'>";
+                        child += "<div class='form-group'>";
+                            child += "<label>Diameter</label>";
+                            child +="<input class='form-control diameter' type='text' id='diameter' name='diameter' placeholder='Diameter'>";
+                        child +="</div>";
+                    child += "</div>";
+                    child += "<div class='col-4'>";
+                        child += "<div class='form-group'>";
+                            child += "<label>Jumlah (Roll / Ball)</label>";
+                            child +="<input class='form-control qty' type='number' id='qty' name='qty' placeholder='Jumlah'>";
+                        child +="</div>";
+                    child += "</div>";
+                
+                $('#child').html(child);
+
+            }
+        });
+
         $(document).ready( function () {
             $(document).on("click", "button.TBarang", function(e){
                 e.preventDefault();
@@ -176,8 +271,10 @@
                 var nama_material   = $('#materialId').find('option:selected').text();
                 var gudangRequest   = $('#gudangRequest').val();
                 var nama_gudang     = $('#gudangRequest').find('option:selected').text();
-                var gramasi         = $('#gramasi').val();
-                var diameter        = $('#diameter').val();
+                var gramasi         = !$('#gramasi').val()?"-":$('#gramasi').val();
+                var diameter        = !$('#diameter').val()?"-":$('#diameter').val();
+                var jenisBaju       = !$('#jenisBaju').val()?"-":$('#jenisBaju').val();
+                var ukuranBaju      = !$('#ukuranBaju').val()?"-":$('#ukuranBaju').val();
                 var qty             = $('#qty').val();
 
                 var jumlah_data = $('#jumlah_data').val();
@@ -191,6 +288,8 @@
                         table += "<td>"+nama_gudang+"<input type='hidden' name='gudangRequest[]' value='"+gudangRequest+"' id='gudangRequest_"+jumlah_data+"'></td>";
                         table += "<td>"+gramasi+"<input type='hidden' name='gramasi[]' value='"+gramasi+"' id='gramasi_"+jumlah_data+"'></td>";
                         table += "<td>"+diameter+"<input type='hidden' name='diameter[]' value='"+diameter+"' id='diameter_"+jumlah_data+"'></td>";
+                        table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
+                        table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
                         table += "<td>"+qty+"<input type='hidden' name='qty[]' value='"+qty+"' id='qty_"+jumlah_data+"'></td>";
                         table += "<td>";
                         table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";

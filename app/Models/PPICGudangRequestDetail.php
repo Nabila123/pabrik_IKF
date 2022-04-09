@@ -25,7 +25,7 @@ class PPICGudangRequestDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
-    public static function CreatePPICGudangRequestDetail($gdPpicRequestId, $materialId, $jenisId, $gramasi, $diameter, $qty)
+    public static function CreatePPICGudangRequestDetail($gdPpicRequestId, $materialId, $jenisId, $gramasi, $diameter, $jenisBaju, $ukuranBaju, $qty)
     {
         $addPPICRequestDetail = new PPICGudangRequestDetail;
         $addPPICRequestDetail->gdPpicRequestId = $gdPpicRequestId;
@@ -34,6 +34,8 @@ class PPICGudangRequestDetail extends Model
         $addPPICRequestDetail->jenisId = $jenisId;
         $addPPICRequestDetail->gramasi = $gramasi;
         $addPPICRequestDetail->diameter = $diameter;
+        $addPPICRequestDetail->jenisBaju = $jenisBaju;
+        $addPPICRequestDetail->ukuranBaju = $ukuranBaju;
         $addPPICRequestDetail->qty = $qty;
         $addPPICRequestDetail->userId = \Auth::user()->id;
         $addPPICRequestDetail->created_at = date('Y-m-d H:i:s');
