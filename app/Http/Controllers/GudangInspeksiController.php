@@ -271,5 +271,17 @@ class GudangInspeksiController extends Controller
 
         return view('gudangInspeksi.kembali.detail', ['gudangMasuk' => $gInspeksiKembali, 'gudangMasukDetail' => $gInspeksiKembaliDetail]);
     }
+
+    public function KDelete(Request $request)
+    {
+        $gdInspeksiMasuk = GudangInspeksiMasuk::where('id', $request->gdInspeksiMId)->first();
+        $DeleteRajutKeluarDetail = GudangInspeksiMasukDetail::where('gdInspeksiMId', $gdInspeksiMasuk->id)->delete();
+        if ($DeleteRajutKeluarDetail) {           
+            $gdInspeksiMasuk = GudangInspeksiMasuk::where('id', $request->gdInspeksiMId)->delete();
+            if ($gdInspeksiMasuk) {
+                return redirect('gudangInspeksi/Request');
+            }                
+        }
+    }
     /* END Gudang Inspeksi Kembali */
 }

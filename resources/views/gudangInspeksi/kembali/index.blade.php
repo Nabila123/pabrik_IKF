@@ -63,6 +63,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('GInspeksi.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $kembali->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                             </td>
                                         </tr>
                                     @endforeach
@@ -74,11 +75,52 @@
             </div>
         </div>
     </section>
+    <div id="DeleteModal" class="modal fade">
+        <div class="modal-dialog ">
+            <!-- Modal content-->
+            <form id="deleteForm" method="post" >
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h4 class="modal-title">DELETE CONFIRMATION</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <p>Anda yakin ingin menghapus data ini ?</p>
+                        <input type="hidden" name="gdInspeksiMId" id="gdInspeksiMId">
+                    </div>
+                    <div class="modal-footer">
+                        <center>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
+                            <button type="submit" name="" class="btn btn-danger" data-dismiss="modal" onclick="formSubmit()">Ya, Hapus</button>
+                        </center>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 
 @push('page_scripts') 
     <script type="text/javascript">
+        function deleteData(id)
+        {
+            var id = id;
+            var url = '{{ route('GInspeksi.kembali.delete') }}';
+            // url = url.replace(':id', id);
+            console.log(id);
+            $('#gdInspeksiMId').val(id);
+            $("#deleteForm").attr('action', url);            
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
         $(document).ready( function () {
             $('#example2').DataTable( {
                 "responsive": true,

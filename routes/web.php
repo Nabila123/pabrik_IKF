@@ -158,6 +158,7 @@ Route::post('/gudangInspeksi/Request/Kembali/{id}', [App\Http\Controllers\Gudang
 
 Route::get('/gudangInspeksi/Kembali', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiKembali'])->name('GInspeksi.kembali');
 Route::get('/gudangInspeksi/Kembali/Detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'KDetail'])->name('GInspeksi.kembali.detail');
+Route::delete('/gudangInspeksi/Kembali/delete', [App\Http\Controllers\GudangInspeksiController::class, 'KDelete'])->name('GInspeksi.kembali.delete');
 
 Route::get('/gudangInspeksi/proses', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiproses'])->name('GInspeksi.proses');
 Route::get('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PCreate'])->name('GInspeksi.proses.create');
