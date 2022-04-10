@@ -130,6 +130,7 @@ Route::post('/gudangCuci/Request/Kembali/{id}', [App\Http\Controllers\GudangCuci
 
 Route::get('/gudangCuci/Kembali', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciKembali'])->name('GCuci.kembali');
 Route::get('/gudangCuci/Kembali/Detail/{id}', [App\Http\Controllers\GudangCuciController::class, 'KDetail'])->name('GCuci.kembali.detail');
+Route::delete('/gudangCuci/Kembali/delete', [App\Http\Controllers\GudangCuciController::class, 'KDelete'])->name('GCuci.kembali.delete');
 
 
 /* Gudang Compact */
