@@ -114,6 +114,10 @@ Route::post('/gudangRajut/Request/Kembali/{id}', [App\Http\Controllers\GudangRaj
 
 Route::get('/gudangRajut/Kembali', [App\Http\Controllers\GudangRajutController::class, 'gudangRajutKembali'])->name('GRajut.kembali');
 Route::get('/gudangRajut/Kembali/Detail/{id}', [App\Http\Controllers\GudangRajutController::class, 'KDetail'])->name('GRajut.kembali.detail');
+Route::get('/gudangRajut/Kembali/update/{id}', [App\Http\Controllers\GudangRajutController::class, 'RUpdate'])->name('GRajut.kembali.update');
+Route::post('/gudangRajut/Kembali/update/{id}', [App\Http\Controllers\GudangRajutController::class, 'RUpdateSave'])->name('GRajut.kembali.update');
+Route::get('/gudangRajut/Kembali/update/delete/{gdRajutMId}/{gdRajutMDId}', [App\Http\Controllers\GudangRajutController::class, 'RUpdateDelete'])->name('GRajut.kembali.update.delete');
+Route::delete('/gudangRajut/Kembali/delete', [App\Http\Controllers\GudangRajutController::class, 'RDelete'])->name('GRajut.kembali.delete');
 
 
 /* Gudang Cuci */
