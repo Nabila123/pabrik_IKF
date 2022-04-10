@@ -143,6 +143,7 @@ Route::post('/gudangCompact/Request/Kembali/{id}', [App\Http\Controllers\GudangC
 
 Route::get('/gudangCompact/Kembali', [App\Http\Controllers\GudangCompactController::class, 'gudangCompactKembali'])->name('GCompact.kembali');
 Route::get('/gudangCompact/Kembali/Detail/{id}', [App\Http\Controllers\GudangCompactController::class, 'KDetail'])->name('GCompact.kembali.detail');
+Route::delete('/gudangCompact/Kembali/delete', [App\Http\Controllers\GudangCompactController::class, 'KDelete'])->name('GCompact.kembali.delete');
 
 
 /* Gudang Inspeksi */
