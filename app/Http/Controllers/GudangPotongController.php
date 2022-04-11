@@ -11,8 +11,8 @@ use App\Models\GudangPotongRequest;
 use App\Models\GudangPotongRequestDetail;
 use App\Models\GudangJahitMasuk;
 use App\Models\GudangJahitMasukDetail;
-
 use App\Models\Pegawai;
+use DB;
 
 class GudangPotongController extends Controller
 {
@@ -73,29 +73,30 @@ class GudangPotongController extends Controller
     //Gudang Potong Keluar Bahan Baku
     public function gKeluar()
     {
-        $gudangPotong = GudangPotongKeluar::all();
-        foreach ($gudangPotong as $request) {
-            $cekDetail = GudangPotongProses::where('gPotongKId', $request->id)->first();
-            if ($cekDetail != null) {
-                $cekJahit = GudangJahitMasukDetail::where('gdPotongProsesId', $cekDetail->id)->first();
-                if ($cekJahit != null) {
-                    $request->cekJahit = 1;
-                }
+        $gudangKeluar = GudangPotongKeluar::all();
+        foreach ($gudangKeluar as $keluar) {
+            $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
+            foreach ($gudangKeluarDetail as $keluarDetail) {
+                $potongProses = GudangPotongProses::where('gPotongKId', $keluar->id)->where('purchaseId', $keluarDetail->purchaseId)->get();
+                if (count($potongProses) != 0) {
+                    foreach ($potongProses as $proses) {
+                        $potongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $proses->id)->where('diameter', $keluarDetail->diameter)->where('gramasi', $keluarDetail->gramasi)->first();
+                        if ($potongProsesDetail != null) {
+                            $cekJahit = GudangJahitMasukDetail::select('*', DB::raw('sum(qty) as qty'))->where('gdPotongProsesId', $potongProsesDetail->id)->first();
+                            if ($cekJahit != null && ($cekJahit->qty/12) == $potongProsesDetail->hasilDz) {
+                                $keluar->cekJahit = 1;
+                            }
+
+                            $keluar->cekPotong = 1;
+                        }
+                    }
+                }else {
+                    $keluar->cekPotong = 0;
+                }                
             }
-                    
-            if ($cekDetail != null) {
-                $request->cekPotong = 1;
-                 $cekJahit = GudangJahitMasukDetail::where('gdPotongProsesId', $cekDetail->id)->first();
-                 if ($cekJahit != null) {
-                    $request->cekJahit = 1;
-                }
-            }else {
-                $request->cekPotong = 0;
-            }
-            
         }
 
-        return view('gudangPotong.keluar.index', ['gudangPotong' => $gudangPotong]);
+        return view('gudangPotong.keluar.index', ['gudangPotong' => $gudangKeluar]);
     }
 
     public function gKeluarDetail($id)
@@ -120,14 +121,34 @@ class GudangPotongController extends Controller
 
     public function gKeluarKembali($id)
     {
-        $gPotong = GudangPotongKeluar::where('id', $id)->first();
+        $gPotongKeluar = GudangPotongKeluar::where('id', $id)->first();
         $gPotongKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $id)->get();
 
+        $gPotongProses = GudangPotongProses::where('gPotongKId', $gPotongKeluar->id)->get();
+        foreach ($gPotongProses as $proses) {
+            $gPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $proses->id)->get();
+            $proses->prosesDetail = $gPotongProsesDetail;
+
+            foreach ($gPotongProsesDetail as $prosesDetail) {
+                $gdJahitMasuk = GudangJahitMasukDetail::where('gdPotongProsesId', $prosesDetail->id)->where('purchaseId', $proses->purchaseId)->where('jenisBaju', $prosesDetail->jenisBaju)->where('ukuranBaju', $prosesDetail->ukuranBaju)->get();
+                if ($gdJahitMasuk != null) {
+                    $proses->ambilDz = $prosesDetail->hasilDz;
+                    foreach ($gdJahitMasuk as $jahitMasuk) {
+                        $proses->ambilDz -= ($jahitMasuk->qty / 12);
+                        $proses->ambilPcs = $prosesDetail->ambilDz*12;
+                    }
+                }else {
+                    $proses->ambilDz = $prosesDetail->hasilDz;
+                    $proses->ambilPcs = $prosesDetail->hasilDz*12;
+                }
+            }
+        }
+        
         foreach ($gPotongKeluarDetail as $detail) {
             $purchaseId[] = $detail->purchaseId;
         }
-
-        return view('gudangPotong.keluar.create', ['purchaseId' => $purchaseId, 'gPotong' => $gPotong, 'gPotongKeluarDetail' => $gPotongKeluarDetail]);
+        
+        return view('gudangPotong.keluar.create', ['purchaseId' => $purchaseId, 'gPotong' => $gPotongKeluar, 'gPotongProses' => $gPotongProses]);
     }
 
     public function gKeluarKembaliStore(Request $request)
@@ -141,7 +162,7 @@ class GudangPotongController extends Controller
                 $gdPotongProses = GudangPotongProses::where('gPotongKId', $request->id)->where('purchaseId', $request['purchaseId'][$i])->first();
                 $gdPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotongProses->id)->get();
                 foreach ($gdPotongProsesDetail as $detail) {
-                    $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $detail->id, $gdPotongProses->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, $detail->hasilDz);
+                    $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $detail->id, $gdPotongProses->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, ($request['totalDz'][$i]*12));
                 }
             }
 
@@ -167,10 +188,14 @@ class GudangPotongController extends Controller
         $gudangKeluar = GudangPotongKeluar::all();
         foreach ($gudangKeluar as $keluar) {
             $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
-            // dd($gudangKeluarDetail);
             foreach ($gudangKeluarDetail as $detail) {
-                $prosesPotong = GudangPotongProses::where('gPotongKId', $keluar->id)->where('purchaseId', $detail->purchaseId)->first();
-                if ($prosesPotong == null) {
+                $prosesPotong = GudangPotongProses::join('gd_potongproses_detail','gd_potongproses_detail.gdPotongProsesId', 'gd_potongproses.id')
+                                                    ->where('gd_potongproses.gPotongKId', $keluar->id)
+                                                    ->where('gd_potongproses.purchaseId', $detail->purchaseId)
+                                                    ->where('gd_potongproses_detail.diameter', $detail->diameter)
+                                                    ->where('gd_potongproses_detail.gramasi', $detail->gramasi)
+                                                    ->get(); 
+                if (count($prosesPotong) == 0) {
                     $data = [
                         "id" => $detail->purchaseId,
                         "kode" => $detail->purchase->kode,              
@@ -202,14 +227,13 @@ class GudangPotongController extends Controller
 
     public function gProsesStore(Request $request)
     {
-        // dd($request);
         $dataId = explode("-",$request->purchaseId);
         $gudangPotong = GudangPotongProses::createPotongProses($request->gdPotongKId, $request->pegawaiId, $dataId[0], $request->materialId, $request->jenisId, $request->jumlah, date('Y-m-d H:i:s'), \Auth::user()->id);
         if ($gudangPotong) {
             $potongProsesId = $gudangPotong;
 
             for ($i = 0; $i < $request->jumlah_data; $i++) {
-                GudangPotongProsesDetail::createPotongProsesDetail($potongProsesId, $request->jmlPotong[$i], $request->beratPotong[$i],  $request->diameter, $request->gramasi, $request->beratRoll[$i], $request->jnsBaju[$i], $request->size[$i], $request->totalDZ[$i], $request->totalKG[$i], $request->skb[$i], $request->bs[$i], $request->kecil[$i], $request->ketek[$i], $request->ketekPot[$i], $request->sumbu[$i], $request->bunder[$i], $request->tKecil[$i], $request->tBesar[$i], $request->tangan[$i], $request->kPutih[$i], $request->kBelang[$i], \Auth::user()->id);                
+                GudangPotongProsesDetail::createPotongProsesDetail($potongProsesId, $request->jmlPotong[$i], $request->beratPotong[$i],  $request->diameter, $request->gramasi, $request->beratRoll[$i], $request->jnsBaju[$i], $request->size[$i], $request->totalDZ[$i], $request->totalPcs[$i], $request->totalKG[$i], $request->skb[$i], $request->bs[$i], $request->kecil[$i], $request->ketek[$i], $request->ketekPot[$i], $request->sumbu[$i], $request->bunder[$i], $request->tKecil[$i], $request->tBesar[$i], $request->tangan[$i], $request->kPutih[$i], $request->kBelang[$i], \Auth::user()->id);                
             }
             return redirect('GPotong/proses');
         }
@@ -257,7 +281,7 @@ class GudangPotongController extends Controller
     {
        if ($request->jumlah_data > 0) {
             for ($i = 0; $i < $request->jumlah_data; $i++) {
-                GudangPotongProsesDetail::createPotongProsesDetail($request->id, $request->jmlPotong[$i], $request->beratPotong[$i],  $request->diameter, $request->gramasi, $request->beratRoll[$i], $request->jnsBaju[$i], $request->size[$i], $request->totalDZ[$i], $request->totalKG[$i], $request->skb[$i], $request->bs[$i], $request->kecil[$i], $request->ketek[$i], $request->ketekPot[$i], $request->sumbu[$i], $request->bunder[$i], $request->tKecil[$i], $request->tBesar[$i], $request->tangan[$i], $request->kPutih[$i], $request->kBelang[$i], \Auth::user()->id);                
+                GudangPotongProsesDetail::createPotongProsesDetail($request->id, $request->jmlPotong[$i], $request->beratPotong[$i],  $request->diameter, $request->gramasi, $request->beratRoll[$i], $request->jnsBaju[$i], $request->size[$i], $request->totalDZ[$i], $request->totalPcs[$i], $request->totalKG[$i], $request->skb[$i], $request->bs[$i], $request->kecil[$i], $request->ketek[$i], $request->ketekPot[$i], $request->sumbu[$i], $request->bunder[$i], $request->tKecil[$i], $request->tBesar[$i], $request->tangan[$i], $request->kPutih[$i], $request->kBelang[$i], \Auth::user()->id);                
             }
             return redirect('GPotong/proses');
         } else {

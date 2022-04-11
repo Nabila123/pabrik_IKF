@@ -16,7 +16,7 @@ class GudangPotongProsesDetail extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
-    public static function createPotongProsesDetail($gdPotongProsesId, $jumlahRoll, $beratPotong,  $diameter, $gramasi, $beratRoll, $jenisBaju, $ukuranBaju, $hasilDz, $hasilKg, $skb, $bs, $aKecil, $aKetek, $aKetekPotong, $aSumbu, $aBunder, $aTanggungKecil, $aTanggungBesar, $aTangan, $aKepalaPutih, $aKepalaBelang, $userId)
+    public static function createPotongProsesDetail($gdPotongProsesId, $jumlahRoll, $beratPotong,  $diameter, $gramasi, $beratRoll, $jenisBaju, $ukuranBaju, $hasilDz, $sisaPcs, $hasilKg, $skb, $bs, $aKecil, $aKetek, $aKetekPotong, $aSumbu, $aBunder, $aTanggungKecil, $aTanggungBesar, $aTangan, $aKepalaPutih, $aKepalaBelang, $userId)
     {
         $AddDetailPotongProses = new GudangPotongProsesDetail;
         $AddDetailPotongProses->gdPotongProsesId = $gdPotongProsesId;
@@ -28,6 +28,7 @@ class GudangPotongProsesDetail extends Model
         $AddDetailPotongProses->jenisBaju = $jenisBaju;
         $AddDetailPotongProses->ukuranBaju = $ukuranBaju;
         $AddDetailPotongProses->hasilDz = $hasilDz;
+        $AddDetailPotongProses->sisaPcs = $sisaPcs;
         $AddDetailPotongProses->hasilKg = $hasilKg;
         $AddDetailPotongProses->skb = $skb;
         $AddDetailPotongProses->bs = $bs;

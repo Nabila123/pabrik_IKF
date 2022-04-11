@@ -21,7 +21,7 @@ class GudangPotongKeluar extends Model
         $dataPurchase = AdminPurchase::select('suplierName')->where('id', $dataId[0])->first();
         $dataMaterial = MaterialModel::select('nama')->where('id', $request->materialId)->first();
         $detailMaterial = GudangPotongKeluarDetail::where('gdPotongKId', $dataId[1])->where('purchaseId', $request->purchaseId)->where('materialId', $request->materialId)->get();
-    
+
         $data = [
             'suplierName' => $dataPurchase['suplierName'],
             'nama' => $dataMaterial['nama'],
@@ -30,10 +30,23 @@ class GudangPotongKeluar extends Model
 
         $i = 0;
         foreach ($detailMaterial as $detail) {
-           if (!in_array($detail->diameter, $data['diameter'])) {
-            $data['diameter'][$i] = $detail->diameter;
-           }
-            $i++;
+            $detailPotong = GudangPotongProses::where('gPotongKId', $detail->gdPotongKId)->where('purchaseId', $detail->purchaseId)->get();
+            if (count($detailPotong) == 0) {
+                if (!in_array($detail->diameter, $data['diameter'])) {
+                    $data['diameter'][$i] = $detail->diameter;
+                }
+                $i++;
+            } else {
+                foreach ($detailPotong as $potong) {
+                    $detailPotongProses = GudangPotongProsesDetail::where('gdPotongProsesId', $potong->id)->where('diameter', $detail->diameter)->first();
+                    if ($detailPotongProses == null) {
+                        if (!in_array($detail->diameter, $data['diameter'])) {
+                            $data['diameter'][$i] = $detail->diameter;
+                        }
+                        $i++;
+                    }
+                }
+            }            
         }      
         
         return $data;
