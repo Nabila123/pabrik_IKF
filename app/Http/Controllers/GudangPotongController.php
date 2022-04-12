@@ -76,6 +76,7 @@ class GudangPotongController extends Controller
         $gudangKeluar = GudangPotongKeluar::all();
         foreach ($gudangKeluar as $keluar) {
             $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
+            $jahit = [];
             foreach ($gudangKeluarDetail as $keluarDetail) {
                 $potongProses = GudangPotongProses::where('gPotongKId', $keluar->id)->where('purchaseId', $keluarDetail->purchaseId)->get();
                 if (count($potongProses) != 0) {
@@ -84,9 +85,11 @@ class GudangPotongController extends Controller
                         if ($potongProsesDetail != null) {
                             $cekJahit = GudangJahitMasukDetail::select('*', DB::raw('sum(qty) as qty'))->where('gdPotongProsesId', $potongProsesDetail->id)->first();
                             if ($cekJahit != null && ($cekJahit->qty/12) == $potongProsesDetail->hasilDz) {
-                                $keluar->cekJahit = 1;
+                                $jahit[] = 1;  
+                            }else{
+                                $jahit[] = 0;
                             }
-
+                            
                             $keluar->cekPotong = 1;
                         }
                     }
@@ -94,8 +97,13 @@ class GudangPotongController extends Controller
                     $keluar->cekPotong = 0;
                 }                
             }
+
+            if (!in_array(0, $jahit)) {
+                $keluar->cekJahit = 1;
+            }
         }
 
+        // dd($gudangKeluar);
         return view('gudangPotong.keluar.index', ['gudangPotong' => $gudangKeluar]);
     }
 
@@ -159,10 +167,14 @@ class GudangPotongController extends Controller
         $jahitMasuk->created_at = date('Y-m-d H:i:s');
         if ($jahitMasuk->save()) {
             for ($i=0; $i < count($request->purchaseId); $i++) { 
-                $gdPotongProses = GudangPotongProses::where('gPotongKId', $request->id)->where('purchaseId', $request['purchaseId'][$i])->first();
-                $gdPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotongProses->id)->get();
-                foreach ($gdPotongProsesDetail as $detail) {
-                    $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $detail->id, $gdPotongProses->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, ($request['totalDz'][$i]*12));
+                if ($request['totalDz'][$i] != 0) {
+                    $gdPotongProses = GudangPotongProses::where('gPotongKId', $request->id)->where('purchaseId', $request['purchaseId'][$i])->get();
+                    foreach ($gdPotongProses as $potong) {
+                        $gdPotongProsesDetail = GudangPotongProsesDetail::where('id', $request['potongProses'][$i])->where('gdPotongProsesId', $potong->id)->get();
+                        foreach ($gdPotongProsesDetail as $detail) {
+                            $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $detail->id, $potong->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, ($request['totalDz'][$i]*12));
+                        }
+                    }
                 }
             }
 
