@@ -25,6 +25,16 @@
             background-color: #777;
             border-radius: 10px;
         }
+
+        tr th{
+            max-width:100%;
+            white-space:nowrap;
+        }
+
+        tr td{
+            max-width:100%;
+            white-space:nowrap;
+        }
     </style>
 @endpush
 
@@ -61,7 +71,8 @@
                                         <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Total</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
@@ -74,7 +85,10 @@
                                             <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
-                                            <td>{{ $detail->jumlah }}</td>
+                                            <td>{{ ($detail->jumlah/12) }}</td>
+                                            @if (isset($detail->rowSpan))
+                                                <td class="textAlign" style="vertical-align: middle;" rowspan="{{ $detail->rowSpan }}">{{ ($detail->jumlahTotal) }}</td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -92,7 +106,6 @@
     <script type="text/javascript">
         $(document).ready( function () {
             $('#example2').DataTable( {
-                "responsive": true,
                 "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });
         });

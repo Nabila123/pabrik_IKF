@@ -23,7 +23,6 @@ class GudangBajuStokOpname extends Model
 
     public static function BajuCreate($gdPotongProsesId, $purchaseId, $jenisBaju, $ukuranBaju, $soom, $bawahan, $jahit, $qty, $userId)
     {
-        $qty = $qty*12;
         for ($i=0; $i < $qty; $i++) { 
             $AddBaju = new GudangBajuStokOpname;
             $AddBaju->gdPotongProsesId = $gdPotongProsesId;

@@ -25,6 +25,16 @@
             background-color: #777;
             border-radius: 10px;
         }
+
+        tr th{
+            max-width:100%;
+            white-space:nowrap;
+        }
+
+        tr td{
+            max-width:100%;
+            white-space:nowrap;
+        }
     </style>
 @endpush
 
@@ -53,7 +63,7 @@
                         <div class="card-header">
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#BasisLink" data-toggle="tab">Basis</a></li>
+                                {{--  <li class="nav-item"><a class="nav-link" href="#BasisLink" data-toggle="tab">Basis</a></li>  --}}
                                 <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Batil</a></li>
                             </ul>                            
@@ -70,6 +80,7 @@
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah (Dz)</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
@@ -79,6 +90,7 @@
                                                     <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                     <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
+                                                    <td>{{ ($detail->jumlah/12) }}</td>
                                                     
                                                     <td>
                                                         <a href="{{ route('GJahit.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
@@ -288,20 +300,14 @@
         }
 
         $(document).ready( function () {
-            $('#operator').DataTable( {
-                "responsive": true,
-            });
+            $('#operator').DataTable({});
             $('#basis').DataTable( {
-                "responsive": true,
                 "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });
             $('#rekap').DataTable( {
-                "responsive": true,
                 "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });
-            $('#pemindahan').DataTable( {
-                "responsive": true,
-            });
+            $('#pemindahan').DataTable({});
         });
     </script>
 @endpush

@@ -221,7 +221,7 @@ Route::get('/GJahit/operator', [App\Http\Controllers\GudangJahitController::clas
 Route::get('/GJahit/operator/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDetail'])->name('GJahit.operator.detail');
 Route::get('/GJahit/operator/create', [App\Http\Controllers\GudangJahitController::class, 'gOperatorCreate'])->name('GJahit.operator.create');
 Route::post('/GJahit/operator/create', [App\Http\Controllers\GudangJahitController::class, 'gOperatorStore'])->name('GJahit.operator.create');
-Route::get('/GJahit/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDataMaterial'])->name('GJahit.operator.detailMaterial');
+Route::get('/GJahit/operator/getDetailMaterial', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDataMaterial'])->name('GJahit.operator.detailMaterial');
 Route::get('/GJahit/operator/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorUpdate'])->name('GJahit.operator.update');
 Route::post('/GJahit/operator/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorUpdateSave'])->name('GJahit.operator.update');
 Route::get('/GJahit/operator/update/delete/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorUpdateDelete'])->name('GJahit.operator.update.delete');
