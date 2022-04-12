@@ -112,8 +112,9 @@ class MenuSeeder extends Seeder
             ['id' => 58, 'parentId' => 54, 'urutan' => 4, 'nama' => 'Request Baju Reject', 'alias' => 'GPacking.reject', 'directori' => 'gudangPacking/reject/index', 'isActive' => 1],
 
             //Master Material
-            ['id' => 64, 'parentId' => 0, 'urutan' => 17, 'nama' => 'Master Material', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
-            ['id' => 65, 'parentId' => 64, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
+            ['id' => 64, 'parentId' => 0, 'urutan' => 17, 'nama' => 'Data Master', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
+            ['id' => 65, 'parentId' => 64, 'urutan' => 1, 'nama' => 'Master Material', 'alias' => 'Material', 'directori' => 'material', 'isActive' => 1],
+            ['id' => 75, 'parentId' => 64, 'urutan' => 2, 'nama' => 'Master Jenis Baju', 'alias' => 'JenisBaju', 'directori' => 'jenisBaju', 'isActive' => 1],
 
             //Gudang Gudang Barang Jadi
             ['id' => 66, 'parentId' => 0, 'urutan' => 15, 'nama' => 'G. Barang Jadi', 'alias' => 'GBarangJadi', 'directori' => 'gudangBarangJadi', 'isActive' => 1],
@@ -127,6 +128,14 @@ class MenuSeeder extends Seeder
             ['id' => 72, 'parentId' => 70, 'urutan' => 2, 'nama' => 'Purchase Order', 'alias' => 'adminPO.poOrder', 'directori' => 'adminPO/purchaseOrder/poOrder', 'isActive' => 1],
             ['id' => 73, 'parentId' => 70, 'urutan' => 3, 'nama' => 'Purchase Invoice', 'alias' => 'adminPO.poInvoice', 'directori' => 'adminPO/purchaseInvoice/index', 'isActive' => 1],
             ['id' => 74, 'parentId' => 70, 'urutan' => 4, 'nama' => 'Penjualan Baju', 'alias' => 'Keuangan.penjualan', 'directori' => 'keuangan/penjualan/index', 'isActive' => 1],
+
+             //Admin Gudang Bahan Pembantu
+            ['id' => 76, 'parentId' => 0, 'urutan' => 4, 'nama' => 'Gudang Bahan Pembantu', 'alias' => 'GBahanPembantu', 'directori' => 'gudangBahanPembantu', 'isActive' => 1],
+            ['id' => 77, 'parentId' => 76, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GBahanPembantu', 'directori' => 'gudangBahanPembantu/index', 'isActive' => 1],
+            ['id' => 78, 'parentId' => 76, 'urutan' => 2, 'nama' => 'Supply barang', 'alias' => 'GBahanPembantu.supply.index', 'directori' => 'gudangBahanPembantu/supply', 'isActive' => 1],
+            ['id' => 79, 'parentId' => 76, 'urutan' => 3, 'nama' => 'PPIC Request', 'alias' => 'GBahanPembantu.ppicRequest', 'directori' => 'gudangBahanPembantu/ppicRequest', 'isActive' => 1],
+            ['id' => 80, 'parentId' => 76, 'urutan' => 4, 'nama' => 'Request Keluar Gudang', 'alias' => 'GBahanPembantu.keluar', 'directori' => 'gudangBahanPembantu/keluar', 'isActive' => 1],
+            ['id' => 81, 'parentId' => 76, 'urutan' => 5, 'nama' => 'Request Masuk Gudang', 'alias' => 'GBahanPembantu.masuk', 'directori' => 'gudangBahanPembantu/masuk', 'isActive' => 1],
 
         ];
 
