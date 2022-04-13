@@ -220,6 +220,7 @@
                 },
                 success: function(response){
                     var data = JSON.parse(response)
+                    console.log(data)
                     var pegawaiId ="<option value=''>Pilih Pegawai</option>";
                     for(var i = 0;i < data.pegawai.length;i++){
                         pegawaiId += "<option value="+data['pegawai'][i]['id']+">"+data['pegawai'][i]['nama']+"</option>";
@@ -297,18 +298,17 @@
             var jahit       = $('#jahit').is(":checked")?1:0;
             var bawahan     = $('#bawahan').is(":checked")?1:0;
             var jumlah_data  = $('#jumlah_data').val();
+            var _token = $('#_token').val();
 
             var operatorReqId   = [];
             var operatorReqPurchaseId = [];
+
             for(i=1; i<=jumlah_data; i++){
                 operatorReqId[i]   = $('#operatorReqId_'+i+'').val();
                 operatorReqPurchaseId[i]   = $('#purchaseId_'+i+'').val();
             }
-            var _token = $('#_token').val();
 
             $('#requestOperatorId').html('');
-
-            console.log(soom+" "+jahit+" "+bawahan)
             
             $.ajax({
                 type: "post",

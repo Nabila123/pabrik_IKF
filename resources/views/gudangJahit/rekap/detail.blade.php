@@ -62,7 +62,7 @@
                 <div class="col-12">
                     <div class="card">                   
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">No </th>

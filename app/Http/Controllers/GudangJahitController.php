@@ -182,19 +182,35 @@ class GudangJahitController extends Controller
                                                                 ->whereDate('created_at', date('Y-m-d'))->get();
             }
 
+            // dd($gdRequestOperator);
             if (isset($request->operatorReqPurchaseId)) {
                 for ($i=0; $i < count($request['operatorReqPurchaseId']); $i++) { 
                     if ($request['operatorReqPurchaseId'][$i] == null) {
                         continue;
                     }                    
                     
-                    if ($index != 0 && $request['operatorReqPurchaseId'][$i] == $checkId[$index-1]['purchase']) {
-                        $operatorReqId = explode(",", $request['operatorReqId'][$i]);
-                        for ($j=0; $j < count($operatorReqId); $j++) { 
-                            if (!in_array($operatorReqId[$j], $checkId[$index-1]['operatorReqId'])) {
-                                $checkId[$index-1]['operatorReqId'][] = $operatorReqId[$j];
-                                $checkId[$index-1]['jumlah'] += 1;
-                            }            
+                    if ($index != 0) {
+                        $getCheck = false;                        
+                        for ($j=0; $j < count($checkId); $j++) { 
+                            if($request['operatorReqPurchaseId'][$i] == $checkId[$j]['purchase']){
+                                $getCheck = true;
+                                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                                for ($k=0; $k < count($operatorReqId); $k++) { 
+                                    if (!in_array($operatorReqId[$k], $checkId[$j]['operatorReqId'])) {
+                                        $checkId[$j]['operatorReqId'][] = $operatorReqId[$k];
+                                        $checkId[$j]['jumlah'] += 1;
+                                    }            
+                                }
+                            }
+                        }
+                        if ($getCheck == false) {
+                            $checkId[$index]['purchase'] = $request['operatorReqPurchaseId'][$i];
+                            $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                            for ($j=0; $j < count($operatorReqId); $j++) { 
+                                $checkId[$index]['operatorReqId'][] = $operatorReqId[$j];
+                            }
+                            $checkId[$index]['jumlah'] = count($operatorReqId);
+                            $index++;
                         }
                     }else {
                         $checkId[$index]['purchase'] = $request['operatorReqPurchaseId'][$i];
@@ -391,7 +407,7 @@ class GudangJahitController extends Controller
                 }
                 
                 for ($j=0; $j < $request['jumlah'][$i]*12; $j++) { 
-                    $createOperator = GudangJahitRequestOperator::OperatorBajuCreate($gdBajuStokOpnameId[$j], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['soom'][$i], $request['jahit'][$i], $request['bawahan'][$i], \Auth::user()->id);
+                    $createOperator = GudangJahitRequestOperator::OperatorBajuCreate($gdBajuStokOpnameId[$j], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['soom'][$i], $request['bawahan'][$i], $request['jahit'][$i], \Auth::user()->id);
                 }
             }
 
@@ -418,10 +434,10 @@ class GudangJahitController extends Controller
         } else {
             $gdRequestOperator = GudangBajuStokOpname::where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->where('ukuranBaju', $request->ukuranBaju)->where('soom', $request->soom)->where('jahit', $request->jahit)->where('bawahan', $request->bawahan)->get();
             $data = count($gdRequestOperator);
-            $cekOperator = GudangJahitRequestOperator::whereDate('created_at','!=', date('Y-m-d'))->delete();
+            // $cekOperator = GudangJahitRequestOperator::whereDate('created_at','!=', date('Y-m-d'))->delete();
             // dd($cekOperator);
             foreach ($gdRequestOperator as $value) {
-                $cekOperator = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $value->id)->first();
+                $cekOperator = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $value->id)->where('soom', $request->soom)->where('jahit', $request->jahit)->where('bawahan', $request->bawahan)->whereDate('created_at', date('Y-m-d'))->first();
                 if ($cekOperator != null) {
                    $data -= 1;
                 }
@@ -676,7 +692,7 @@ class GudangJahitController extends Controller
     public function gRekapUpdate($id) 
     {
         $getPegawai = GudangJahitRekap::where('id', $id)->whereDate('created_at', date('Y-m-d'))->first();
-        $getDetailPegawai = GudangJahitRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdJahitRekapId', $getPegawai->id)->groupBy('pegawaiId', 'tanggal', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        $getDetailPegawai = GudangJahitRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdJahitRekapId', $getPegawai->id)->groupBy('pegawaiId', 'tanggal', 'jenisBaju', 'ukuranBaju')->get();
         foreach ($getDetailPegawai as $detailPegawai) {
             $detailPegawai->posisi = $getPegawai->posisi;
             $detailPegawai->soom = $detailPegawai->operatorReq->soom;
@@ -719,34 +735,46 @@ class GudangJahitController extends Controller
         }
     }
 
-    public function gRekapUpdateDelete($rekapId, $rekapDetailId, $posisi)
+    public function gRekapUpdateDelete($rekapId, $pegawaiId, $purchaseId, $jenisBaju, $ukuranBaju, $posisi)
     {
-        $getDetailPegawai = GudangJahitRekapDetail::where('id', $rekapDetailId)->first();
-        $rekapId = $getDetailPegawai->gdJahitRekapId;
         $getPegawai = GudangJahitRekap::where('id', $rekapId)->first();
         $CheckPegawai = GudangJahitRekapDetail::where('gdJahitRekapId', $getPegawai->id)->get();
-
-        $operatorReq = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $getDetailPegawai->gdBajuStokOpnameId)->first();
-        if ($operatorReq != null) {
-            $operatorReqUpdate = GudangJahitRequestOperator::GudangOperatorBajuUpdateField($posisi, 0, $operatorReq->id);
-            if ($operatorReqUpdate == 1) {
-                $bajuStokOpname = GudangBajuStokOpname::bajuUpdateField($posisi, 0, $operatorReq->gdBajuStokOpnameId);
-                if ($bajuStokOpname == 1) {
-                    $deleteDetailPegawai = GudangJahitRekapDetail::where('id', $rekapDetailId)->delete();
-                    if (count($CheckPegawai) == 1) {
-                        $deletePegawai = GudangJahitRekap::where('id', $rekapId)->delete();
-
-                        if ($deletePegawai) {
-                            return redirect('GJahit/operator');
-                        }
-                    }
-
-                    if ($deleteDetailPegawai) {
-                        return redirect('GJahit/rekap/update/' . $rekapId . '');
-                    }
+        $getDetailPegawai = GudangJahitRekapDetail::where('gdJahitRekapId', $getPegawai->id)
+                                                    ->where('pegawaiId', $pegawaiId)
+                                                    ->where('purchaseId', $purchaseId)
+                                                    ->where('jenisBaju', $jenisBaju)
+                                                    ->where('ukuranBaju', $ukuranBaju)
+                                                    ->get();
+        foreach ($getDetailPegawai as $detailPegawai) {
+            $operatorReq = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $detailPegawai->gdBajuStokOpnameId)->first();
+            if ($operatorReq != null) {
+                $operatorReqUpdate = GudangJahitRequestOperator::GudangOperatorBajuUpdateField($posisi, 0, $operatorReq->id);
+                if ($operatorReqUpdate == 1) {
+                    $bajuStokOpname = GudangBajuStokOpname::bajuUpdateField($posisi, 0, $operatorReq->gdBajuStokOpnameId);
                 }
-            }                    
-        }            
+            }
+        }
+
+        if ($bajuStokOpname == 1) {
+            $deleteDetailPegawai = GudangJahitRekapDetail::where('gdJahitRekapId', $getPegawai->id)
+                                                            ->where('pegawaiId', $pegawaiId)
+                                                            ->where('purchaseId', $purchaseId)
+                                                            ->where('jenisBaju', $jenisBaju)
+                                                            ->where('ukuranBaju', $ukuranBaju)
+                                                            ->delete();
+
+            if (count($CheckPegawai) == 1) {
+                $deletePegawai = GudangJahitRekap::where('id', $rekapId)->delete();
+
+                if ($deletePegawai) {
+                    return redirect('GJahit/operator');
+                }
+            }
+
+            if ($deleteDetailPegawai) {
+                return redirect('GJahit/rekap/update/' . $rekapId . '');
+            }
+        }
     }
 
 
