@@ -241,8 +241,8 @@ Route::get('/GJahit/rekap/update/{id}', [App\Http\Controllers\GudangJahitControl
 Route::post('/GJahit/rekap/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateSave'])->name('GJahit.rekap.update');
 Route::get('/GJahit/rekap/update/delete/{rekapId}/{pegawaiId}/{purchaseId}/{jenisBaju}/{ukuranBaju}/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateDelete'])->name('GJahit.rekap.update.delete');
 
-Route::get('/GJahit/keluar/create', [App\Http\Controllers\GudangJahitController::class, 'gKeluarCreate'])->name('GJahit.keluar.create');
-Route::post('/GJahit/keluar/create', [App\Http\Controllers\GudangJahitController::class, 'gKeluarStore'])->name('GJahit.keluar.create');
+Route::get('/GJahit/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarCreate'])->name('GJahit.keluar.create');
+Route::post('/GJahit/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarStore'])->name('GJahit.keluar.create');
 Route::get('/GJahit/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarDetail'])->name('GJahit.keluar.detail');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');

@@ -372,11 +372,11 @@ class GudangJahitController extends Controller
                 $tempUkuranBaju = $detail->ukuranBaju;                
             }
         }
-        $gdBatilMasuk = GudangBatilMasuk::where('tanggal', date('Y-m-d'))->first();
-        if ($gdBatilMasuk != null) {
-            $gdBatilMasukDetail = GudangBatilMasukDetail::select('*', DB::raw('count(*) as jumlah'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->where('gdBatilMId', $gdBatilMasuk->id)->get();
+        $gdBatilMasuk = GudangBatilMasuk::where('tanggal', date('Y-m-d'))->get();
+        if (count($gdBatilMasuk) != 0) {
+            $gdBatilMasukDetail = GudangBatilMasukDetail::select('*', DB::raw('count(*) as jumlah'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
         }else {
-            $gdBatilMasukDetail = GudangBatilMasukDetail::all();
+            $gdBatilMasukDetail = GudangBatilMasukDetail::whereDate('created_at', date('Y-m-d'))->get();
         }
         
         return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdBatilMasuk' => $gdBatilMasukDetail]);
@@ -778,62 +778,42 @@ class GudangJahitController extends Controller
     }
 
 
-    public function gKeluarCreate()
+    public function gKeluarCreate($jenisBaju, $ukuranBaju, $date)
     {
         // $dataPemindahan = GudangJahitRequestOperator::select('*')->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->get();
         $dataPemindahan = [];
-        $pindahan = GudangJahitRequestOperator::where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->get();
+        $pindahan = GudangJahitRequestOperator::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', $date)->get();
+        $getBajuDetail = GudangJahitRequestOperator::select('*', DB::raw('count(*) as jumlah'))->where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', $date)->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->first();
         foreach ($pindahan as $detail) {
             $checkBatilDetail = GudangBatilMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
-            if ($checkBatilDetail == null) {
-                if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
-                    $dataPemindahan[] = [
-                        'tanggal' => date('d F Y', strtotime($detail->created_at)),
-                        'gdBajuStokOpnameId' => $detail->gdBajuStokOpnameId,
-                        'purchaseId' => $detail->purchaseId,
-                        'purchase' => $detail->purchase->kode,
-                        'jenisBaju' => $detail->jenisBaju,
-                        'ukuranBaju' => $detail->ukuranBaju,
-                        'soom' => $detail->soom,
-                        'jahit' => $detail->jahit,
-                        'bawahan' => $detail->bawahan,
-                    ];
-                }
-            }
+            if ($checkBatilDetail != null) {
+                $getBajuDetail->jumlah -= 1;
+                $getBajuDetail->ambilPcs = $getBajuDetail->jumlah;
+            }else {
+                $dataPemindahan[] = $detail->gdBajuStokOpnameId;
+                $getBajuDetail->ambilPcs = $getBajuDetail->jumlah/12;
+            }            
         }
         
-        for ($i=0; $i < count($dataPemindahan); $i++) { 
-            $gdRekapDetail = GudangJahitRekapDetail::where('gdBajuStokOpnameId', $dataPemindahan[$i]['gdBajuStokOpnameId'])->get();
-            foreach ($gdRekapDetail as $detail) {
-                if ($detail->rekap->posisi == "Soom") {
-                   $dataPemindahan[$i]['soomName'] = $detail->pegawai->nama;
-                }
-                if ($detail->rekap->posisi == "Jahit") {
-                    $dataPemindahan[$i]['jahitName'] = $detail->pegawai->nama;
+        $getBajuDetail->dataPemindahan = preg_replace("/[^0-9]/", ",", json_encode($dataPemindahan));
 
-                }
-                if ($detail->rekap->posisi == "Bawahan") {
-                    $dataPemindahan[$i]['bawahanName'] = $detail->pegawai->nama;
-
-                }
-            }
-        }
-
-        return view('gudangJahit.keluar.create', ['pemindahan' => $dataPemindahan]);
+        return view('gudangJahit.keluar.create', ['pemindahan' => $getBajuDetail]);
     }
 
     public function gKeluarStore(Request $request)
     {
-        if (count($request->gdBajuStokOpnameId) != 0) {
-            $checkBatilMasuk = GudangBatilMasuk::where('tanggal', date('Y-m-d'))->first();
-            if ($checkBatilMasuk != null) {
-                $batilMasuk = $checkBatilMasuk->id;
-            }else {
-                $batilMasuk = GudangBatilMasuk::createBatilMasuk();
-            }
+        // dd($request);
+        if (count($request->gdBajuStokOpnameId) != 0 && count($request->totalDz) != 0) {
+            $batilMasuk = GudangBatilMasuk::createBatilMasuk();           
 
             for ($i=0; $i < count($request->gdBajuStokOpnameId); $i++) { 
-                $batilMasukDetail = GudangBatilMasukDetail::createGudangBatilMasukDetail($batilMasuk, $request['gdBajuStokOpnameId'][$i], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], 0);
+                $gdBajuStokOpnameId = explode(",", $request['gdBajuStokOpnameId'][$i]);
+                for ($j=1; $j < count($gdBajuStokOpnameId)-1; $j++) { 
+                    if ($j <= ($request['totalDz'][$i]*12)) {
+                        $batilMasukDetail = GudangBatilMasukDetail::createGudangBatilMasukDetail($batilMasuk, $gdBajuStokOpnameId[$j], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], 0);
+                    }
+                }
+                
             }
 
             if ($batilMasukDetail == 1) {
