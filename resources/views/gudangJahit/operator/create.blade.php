@@ -310,7 +310,7 @@
             var jumlah  = $('#jumlah').val();
             var jumlahOld  = $('#jumlahOld').val();
             $('#jumlah').css({'border':'1px solid #ced4da'});
-
+            
             if(parseInt(jumlah) <= parseInt(jumlahOld)){
                 $('#jumlah').css({'border':'1px solid #ced4da'});
             }else{

@@ -467,16 +467,16 @@ class GudangJahitController extends Controller
     public function gOperatorUpdateSave(Request $request)
     {
         // dd($request);
-        $gdBajuStokOpnameId = [];
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $gdBajuStokOpnameId = [];
                 $gdRequestOperator = GudangBajuStokOpname::where('purchaseId', $request['purchaseId'][$i])->where('jenisBaju', $request['jenisBaju'][$i])->where('ukuranBaju', $request['ukuranBaju'][$i])->where('soom', 0)->where('jahit', 0)->where('bawahan', 0)->get();
                 foreach ($gdRequestOperator as $value) {
                    $gdBajuStokOpnameId[] = $value->id;
                 }
 
-                for ($j=0; $j < $request['jumlah'][$i]; $j++) { 
-                    $createOperator = GudangJahitRequestOperator::OperatorBajuCreate($gdBajuStokOpnameId[$j], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], 0, 0, 0, \Auth::user()->id);
+                for ($j=0; $j < $request['jumlah'][$i]*12; $j++) { 
+                    $createOperator = GudangJahitRequestOperator::OperatorBajuCreate($gdBajuStokOpnameId[$j], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['soom'][$i], $request['bawahan'][$i], $request['jahit'][$i], \Auth::user()->id);
                 }
             }
 

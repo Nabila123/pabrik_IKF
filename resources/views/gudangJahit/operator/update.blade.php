@@ -83,7 +83,7 @@
                                             </select>                                                                                  
                                         </div>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <div class="form-group">
                                             <label>Nomor PO</label>
                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
@@ -94,6 +94,34 @@
 
                                     <div class="col-3">
                                         <div class="form-group">
+                                            <label>Keterangan Selesai Jahit </label>                                                            
+                                            <div class="form-group clearfix ketJahit" id="ketJahit" style="margin-top:5px;">  
+                                               <div class="icheck-primary d-inline">
+                                                    <input type='checkbox' value='Soom' name='ketJahitName[]' id='Soom'>
+                                                    <label for='Soom'>
+                                                        Soom
+                                                    </label>                            
+                                                </div>
+
+                                                <div class="icheck-primary d-inline">
+                                                    <input type='checkbox' value='Jahit' name='ketJahitName[]' id='Jahit'>
+                                                    <label for='Jahit'>
+                                                        Jahit
+                                                    </label>                            
+                                                </div>
+
+                                                <div class="icheck-primary d-inline">
+                                                    <input type='checkbox' value='Bawahan' name='ketJahitName[]' id='Bawahan'>
+                                                    <label for='Bawahan'>
+                                                        Bawahan
+                                                    </label>                            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="form-group">
                                             <label>Ukuran Baju</label>
                                             <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
@@ -101,10 +129,11 @@
                                         </div>
                                     </div> 
 
-                                    <div class="col-3">
-                                        <label>Jumlah Baju</label>
+                                    <div class="col-2">
+                                        <label>Jumlah Baju (Dz)</label>
                                         <div class="input-group">                                            
                                             <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
+                                            <input type="hidden" id="jumlahOld" name="jumlahOld">
                                         </div>
                                     </div>
 
@@ -121,11 +150,17 @@
                                         <table id="JahitData" class="table table-bordered textAlign JahitData">
                                             <thead>
                                                 <tr>
-                                                    <th style="vertical-align: middle;">Kode Purchse</th>
-                                                    <th style="vertical-align: middle;">Jenis Baju</th>
-                                                    <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah</th>
-                                                    <th style="vertical-align: middle;">Action</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Kode Purchse</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th colspan="3" style="vertical-align: middle;">Keterangan</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Jumlah</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Action</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="vertical-align: middle;">Soom</th>
+                                                    <th style="vertical-align: middle;">Jahit</th>
+                                                    <th style="vertical-align: middle;">Bawahan</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data textAlign">
@@ -134,7 +169,10 @@
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
-                                                        <td>{{ $detail->total }}</td>
+                                                        <td>{{ $detail->soom }}</td>
+                                                        <td>{{ $detail->jahit }}</td>
+                                                        <td>{{ $detail->bawahan }}</td>
+                                                        <td>{{ $detail->total/12 }}</td>
                                                         <td align="center">
                                                             @if ($gdJahitBasis == null)
                                                                 <a href="{{ route('GJahit.operator.update.delete', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
@@ -170,6 +208,42 @@
             theme: 'bootstrap4'
         });  --}}
 
+        $(document).on("change", "#Soom", function(){
+            if ($(this).is(':checked')) {
+                $('#jumlah').val('');
+                $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }else{
+                 $('#jumlah').val('');
+                 $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }
+        });
+
+        $(document).on("change", "#Jahit", function(){
+            if ($(this).is(':checked')) {
+                $('#jumlah').val('');
+                $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }else{
+                 $('#jumlah').val('');
+                 $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }
+        });
+
+        $(document).on("change", "#Bawahan", function(){
+            if ($(this).is(':checked')) {
+                $('#jumlah').val('');
+                $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }else{
+                 $('#jumlah').val('');
+                 $('#ukuranBaju').val('');
+                $('#ukuranBaju option[value=""]').attr('selected','selected');
+            }
+        });
+
         $(document).on("change", ".jenisBaju", function(){
             var jenisBaju = $('#jenisBaju').val();
             var _token = $('#_token').val();
@@ -203,13 +277,16 @@
             
             $.ajax({
                 type: "get",
-                url: '{{ url('GJahit/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+null,
-                
+                url: '{{ url('GJahit/operator/getDetailMaterial') }}',
+                data: {
+                    'purchaseId' : purchaseId,
+                    'jenisBaju' : jenisBaju,
+                },
                 success: function(response){
                     var data = JSON.parse(response)
                     var ukuranBaju ="<option value=''>Pilih Ukuran Baju</option>";
                     for(var i = 0;i < data.length;i++){
-                        ukuranBaju += "<option value="+data+">"+data+"</option>";
+                        ukuranBaju += "<option value="+data[i]+">"+data[i]+"</option>";
                     }
                     $('#ukuranBaju').html(ukuranBaju);
                     console.log(data);
@@ -218,21 +295,47 @@
         });
 
         $(document).on("change", ".ukuranBaju", function(){
-            var purchaseId = $('#purchaseId').val();
-            var jenisBaju = $('#jenisBaju').val();
-            var ukuranBaju = $('#ukuranBaju').val();
+            var purchaseId  = $('#purchaseId').val();
+            var jenisBaju   = $('#jenisBaju').val();
+            var ukuranBaju  = $('#ukuranBaju').val();
+            var soom        = $('#Soom').is(":checked")?1:0;
+            var jahit       = $('#Jahit').is(":checked")?1:0;
+            var bawahan     = $('#Bawahan').is(":checked")?1:0;
             var _token = $('#_token').val();
 
             
             $.ajax({
                 type: "get",
-                url: '{{ url('GJahit/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju,
-                
+                url: '{{ url('GJahit/operator/getDetailMaterial') }}',
+                data: {
+                    'purchaseId' : purchaseId,
+                    'jenisBaju' : jenisBaju,
+                    'ukuranBaju' : ukuranBaju,
+                    'soom' : soom,
+                    'jahit' : jahit,
+                    'bawahan' : bawahan,
+                    '_token': _token
+                },
                 success: function(response){
                     var data = JSON.parse(response)
-                    $('#jumlah').val(data);
+                    $('#jumlah').val(data/12);
+                    $('#jumlahOld').val(data/12);
                 }
             })
+        });
+
+        $(document).on("keyup", ".jumlah", function(){
+            var jumlah  = $('#jumlah').val();
+            var jumlahOld  = $('#jumlahOld').val();
+            $('#jumlah').css({'border':'1px solid #ced4da'});
+
+            console.log(jumlah)
+            console.log(jumlahOld)
+            if(parseInt(jumlah) <= parseInt(jumlahOld)){
+                $('#jumlah').css({'border':'1px solid #ced4da'});
+            }else{
+                $('#jumlah').css({'border':'2px solid #e74c3c'});
+            }
         });
         
         $(document).ready( function () {             
@@ -244,11 +347,15 @@
                 var purchaseId      = $('#purchaseId').val();
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var ukuranBaju      = $('#ukuranBaju').val();
+                var soom            = $('#Soom').is(":checked")?1:0;
+                var jahit           = $('#Jahit').is(":checked")?1:0;
+                var bawahan         = $('#Bawahan').is(":checked")?1:0;
                 var jumlah          = $('#jumlah').val();
+                var jumlahOld       = $('#jumlahOld').val();
 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0){
+                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0 && (parseInt(jumlah) <= parseInt(jumlahOld))){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
@@ -256,6 +363,9 @@
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+jenisBajuName+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
+                            table += "<td>"+soom+"<input type='hidden' name='soom[]' value='"+soom+"' id='soom_"+jumlah_data+"'></td>";
+                            table += "<td>"+jahit+"<input type='hidden' name='jahit[]' value='"+jahit+"' id='jahit_"+jumlah_data+"'></td>";
+                            table += "<td>"+bawahan+"<input type='hidden' name='bawahan[]' value='"+bawahan+"' id='bawahan_"+jumlah_data+"'></td>";
                             table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                             
                             table += "<td align='center'>";
@@ -271,6 +381,10 @@
 
                         $('#ukuranBaju').val('');
                         $('#ukuranBaju option[value=""]').attr('selected','selected');
+
+                        $('#Soom').prop('checked', false);
+                        $('#Jahit').prop('checked', false);
+                        $('#Bawahan').prop('checked', false);
 
                         $('#jumlah').val('');
                 }else{
