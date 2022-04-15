@@ -102,7 +102,7 @@
                                     </div> 
 
                                     <div class="col-3">
-                                        <label>Jumlah Baju</label>
+                                        <label>Jumlah Baju (Dz)</label>
                                         <div class="input-group">                                            
                                             <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
                                             <input type="hidden" id="jumlahOld" name="jumlahOld">
@@ -198,7 +198,7 @@
                     var data = JSON.parse(response)
                     var ukuranBaju ="<option value=''>Pilih Ukuran Baju</option>";
                     for(var i = 0;i < data.length;i++){
-                        ukuranBaju += "<option value="+data+">"+data+"</option>";
+                        ukuranBaju += "<option value="+data[i]+">"+data[i]+"</option>";
                     }
                     $('#ukuranBaju').html(ukuranBaju);
                     console.log(data);
@@ -220,7 +220,7 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     console.log(data);
-                    $('#jumlah').val(data['jumlah']);
+                    $('#jumlah').val(data['jumlah']/12);
                     $('#jumlahOld').val(data['jumlah']);
                     console.log(data.operatorReqId.length)
                     for(var i = 0;i < data.operatorReqId.length; i++){
@@ -235,7 +235,7 @@
             var purchaseId = $('#purchaseId').val();
             var jenisBaju = $('#jenisBaju').val();
             var ukuranBaju = $('#ukuranBaju').val();
-            var jumlah = $('#jumlah').val();
+            var jumlah = $('#jumlah').val()*12;
             var jumlahOld = $('#jumlahOld').val();
             var _token = $('#_token').val();
 
@@ -250,7 +250,9 @@
                     success: function(response){
                         var data = JSON.parse(response)
                         console.log(data);
-                        $('#jumlah').val(data['jumlah']);
+                        $('#requestOperatorId').html('');
+                        $('#jumlah').css({'border':'1px solid #ced4da'});
+                        $('#jumlah').val(data['jumlah']/12);                        
                         for(var i = 0;i < data.operatorReqId.length; i++){
                             var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
@@ -274,7 +276,7 @@
                 var jumlah          = $('#jumlah').val();
                 var jumlahOld       = $('#jumlahOld').val();
                 var operatorReqId   = [];
-                for(i=0; i<jumlah; i++){
+                for(i=0; i<jumlah*12; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
                 

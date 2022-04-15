@@ -887,7 +887,7 @@ class GudangJahitController extends Controller
         $id = $id;  
         $statusDiterima = 1;  
 
-        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima($id, $statusDiterima);
+        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
 
         if ($gudangPotongTerima == 1) {
             return redirect('GJahit/reject');

@@ -359,9 +359,9 @@ class GudangBatilController extends Controller
         return view('gudangBatil.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdBatil' => $gdBatil, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdControlMasuk' => $gdControlMasukDetail]);
     }
 
-    public function gOperatorDetail($date)
+    public function gOperatorDetail($jenisBaju, $ukuranBaju)
     {
-        $gdRequestOperator = GudangBatilStokOpname::where('tanggal', $date)->get();
+        $gdRequestOperator = GudangBatilStokOpname::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('tanggal', date('Y-m-d'))->get();
         
         return view('gudangBatil.operator.detail', ['operatorRequest' => $gdRequestOperator]);
     }

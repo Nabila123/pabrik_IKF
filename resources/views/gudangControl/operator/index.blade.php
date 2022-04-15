@@ -69,6 +69,7 @@
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
@@ -78,9 +79,15 @@
                                                     <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                     <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
+                                                    <td>
+                                                        {{ $detail->totalDz }}
+                                                        @if (isset($detail->sisa))
+                                                            / {{ $detail->sisa }}
+                                                        @endif
+                                                    </td>
                                                     
                                                     <td>
-                                                        <a href="{{ route('GControl.operator.detail', date('Y-m-d', strtotime($detail->tanggal))) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GControl.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         <a href="{{ route('GControl.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                             @if (count($gdControl) == 0)
                                                                 <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
@@ -153,7 +160,7 @@
                                                             <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
                                                             <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
                                                             <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
-                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju'] }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju']/12 }}</td>
                                                             
                                                             <td>
                                                                 <a href="{{ route('GControl.keluar.detail', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
@@ -181,7 +188,7 @@
                                                             <td>{{ $detail->purchase->kode }}</td>
                                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                             <td>{{ $detail->ukuranBaju }}</td>
-                                                            <td>{{ $detail->jumlah }}</td>
+                                                            <td>{{ $detail->jumlah/12 }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

@@ -59,7 +59,7 @@
                                         <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Keterangan Batil</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Keterangan Control</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">

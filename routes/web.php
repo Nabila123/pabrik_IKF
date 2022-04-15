@@ -261,7 +261,7 @@ Route::get('/GBatil/request/terima/{id}', [App\Http\Controllers\GudangBatilContr
 Route::get('/GBatil/request/detail/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRequestDetail'])->name('GBatil.request.detail');
 
 Route::get('/GBatil/operator', [App\Http\Controllers\GudangBatilController::class, 'gOperator'])->name('GBatil.operator');
-Route::get('/GBatil/operator/detail/{date}', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDetail'])->name('GBatil.operator.detail');
+Route::get('/GBatil/operator/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDetail'])->name('GBatil.operator.detail');
 Route::get('/GBatil/operator/create', [App\Http\Controllers\GudangBatilController::class, 'gOperatorCreate'])->name('GBatil.operator.create');
 Route::post('/GBatil/operator/create', [App\Http\Controllers\GudangBatilController::class, 'gOperatorStore'])->name('GBatil.operator.create');
 Route::get('/GBatil/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}/{jumlahBaju}', [App\Http\Controllers\GudangBatilController::class, 'gOperatorDataMaterial'])->name('GBatil.operator.detailMaterial');
@@ -302,7 +302,7 @@ Route::get('/GControl/request/terima/{id}', [App\Http\Controllers\GudangControlC
 Route::get('/GControl/request/detail/{id}', [App\Http\Controllers\GudangControlController::class, 'gRequestDetail'])->name('GControl.request.detail');
 
 Route::get('/GControl/operator', [App\Http\Controllers\GudangControlController::class, 'gOperator'])->name('GControl.operator');
-Route::get('/GControl/operator/detail/{date}', [App\Http\Controllers\GudangControlController::class, 'gOperatorDetail'])->name('GControl.operator.detail');
+Route::get('/GControl/operator/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorDetail'])->name('GControl.operator.detail');
 Route::get('/GControl/operator/create', [App\Http\Controllers\GudangControlController::class, 'gOperatorCreate'])->name('GControl.operator.create');
 Route::post('/GControl/operator/create', [App\Http\Controllers\GudangControlController::class, 'gOperatorStore'])->name('GControl.operator.create');
 Route::get('/GControl/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}/{jumlahBaju}', [App\Http\Controllers\GudangControlController::class, 'gOperatorDataMaterial'])->name('GControl.operator.detailMaterial');
