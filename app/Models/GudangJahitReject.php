@@ -33,12 +33,13 @@ class GudangJahitReject extends Model
 
     }
 
-    public static function updateStatusDiterima($id, $statusDiterima)
+    public static function updateStatusDiterima($fieldName, $updatedField, $id)
     {
-        $jahitRejectUpdated['statusProses'] = $statusDiterima;
+        $GudangBasisFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($GudangBasisFieldUpdated);
 
-        self::where('id', $id)->update($jahitRejectUpdated);
-
-        return 1;
+        if ($success) {
+            return 1;
+        }
     }
 }

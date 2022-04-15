@@ -383,7 +383,7 @@ class GudangJahitController extends Controller
         if (count($gdBatilMasuk) != 0) {
             $gdBatilMasukDetail = GudangBatilMasukDetail::select('*', DB::raw('count(*) as jumlah'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
         }else {
-            $gdBatilMasukDetail = GudangBatilMasukDetail::whereDate('created_at', date('Y-m-d'))->get();
+            $gdBatilMasukDetail = [];
         }
         
         return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdBatilMasuk' => $gdBatilMasukDetail]);
