@@ -118,7 +118,7 @@
                                                     </div>       
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Jumlah Baju </label>                                                            
+                                                            <label>Jumlah Baju (Pcs) </label>                                                            
                                                             <input type="text" style="width:100px;" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
                                                             <input type="hidden" style="width:100px;" id="jumlahBajuOld">
                                                         </div>
@@ -156,7 +156,7 @@
                                                     <th style="vertical-align: middle;">Nomor PO</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah Baju</th>
+                                                    <th style="vertical-align: middle;">Jumlah Baju (Pcs)</th>
                                                     <th style="vertical-align: middle;">Keterangan Reject</th>
                                                     <th style="vertical-align: middle;">Action</th>
                                                 </tr>
@@ -276,6 +276,7 @@
                 success: function(response){
                     var data = JSON.parse(response) 
                     console.log(data);
+                    $('#requestOperatorId').html('');
                     $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
@@ -306,7 +307,7 @@
 
             $('#requestOperatorId').html('');
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GBatil/getReject') }}',
@@ -324,6 +325,7 @@
                     success: function(response){
                         var data = JSON.parse(response) 
                         console.log(data);
+                        $('#requestOperatorId').html('');
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
                         $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){

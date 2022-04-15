@@ -114,6 +114,10 @@ Route::post('/gudangRajut/Request/Kembali/{id}', [App\Http\Controllers\GudangRaj
 
 Route::get('/gudangRajut/Kembali', [App\Http\Controllers\GudangRajutController::class, 'gudangRajutKembali'])->name('GRajut.kembali');
 Route::get('/gudangRajut/Kembali/Detail/{id}', [App\Http\Controllers\GudangRajutController::class, 'KDetail'])->name('GRajut.kembali.detail');
+Route::get('/gudangRajut/Kembali/update/{id}', [App\Http\Controllers\GudangRajutController::class, 'RUpdate'])->name('GRajut.kembali.update');
+Route::post('/gudangRajut/Kembali/update/{id}', [App\Http\Controllers\GudangRajutController::class, 'RUpdateSave'])->name('GRajut.kembali.update');
+Route::get('/gudangRajut/Kembali/update/delete/{gdRajutMId}/{gdRajutMDId}', [App\Http\Controllers\GudangRajutController::class, 'RUpdateDelete'])->name('GRajut.kembali.update.delete');
+Route::delete('/gudangRajut/Kembali/delete', [App\Http\Controllers\GudangRajutController::class, 'RDelete'])->name('GRajut.kembali.delete');
 
 
 /* Gudang Cuci */
@@ -126,6 +130,7 @@ Route::post('/gudangCuci/Request/Kembali/{id}', [App\Http\Controllers\GudangCuci
 
 Route::get('/gudangCuci/Kembali', [App\Http\Controllers\GudangCuciController::class, 'gudangCuciKembali'])->name('GCuci.kembali');
 Route::get('/gudangCuci/Kembali/Detail/{id}', [App\Http\Controllers\GudangCuciController::class, 'KDetail'])->name('GCuci.kembali.detail');
+Route::delete('/gudangCuci/Kembali/delete', [App\Http\Controllers\GudangCuciController::class, 'KDelete'])->name('GCuci.kembali.delete');
 
 
 /* Gudang Compact */
@@ -138,6 +143,7 @@ Route::post('/gudangCompact/Request/Kembali/{id}', [App\Http\Controllers\GudangC
 
 Route::get('/gudangCompact/Kembali', [App\Http\Controllers\GudangCompactController::class, 'gudangCompactKembali'])->name('GCompact.kembali');
 Route::get('/gudangCompact/Kembali/Detail/{id}', [App\Http\Controllers\GudangCompactController::class, 'KDetail'])->name('GCompact.kembali.detail');
+Route::delete('/gudangCompact/Kembali/delete', [App\Http\Controllers\GudangCompactController::class, 'KDelete'])->name('GCompact.kembali.delete');
 
 
 /* Gudang Inspeksi */
@@ -152,6 +158,7 @@ Route::post('/gudangInspeksi/Request/Kembali/{id}', [App\Http\Controllers\Gudang
 
 Route::get('/gudangInspeksi/Kembali', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiKembali'])->name('GInspeksi.kembali');
 Route::get('/gudangInspeksi/Kembali/Detail/{id}', [App\Http\Controllers\GudangInspeksiController::class, 'KDetail'])->name('GInspeksi.kembali.detail');
+Route::delete('/gudangInspeksi/Kembali/delete', [App\Http\Controllers\GudangInspeksiController::class, 'KDelete'])->name('GInspeksi.kembali.delete');
 
 Route::get('/gudangInspeksi/proses', [App\Http\Controllers\GudangInspeksiController::class, 'gudangInspeksiproses'])->name('GInspeksi.proses');
 Route::get('/gudangInspeksi/proses/create', [App\Http\Controllers\GudangInspeksiController::class, 'PCreate'])->name('GInspeksi.proses.create');
@@ -214,7 +221,7 @@ Route::get('/GJahit/operator', [App\Http\Controllers\GudangJahitController::clas
 Route::get('/GJahit/operator/detail/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDetail'])->name('GJahit.operator.detail');
 Route::get('/GJahit/operator/create', [App\Http\Controllers\GudangJahitController::class, 'gOperatorCreate'])->name('GJahit.operator.create');
 Route::post('/GJahit/operator/create', [App\Http\Controllers\GudangJahitController::class, 'gOperatorStore'])->name('GJahit.operator.create');
-Route::get('/GJahit/operator/getDetailMaterial/{purchaseId}/{jenisBaju}/{ukuranBaku}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDataMaterial'])->name('GJahit.operator.detailMaterial');
+Route::get('/GJahit/operator/getDetailMaterial', [App\Http\Controllers\GudangJahitController::class, 'gOperatorDataMaterial'])->name('GJahit.operator.detailMaterial');
 Route::get('/GJahit/operator/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorUpdate'])->name('GJahit.operator.update');
 Route::post('/GJahit/operator/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorUpdateSave'])->name('GJahit.operator.update');
 Route::get('/GJahit/operator/update/delete/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangJahitController::class, 'gOperatorUpdateDelete'])->name('GJahit.operator.update.delete');
@@ -232,10 +239,10 @@ Route::post('/GJahit/rekap/create', [App\Http\Controllers\GudangJahitController:
 Route::get('/GJahit/rekap/detail/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRekapDetail'])->name('GJahit.rekap.detail');
 Route::get('/GJahit/rekap/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdate'])->name('GJahit.rekap.update');
 Route::post('/GJahit/rekap/update/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateSave'])->name('GJahit.rekap.update');
-Route::get('/GJahit/rekap/update/delete/{rekapId}/{rekapDetailId}/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateDelete'])->name('GJahit.rekap.update.delete');
+Route::get('/GJahit/rekap/update/delete/{rekapId}/{pegawaiId}/{purchaseId}/{jenisBaju}/{ukuranBaju}/{posisi}', [App\Http\Controllers\GudangJahitController::class, 'gRekapUpdateDelete'])->name('GJahit.rekap.update.delete');
 
-Route::get('/GJahit/keluar/create', [App\Http\Controllers\GudangJahitController::class, 'gKeluarCreate'])->name('GJahit.keluar.create');
-Route::post('/GJahit/keluar/create', [App\Http\Controllers\GudangJahitController::class, 'gKeluarStore'])->name('GJahit.keluar.create');
+Route::get('/GJahit/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarCreate'])->name('GJahit.keluar.create');
+Route::post('/GJahit/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarStore'])->name('GJahit.keluar.create');
 Route::get('/GJahit/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangJahitController::class, 'gKeluarDetail'])->name('GJahit.keluar.detail');
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
@@ -270,8 +277,8 @@ Route::get('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilControl
 Route::post('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateSave'])->name('GBatil.rekap.update');
 Route::get('/GBatil/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateDelete'])->name('GBatil.rekap.update.delete');
 
-Route::get('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
-Route::post('/GBatil/keluar/create', [App\Http\Controllers\GudangBatilController::class, 'gKeluarStore'])->name('GBatil.keluar.create');
+Route::get('/GBatil/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
+Route::post('/GBatil/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarStore'])->name('GBatil.keluar.create');
 Route::get('/GBatil/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
 
 Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');

@@ -664,6 +664,13 @@ class GudangBahanBakuController extends Controller
                 $data->gudangRequest = $gudangRequest;
                 $dataDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId',$id)->get();
                 break;
+
+            case 'Gudang Potong':
+                $data = GudangPotongKeluar::find($id);
+                $data->gudangRequestId = 4;
+                $data->gudangRequest = $gudangRequest;
+                $dataDetail = GudangPotongKeluarDetail::where('gdPotongKId',$id)->get();
+                break;
         }
         return view('bahanBaku.keluar.update', ['data' => $data, 'dataDetail' => $dataDetail, 'gudangRequest' => $gudangRequest]);
     }
@@ -707,6 +714,10 @@ class GudangBahanBakuController extends Controller
             case 'Gudang Inspeksi':
                 $dataDetail = GudangInspeksiKeluarDetail::where('id',$detailId)->delete();
                 break;
+
+            case 'Gudang Potong':
+                $dataDetail = GudangPotongKeluarDetail::where('id',$detailId)->delete();
+                break;
         }
         if ($dataDetail) {
             return redirect('bahan_baku/keluar/update/' . $gudangId . '/' . $gudangRequest . '');
@@ -715,7 +726,6 @@ class GudangBahanBakuController extends Controller
 
     public function deleteKeluarGudang(Request $request)
     {
-        // dd($request);
 
         switch ($request->gudangRequestName) {
             case 'Gudang Rajut':
@@ -749,16 +759,27 @@ class GudangBahanBakuController extends Controller
                     GudangInspeksiKeluar::where('id', $request->gudangRequestId)->delete();
                 }
                 break;
+
+            case 'Gudang Potong':
+                $dataDetail = GudangPotongKeluarDetail::where('gdPotongKId',$request->gudangRequestId)->get();
+                $dataDetailDelete = GudangPotongKeluarDetail::where('gdPotongKId',$request->gudangRequestId)->delete();
+                if($dataDetailDelete != 0){
+                    if ($dataDetailDelete) {
+                        GudangPotongKeluar::where('id', $request->gudangRequestId)->delete();
+                    }
+                }else {
+                    GudangPotongKeluar::where('id', $request->gudangRequestId)->delete();
+                }
+                break;
         }
         
-        // if ($dataDetailDelete) {
-        //     GudangKeluar::where('id', $request['gudangId'])->delete();
-        //     foreach ($dataDetail as $value) {
-        //         $getStok = GudangStokOpname::find($value->gudangStokId);
-        //         $qty = $getStok->qty + $value->qty;
-        //         $update = GudangStokOpname::where('id',$value->gudangStokId)->update(['qty'=>$qty]);
-        //     }
-        // }
+        if ($dataDetailDelete) {
+            foreach ($dataDetail as $value) {
+                $getStok = GudangBahanBakuDetailMaterial::where('id', $value->gdDetailMaterialId)->first();
+                $qty = $getStok->qty + $value->qty;
+                $update = GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $qty, $getStok->id);
+            }
+        }
                 
         return redirect('bahan_baku/keluar');
     }

@@ -88,7 +88,7 @@
                                             <label>Posisi Jahit </label>
                                             <select class="form-control posisi" id="posisi" name="posisi" style="width: 100%; height: 38px;" >
                                                 <option> Pilih Satu </option>
-                                                <option value="{{ $posisi }}" selected>{{ $posisi }}</option>
+                                                <option value="{{ strtolower($posisi) }}" selected>{{ $posisi }}</option>
                                             </select>                                                                                  
                                         </div>
                                     </div>                                    
@@ -118,7 +118,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">  
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Nomor PO </label>
                                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
@@ -126,7 +126,7 @@
                                                             </select> 
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Jenis Baju</label>
                                                             <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
@@ -134,15 +134,7 @@
                                                             </select> 
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group">
-                                                            <label>Keterangan Selesai Jahit </label>                                                            
-                                                            <div class="form-group clearfix ketJahit" id="ketJahit">  
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Ukuran Baju </label>
                                                             <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
@@ -150,10 +142,10 @@
                                                             </select>
                                                         </div>
                                                     </div>       
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Jumlah Baju </label>                                                            
-                                                            <input type="text" style="width:100px;" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
+                                                            <label>Jumlah Baju (Dz) </label>                                                            
+                                                            <input type="text" style="width:100px;" class="form-control jumlahBaju disable" name="jumlahBaju" id="jumlahBaju" readonly>
                                                             <input type="hidden" style="width:100px;" id="jumlahBajuOld">
                                                         </div>
                                                         <div id="requestOperatorId">
@@ -180,20 +172,14 @@
                                         <table id="JahitData" class="table table-bordered dataTables_scrollBody textAlign JahitData">
                                             <thead>
                                                 <tr>
-                                                    <th rowspan="2" style="vertical-align: middle;">No</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Posisi Jahit</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Nama Pegawai</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Nomor PO</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Jumlah Baju</th>
-                                                    <th colspan="3" style="vertical-align: middle;">Keterangan</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">Action</th>
-                                                </tr>
-                                                <tr>
-                                                    <th style="vertical-align: middle;">Soom</th>
-                                                    <th style="vertical-align: middle;">Jahit</th>
-                                                    <th style="vertical-align: middle;">Bawahan</th>
+                                                    <th style="vertical-align: middle;">No</th>
+                                                    <th style="vertical-align: middle;">Posisi Jahit</th>
+                                                    <th style="vertical-align: middle;">Nama Pegawai</th>
+                                                    <th style="vertical-align: middle;">Nomor PO</th>
+                                                    <th style="vertical-align: middle;">Jenis Baju</th>
+                                                    <th style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th style="vertical-align: middle;">Jumlah Baju</th>
+                                                    <th style="vertical-align: middle;">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data textAlign">
@@ -202,16 +188,13 @@
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
                                                         <td>{{ $detail->posisi }}</td>
-                                                        <td>{{ $detail->pegawai->nama }}</td>
+                                                        <td style="font-weight: bold;">{{ $detail->pegawai->nama }}</td>
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ $detail->jenisBaju }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
-                                                        <td>{{ $detail->jumlah }}</td>
-                                                        <td>{{ $detail->soom }}</td>
-                                                        <td>{{ $detail->jahit }}</td>
-                                                        <td>{{ $detail->bawahan }}</td>
-                                                        <td>
-                                                            <a href="{{ route('GJahit.rekap.update.delete', [$id, $detail->id, $detail->posisi]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                        <td>{{ ($detail->jumlah/12) }}</td>
+                                                        <td align="center">
+                                                            <a href="{{ route('GJahit.rekap.update.delete', [$id, $detail->pegawaiId, $detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, $detail->posisi]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -241,85 +224,11 @@
             theme: 'bootstrap4'
         });
 
-        $(document).on("change", "#soom", function(){
-            if ($(this).is(':checked')) {
-                $('#jumlahBaju').val('');
-                $('#ukuranBaju').val('');
-                $('#ukuranBaju option[value=""]').attr('selected','selected');
-            }else{
-                 $('#jumlahBaju').val('');
-                 $('#ukuranBaju').val('');
-                $('#ukuranBaju option[value=""]').attr('selected','selected');
-            }
-        });
-
-        $(document).on("change", "#jahit", function(){
-            if ($(this).is(':checked')) {
-                $('#jumlahBaju').val('');
-                $('#ukuranBaju').val('');
-                $('#ukuranBaju option[value=""]').attr('selected','selected');
-            }else{
-                 $('#jumlahBaju').val('');
-                 $('#ukuranBaju').val('');
-                $('#ukuranBaju option[value=""]').attr('selected','selected');
-            }
-        });
-
-        $(document).on("change", "#bawahan", function(){
-            if ($(this).is(':checked')) {
-                $('#jumlahBaju').val('');
-                $('#ukuranBaju').val('');
-                $('#ukuranBaju option[value=""]').attr('selected','selected');
-            }else{
-                 $('#jumlahBaju').val('');
-                 $('#ukuranBaju').val('');
-                $('#ukuranBaju option[value=""]').attr('selected','selected');
-            }
-        });
-
         $(document).ready( function () {
             var posisi = $('#posisi').val();
             var _token = $('#_token').val();
             var jahit = ['soom', 'jahit', 'bawahan']
             $('#ketJahit').html('');
-
-            if(posisi == "soom"){
-                    for(i=1; i<3; i++){
-                        var dt = '<div class="icheck-primary d-inline" style="margin-right:50px;">';
-                            dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
-                            dt += "<label for='"+jahit[i]+"'>";
-                                dt += ""+jahit[i].toUpperCase()+"";
-                            dt += '</label>';
-    
-                        dt += '</div>';
-
-                    $('#ketJahit').append(dt);
-                }
-            }else if(posisi == "jahit"){
-                for(i=0; i<3; i++){
-                    if(i == 1) continue;
-                    var dt = '<div class="icheck-primary d-inline" style="margin-right:50px;">';
-                        dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
-                        dt += "<label for='"+jahit[i]+"'>";
-                            dt += ""+jahit[i].toUpperCase()+"";
-                        dt += '</label>';
-
-                    dt += '</div>';
-
-                $('#ketJahit').append(dt);
-                }
-            }else{
-                for(i=0; i<2; i++){
-                    var dt = '<div class="icheck-primary d-inline" style="margin-right:50px;">';
-                        dt += "<input type='checkbox' value='"+jahit[i]+"' name='ketJahitName[]' id='"+jahit[i]+"'>";
-                        dt += "<label for='"+jahit[i]+"'>";
-                            dt += ""+jahit[i].toUpperCase()+"";
-                        dt += '</label>';
-
-                    dt += '</div>';
-                $('#ketJahit').append(dt);
-                }
-            }
             
             $.ajax({
                 type: "post",
@@ -407,6 +316,14 @@
             var soom        = $('#soom').is(":checked")?1:0;
             var jahit       = $('#jahit').is(":checked")?1:0;
             var bawahan     = $('#bawahan').is(":checked")?1:0;
+            var jumlah_data  = $('#jumlah_data').val();
+
+            var operatorReqId   = [];
+            var operatorReqPurchaseId = [];
+            for(i=1; i<=jumlah_data; i++){
+                operatorReqId[i]   = $('#operatorReqId_'+i+'').val();
+                operatorReqPurchaseId[i]   = $('#purchaseId_'+i+'').val();
+            }
             var _token = $('#_token').val();
 
             $('#requestOperatorId').html('');
@@ -424,13 +341,15 @@
                     'soom' : soom,
                     'jahit' : jahit,
                     'bawahan' : bawahan,
+                    'operatorReqId' : operatorReqId,
+                    'operatorReqPurchaseId' : operatorReqPurchaseId,
                     'groupBy' : "id",
                     '_token': _token
                 },
                 success: function(response){
                     var data = JSON.parse(response) 
                     console.log(data);
-                    $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                    $('#jumlahBaju').val(data['operator']['jumlahBaju']/12);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
@@ -501,11 +420,8 @@
                 var jenisBaju       = $('#jenisBaju').val();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlahBaju      = $('#jumlahBaju').val();
-                var soom            = $('#soom').is(":checked")?1:0;
-                var jahit           = $('#jahit').is(":checked")?1:0;
-                var bawahan         = $('#bawahan').is(":checked")?1:0;
                 var operatorReqId   = [];
-                for(i=0; i<jumlahBaju; i++){
+                for(i=0; i<jumlahBaju*12; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
 
@@ -518,7 +434,7 @@
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                            table += "<td>"+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
+                            table += "<td> <sup> + </sup> "+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
                             table += "<td>"+posisi+"<input type='hidden' name='posisi[]' value='"+posisi+"' id='posisi_"+jumlah_data+"'></td>";
                             table += "<td>"+pegawaiName+"<input type='hidden' name='pegawaiId[]' value='"+pegawaiId+"' id='pegawaiId_"+jumlah_data+"'></td>";
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
@@ -526,17 +442,10 @@
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+jumlahBaju+"<input type='hidden' name='jumlahBaju[]' value='"+jumlahBaju+"' id='jumlahBaju_"+jumlah_data+"'></td>";
                             
-                            table += "<td>"+soom+"<input type='hidden' name='soom[]' value='"+soom+"' id='soom_"+jumlah_data+"'></td>";
-                            table += "<td>"+jahit+"<input type='hidden' name='jahit[]' value='"+jahit+"' id='jahit_"+jumlah_data+"'></td>";
-                            table += "<td>"+bawahan+"<input type='hidden' name='bawahan[]' value='"+bawahan+"' id='bawahan_"+jumlah_data+"'></td>";    
-                            
-                            table += "<td>";
+                            table += "<td align='center'>";
                             table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
                             table += "</td>";
                         table += "</tr>";
-
-                        $('#posisi').val('');
-                        $('#posisi option[value=""]').attr('selected','selected');
 
                         $('#pegawaiId').val('');
                         $('#pegawaiId option[value=""]').attr('selected','selected');
@@ -551,10 +460,6 @@
                         $('#ukuranBaju option[value=""]').attr('selected','selected');
                         
                         $('#jumlahBaju').val('');
-
-                        $('#soom').prop('checked', false);
-                        $('#jahit').prop('checked', false);
-                        $('#bawahan').prop('checked', false);
 
                         $('#ketJahit').html('');
 

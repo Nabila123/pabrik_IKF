@@ -8,6 +8,7 @@ use App\Models\GudangCompactKeluarDetail;
 use App\Models\GudangCompactMasuk;
 use App\Models\GudangCompactMasukDetail;
 use App\Models\GudangBahanBaku;
+use App\Models\GudangBahanBakuDetailMaterial;
 use App\Models\MaterialModel;
 
 
@@ -108,6 +109,25 @@ class GudangCompactController extends Controller
         $gCompactKembaliDetail = GudangCompactMasukDetail::where('gdCompactMId', $id)->get();
 
         return view('gudangCompact.kembali.detail', ['gudangMasuk' => $gCompactKembali, 'gudangMasukDetail' => $gCompactKembaliDetail]);
+    }
+
+    public function KDelete(Request $request)
+    {
+        $gdCompactMasuk = GudangCompactMasuk::where('id', $request->gdCompactMId)->first();
+        $gdCompactMasukDetail = GudangCompactMasukDetail::where('gdCompactMId', $gdCompactMasuk->id)->get();
+        $DeleteRajutKeluarDetail = GudangCompactMasukDetail::where('gdCompactMId', $gdCompactMasuk->id)->delete();
+        if ($DeleteRajutKeluarDetail) {
+            foreach ($gdCompactMasukDetail as $detail) {
+                $gdDetailMaterial = GudangBahanBakuDetailMaterial::where('id', $detail->gdDetailMaterialId)->delete();
+            }
+    
+            if ($gdDetailMaterial) {
+                $gdCompactMasuk = GudangCompactMasuk::where('id', $request->gdCompactMId)->delete();
+                if ($gdCompactMasuk) {
+                    return redirect('gudangCompact/Request');
+                }                
+            }
+        }
     }
 
     /* END Gudang Compact Kembali */

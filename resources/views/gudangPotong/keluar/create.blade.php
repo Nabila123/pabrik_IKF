@@ -90,24 +90,27 @@
                                         <table id="example2" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th class="textAlign">Bahan</th>
                                                     <th class="textAlign">Nomor PO</th>
-                                                    <th class="textAlign">Gramasi</th>
-                                                    <th class="textAlign">Diamater</th>
-                                                    <th class="textAlign">Berat</th>
-                                                    <th class="textAlign">Jumlah</th>
+                                                    <th class="textAlign">Jenis Baju</th>
+                                                    <th class="textAlign">Ukuran Baju</th>
+                                                    <th class="textAlign">Total Dz</th>
+                                                    <th class="textAlign" style="width: 20%">Jumlah Yang <br> Dapat Dipindahkan (Dz)</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="textAlign">
-                                                @foreach ($gPotongKeluarDetail as $detail)
-                                                    <tr>
-                                                        <td>{{ $detail->material->nama }}</td>
-                                                        <td>{{ $detail->purchase->kode }}</td>
-                                                        <td>{{ $detail->gramasi }}</td>
-                                                        <td>{{ $detail->diameter }}</td>
-                                                        <td>{{ $detail->berat }}</td>
-                                                        <td>{{ $detail->qty }}</td>
-                                                    </tr>
+                                                @foreach ($gPotongProses as $detail)
+                                                    @foreach ($detail->prosesDetail as $proses)
+                                                        <tr>
+                                                            <td>{{ $detail->purchase->kode }}</td>
+                                                            <td>{{ $proses->jenisBaju }}</td>
+                                                            <td>{{ $proses->ukuranBaju }}</td>
+                                                            <td>{{ $proses->hasilDz }}</td>
+                                                            <td align="center">
+                                                                <input type="hidden" name="potongProses[]" id="potongProses" value="{{ $proses->id }}">
+                                                                <input style='width:70px;' class="form-control totalDz[]" type="number" name="totalDz[]" id="totalDz[]" value="{{ $detail->ambilDz }}">
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -115,7 +118,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button type="submit" id="Simpan" style="float: right" class='btn btn-info btn-flat-right Simpan'>Ajukan Pengembalian</button>
+                                        <button type="submit" id="Simpan" style="float: right" class='btn btn-info btn-flat-right Simpan'>Lakukan Pemindahan</button>
                                     </div>
                                 </div>
                             </form>
@@ -132,30 +135,6 @@
     <script type="text/javascript"> 
         $('#material').select2({
             theme: 'bootstrap4'
-        });
-        
-        $(document).ready( function () {
-            $('#example2').DataTable( {
-                "responsive": true,
-            });       
-            
-            var materialId = $('#material').val();
-            var _token = $('#_token').val();
-            
-            $.ajax({
-                type: "post",
-                url: '{{ url('material/getSatuan') }}',
-                data: {
-                    'materialId' : materialId,
-                    '_token': _token
-                },
-                success: function(response){
-                    var data = JSON.parse(response)
-                    $('.satuan').val(data.satuan);
-                    $('.jenisId').val(data.jenisId);
-                    console.log(data.satuan);
-                }
-            })
         });
     </script>
 @endpush

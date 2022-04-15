@@ -107,10 +107,10 @@
                                                 <th colspan="2" style="vertical-align: middle;">Kepala Kain</th>
                                                 <th colspan="3" style="vertical-align: middle;">Kain Roll</th>
                                                 <th colspan="2" style="vertical-align: middle;">Hasil Potong</th>
-                                                <th colspan="2" style="vertical-align: middle;">Total Potong</th>
-                                                <th colspan="10" style="vertical-align: middle;">Kain Aval</th>
-                                                <th rowspan="2" style="vertical-align: middle;">SKB</th>
-                                                <th rowspan="2" style="vertical-align: middle;">BS</th>
+                                                <th colspan="3" style="vertical-align: middle;">Total Potong</th>
+                                                <th colspan="10" style="vertical-align: middle;">Kain Aval (Kg)</th>
+                                                <th rowspan="2" style="vertical-align: middle;">SKB (Kg)</th>
+                                                <th rowspan="2" style="vertical-align: middle;">BS (Pcs)</th>
                                             </tr>
                                             <tr>
                                                 <th>Jml Potong</th>
@@ -121,6 +121,7 @@
                                                 <th>Jns Baju</th>
                                                 <th>Size</th>
                                                 <th>Dz</th>
+                                                <th>Sisa (Pcs)</th>
                                                 <th>Kg</th>
                                                 
                                                 <th>Kecil</th>
@@ -146,6 +147,7 @@
                                                     <td>{{ $detail->jenisBaju }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
                                                     <td>{{ $detail->hasilDz }}</td>
+                                                    <td>{{ $detail->sisaPcs }}</td>
                                                     <td>{{ $detail->hasilKg }}</td>
                                                     <td>{{ $detail->skb }}</td>
                                                     <td>{{ $detail->bs }}</td>

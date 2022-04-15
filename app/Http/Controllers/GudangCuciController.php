@@ -5,7 +5,7 @@ use App\Models\GudangCuciKeluar;
 use App\Models\GudangCuciKeluarDetail;
 use App\Models\GudangCompactKeluar;
 use App\Models\GudangCompactKeluarDetail;
-
+use App\Models\GudangCompactMasuk;
 use App\Models\MaterialModel;
 
 
@@ -79,12 +79,14 @@ class GudangCuciController extends Controller
         $gdCompactKeluar = GudangCompactKeluar::CreateCompactKeluar($request->id); 
         if ($gdCompactKeluar) {
             for ($i=1; $i <= count($request->detailId); $i++) { 
-                $total = 0;
-                $gdCuciKeluar = GudangCuciKeluarDetail::where('id', $request['detailId'][$i])->first();
-                GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCuciKeluar->gdDetailMaterialId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request["qty"][$i]);
-                
-                $total = $request["qtyOri"][$i] - $request["qty"][$i];
-                GudangCuciKeluarDetail::gudangCuciUpdateField("qty", $total, $gdCuciKeluar->id);
+                if ($request["qty"][$i] == 1) {
+                    $total = 0;
+                    $gdCuciKeluar = GudangCuciKeluarDetail::where('id', $request['detailId'][$i])->first();
+                    GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCuciKeluar->gdDetailMaterialId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request["qty"][$i]);
+                    
+                    $total = $request["qtyOri"][$i] - $request["qty"][$i];
+                    GudangCuciKeluarDetail::gudangCuciUpdateField("qty", $total, $gdCuciKeluar->id);
+                }
             }
 
             return redirect('gudangCuci/Kembali');
@@ -100,10 +102,30 @@ class GudangCuciController extends Controller
     }
 
     public function KDetail($id){
-        $gCuciRequest = GudangCompactKeluar::where('id', $id)->first();
-        $gCuciRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $id)->get();
+        $gCuciRequest = GudangCompactKeluar::where('gdCuciKId', $id)->first();
+        $gCuciRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gCuciRequest->id)->get();
 
         return view('gudangCuci.kembali.detail', ['gudangKeluar' => $gCuciRequest, 'gudangKeluarDetail' => $gCuciRequestDetail]);
+    }
+
+    public function KDelete(Request $request)
+    {
+        $gdCompactKeluar = GudangCompactKeluar::where('gdCuciKId', $request->gdCuciKId)->first();
+        $gdCompactKeluarDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gdCompactKeluar->id)->get();
+        foreach ($gdCompactKeluarDetail as $detail) {
+           if ($detail->qty == 1) {
+            $getCuciDetail = GudangCuciKeluarDetail::where('gdDetailMaterialId', $detail->gdDetailMaterialId)->first();
+            $gdCuciKeluar = GudangCuciKeluarDetail::gudangCuciUpdateField('qty', 1, $getCuciDetail->id);
+           }
+        }
+
+        if ($gdCuciKeluar) {
+            $gdCompactKeluarDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gdCompactKeluar->id)->delete();
+            $gdCompactKeluar = GudangCompactKeluar::where('gdCuciKId', $request->gdCuciKId)->delete();
+            if ($gdCompactKeluar) {
+                return redirect('gudangCuci/Request');
+            }
+        }
     }
 
     /* END Gudang Cuci Pemindahan */

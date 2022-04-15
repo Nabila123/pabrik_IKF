@@ -131,10 +131,10 @@
                                                 <tr>
                                                     <th colspan="2" style="vertical-align: middle;">Kepala Kain</th>
                                                     <th colspan="3" style="vertical-align: middle;">Hasil Potong</th>
-                                                    <th colspan="2" style="vertical-align: middle;">Total Potong</th>
-                                                    <th colspan="10" style="vertical-align: middle;">Kain Aval</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">SKB</th>
-                                                    <th rowspan="2" style="vertical-align: middle;">BS</th>
+                                                    <th colspan="3" style="vertical-align: middle;">Total Potong</th>
+                                                    <th colspan="10" style="vertical-align: middle;">Kain Aval (Kg)</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">SKB (Kg)</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">BS (Pcs)</th>
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align: middle;">Jml Potong</th>
@@ -143,6 +143,7 @@
                                                     <th style="vertical-align: middle;">Jns Baju</th>
                                                     <th style="vertical-align: middle;">Size</th>
                                                     <th style="vertical-align: middle;">Dz</th>
+                                                    <th style="vertical-align: middle;">Sisa (Pcs)</th>
                                                     <th style="vertical-align: middle;">Kg</th>
                                                     
                                                     <th style="vertical-align: middle;">Kecil</th>
@@ -175,6 +176,7 @@
                                                     </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="size" id="size"> </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="totalDZ" id="totalDZ"> </td>
+                                                    <td> <input style='width:70px;' class="form-control" type="number" name="totalPcs" id="totalPcs"> </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="totalKG" id="totalKG"> </td>
                                                     
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="kecil" id="kecil"> </td>
@@ -209,10 +211,10 @@
                                                     <tr>
                                                         <th colspan="2" style="vertical-align: middle;">Kepala Kain</th>
                                                         <th colspan="3" style="vertical-align: middle;">Hasil Potong</th>
-                                                        <th colspan="2" style="vertical-align: middle;">Total Potong</th>
-                                                        <th colspan="10" style="vertical-align: middle;">Kain Aval</th>
-                                                        <th rowspan="2" style="vertical-align: middle;">SKB</th>
-                                                        <th rowspan="2" style="vertical-align: middle;">BS</th>
+                                                        <th colspan="3" style="vertical-align: middle;">Total Potong</th>
+                                                        <th colspan="10" style="vertical-align: middle;">Kain Aval (Kg)</th>
+                                                        <th rowspan="2" style="vertical-align: middle;">SKB (Kg)</th>
+                                                        <th rowspan="2" style="vertical-align: middle;">BS (Pcs)</th>
                                                         <th rowspan="2" style="vertical-align: middle;">Action</th>
                                                     </tr>
                                                     <tr>
@@ -222,6 +224,7 @@
                                                         <th>Jns Baju</th>
                                                         <th>Size</th>
                                                         <th>Dz</th>
+                                                        <th>Sisa (Pcs)</th>
                                                         <th>Kg</th>
                                                         
                                                         <th>Kecil</th>
@@ -245,6 +248,7 @@
                                                         <td>{{ $detail->jenisBaju }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
                                                         <td>{{ $detail->hasilDz }}</td>
+                                                        <td>{{ $detail->sisaPcs }}</td>
                                                         <td>{{ $detail->hasilKg }}</td>
                                                         <td>{{ $detail->skb }}</td>
                                                         <td>{{ $detail->bs }}</td>
@@ -296,6 +300,7 @@
                 var jnsBajuName     = $('#jnsBaju').find('option:selected').text();
                 var size            = $('#size').val() != ""?$('#size').val():0;
                 var totalDZ         = $('#totalDZ').val() != ""?$('#totalDZ').val():0;
+                var totalPcs        = $('#totalPcs').val() != ""?$('#totalPcs').val():0;
                 var totalKG         = $('#totalKG').val() != ""?$('#totalKG').val():0;
 
                 var kecil           = $('#kecil').val() != ""?$('#kecil').val():0;
@@ -325,6 +330,7 @@
                             table += "<td>"+jnsBajuName+"<input type='hidden' name='jnsBaju[]' value='"+jnsBaju+"' id='jnsBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+size+"<input type='hidden' name='size[]' value='"+size+"' id='size_"+jumlah_data+"'></td>";
                             table += "<td>"+totalDZ+"<input type='hidden' name='totalDZ[]' value='"+totalDZ+"' id='totalDZ_"+jumlah_data+"'></td>";
+                            table += "<td>"+totalPcs+"<input type='hidden' name='totalPcs[]' value='"+totalPcs+"' id='totalPcs_"+jumlah_data+"'></td>";
                             table += "<td>"+totalKG+"<input type='hidden' name='totalKG[]' value='"+totalKG+"' id='totalKG_"+jumlah_data+"'></td>";
                             
                             table += "<td>"+kecil+"<input type='hidden' name='kecil[]' value='"+kecil+"' id='kecil_"+jumlah_data+"'></td>";

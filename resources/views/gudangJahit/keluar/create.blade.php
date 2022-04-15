@@ -64,17 +64,21 @@
                                                     <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                                     <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                     <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Baju Yang <br> Dapat Dipindahkan (Dz)</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="textAlign">
-                                                @for ($i = 0; $i < count($pemindahan); $i++)                                                    
-                                                    <tr>
-                                                        <td>{{ $pemindahan[$i]['tanggal'] }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $pemindahan[$i]['gdBajuStokOpnameId'] }}"></td>
-                                                        <td>{{ $pemindahan[$i]['purchase'] }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $pemindahan[$i]['purchaseId'] }}"> </td>
-                                                        <td>{{ strtoupper($pemindahan[$i]['jenisBaju']) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $pemindahan[$i]['jenisBaju'] }}"> </td>
-                                                        <td>{{ $pemindahan[$i]['ukuranBaju'] }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $pemindahan[$i]['ukuranBaju'] }}"> </td>                                                        
-                                                    </tr>
-                                                @endfor
+                                            {{--  @foreach ($pemindahan as $detail)  --}}
+                                                <tr>
+                                                    <td>{{ date('d F Y', strtotime($pemindahan->created_at)) }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $pemindahan->dataPemindahan }}"></td>
+                                                    <td>{{ $pemindahan->purchase->kode }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $pemindahan->purchaseId }}"> </td>
+                                                    <td>{{ strtoupper($pemindahan->jenisBaju) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $pemindahan->jenisBaju }}"> </td>
+                                                    <td>{{ $pemindahan->ukuranBaju }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $pemindahan->ukuranBaju }}"> </td>                                                        
+                                                    <td>{{ ($pemindahan->jumlah/12) }} <input type="hidden" name="jumlah[]" id="jumlah" value="{{ $pemindahan->jumlah }}"> </td>                                                        
+                                                    <td align="center"><input style='width:120px; text-align: center;' class="form-control totalDz[]" type="number" name="totalDz[]" id="totalDz" value="{{ $pemindahan->ambilPcs }}"> </td>
+                                                </tr>     
+                                            {{--  @endforeach   --}}
                                             </tbody>
                                         </table>
                                     </div>
