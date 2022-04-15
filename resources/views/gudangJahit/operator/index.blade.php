@@ -90,7 +90,12 @@
                                                     <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                     <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
-                                                    <td>{{ ($detail->jumlah/12) }}</td>
+                                                    <td>
+                                                        {{ ($detail->totalDz) }} 
+                                                        @if (isset($detail->sisa))
+                                                            / {{ $detail->sisa }}
+                                                        @endif
+                                                    </td>
                                                     
                                                     <td>
                                                         <a href="{{ route('GJahit.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

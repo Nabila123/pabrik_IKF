@@ -347,6 +347,13 @@ class GudangJahitController extends Controller
         $tempJenisBaju = '';        
         $tempUkuranBaju = '';        
         $gdRequestOperator = GudangJahitRequestOperator::select("*", DB::raw('count(*) as jumlah'))->groupBy('jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
+        foreach ($gdRequestOperator as $reqOperator) {
+            $reqOperator->totalDz =  (int)($reqOperator->jumlah/12);
+            $sisa = ($reqOperator->jumlah%12);
+            if ($sisa != 0) {
+                $reqOperator->sisa = $sisa;
+            }  
+        }
         $gdJahitBasis = GudangJahitBasis::groupBy('posisi')->whereDate('created_at', date('Y-m-d'))->get();
         $gdJahitRekap = GudangJahitRekap::orderBy('tanggal', 'desc')->groupBy('posisi', 'tanggal')->get();
         // dd($gdJahitRekap);

@@ -25,6 +25,16 @@
             background-color: #777;
             border-radius: 10px;
         }
+
+        tr th{
+            max-width:100%;
+            white-space:nowrap;
+        }
+
+        tr td{
+            max-width:100%;
+            white-space:nowrap;
+        }
     </style>
 @endpush
 
@@ -69,6 +79,7 @@
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
@@ -78,6 +89,12 @@
                                                     <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                     <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
+                                                    <td>
+                                                        {{ ($detail->totalDz) }} 
+                                                        @if (isset($detail->sisa))
+                                                            / {{ $detail->sisa }}
+                                                        @endif
+                                                    </td>
                                                     
                                                     <td>
                                                         <a href="{{ route('GBatil.operator.detail', date('Y-m-d', strtotime($detail->tanggal))) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
@@ -134,9 +151,6 @@
                                     
                                     <div class="tab-content">
                                         <div class="active tab-pane mt-5" id="pindahkanData">
-                                            <h3 class="card-title mb-4" style="width: 100%">
-                                                <a href="{{ route('GBatil.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
-                                            </h3>
                                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                 <thead>
                                                     <tr>
@@ -153,9 +167,10 @@
                                                             <td>{{ $dataPemindahan[$i]['tanggal'] }}</td>
                                                             <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
                                                             <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
-                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju'] }}</td>
+                                                            <td>{{ $dataPemindahan[$i]['jumlahBaju']/12 }}</td>
                                                             
                                                             <td>
+                                                                <a href="{{ route('GBatil.keluar.create',[$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
                                                                 <a href="{{ route('GBatil.keluar.detail', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
@@ -171,7 +186,7 @@
                                                         <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
@@ -182,7 +197,7 @@
                                                                 <td>{{ $detail->purchase->kode }}</td>
                                                                 <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                                 <td>{{ $detail->ukuranBaju }}</td>
-                                                                <td>{{ $detail->jumlah }}</td>
+                                                                <td>{{ $detail->jumlah/12 }}</td>
                                                             </tr>
                                                         @endforeach
                                                     @endif

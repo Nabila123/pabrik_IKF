@@ -332,7 +332,7 @@
                     $('#jumlahBaju').val(data['operator']['jumlahBaju']/12);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
-                        var dt ="<input type='text' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                         $('#requestOperatorId').append(dt);  
                     }
 
@@ -388,7 +388,7 @@
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
                         $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){
-                            var dt ="<input type='text' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
                         }
                     }
