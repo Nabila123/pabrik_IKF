@@ -581,32 +581,43 @@ class GudangBatilController extends Controller
         }
     }
 
-    public function gRekapUpdateDelete($rekapId, $rekapDetailId)
+    public function gRekapUpdateDelete($rekapId, $pegawaiId, $purchaseId, $jenisBaju, $ukuranBaju)
     {
-        $getDetailPegawai = GudangBatilRekapDetail::where('id', $rekapDetailId)->first();
-
         $getPegawai = GudangBatilRekap::where('id', $rekapId)->first();
         $CheckPegawai = GudangBatilRekapDetail::where('gdBatilRekapId', $getPegawai->id)->get();
+        $getDetailPegawai = GudangBatilRekapDetail::where('gdBatilRekapId', $getPegawai->id)
+                                                    ->where('pegawaiId', $pegawaiId)
+                                                    ->where('purchaseId', $purchaseId)
+                                                    ->where('jenisBaju', $jenisBaju)
+                                                    ->where('ukuranBaju', $ukuranBaju)
+                                                    ->get();
 
-        $operatorReq = GudangBatilStokOpname::where('gdBajuStokOpnameId', $getDetailPegawai->gdBajuStokOpnameId)->first();
-        if ($operatorReq != null) {
-            $operatorReqUpdate = GudangBatilStokOpname::bajuUpdateField('statusBatil', 0, $operatorReq->id);
-            if ($operatorReqUpdate == 1) {
-                $deleteDetailPegawai = GudangBatilRekapDetail::where('id', $rekapDetailId)->delete();
-                if (count($CheckPegawai) == 1) {
-                    $deletePegawai = GudangBatilRekap::where('id', $rekapId)->delete();
-
-                    if ($deletePegawai) {
-                        return redirect('GBatil/operator');
-                    }
-                }
-
-                if ($deleteDetailPegawai) {
-                    return redirect('GBatil/rekap/update/' . $rekapId . '');
-                }
-                
-            }                    
+        foreach ($getDetailPegawai as $detailPegawai) {
+            $operatorReq = GudangBatilStokOpname::where('gdBajuStokOpnameId', $detailPegawai->gdBajuStokOpnameId)->first();
+            if ($operatorReq != null) {
+                $operatorReqUpdate = GudangBatilStokOpname::bajuUpdateField('statusBatil', 0, $operatorReq->id);
+            }
         } 
+
+        if ($operatorReqUpdate == 1) {
+            $deleteDetailPegawai = GudangBatilRekapDetail::where('gdBatilRekapId', $getPegawai->id)
+                                                            ->where('pegawaiId', $pegawaiId)
+                                                            ->where('purchaseId', $purchaseId)
+                                                            ->where('jenisBaju', $jenisBaju)
+                                                            ->where('ukuranBaju', $ukuranBaju)
+                                                            ->delete();
+            if (count($CheckPegawai) == 1) {
+                $deletePegawai = GudangBatilRekap::where('id', $rekapId)->delete();
+
+                if ($deletePegawai) {
+                    return redirect('GBatil/operator');
+                }
+            }    
+            
+            if ($deleteDetailPegawai) {
+                return redirect('GBatil/rekap/update/' . $rekapId . '');
+            }
+        }
     }
 
     public function gKeluarCreate($jenisBaju, $ukuranBaju, $date)

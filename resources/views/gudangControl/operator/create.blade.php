@@ -129,7 +129,7 @@
                                                     <th style="vertical-align: middle;">Kode Purchse</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah</th>
+                                                    <th style="vertical-align: middle;">Jumlah (Dz)</th>
                                                     <th style="vertical-align: middle;">Action</th>
                                                 </tr>
                                             </thead>

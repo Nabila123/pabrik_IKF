@@ -64,17 +64,19 @@
                                                     <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                                     <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                     <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Baju Yang <br> Dapat Dipindahkan (Dz)</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="textAlign">
-                                                @for ($i = 0; $i < count($gdKeluarControl); $i++)                                                    
-                                                    <tr>
-                                                        <td>{{ $gdKeluarControl[$i]['tanggal'] }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $gdKeluarControl[$i]['gdBajuStokOpnameId'] }}"></td>
-                                                        <td>{{ $gdKeluarControl[$i]['purchase'] }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $gdKeluarControl[$i]['purchaseId'] }}"> </td>
-                                                        <td>{{ strtoupper($gdKeluarControl[$i]['jenisBaju']) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $gdKeluarControl[$i]['jenisBaju'] }}"> </td>
-                                                        <td>{{ $gdKeluarControl[$i]['ukuranBaju'] }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $gdKeluarControl[$i]['ukuranBaju'] }}"> </td>                                                        
-                                                    </tr>
-                                                @endfor
+                                                <tr>
+                                                    <td>{{ date('d F Y', strtotime($gdKeluarControl->created_at)) }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $gdKeluarControl->dataPemindahan }}"></td>
+                                                    <td>{{ $gdKeluarControl->purchase->kode }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $gdKeluarControl->purchaseId }}"> </td>
+                                                    <td>{{ strtoupper($gdKeluarControl->jenisBaju) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $gdKeluarControl->jenisBaju }}"> </td>
+                                                    <td>{{ $gdKeluarControl->ukuranBaju }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $gdKeluarControl->ukuranBaju }}"> </td>                                                        
+                                                    <td>{{ ($gdKeluarControl->jumlah/12) }} <input type="hidden" name="jumlah[]" id="jumlah" value="{{ $gdKeluarControl->jumlah }}"> </td>                                                        
+                                                    <td align="center"><input style='width:120px; text-align: center;' class="form-control totalDz[]" type="number" name="totalDz[]" id="totalDz" value="{{ $gdKeluarControl->ambilPcs }}"> </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

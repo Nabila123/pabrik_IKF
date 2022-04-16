@@ -275,7 +275,7 @@ Route::post('/GBatil/rekap/create', [App\Http\Controllers\GudangBatilController:
 Route::get('/GBatil/rekap/detail/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapDetail'])->name('GBatil.rekap.detail');
 Route::get('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdate'])->name('GBatil.rekap.update');
 Route::post('/GBatil/rekap/update/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateSave'])->name('GBatil.rekap.update');
-Route::get('/GBatil/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateDelete'])->name('GBatil.rekap.update.delete');
+Route::get('/GBatil/rekap/update/delete/{rekapId}/{pegawaiId}/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangBatilController::class, 'gRekapUpdateDelete'])->name('GBatil.rekap.update.delete');
 
 Route::get('/GBatil/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarCreate'])->name('GBatil.keluar.create');
 Route::post('/GBatil/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarStore'])->name('GBatil.keluar.create');
@@ -316,10 +316,10 @@ Route::post('/GControl/rekap/create', [App\Http\Controllers\GudangControlControl
 Route::get('/GControl/rekap/detail/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapDetail'])->name('GControl.rekap.detail');
 Route::get('/GControl/rekap/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdate'])->name('GControl.rekap.update');
 Route::post('/GControl/rekap/update/{id}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateSave'])->name('GControl.rekap.update');
-Route::get('/GControl/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateDelete'])->name('GControl.rekap.update.delete');
+Route::get('/GControl/rekap/update/delete/{rekapId}/{pegawaiId}/{purchaseId}/{jenisBaju}/{ukuranBaju}', [App\Http\Controllers\GudangControlController::class, 'gRekapUpdateDelete'])->name('GControl.rekap.update.delete');
 
-Route::get('/GControl/keluar/create', [App\Http\Controllers\GudangControlController::class, 'gKeluarCreate'])->name('GControl.keluar.create');
-Route::post('/GControl/keluar/create', [App\Http\Controllers\GudangControlController::class, 'gKeluarStore'])->name('GControl.keluar.create');
+Route::get('/GControl/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangControlController::class, 'gKeluarCreate'])->name('GControl.keluar.create');
+Route::post('/GControl/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangControlController::class, 'gKeluarStore'])->name('GControl.keluar.create');
 Route::get('/GControl/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangControlController::class, 'gKeluarDetail'])->name('GControl.keluar.detail');
 
 Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');

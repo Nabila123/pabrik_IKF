@@ -141,7 +141,7 @@
                                                     </div>       
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Jumlah Baju </label>                                                            
+                                                            <label>Jumlah Baju (Dz)</label>                                                            
                                                             <input type="text" style="width:100px;" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
                                                             <input type="hidden" style="width:100px;" id="jumlahBajuOld">
                                                         </div>
@@ -173,7 +173,7 @@
                                                     <th style="vertical-align: middle;">Nomor PO</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah Baju</th>
+                                                    <th style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                     <th style="vertical-align: middle;">Action</th>
                                                 </tr>
                                             </thead>
@@ -184,9 +184,9 @@
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ $detail->jenisBaju }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
-                                                        <td>{{ $detail->jumlah }}</td>
+                                                        <td>{{ $detail->jumlah/12 }}</td>
                                                         <td>
-                                                            <a href="{{ route('GControl.rekap.update.delete', [$id, $detail->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                            <a href="{{ route('GControl.rekap.update.delete', [$id, $detail->pegawaiId, $detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -301,7 +301,7 @@
                 success: function(response){
                     var data = JSON.parse(response) 
                     console.log(data);
-                    $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                    $('#jumlahBaju').val(data['operator']['jumlahBaju']/12);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
@@ -318,7 +318,7 @@
             var jenisBaju   = $('#jenisBaju').val();
             var ukuranBaju  = $('#ukuranBaju').val();
             var jumlahBaju  = $('#jumlahBaju').val();
-            var jumlahBajuOld  = $('#jumlahBajuOld').val();
+            var jumlahBajuOld  = $('#jumlahBajuOld').val()/12;
             var jumlah_data  = $('#jumlah_data').val();
 
             var operatorReqId   = [];
@@ -331,7 +331,7 @@
 
             $('#requestOperatorId').html('');
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GControl/getPegawai') }}',
@@ -349,8 +349,9 @@
                     success: function(response){
                         var data = JSON.parse(response) 
                         console.log(data);
+                        $('#requestOperatorId').html('');
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
-                        $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                        $('#jumlahBaju').val(data['operator']['jumlahBaju']/12);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){
                             var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
@@ -374,7 +375,7 @@
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlahBaju      = $('#jumlahBaju').val();
                 var operatorReqId   = [];
-                for(i=0; i<jumlahBaju; i++){
+                for(i=0; i<jumlahBaju*12; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
 

@@ -186,7 +186,7 @@
                                                         <td>{{ $detail->ukuranBaju }}</td>
                                                         <td>{{ $detail->jumlah/12 }}</td>
                                                         <td>
-                                                            <a href="{{ route('GBatil.rekap.update.delete', [$id, $detail->id]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
+                                                            <a href="{{ route('GBatil.rekap.update.delete', [$id, $detail->pegawaiId, $detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

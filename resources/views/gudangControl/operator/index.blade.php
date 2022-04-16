@@ -25,6 +25,16 @@
             background-color: #777;
             border-radius: 10px;
         }
+
+        tr th{
+            max-width:100%;
+            white-space:nowrap;
+        }
+
+        tr td{
+            max-width:100%;
+            white-space:nowrap;
+        }
     </style>
 @endpush
 
@@ -141,9 +151,6 @@
                                     
                                     <div class="tab-content">
                                         <div class="active tab-pane mt-5" id="pindahkanData">
-                                            <h3 class="card-title mb-4" style="width: 100%">
-                                                <a href="{{ route('GControl.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
-                                            </h3>
                                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                 <thead>
                                                     <tr>
@@ -161,8 +168,9 @@
                                                             <td>{{ strtoupper($dataPemindahan[$i]['jenisBaju']) }}</td>
                                                             <td>{{ $dataPemindahan[$i]['ukuranBaju'] }}</td>
                                                             <td>{{ $dataPemindahan[$i]['jumlahBaju']/12 }}</td>
-                                                            
+
                                                             <td>
+                                                                <a href="{{ route('GControl.keluar.create',[$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
                                                                 <a href="{{ route('GControl.keluar.detail', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>

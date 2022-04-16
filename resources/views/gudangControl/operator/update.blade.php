@@ -99,9 +99,10 @@
                                     </div> 
 
                                     <div class="col-3">
-                                        <label>Jumlah Baju</label>
+                                        <label>Jumlah Baju (Dz)</label>
                                         <div class="input-group">                                            
                                             <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
+                                            <input type="hidden" id="jumlahOld" name="jumlahOld">
                                         </div>
                                         <div id="requestOperatorId">
 
@@ -125,7 +126,7 @@
                                                     <th style="vertical-align: middle;">Kode Purchse</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah</th>
+                                                    <th style="vertical-align: middle;">Jumlah (Dz)</th>
                                                     <th style="vertical-align: middle;">Action</th>
                                                 </tr>
                                             </thead>
@@ -137,7 +138,7 @@
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
-                                                        <td>{{ $detail->jumlah }}</td>
+                                                        <td>{{ $detail->jumlah/12 }}</td>
                                                         <td align="center">
                                                             @if ($gdControl == null)
                                                                 <a href="{{ route('GControl.operator.update.delete', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
@@ -234,7 +235,8 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     console.log(data);
-                    $('#jumlah').val(data['jumlah']);
+                    $('#jumlah').val(data['jumlah']/12);
+                    $('#jumlahOld').val(data['jumlah']);
                     console.log(data.operatorReqId.length)
                     for(var i = 0;i < data.operatorReqId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
@@ -248,24 +250,33 @@
             var purchaseId = $('#purchaseId').val();
             var jenisBaju = $('#jenisBaju').val();
             var ukuranBaju = $('#ukuranBaju').val();
-            var jumlah = $('#jumlah').val();
+            var jumlah = $('#jumlah').val()*12;
+            var jumlahOld = $('#jumlahOld').val();
             var _token = $('#_token').val();
+            
+            $('#jumlah').css({'border':'1px solid #ced4da'});
             $('#requestOperatorId').html('');
             
-            $.ajax({
-                type: "get",
-                url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
-                
-                success: function(response){
-                    var data = JSON.parse(response)
-                    console.log(data);
-                    $('#jumlah').val(data['jumlah']);
-                    for(var i = 0;i < data.operatorReqId.length; i++){
-                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
-                        $('#requestOperatorId').append(dt);  
+            if(parseInt(jumlah) <= parseInt(jumlahOld)){            
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('GControl/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
+                    
+                    success: function(response){
+                        var data = JSON.parse(response)
+                        console.log(data);
+                        $('#requestOperatorId').html('');
+                        $('#jumlah').css({'border':'1px solid #ced4da'});
+                        $('#jumlah').val(data['jumlah']/12); 
+                        for(var i = 0;i < data.operatorReqId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                $('#jumlah').css({'border':'2px solid #e74c3c'});
+            }
         });
         
         $(document).ready( function () {             
@@ -278,21 +289,22 @@
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlah          = $('#jumlah').val();
+                var jumlahOld       = $('#jumlahOld').val();
                 var operatorReqId   = [];
-                for(i=0; i<jumlah; i++){
+                for(i=0; i<jumlah*12; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
                 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0){
+                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0 && (parseInt(jumlah) <= parseInt(jumlahOld))){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                            table += "<td>"+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
-                            table += "<td>"+jenisBajuName+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
+                            table += "<td> <sup style='font-weight:bold;'> + </sup> "+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
+                            table += "<td>"+jenisBajuName+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                             
