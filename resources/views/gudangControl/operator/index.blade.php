@@ -86,7 +86,7 @@
                                         <tbody class="textAlign">
                                             @foreach ($operatorRequest as $detail)
                                                 <tr>
-                                                    <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
+                                                    <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
                                                     <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
                                                     <td>

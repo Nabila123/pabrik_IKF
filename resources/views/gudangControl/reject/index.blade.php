@@ -33,7 +33,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Jahit Reject</h1>
+                    <h1>Gudang Control Reject</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -101,7 +101,8 @@
                                         <thead>
                                             <tr>
                                                 <th class="textAlign" style="vertical-align: middle;">No </th>
-                                                <th class="textAlign" style="vertical-align: middle;">Reject From </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Reject Dari </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Reject Untuk </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Status Proses</th>
@@ -114,6 +115,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $reject->gudangRequest }}</td>
+                                                    <td>{{ $reject->rejectTo }}</td>
                                                     <td>{{ date('d F Y', strtotime($reject->tanggal)) }}</td>
                                                     <td>{{ $reject->totalBaju }}</td>
                                                     <td>

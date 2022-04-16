@@ -713,7 +713,7 @@ class GudangBatilController extends Controller
             for ($i=0; $i < $request->jumlah_data; $i++) { 
                 $checkPegawai = GudangJahitReject::where('gudangRequest', 'Gudang Batil')->where('tanggal', date('Y-m-d'))->first();
                 if ($checkPegawai == null) {
-                    $batilReject = GudangJahitReject::CreateGudangJahitReject('Gudang Batil', date('Y-m-d'), $request['jumlahBaju'][$i], \Auth::user()->id);
+                    $batilReject = GudangJahitReject::CreateGudangJahitReject('Gudang Batil', 'Gudang Jahit', date('Y-m-d'), $request['jumlahBaju'][$i], \Auth::user()->id);
                 } else {
                     $batilReject = $checkPegawai->id;
                 }

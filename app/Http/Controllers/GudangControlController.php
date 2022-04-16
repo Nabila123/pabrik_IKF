@@ -200,10 +200,10 @@ class GudangControlController extends Controller
         $data = [];
 
         if (isset($request->purchaseId)) {
-            $gdRequestOperator = GudangControlStokOpname::where('statusControl', 1)->where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+            $gdRequestOperator = GudangControlStokOpname::where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->jenisBaju)) {
-            $gdRequestOperator = GudangControlStokOpname::where('statusControl', 1)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+            $gdRequestOperator = GudangControlStokOpname::where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->ukuranBaju)) {
             // dd($request);
@@ -217,8 +217,7 @@ class GudangControlController extends Controller
 
             $gdRequestOperator = GudangControlStokOpname::where('purchaseId', $request->purchaseId)
                                                             ->where('jenisBaju', $request->jenisBaju)
-                                                            ->where('ukuranBaju', $request->ukuranBaju)
-                                                            ->where('statusControl', 1)                                                             
+                                                            ->where('ukuranBaju', $request->ukuranBaju)                                                            
                                                             ->whereDate('tanggal', date('Y-m-d'))->get();
 
             $gdBatilReject = GudangJahitReject::where('gudangRequest', 'Gudang Control')->whereDate('tanggal', date('Y-m-d'))->first();
@@ -726,16 +725,23 @@ class GudangControlController extends Controller
         // dd($request);
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
-                $checkPegawai = GudangJahitReject::where('gudangRequest', 'Gudang Control')->where('tanggal', date('Y-m-d'))->first();
+                $checkPegawai = GudangJahitReject::where('gudangRequest', 'Gudang Control')->where('rejectTo', $request['rejectTo'][$i])->where('tanggal', date('Y-m-d'))->first();
                 if ($checkPegawai == null) {
-                    $batilReject = GudangJahitReject::CreateGudangJahitReject('Gudang Control', date('Y-m-d'), $request['jumlahBaju'][$i], \Auth::user()->id);
+                    $batilReject = GudangJahitReject::CreateGudangJahitReject('Gudang Control', $request['rejectTo'][$i], date('Y-m-d'), $request['jumlahBaju'][$i], \Auth::user()->id);
                 } else {
                     $batilReject = $checkPegawai->id;
                 }
 
                 $operatorReqId = explode(",", $request['operatorReqId'][$i]);
                 for($j=0; $j < count($operatorReqId); $j++){
-                    $batilRekapDetail = GudangJahitRejectDetail::createGudangJahitRejectDetail($batilReject, $operatorReqId[$j], $request['keterangan'][$i]);
+                    $getBatil = GudangControlStokOpname::where('gdBajuStokOpnameId',$operatorReqId[$j])->first();
+                    $tanggalBatil = GudangControlStokOpname::bajuUpdateField('tanggal', null, $getBatil->id);
+                    if ($tanggalBatil) {
+                        $statusReject = GudangControlStokOpname::bajuUpdateField('statusReject', 1, $getBatil->id);
+                        if ($statusReject) {
+                            $batilRekapDetail = GudangJahitRejectDetail::createGudangJahitRejectDetail($batilReject, $operatorReqId[$j], $request['keterangan'][$i]);
+                        }
+                    }
                 }                                             
             }
 
@@ -793,10 +799,19 @@ class GudangControlController extends Controller
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
                 $checkPegawai = GudangJahitReject::where('id', $request->id)->first();
-                
                 $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                $total = $checkPegawai->totalBaju + count($operatorReqId);
+                GudangJahitReject::updateStatusDiterima('totalBaju', $total, $checkPegawai->id);
+
                 for($j=0; $j < count($operatorReqId); $j++){
-                    $batilRekapDetail = GudangJahitRejectDetail::createGudangJahitRejectDetail($checkPegawai->id, $operatorReqId[$j], $request['keterangan'][$i]);
+                    $getBatil = GudangControlStokOpname::where('gdBajuStokOpnameId',$operatorReqId[$j])->first();
+                    $tanggalBatil = GudangControlStokOpname::bajuUpdateField('tanggal', null, $getBatil->id);
+                    if ($tanggalBatil) {
+                        $statusReject = GudangControlStokOpname::bajuUpdateField('statusReject', 1, $getBatil->id);
+                        if ($statusReject) {
+                            $batilRekapDetail = GudangJahitRejectDetail::createGudangJahitRejectDetail($checkPegawai->id, $operatorReqId[$j], $request['keterangan'][$i]);
+                        }
+                    }
                 }                                             
             }
 
@@ -810,11 +825,20 @@ class GudangControlController extends Controller
 
     public function gRejectTJUpdateDelete($rejectId, $detailRejectId)
     {
-        $gdJahitRejectDetail = GudangJahitRejectDetail::where('id', $detailRejectId)->delete();
-        if ($gdJahitRejectDetail) {
-            return redirect('GControl/reject/update/'.$rejectId);
+        $gdJahitRejectDetail = GudangJahitRejectDetail::where('id', $detailRejectId)->first();
+        $getBatil = GudangControlStokOpname::where('gdBajuStokOpnameId',$gdJahitRejectDetail->gdBajuStokOpnameId)->first();
+        $statusReject = GudangControlStokOpname::bajuUpdateField('statusReject', 0, $getBatil->id);
+        if ($statusReject) {
+            $jahitRejct = GudangJahitReject::where('id', $rejectId)->first();
+            GudangJahitReject::updateStatusDiterima('totalBaju', $jahitRejct->totalBaju-1, $jahitRejct->id);
+            $gdJahitRejectDetail = GudangJahitRejectDetail::where('id', $detailRejectId)->delete();
+            if ($gdJahitRejectDetail) {
+                return redirect('GControl/reject/update/'.$rejectId);
+            }else{
+                return redirect('GControl/reject/update/'.$rejectId);
+            }
         }else{
-            return redirect('GControl/reject/update/' . $rejectId . '');
+            return redirect('GControl/reject/update/'.$rejectId);
         }
 
     }
@@ -825,7 +849,13 @@ class GudangControlController extends Controller
         $batilReject = GudangJahitReject::where('id', $request->rejectId)->first();
         $batilRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $batilReject->id)->get();
         if (count($batilRejectDetail) != 0) {
-            $batilRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $batilReject->id)->delete();
+            foreach ($batilRejectDetail as $detail) {
+                $getBatil = GudangControlStokOpname::where('gdBajuStokOpnameId',$detail->gdBajuStokOpnameId)->first();
+                $statusReject = GudangControlStokOpname::bajuUpdateField('statusReject', 0, $getBatil->id);
+                if ($statusReject) {
+                    $batilRejectDetail = GudangJahitRejectDetail::where('id', $detail->id)->delete();
+                }
+            }
             if ($batilRejectDetail) {
                 GudangJahitReject::where('id', $request->rejectId)->delete();
                 return redirect('GControl/reject');

@@ -89,6 +89,17 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">  
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>Kategori Reject (Pengembalian)</label>
+                                                            <select class="form-control rejectTo" id="rejectTo" name="rejectTo" style="width: 30%; height: 38px;" >
+                                                                <option value="">Pilih Satu Kategori</option>
+                                                                <option value="jahit">Gudang Jahit</option>
+                                                                <option value="potong">Gudang Potong</option>
+                                                            </select> 
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col-3">
                                                         <div class="form-group">
                                                             <label>Nomor PO </label>
@@ -149,10 +160,11 @@
                                 <div class="row mt-5">
                                     <div class="col-12">
                                         <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="0">
-                                        <table id="JahitData" class="table table-bordered dataTables_scrollBody textAlign JahitData">
+                                        <table id="JahitData" class="table table-bordered table-responsive dataTables_scrollBody textAlign JahitData">
                                             <thead>
                                                 <tr>
                                                     <th style="vertical-align: middle;">No</th>
+                                                    <th style="vertical-align: middle;">Kategori (Reject Untuk) </th>
                                                     <th style="vertical-align: middle;">Nomor PO</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
@@ -306,7 +318,7 @@
 
             $('#requestOperatorId').html('');
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GControl/getReject') }}',
@@ -324,6 +336,7 @@
                     success: function(response){
                         var data = JSON.parse(response) 
                         console.log(data);
+                        $('#requestOperatorId').html('');
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
                         $('#jumlahBaju').val(data['operator']['jumlahBaju']);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){
@@ -341,6 +354,7 @@
             $(document).on("click", "button.TData", function(e){
                 e.preventDefault(); 
 
+                var rejectTo        = $('#rejectTo').val()=="jahit"?"Gudang Jahit":"Gudang Potong";
                 var pegawaiId       = $('#pegawaiId').val();
                 var pegawaiName     = $('#pegawaiId').find('option:selected').text();
                 var purchaseId      = $('#purchaseId').val();
@@ -358,12 +372,13 @@
 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(pegawaiId != "Pilih Satu Pegawai" && purchaseId != "" && jenisBaju != "" && ukuranBaju != "" && jumlahBaju != ""){
+                if(rejectTo != "" && pegawaiId != "Pilih Satu Pegawai" && purchaseId != "" && jenisBaju != "" && ukuranBaju != "" && jumlahBaju != ""){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
                             table += "<td>"+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
+                            table += "<td>"+rejectTo+"<input type='hidden' name='rejectTo[]' value='"+rejectTo+"' id='rejectTo_"+jumlah_data+"'></td>";
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
