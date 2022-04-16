@@ -157,7 +157,7 @@
                                                         <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
                                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                                     </tr>
                                                 </thead>

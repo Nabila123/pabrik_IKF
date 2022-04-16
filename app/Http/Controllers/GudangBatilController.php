@@ -21,17 +21,18 @@ class GudangBatilController extends Controller
 {
     public function index()
     {
-        $bajus = GudangBatilStokOpname::select('jenisBaju')->groupBy('jenisBaju')->get();
+        $bajus = GudangBatilStokOpname::select('jenisBaju', 'ukuranBaju')->groupBy('jenisBaju', 'ukuranBaju')->get();
         $data = GudangBatilStokOpname::where('statusBatil', 0)->get();
         $dataStok=[];
 
         foreach ($bajus as $baju) {
-            $dataStok[$baju->jenisBaju]['nama'] = $baju->jenisBaju;
-            $dataStok[$baju->jenisBaju]['qty'] = 0;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['nama'] = $baju->jenisBaju;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['ukuran'] = $baju->ukuranBaju;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['qty'] = 0;
         }
 
         foreach ($data as $value) {
-            $dataStok[$value->jenisBaju]['qty'] = $dataStok[$value->jenisBaju]['qty'] + 1;
+            $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] = $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] + 1;
         }
         return view('gudangBatil.index', ['dataStok' => $dataStok]);
     }
@@ -337,7 +338,7 @@ class GudangBatilController extends Controller
                     $dataPemindahan[$i-1]['jumlahBaju'] += 1;
                 } else {
                     $dataPemindahan[$i] = [
-                        'tanggal' => date('d F Y', strtotime($detail->created_at)),
+                        'tanggal' => date('d F Y', strtotime($detail->tanggal)),
                         'jenisBaju' => $detail->jenisBaju,
                         'ukuranBaju' => $detail->ukuranBaju,
                         'jumlahBaju' => 1,
