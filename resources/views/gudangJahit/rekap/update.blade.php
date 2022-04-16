@@ -373,10 +373,8 @@
             var _token = $('#_token').val();
 
             $('#requestOperatorId').html('');
-
-            console.log(soom+" "+jahit+" "+bawahan)
             
-            if(jumlahBaju <= jumlahBajuOld){
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
                 $.ajax({
                     type: "post",
                     url: '{{ url('GJahit/getPegawai') }}',
