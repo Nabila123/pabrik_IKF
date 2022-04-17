@@ -59,7 +59,7 @@
                                         <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
@@ -70,7 +70,7 @@
                                             <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ $detail->jenisBaju }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
-                                            <td>{{ $detail->jumlah }}</td>
+                                            <td>{{ $detail->jumlah/12 }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

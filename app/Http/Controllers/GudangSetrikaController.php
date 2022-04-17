@@ -18,17 +18,18 @@ class GudangSetrikaController extends Controller
 {
     public function index()
     {
-        $bajus = GudangSetrikaStokOpname::select('jenisBaju')->groupBy('jenisBaju')->get();
+        $bajus = GudangSetrikaStokOpname::select('jenisBaju', 'ukuranBaju')->groupBy('jenisBaju', 'ukuranBaju')->get();
         $data = GudangSetrikaStokOpname::where('statusSetrika', 0)->get();
         $dataStok=[];
 
         foreach ($bajus as $baju) {
-            $dataStok[$baju->jenisBaju]['nama'] = $baju->jenisBaju;
-            $dataStok[$baju->jenisBaju]['qty'] = 0;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['nama'] = $baju->jenisBaju;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['ukuran'] = $baju->ukuranBaju;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['qty'] = 0;
         }
 
         foreach ($data as $value) {
-            $dataStok[$value->jenisBaju]['qty'] = $dataStok[$value->jenisBaju]['qty'] + 1;
+            $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] = $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] + 1;
         }
         return view('gudangSetrika.index', ['dataStok' => $dataStok]);
     }
@@ -55,10 +56,10 @@ class GudangSetrikaController extends Controller
         $data = [];
 
         if (isset($request->purchaseId)) {
-            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 0)->where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 0)->where('statusReject', 0)->where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->jenisBaju)) {
-            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 0)->where('statusReject', 0)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->ukuranBaju)) {
             $reqOperatorId = []; 
@@ -72,7 +73,8 @@ class GudangSetrikaController extends Controller
             $gdRequestOperator = GudangSetrikaStokOpname::where('purchaseId', $request->purchaseId)
                                                             ->where('jenisBaju', $request->jenisBaju)
                                                             ->where('ukuranBaju', $request->ukuranBaju)
-                                                            ->where('statusSetrika', 0)                                                             
+                                                            ->where('statusSetrika', 0)
+                                                            ->where('statusReject', 0)                                                             
                                                             ->whereDate('tanggal', date('Y-m-d'))->get();
 
             if (isset($request->operatorReqPurchaseId)) {
@@ -81,13 +83,28 @@ class GudangSetrikaController extends Controller
                         continue;
                     }                    
                     
-                    if ($index != 0 && $request['operatorReqPurchaseId'][$i] == $checkId[$index-1]['purchase']) {
-                        $operatorReqId = explode(",", $request['operatorReqId'][$i]);
-                        for ($j=0; $j < count($operatorReqId); $j++) { 
-                            if (!in_array($operatorReqId[$j], $checkId[$index-1]['operatorReqId'])) {
-                                $checkId[$index-1]['operatorReqId'][] = $operatorReqId[$j];
-                                $checkId[$index-1]['jumlah'] += 1;
-                            }            
+                    if ($index != 0) {
+                        $getCheck = false;
+                        for ($j=0; $j < count($checkId); $j++) { 
+                            if($request['operatorReqPurchaseId'][$i] == $checkId[$j]['purchase']){
+                                $getCheck = true;
+                                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                                for ($k=0; $k < count($operatorReqId); $k++) { 
+                                    if (!in_array($operatorReqId[$k], $checkId[$j]['operatorReqId'])) {
+                                        $checkId[$j]['operatorReqId'][] = $operatorReqId[$k];
+                                        $checkId[$j]['jumlah'] += 1;
+                                    }            
+                                }
+                            }
+                        }
+                        if ($getCheck == false) {
+                            $checkId[$index]['purchase'] = $request['operatorReqPurchaseId'][$i];
+                            $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                            for ($j=0; $j < count($operatorReqId); $j++) { 
+                                $checkId[$index]['operatorReqId'][] = $operatorReqId[$j];
+                            }
+                            $checkId[$index]['jumlah'] = count($operatorReqId);
+                            $index++;
                         }
                     }else {
                         $checkId[$index]['purchase'] = $request['operatorReqPurchaseId'][$i];
@@ -97,13 +114,15 @@ class GudangSetrikaController extends Controller
                         }
                         $checkId[$index]['jumlah'] = count($operatorReqId);
                         $index++;
-                    }    
+                    }     
                 }
             }
 
             
             if (!isset($request->jumlahBaju)) {
                 $request->jumlahBaju = count($gdRequestOperator);
+            }else{
+                $request->jumlahBaju = $request->jumlahBaju*12;
             } 
             
             $i = 0;
@@ -177,10 +196,10 @@ class GudangSetrikaController extends Controller
         $data = [];
 
         if (isset($request->purchaseId)) {
-            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 1)->where('purchaseId', $request->purchaseId)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+            $gdRequestOperator = GudangSetrikaStokOpname::where('purchaseId', $request->purchaseId)->where('statusPacking', null)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->jenisBaju)) {
-            $gdRequestOperator = GudangSetrikaStokOpname::where('statusSetrika', 1)->where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
+            $gdRequestOperator = GudangSetrikaStokOpname::where('purchaseId', $request->purchaseId)->where('jenisBaju', $request->jenisBaju)->where('statusPacking', null)->whereDate('tanggal', date('Y-m-d'))->groupBy($request->groupBy)->get();
         }
         if (isset($request->ukuranBaju)) {
             // dd($request);
@@ -194,8 +213,8 @@ class GudangSetrikaController extends Controller
 
             $gdRequestOperator = GudangSetrikaStokOpname::where('purchaseId', $request->purchaseId)
                                                             ->where('jenisBaju', $request->jenisBaju)
-                                                            ->where('ukuranBaju', $request->ukuranBaju)
-                                                            ->where('statusSetrika', 1)                                                             
+                                                            ->where('ukuranBaju', $request->ukuranBaju)                                                         
+                                                            ->where('statusPacking', null)
                                                             ->whereDate('tanggal', date('Y-m-d'))->get();
 
             $gdSetrikaReject = GudangControlReject::where('gudangRequest', 'Gudang Setrika')->whereDate('tanggal', date('Y-m-d'))->first();
@@ -296,9 +315,17 @@ class GudangSetrikaController extends Controller
 
     public function gOperator()
     {
-        $dataPemindahan = [];
-        $i = 0;        
-        $gdRequestOperator = GudangSetrikaStokOpname::groupBy('jenisBaju', 'ukuranBaju')->whereDate('tanggal', date('Y-m-d'))->get();
+        
+        $gdRequestOperator = GudangSetrikaStokOpname::select("*", DB::raw('count(*) as jumlah'))->groupBy('jenisBaju', 'ukuranBaju')->where('statusPacking', null)->whereDate('tanggal', date('Y-m-d'))->get();
+        foreach ($gdRequestOperator as $reqOperator) {
+            $reqOperator->totalDz =  (int)($reqOperator->jumlah/12);
+            $sisa = ($reqOperator->jumlah%12);
+            if ($sisa != 0) {
+                $reqOperator->sisa = $sisa;
+            }  
+            // dd($sisa);
+        }
+        // dd($gdRequestOperator);
         $gdSetrika = GudangSetrikaStokOpname::where('statusSetrika', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         $gdSetrikaRekap = GudangSetrikaRekap::orderBy('tanggal', 'DESC')->groupBy('tanggal')->get();
         $pindahan = GudangSetrikaStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusSetrika', 1)->where('statusPacking', null)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
@@ -340,9 +367,9 @@ class GudangSetrikaController extends Controller
         return json_encode($data);
     }
 
-    public function gOperatorDetail($date)
+    public function gOperatorDetail($jenisBaju, $ukuranBaju)
     {
-        $gdRequestOperator = GudangSetrikaStokOpname::where('tanggal', $date)->get();
+        $gdRequestOperator = GudangSetrikaStokOpname::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('tanggal', date('Y-m-d'))->get();
 
         return view('gudangSetrika.operator.detail', ['operatorRequest' => $gdRequestOperator]);
     }
@@ -469,8 +496,23 @@ class GudangSetrikaController extends Controller
 
     public function gRekapDetail($id)
     {
+        $totalControlPegawai = [];
+        $total = 0;
         $getPegawai = GudangSetrikaRekap::where('id', $id)->first();
         $getDetailPegawai = GudangSetrikaRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdSetrikaRekapId', $getPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        foreach ($getDetailPegawai as $detailPegawai) {
+            $getCountPegawai = GudangSetrikaRekapDetail::select(DB::raw('count(*) as jumlah'))->where('pegawaiId', $detailPegawai->pegawaiId)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
+            if (!in_array($detailPegawai->pegawaiId, $totalControlPegawai)) {
+                $totalControlPegawai[] = $detailPegawai->pegawaiId;
+                foreach ($getCountPegawai as $countPegawai) {
+                    $total += $countPegawai->jumlah;
+                }
+                $detailPegawai->jumlahTotal = $total/12;
+                $detailPegawai->rowSpan = count($getCountPegawai);
+                $total = 0;
+            }
+            $detailPegawai->posisi = $getPegawai->posisi;        
+        }
 
         return view('gudangSetrika.rekap.detail', ['pegawais' => $getDetailPegawai]);
     }
@@ -518,76 +560,86 @@ class GudangSetrikaController extends Controller
         }
     }
 
-    public function gRekapUpdateDelete($rekapId, $rekapDetailId)
+    public function gRekapUpdateDelete($rekapId, $pegawaiId, $purchaseId, $jenisBaju, $ukuranBaju)
     {
-        $getDetailPegawai = GudangSetrikaRekapDetail::where('id', $rekapDetailId)->first();
-
         $getPegawai = GudangSetrikaRekap::where('id', $rekapId)->first();
         $CheckPegawai = GudangSetrikaRekapDetail::where('gdSetrikaRekapId', $getPegawai->id)->get();
+        $getDetailPegawai = GudangSetrikaRekapDetail::where('gdSetrikaRekapId', $getPegawai->id)
+                                                    ->where('pegawaiId', $pegawaiId)
+                                                    ->where('purchaseId', $purchaseId)
+                                                    ->where('jenisBaju', $jenisBaju)
+                                                    ->where('ukuranBaju', $ukuranBaju)
+                                                    ->get();
 
-        $operatorReq = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $getDetailPegawai->gdBajuStokOpnameId)->first();
-        if ($operatorReq != null) {
-            $operatorReqUpdate = GudangSetrikaStokOpname::bajuUpdateField('statusSetrika', 0, $operatorReq->id);
-            if ($operatorReqUpdate == 1) {
-                $deleteDetailPegawai = GudangSetrikaRekapDetail::where('id', $rekapDetailId)->delete();
-                if (count($CheckPegawai) == 1) {
-                    $deletePegawai = GudangSetrikaRekap::where('id', $rekapId)->delete();
-
-                    if ($deletePegawai) {
-                        return redirect('GSetrika/operator');
-                    }
-                }
-
-                if ($deleteDetailPegawai) {
-                    return redirect('GSetrika/rekap/update/' . $rekapId . '');
-                }
-                
-            }                    
-        } 
-    }
-
-    public function gKeluarCreate()
-    {
-        $dataPemindahan = [];
-        $gdKeluarSetrika = GudangSetrikaStokOpname::where('statusSetrika', 1)->where('statusPacking', null)->whereDate('tanggal', date('Y-m-d'))->get();
-        foreach ($gdKeluarSetrika as $detail) {
-            if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
-                $dataPemindahan[] = [
-                    'tanggal' => date('d F Y', strtotime($detail->tanggal)),
-                    'gdBajuStokOpnameId' => $detail->gdBajuStokOpnameId,
-                    'purchaseId' => $detail->purchaseId,
-                    'purchase' => $detail->purchase->kode,
-                    'jenisBaju' => $detail->jenisBaju,
-                    'ukuranBaju' => $detail->ukuranBaju,
-                    'statusSetrika' => $detail->statusSetrika,
-                ];
-            }            
-        }
-
-        for ($i=0; $i < count($dataPemindahan); $i++) { 
-            $gdRekapDetail = GudangSetrikaRekapDetail::where('gdBajuStokOpnameId', $dataPemindahan[$i]['gdBajuStokOpnameId'])->get();
-            foreach ($gdRekapDetail as $detail) {
-                $dataPemindahan[$i]['SetrikaName'] = $detail->pegawai->nama;                
+        foreach ($getDetailPegawai as $detailPegawai) {
+            $operatorReq = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $detailPegawai->gdBajuStokOpnameId)->first();
+            if ($operatorReq != null) {
+                $operatorReqUpdate = GudangSetrikaStokOpname::bajuUpdateField('statusSetrika', 0, $operatorReq->id);
             }
         }
 
-        return view('gudangSetrika.keluar.create', ['gdKeluarSetrika' => $dataPemindahan]);
+        if ($operatorReqUpdate == 1) {
+            $deleteDetailPegawai = GudangSetrikaRekapDetail::where('gdSetrikaRekapId', $getPegawai->id)
+                                                            ->where('pegawaiId', $pegawaiId)
+                                                            ->where('purchaseId', $purchaseId)
+                                                            ->where('jenisBaju', $jenisBaju)
+                                                            ->where('ukuranBaju', $ukuranBaju)
+                                                            ->delete();
+            if (count($CheckPegawai) == 1) {
+                $deletePegawai = GudangSetrikaRekap::where('id', $rekapId)->delete();
+
+                if ($deletePegawai) {
+                    return redirect('GSetrika/operator');
+                }
+            }    
+            
+            if ($deleteDetailPegawai) {
+                return redirect('GSetrika/rekap/update/' . $rekapId . '');
+            }
+        }
+    }
+
+    public function gKeluarCreate($jenisBaju, $ukuranBaju, $date)
+    {
+        $dataPemindahan = [];
+        $gdKeluarSetrika = GudangSetrikaStokOpname::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('statusSetrika', 1)->where('statusPacking', null)->where('statusReject', 0)->whereDate('tanggal', date('Y-m-d'))->get();
+        $getBajuDetail = GudangSetrikaStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('statusSetrika', 1)->where('statusPacking', null)->where('statusReject', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->first();
+        foreach ($gdKeluarSetrika as $detail) {
+            $gdControlMasukDetail = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->where('statusPacking', 1)->where('statusReject', 0)->first();
+            if ($gdControlMasukDetail != null) {
+                $getBajuDetail->jumlah -= 1;
+                $getBajuDetail->ambilPcs = $getBajuDetail->jumlah;
+            }else {
+                $dataPemindahan[] = $detail->gdBajuStokOpnameId;
+                $getBajuDetail->ambilPcs = $getBajuDetail->jumlah/12;
+            }        
+        }
+
+        $getBajuDetail->dataPemindahan = preg_replace("/[^0-9]/", ",", json_encode($dataPemindahan));
+
+        return view('gudangSetrika.keluar.create', ['gdKeluarSetrika' => $getBajuDetail]);
     }
 
     public function gKeluarStore(Request $request)
     {
-        if (count($request->gdBajuStokOpnameId) != 0) {
+        // dd($request);
+        if (count($request->gdBajuStokOpnameId) != 0 && count($request->totalDz) != 0) { 
             for ($i=0; $i < count($request->gdBajuStokOpnameId); $i++) { 
-                $updateStatusPacking = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $request['gdBajuStokOpnameId'][$i])->update(['statusPacking'=>0]);
+                $gdBajuStokOpnameId = explode(",", $request['gdBajuStokOpnameId'][$i]);
+                for ($j=1; $j < count($gdBajuStokOpnameId)-1; $j++) {
+                    if ($j <= ($request['totalDz'][$i]*12)) {
+                        $updateStatusPacking = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $gdBajuStokOpnameId[$j])->update(['statusPacking'=>0]);
+                    }
+                }
             }
         }
         return redirect('GSetrika/operator');
     }
 
-    public function gKeluarDetail($date)
+    public function gKeluarDetail($jenisBaju, $ukuranBaju, $date)
     {
         $dataPemindahan = [];
-        $gdKeluarSetrikal = GudangSetrikaStokOpname::where('tanggal', $date)->get();
+        $gdKeluarSetrikal = GudangSetrikaStokOpname::where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('tanggal', $date)->get();
         foreach ($gdKeluarSetrikal as $detail) {
             if (!in_array($detail->gdBajuStokOpnameId, $dataPemindahan)) { 
                 $dataPemindahan[] = [
@@ -604,11 +656,11 @@ class GudangSetrikaController extends Controller
         for ($i=0; $i < count($dataPemindahan); $i++) { 
             $gdRekapDetail = GudangSetrikaRekapDetail::where('gdBajuStokOpnameId', $dataPemindahan[$i]['gdBajuStokOpnameId'])->get();
             foreach ($gdRekapDetail as $detail) {
-                $dataPemindahan[$i]['SetrikalName'] = $detail->pegawai->nama;                
+                $dataPemindahan[$i]['SetrikaName'] = $detail->pegawai->nama;                
             }
         }
 
-        return view('gudangSetrika.keluar.detail', ['gdKeluarSetrikal' => $dataPemindahan]);
+        return view('gudangSetrika.keluar.detail', ['gdKeluarSetrika' => $dataPemindahan]);
 
     }
 
@@ -643,7 +695,14 @@ class GudangSetrikaController extends Controller
 
                 $operatorReqId = explode(",", $request['operatorReqId'][$i]);
                 for($j=0; $j < count($operatorReqId); $j++){
-                    $setrikaRekapDetail = GudangControlRejectDetail::createGudangControlRejectDetail($SetrikalReject, $operatorReqId[$j], $request['keterangan'][$i]);
+                    $getBatil = GudangSetrikaStokOpname::where('gdBajuStokOpnameId',$operatorReqId[$j])->first();
+                    $tanggalBatil = GudangSetrikaStokOpname::bajuUpdateField('tanggal', null, $getBatil->id);
+                    if ($tanggalBatil) {
+                        $statusReject = GudangSetrikaStokOpname::bajuUpdateField('statusReject', 1, $getBatil->id);
+                        if ($statusReject) {
+                            $setrikaRekapDetail = GudangControlRejectDetail::createGudangControlRejectDetail($SetrikalReject, $operatorReqId[$j], $request['keterangan'][$i]);
+                        }                                             
+                    }                                             
                 }                                             
             }
 
@@ -667,7 +726,7 @@ class GudangSetrikaController extends Controller
     {
         $purchaseId = [];
         $i = 0;
-        $checkPurchaseId = GudangSetrikaStokOpname::whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
+        $checkPurchaseId = GudangSetrikaStokOpname::where('statusPacking', null)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
         foreach ($checkPurchaseId as $purchase) {
             $gdControlRejectDetail = GudangControlRejectDetail::where('gdBajuStokOpnameId', $purchase->id)->whereDate('created_at', date('Y-m-d'))->first();
             if ($gdControlRejectDetail == null) {
@@ -696,10 +755,20 @@ class GudangSetrikaController extends Controller
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
                 $checkPegawai = GudangControlReject::where('id', $request->id)->first();
+                $operatorReqId = explode(",", $request['operatorReqId'][$i]);
+                $total = $checkPegawai->totalBaju + count($operatorReqId);
+                GudangControlReject::updateStatusDiterima('totalBaju', $total, $checkPegawai->id);
                 
                 $operatorReqId = explode(",", $request['operatorReqId'][$i]);
                 for($j=0; $j < count($operatorReqId); $j++){
-                    $setrikaRekapDetail = GudangControlRejectDetail::createGudangControlRejectDetail($checkPegawai->id, $operatorReqId[$j], $request['keterangan'][$i]);
+                    $getBatil = GudangSetrikaStokOpname::where('gdBajuStokOpnameId',$operatorReqId[$j])->first();
+                    $tanggalBatil = GudangSetrikaStokOpname::bajuUpdateField('tanggal', null, $getBatil->id);
+                    if ($tanggalBatil) {
+                        $statusReject = GudangSetrikaStokOpname::bajuUpdateField('statusReject', 1, $getBatil->id);
+                        if ($statusReject) {
+                            $setrikaRekapDetail = GudangControlRejectDetail::createGudangControlRejectDetail($checkPegawai->id, $operatorReqId[$j], $request['keterangan'][$i]);
+                        }                                             
+                    }               
                 }                                             
             }
 

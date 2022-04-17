@@ -64,15 +64,15 @@
                                 </thead>
                                 <tbody class="textAlign">
                                     <?php $no = 1; ?>
-                                    @for ($i = 0; $i < count($gdKeluarControl); $i++)                                        
+                                    @for ($i = 0; $i < count($gdKeluarSetrika); $i++)                                        
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $gdKeluarControl[$i]['purchase'] }}</td>
-                                            <td>{{ strtoupper($gdKeluarControl[$i]['jenisBaju']) }}</td>
-                                            <td>{{ $gdKeluarControl[$i]['ukuranBaju'] }}</td>
+                                            <td>{{ $gdKeluarSetrika[$i]['purchase'] }}</td>
+                                            <td>{{ strtoupper($gdKeluarSetrika[$i]['jenisBaju']) }}</td>
+                                            <td>{{ $gdKeluarSetrika[$i]['ukuranBaju'] }}</td>
                                             <td>
-                                                @if ($gdKeluarControl[$i]['statusSetrika'] == 1)
-                                                    {{ $gdKeluarControl[$i]['ControlName'] }}
+                                                @if ($gdKeluarSetrika[$i]['statusSetrika'] == 1)
+                                                    {{ $gdKeluarSetrika[$i]['SetrikaName'] }}
                                                 @else
                                                     <i class="fas fa-xmark"></i>
                                                 @endif

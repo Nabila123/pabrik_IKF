@@ -213,7 +213,7 @@
                     var data = JSON.parse(response)
                     var ukuranBaju ="<option value=''>Pilih Ukuran Baju</option>";
                     for(var i = 0;i < data.length;i++){
-                        ukuranBaju += "<option value="+data+">"+data+"</option>";
+                        ukuranBaju += "<option value="+data[i]+">"+data[i]+"</option>";
                     }
                     $('#ukuranBaju').html(ukuranBaju);
                     console.log(data);
@@ -234,10 +234,10 @@
                 
                 success: function(response){
                     var data = JSON.parse(response)
-                    console.log(data);
+
                     $('#jumlah').val(data['jumlah']/12);
                     $('#jumlahOld').val(data['jumlah']);
-                    console.log(data.operatorReqId.length)
+
                     for(var i = 0;i < data.operatorReqId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
                         $('#requestOperatorId').append(dt);  

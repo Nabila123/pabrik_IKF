@@ -53,8 +53,8 @@
                         <div class="info-box mb-4">
                             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list-alt"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">{{strtoupper($stok['nama'])}}</span>
-                                <span class="info-box-number"> {{$stok['qty']}}</span>
+                                <span class="info-box-text">{{strtoupper($stok['nama'])}} ( {{ $stok['ukuran'] }} )</span>
+                                <span class="info-box-number"> {{$stok['qty']/12}} Dz</span>
                             </div>
                         </div>
                     </div>

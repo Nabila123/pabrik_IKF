@@ -69,13 +69,13 @@
                             @endif
                             <form id="demo-form2" data-parsley-validate  method="POST" enctype="multipart/form-data">                    
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">        
-                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-Setrika operator">        
+                                <input type="hidden" id="operator" name="operator" value="{{ \Auth::user()->id }}" class="form-control operator">        
                                 
                                 <div class="row mb-5">
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Jenis Baju </label>
-                                            <select class="form-Setrika jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
+                                            <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
                                                 <option value="{{ $jenisBaju }} ">{{ strtoupper($jenisBaju) }} </option>
                                             </select>                                                                                  
                                         </div>
@@ -83,7 +83,7 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Nomor PO</label>
-                                            <select class="form-Setrika purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
+                                            <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
                                         </div>
@@ -92,16 +92,17 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label>Ukuran Baju</label>
-                                            <select class="form-Setrika ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
+                                            <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
                                                 
                                             </select>                                            
                                         </div>
                                     </div> 
 
                                     <div class="col-3">
-                                        <label>Jumlah Baju</label>
+                                        <label>Jumlah Baju (Dz)</label>
                                         <div class="input-group">                                            
-                                            <input type="number" id="jumlah" name="jumlah" class="form-Setrika jumlah " >
+                                            <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
+                                            <input type="hidden" id="jumlahOld" name="jumlahOld">
                                         </div>
                                         <div id="requestOperatorId">
 
@@ -125,7 +126,7 @@
                                                     <th style="vertical-align: middle;">Kode Purchse</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah</th>
+                                                    <th style="vertical-align: middle;">Jumlah (Dz)</th>
                                                     <th style="vertical-align: middle;">Action</th>
                                                 </tr>
                                             </thead>
@@ -137,7 +138,7 @@
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
-                                                        <td>{{ $detail->jumlah }}</td>
+                                                        <td>{{ $detail->jumlah/12 }}</td>
                                                         <td align="center">
                                                             @if ($gdSetrika == null)
                                                                 <a href="{{ route('GSetrika.operator.update.delete', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
@@ -212,7 +213,7 @@
                     var data = JSON.parse(response)
                     var ukuranBaju ="<option value=''>Pilih Ukuran Baju</option>";
                     for(var i = 0;i < data.length;i++){
-                        ukuranBaju += "<option value="+data+">"+data+"</option>";
+                        ukuranBaju += "<option value="+data[i]+">"+data[i]+"</option>";
                     }
                     $('#ukuranBaju').html(ukuranBaju);
                     console.log(data);
@@ -233,9 +234,10 @@
                 
                 success: function(response){
                     var data = JSON.parse(response)
-                    console.log(data);
-                    $('#jumlah').val(data['jumlah']);
-                    console.log(data.operatorReqId.length)
+
+                    $('#jumlah').val(data['jumlah']/12);
+                    $('#jumlahOld').val(data['jumlah']);
+
                     for(var i = 0;i < data.operatorReqId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
                         $('#requestOperatorId').append(dt);  
@@ -248,24 +250,34 @@
             var purchaseId = $('#purchaseId').val();
             var jenisBaju = $('#jenisBaju').val();
             var ukuranBaju = $('#ukuranBaju').val();
-            var jumlah = $('#jumlah').val();
+            var jumlah = $('#jumlah').val()*12;
+            var jumlahOld = $('#jumlahOld').val();
             var _token = $('#_token').val();
-            $('#requestOperatorId').html('');
             
-            $.ajax({
-                type: "get",
-                url: '{{ url('GSetrika/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
-                
-                success: function(response){
-                    var data = JSON.parse(response)
-                    console.log(data);
-                    $('#jumlah').val(data['jumlah']);
-                    for(var i = 0;i < data.operatorReqId.length; i++){
-                        var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
-                        $('#requestOperatorId').append(dt);  
+            $('#jumlah').css({'border':'1px solid #ced4da'});
+            $('#requestOperatorId').html('');
+
+            if(parseInt(jumlah) <= parseInt(jumlahOld)){
+            
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('GSetrika/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+jumlah,
+                    
+                    success: function(response){
+                        var data = JSON.parse(response)
+                        console.log(data);
+                        $('#requestOperatorId').html('');
+                        $('#jumlah').css({'border':'1px solid #ced4da'});
+                        $('#jumlah').val(data['jumlah']/12); 
+                        for(var i = 0;i < data.operatorReqId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                $('#jumlah').css({'border':'2px solid #e74c3c'});
+            }
         });
         
         $(document).ready( function () {             
@@ -278,21 +290,22 @@
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlah          = $('#jumlah').val();
+                var jumlahOld       = $('#jumlahOld').val();
                 var operatorReqId   = [];
-                for(i=0; i<jumlah; i++){
+                for(i=0; i<jumlah*12; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
                 
                 var jumlah_data     = $('#jumlah_data').val();
 
-                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0){
+                if(jenisBaju != "" && purchaseId != "" && ukuranBaju != "" && jumlah != 0 && (parseInt(jumlah) <= parseInt(jumlahOld))){
                     jumlah_data++;
 	        	    $('#jumlah_data').val(jumlah_data);
 
                     var table  = "<tr  class='data_"+jumlah_data+"'>";
-                            table += "<td>"+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
-                            table += "<td>"+jenisBajuName+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
+                            table += "<td> <sup style='font-weight:bold;'> + </sup> "+jumlah_data+"<input type='hidden' name='operatorReqId[]' value='"+operatorReqId+"' id='operatorReqId_"+jumlah_data+"'></td>";
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
+                            table += "<td>"+jenisBajuName+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                             

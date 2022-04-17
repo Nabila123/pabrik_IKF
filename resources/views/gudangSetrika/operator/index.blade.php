@@ -25,6 +25,16 @@
             background-color: #777;
             border-radius: 10px;
         }
+
+        tr th{
+            max-width:100%;
+            white-space:nowrap;
+        }
+
+        tr td{
+            max-width:100%;
+            white-space:nowrap;
+        }
     </style>
 @endpush
 
@@ -69,6 +79,7 @@
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
@@ -78,9 +89,15 @@
                                                     <td>{{ date('d F Y', strtotime($detail->created_at)) }}</td>
                                                     <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
+                                                    <td>
+                                                        {{ $detail->totalDz }}
+                                                        @if (isset($detail->sisa))
+                                                            / {{ $detail->sisa }}
+                                                        @endif
+                                                    </td>
                                                     
                                                     <td>
-                                                        <a href="{{ route('GSetrika.operator.detail', date('Y-m-d', strtotime($detail->tanggal))) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                        <a href="{{ route('GSetrika.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         <a href="{{ route('GSetrika.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                             @if (count($gdSetrika) == 0)
                                                                 <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
@@ -133,17 +150,14 @@
                                     </ul>  
                                     
                                     <div class="tab-content">
-                                        <div class="active tab-pane mt-5" id="pindahkanData">
-                                            <h3 class="card-title mb-4" style="width: 100%">
-                                                <a href="{{ route('GSetrika.keluar.create') }}" class='btn btn-info btn-flat-right'>Pindahankan Barang</a>
-                                            </h3>
+                                        <div class="active tab-pane mt-3" id="pindahkanData">
                                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                 <thead>
                                                     <tr>
                                                         <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
                                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                                     </tr>
                                                 </thead>
@@ -153,17 +167,18 @@
                                                             <td>{{ $pindahan->tanggal }}</td>
                                                             <td>{{ strtoupper($pindahan->jenisBaju) }}</td>
                                                             <td>{{ $pindahan->ukuranBaju }}</td>
-                                                            <td>{{ $pindahan->jumlah }}</td>
+                                                            <td>{{ $pindahan->jumlah/12 }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GSetrika.keluar.detail', $pindahan->tanggal) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                                <a href="{{ route('GSetrika.keluar.create',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
+                                                                <a href="{{ route('GSetrika.keluar.detail',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
                                                     @endforeach  
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="tab-pane mt-5" id="DataDipindahkan">
+                                        <div class="tab-pane mt-3" id="DataDipindahkan">
                                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                 <thead>
                                                     <tr>
@@ -171,7 +186,7 @@
                                                         <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="textAlign">
@@ -181,7 +196,7 @@
                                                             <td>{{ $detail->purchase->kode }}</td>
                                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                             <td>{{ $detail->ukuranBaju }}</td>
-                                                            <td>{{ $detail->jumlah }}</td>
+                                                            <td>{{ $detail->jumlah/12 }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

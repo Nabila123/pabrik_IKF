@@ -64,17 +64,17 @@
                                                     <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                                     <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                                     <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
+                                                    <th class="textAlign" style="vertical-align: middle;">Baju Yang <br> Dapat Dipindahkan (Dz)</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="textAlign">
-                                                @for ($i = 0; $i < count($gdKeluarSetrika); $i++)                                                    
-                                                    <tr>
-                                                        <td>{{ $gdKeluarSetrika[$i]['tanggal'] }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $gdKeluarSetrika[$i]['gdBajuStokOpnameId'] }}"></td>
-                                                        <td>{{ $gdKeluarSetrika[$i]['purchase'] }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $gdKeluarSetrika[$i]['purchaseId'] }}"> </td>
-                                                        <td>{{ strtoupper($gdKeluarSetrika[$i]['jenisBaju']) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $gdKeluarSetrika[$i]['jenisBaju'] }}"> </td>
-                                                        <td>{{ $gdKeluarSetrika[$i]['ukuranBaju'] }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $gdKeluarSetrika[$i]['ukuranBaju'] }}"> </td>                                                        
-                                                    </tr>
-                                                @endfor
+                                                <td>{{ date('d F Y', strtotime($gdKeluarSetrika->created_at)) }} <input type="hidden" name="gdBajuStokOpnameId[]" id="gdBajuStokOpnameId" value="{{ $gdKeluarSetrika->dataPemindahan }}"></td>
+                                                <td>{{ $gdKeluarSetrika->purchase->kode }} <input type="hidden" name="purchaseId[]" id="purchaseId" value="{{ $gdKeluarSetrika->purchaseId }}"> </td>
+                                                <td>{{ strtoupper($gdKeluarSetrika->jenisBaju) }} <input type="hidden" name="jenisBaju[]" id="jenisBaju" value="{{ $gdKeluarSetrika->jenisBaju }}"> </td>
+                                                <td>{{ $gdKeluarSetrika->ukuranBaju }} <input type="hidden" name="ukuranBaju[]" id="ukuranBaju" value="{{ $gdKeluarSetrika->ukuranBaju }}"> </td>                                                        
+                                                <td>{{ ($gdKeluarSetrika->jumlah/12) }} <input type="hidden" name="jumlah[]" id="jumlah" value="{{ $gdKeluarSetrika->jumlah }}"> </td>                                                        
+                                                <td align="center"><input style='width:120px; text-align: center;' class="form-control totalDz[]" type="number" name="totalDz[]" id="totalDz" value="{{ $gdKeluarSetrika->ambilPcs }}"> </td>
                                             </tbody>
                                         </table>
                                     </div>
