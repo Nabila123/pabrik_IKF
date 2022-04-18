@@ -894,6 +894,18 @@ class GudangJahitController extends Controller
         }
     }
 
+    public function gRejectKembali($id)
+    {
+        $id = $id;  
+        $statusDiterima = 2;  
+
+        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+
+        if ($gudangPotongTerima == 1) {
+            return redirect('GJahit/reject');
+        }
+    }
+
     public function gRejectDetail($id)
     {
         $gdJahitReject = GudangJahitReject::where('id', $id)->first();

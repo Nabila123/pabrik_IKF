@@ -712,6 +712,51 @@ class GudangControlController extends Controller
         return view('gudangControl.reject.index', ['gdControlReject' => $gdControlReject, 'jahitReject' => $gdJahitReject]);
     }
 
+    public function gRejectTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 1;  
+
+        $gudangPotongTerima = GudangControlReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+
+        if ($gudangPotongTerima == 1) {
+            return redirect('GControl/reject');
+        }
+    }
+
+    public function gRejectTJTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 3;  
+
+        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+        $gdJahitReject = GudangJahitReject::where('id', $id)->first();
+        $gdJahitRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $gdJahitReject->id)->get();
+
+        if ($gudangPotongTerima == 1) {
+            foreach ($gdJahitRejectDetail as $detail) {
+                $gdControl = GudangControlStokOpname::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
+                $updateStatusReject = GudangControlStokOpname::bajuUpdateField('statusReject', 0, $gdControl->id);
+            }
+
+            if ($updateStatusReject == 1) {
+                return redirect('GControl/reject');
+            }
+        }
+    }
+
+    public function gRejectKembali($id)
+    {
+        $id = $id;  
+        $statusDiterima = 2;  
+
+        $gudangPotongTerima = GudangControlReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+
+        if ($gudangPotongTerima == 1) {
+            return redirect('GControl/reject');
+        }
+    }
+
     public function gRejectTJCreate()
     {
         $purchaseId = GudangControlStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();

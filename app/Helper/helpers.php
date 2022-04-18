@@ -199,9 +199,14 @@
 
         if ($mains->nama == "Gudang Batil") {
             if ($user == 38) { //Gudang Batil
-                $notifBatilMasuk = GudangBatilMasuk::where('statusDiterima', 0)->get();            
+                $notifBatilMasuk = GudangBatilMasuk::where('statusDiterima', 0)->get(); 
+                $notifBatilReject = GudangJahitReject::where('gudangRequest', 'Gudang Batil')->where('statusProses', 2)->get();           
                 if (count($notifBatilMasuk) != 0) {
                     $notif[46] = count($notifBatilMasuk);
+                }
+
+                if (count($notifBatilReject) != 0) {
+                    $notif[48] = count($notifBatilReject);
                 }
             }
             
@@ -211,14 +216,25 @@
         if ($mains->nama == "Gudang Control") {
             if ($user == 38) { //Gudang Control
                 $notifControlMasuk = GudangControlMasuk::where('statusDiterima', 0)->get();            
-                $notifControlReject = GudangControlReject::where('statusProses', 0)->get();            
-                
+                $notifControlReject = GudangControlReject::where('statusProses', 0)->get(); 
+                $notifControlJahitPotong = GudangJahitReject::where('gudangRequest', 'Gudang Control')->where('statusProses', 2)->get();                      
+                $notifControl = 0;
+
+
                 if (count($notifControlMasuk) != 0) {
                     $notif[51] = count($notifControlMasuk);
                 }
 
                 if (count($notifControlReject) != 0) {
-                    $notif[53] = count($notifControlReject);
+                    $notifControl += count($notifControlReject);
+                }
+
+                if (count($notifControlJahitPotong) != 0) {
+                    $notifControl += count($notifControlJahitPotong);
+                }
+
+                if($notifControl != 0){
+                    $notif[53] = $notifControl;
                 }
             }
             
@@ -227,9 +243,14 @@
 
         if ($mains->nama == "Gudang Setrika") {
             if ($user == 38) { //Gudang Setrika
-                $notifSetrikaMasuk = GudangSetrikaMasuk::where('statusDiterima', 0)->get();            
+                $notifSetrikaMasuk = GudangSetrikaMasuk::where('statusDiterima', 0)->get(); 
+                $notifSetrikaReject = GudangControlReject::where('gudangRequest', 'Gudang Setrika')->where('statusProses', 2)->get();            
                 if (count($notifSetrikaMasuk) != 0) {
                     $notif[61] = count($notifSetrikaMasuk);
+                }
+
+                if (count($notifSetrikaReject) != 0) {
+                    $notif[63] = count($notifSetrikaReject);
                 }
             }
             

@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Jahit Request</h1>
+                    <h1>Gudang Batil Reject</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Jahit Request</li>
+                        <li class="breadcrumb-item active">Gudang Batil Reject</li>
                     </ol>
                 </div>
             </div>
@@ -79,8 +79,16 @@
                                                 @if ($reject->statusProses == 0)
                                                         <span style="color: rgb(226, 6, 6); font-size: 13px">Belum DiProses</span>
                                                 @else
-                                                        <span style="color: green; font-size: 13px">Sudah DiProses</span>
-                                                @endif
+                                                    @if ($reject->statusProses == 1)
+                                                        <span style="color: rgb(230, 140, 5); font-size: 13px">Sudah Dalam Proses </span>                                                            
+                                                    @else
+                                                        @if ($reject->statusProses == 2)
+                                                            <a href="{{ route('GBatil.reject.terima', [$reject->id]) }}" class="btn btn-info"> Terima Barang </a>
+                                                        @else
+                                                            <span style="color: green; font-size: 13px">Sudah Diterima</span>
+                                                        @endif
+                                                    @endif
+                                               @endif
                                             </td>
                                             <td>
                                                 <a href="{{ route('GBatil.reject.detail', [$reject->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

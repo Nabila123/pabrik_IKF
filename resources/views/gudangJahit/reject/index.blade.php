@@ -73,8 +73,16 @@
                                            <td>
                                                @if ($reject->statusProses == 0)
                                                     <a href="{{ route('GJahit.reject.terima', [$reject->id]) }}" class="btn btn-success"> Proses Reject </a>
-                                               @else
-                                                    <span style="color: green; font-size: 13px">Sudah DiProses</span>
+                                                @else
+                                                    @if ($reject->statusProses == 1)
+                                                        <a href="{{ route('GJahit.reject.kembali', [$reject->id]) }}" class="btn btn-info"> Kembalikan Barang </a>
+                                                    @else
+                                                        @if ($reject->statusProses == 2)
+                                                            <span style="color: rgb(230, 140, 5); font-size: 13px">Dalam Proses Dikembalikan</span>                                                            
+                                                        @else
+                                                            <span style="color: green; font-size: 13px">Sudah Dikembalikan</span>
+                                                        @endif
+                                                    @endif
                                                @endif
                                            </td>
                                            <td>

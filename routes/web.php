@@ -247,6 +247,7 @@ Route::get('/GJahit/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Co
 
 Route::get('/GJahit/reject', [App\Http\Controllers\GudangJahitController::class, 'gReject'])->name('GJahit.reject');
 Route::get('/GJahit/reject/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRejectTerima'])->name('GJahit.reject.terima');
+Route::get('/GJahit/reject/Kembali/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRejectKembali'])->name('GJahit.reject.kembali');
 Route::get('/GJahit/reject/detail/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRejectDetail'])->name('GJahit.reject.detail');
 
 /* Gudang Batil */
@@ -282,6 +283,7 @@ Route::post('/GBatil/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\C
 Route::get('/GBatil/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangBatilController::class, 'gKeluarDetail'])->name('GBatil.keluar.detail');
 
 Route::get('/GBatil/reject', [App\Http\Controllers\GudangBatilController::class, 'gReject'])->name('GBatil.reject');
+Route::get('/GBatil/reject/Terima/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRejectTerima'])->name('GBatil.reject.terima');
 Route::get('/GBatil/reject/create', [App\Http\Controllers\GudangBatilController::class, 'gRejectCreate'])->name('GBatil.reject.create');
 Route::post('/GBatil/reject/create', [App\Http\Controllers\GudangBatilController::class, 'gRejectStore'])->name('GBatil.reject.create');
 Route::get('/GBatil/reject/detail/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRejectDetail'])->name('GBatil.reject.detail');
@@ -323,6 +325,10 @@ Route::post('/GControl/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http
 Route::get('/GControl/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangControlController::class, 'gKeluarDetail'])->name('GControl.keluar.detail');
 
 Route::get('/GControl/reject', [App\Http\Controllers\GudangControlController::class, 'gReject'])->name('GControl.reject');
+Route::get('/GControl/reject/Terima/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectTerima'])->name('GControl.reject.terima');
+Route::get('/GControl/reject/TJTerima/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJTerima'])->name('GControl.reject.TJterima');
+Route::get('/GControl/reject/Kembali/{id}', [App\Http\Controllers\GudangControlController::class, 'gRejectKembali'])->name('GControl.reject.kembali');
+
 Route::get('/GControl/reject/create', [App\Http\Controllers\GudangControlController::class, 'gRejectTJCreate'])->name('GControl.reject.create');
 Route::post('/GControl/reject/create', [App\Http\Controllers\GudangControlController::class, 'gRejectTJStore'])->name('GControl.reject.create');
 Route::get('/GControl/reject/detail/{id}/{request}', [App\Http\Controllers\GudangControlController::class, 'gRejectTJDetail'])->name('GControl.reject.detail');
@@ -356,6 +362,7 @@ Route::post('/GPacking/bahanBaku/create', [App\Http\Controllers\PackingControlle
 Route::delete('/GPacking/bahanBaku/delete', [App\Http\Controllers\PackingController::class, 'gPackingBahanBakuDelete'])->name('GPacking.bahanBaku.delete');
 
 Route::get('/GPacking/reject', [App\Http\Controllers\PackingController::class, 'gReject'])->name('GPacking.reject');
+Route::get('/GPacking/reject/Terima/{id}', [App\Http\Controllers\PackingController::class, 'gRejectTerima'])->name('GPacking.reject.terima');
 Route::get('/GPacking/reject/create', [App\Http\Controllers\PackingController::class, 'gRejectCreate'])->name('GPacking.reject.create');
 Route::post('/GPacking/reject/create', [App\Http\Controllers\PackingController::class, 'gRejectStore'])->name('GPacking.reject.create');
 Route::get('/GPacking/reject/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRejectDetail'])->name('GPacking.reject.detail');
@@ -397,6 +404,7 @@ Route::post('/GSetrika/keluar/create/{jenisBaju}/{ukuranBaju}/{date}', [App\Http
 Route::get('/GSetrika/keluar/detail/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\GudangSetrikaController::class, 'gKeluarDetail'])->name('GSetrika.keluar.detail');
 
 Route::get('/GSetrika/reject', [App\Http\Controllers\GudangSetrikaController::class, 'gReject'])->name('GSetrika.reject');
+Route::get('/GSetrika/reject/Terima/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectTerima'])->name('GSetrika.reject.terima');
 Route::get('/GSetrika/reject/create', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectCreate'])->name('GSetrika.reject.create');
 Route::post('/GSetrika/reject/create', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectStore'])->name('GSetrika.reject.create');
 Route::get('/GSetrika/reject/detail/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRejectDetail'])->name('GSetrika.reject.detail');

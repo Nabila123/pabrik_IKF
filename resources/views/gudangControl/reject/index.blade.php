@@ -52,8 +52,8 @@
                     <div class="card"> 
                         <div class="card-header">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#RejectToControl" data-toggle="tab">Reject To Control</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#RejectToJahit" data-toggle="tab">Reject To Jahit</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="#RejectToControl" data-toggle="tab">Reject Untuk G. Control</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#RejectToJahit" data-toggle="tab">Reject Dari G. Control</a></li>
                             </ul>                            
                         </div>                    
                         <div class="card-body">
@@ -80,10 +80,18 @@
                                                     <td>{{ $reject->totalBaju }}</td>
                                                     <td>
                                                         @if ($reject->statusProses == 0)
-                                                                <span style="color: rgb(226, 6, 6); font-size: 13px">Belum DiProses</span>
+                                                            <a href="{{ route('GControl.reject.terima', [$reject->id]) }}" class="btn btn-success"> Proses Reject </a>
                                                         @else
-                                                                <span style="color: green; font-size: 13px">Sudah DiProses</span>
-                                                        @endif
+                                                            @if ($reject->statusProses == 1)
+                                                                <a href="{{ route('GControl.reject.kembali', [$reject->id]) }}" class="btn btn-info"> Kembalikan Barang </a>
+                                                            @else
+                                                                @if ($reject->statusProses == 2)
+                                                                    <span style="color: rgb(230, 140, 5); font-size: 13px">Dalam Proses Dikembalikan</span>                                                            
+                                                                @else
+                                                                    <span style="color: green; font-size: 13px">Sudah Dikembalikan</span>
+                                                                @endif
+                                                            @endif
+                                                        @endif 
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('GControl.reject.detail', [$reject->id, 'Control']) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
@@ -120,9 +128,17 @@
                                                     <td>{{ $reject->totalBaju }}</td>
                                                     <td>
                                                         @if ($reject->statusProses == 0)
-                                                                <span style="color: rgb(226, 6, 6); font-size: 13px">Belum DiProses</span>
+                                                            <span style="color: rgb(226, 6, 6); font-size: 13px">Belum DiProses</span>
                                                         @else
-                                                                <span style="color: green; font-size: 13px">Sudah DiProses</span>
+                                                            @if ($reject->statusProses == 1)
+                                                                <span style="color: rgb(230, 140, 5); font-size: 13px">Sudah Dalam Proses </span>                                                            
+                                                            @else
+                                                                @if ($reject->statusProses == 2)
+                                                                    <a href="{{ route('GControl.reject.TJterima', [$reject->id]) }}" class="btn btn-info"> Terima Barang </a>
+                                                                @else
+                                                                    <span style="color: green; font-size: 13px">Sudah Diterima</span>
+                                                                @endif
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     <td>

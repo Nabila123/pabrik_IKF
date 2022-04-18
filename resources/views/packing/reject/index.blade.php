@@ -77,9 +77,17 @@
                                             <td>{{ $reject->totalBaju }}</td>
                                             <td>
                                                 @if ($reject->statusProses == 0)
-                                                        <span style="color: rgb(226, 6, 6); font-size: 13px">Belum DiProses</span>
+                                                    <span style="color: rgb(226, 6, 6); font-size: 13px">Belum DiProses</span>
                                                 @else
-                                                        <span style="color: green; font-size: 13px">Sudah DiProses</span>
+                                                    @if ($reject->statusProses == 1)
+                                                        <span style="color: rgb(230, 140, 5); font-size: 13px">Sudah Dalam Proses </span>                                                            
+                                                    @else
+                                                        @if ($reject->statusProses == 2)
+                                                            <a href="{{ route('GPacking.reject.terima', [$reject->id]) }}" class="btn btn-info"> Terima Barang </a>
+                                                        @else
+                                                            <span style="color: green; font-size: 13px">Sudah Diterima</span>
+                                                        @endif
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td>

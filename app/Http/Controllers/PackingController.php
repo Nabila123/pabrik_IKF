@@ -474,6 +474,27 @@ class PackingController extends Controller
         return view('packing.reject.index', ['gdControlReject' => $gdControlReject]);
     }
 
+    public function gRejectTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 3;  
+        
+        $gudangPotongTerima = GudangControlReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+        $gdJahitReject = GudangControlReject::where('id', $id)->first();
+        $gdJahitRejectDetail = GudangControlRejectDetail::where('gdControlRejectId', $gdJahitReject->id)->get();
+
+        if ($gudangPotongTerima == 1) {
+            foreach ($gdJahitRejectDetail as $detail) {
+                $gdSetrika = GudangSetrikaStokOpname::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
+                $updateStatusReject = GudangSetrikaStokOpname::bajuUpdateField('statusReject', 0, $gdSetrika->id);
+            }
+
+            if ($updateStatusReject == 1) {
+                return redirect('GSetrika/reject');
+            }
+        }
+    }
+
     public function gRejectCreate()
     {
         $purchaseId = GudangSetrikaStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();

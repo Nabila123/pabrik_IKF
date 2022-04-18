@@ -699,6 +699,27 @@ class GudangBatilController extends Controller
         return view('gudangBatil.reject.index', ['jahitReject' => $gdJahitReject]);
     }
 
+    public function gRejectTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 3;  
+        
+        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+        $gdJahitReject = GudangJahitReject::where('id', $id)->first();
+        $gdJahitRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $gdJahitReject->id)->get();
+
+        if ($gudangPotongTerima == 1) {
+            foreach ($gdJahitRejectDetail as $detail) {
+                $gdBatil = GudangBatilStokOpname::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
+                $updateStatusReject = GudangBatilStokOpname::bajuUpdateField('statusReject', 0, $gdBatil->id);
+            }
+
+            if ($updateStatusReject == 1) {
+                return redirect('GBatil/reject');
+            }
+        }
+    }
+
     public function gRejectCreate()
     {
         $purchaseId = GudangBatilStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
