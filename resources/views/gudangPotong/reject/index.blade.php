@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Gudang Jahit Reject</h1>
+                    <h1>Gudang Potong Reject</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Gudang Jahit Reject</li>
+                        <li class="breadcrumb-item active">Gudang Potong Reject</li>
                     </ol>
                 </div>
             </div>

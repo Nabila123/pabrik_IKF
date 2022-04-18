@@ -207,6 +207,11 @@ Route::post('GPotong/proses/update/{id}', [App\Http\Controllers\GudangPotongCont
 Route::get('GPotong/proses/update/delete/{detailId}/{inspeksiId}', [App\Http\Controllers\GudangPotongController::class, 'gProsesUpdateDelete'])->name('GPotong.proses.update.delete');
 Route::delete('/GPotong/proses/delete', [App\Http\Controllers\GudangPotongController::class, 'gProsesDelete'])->name('GPotong.proses.delete');
 
+Route::get('/GPotong/reject', [App\Http\Controllers\GudangPotongController::class, 'gReject'])->name('GPotong.reject');
+Route::get('/GPotong/reject/Terima/{id}', [App\Http\Controllers\GudangPotongController::class, 'gRejectTerima'])->name('GPotong.reject.terima');
+Route::get('/GPotong/reject/Kembali/{id}', [App\Http\Controllers\GudangPotongController::class, 'gRejectKembali'])->name('GPotong.reject.kembali');
+Route::get('/GPotong/reject/detail/{id}', [App\Http\Controllers\GudangPotongController::class, 'gRejectDetail'])->name('GPotong.reject.detail');
+
 /* Gudang Jahit */
 Route::get('/GJahit', [App\Http\Controllers\GudangJahitController::class, 'index'])->name('GJahit');
 Route::post('/GJahit/getData', [App\Http\Controllers\GudangJahitController::class, 'getData'])->name('GJahit.getData');

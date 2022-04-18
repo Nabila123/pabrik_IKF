@@ -11,6 +11,8 @@ use App\Models\GudangPotongRequest;
 use App\Models\GudangPotongRequestDetail;
 use App\Models\GudangJahitMasuk;
 use App\Models\GudangJahitMasukDetail;
+use App\Models\GudangJahitReject;
+use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
 use DB;
 
@@ -315,5 +317,45 @@ class GudangPotongController extends Controller
         GudangPotongProses::where('id', $request['gdPotongProsesId'])->delete();   
                 
         return redirect('GPotong/proses');
+    }
+
+
+    public function gReject()
+    {
+        $gdPotongReject = GudangJahitReject::where('rejectTo', 'Gudang Potong')->get();
+
+        return view('gudangPotong.reject.index', ['jahitReject' => $gdPotongReject]);
+    }
+
+    public function gRejectTerima($id)
+    {
+        $id = $id;  
+        $statusDiterima = 1;  
+
+        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+
+        if ($gudangPotongTerima == 1) {
+            return redirect('GPotong/reject');
+        }
+    }
+
+    public function gRejectKembali($id)
+    {
+        $id = $id;  
+        $statusDiterima = 2;  
+
+        $gudangPotongTerima = GudangJahitReject::updateStatusDiterima('statusProses', $statusDiterima, $id);
+
+        if ($gudangPotongTerima == 1) {
+            return redirect('GPotong/reject');
+        }
+    }
+
+    public function gRejectDetail($id)
+    {
+        $gdJahitReject = GudangJahitReject::where('id', $id)->first();
+        $gdJahitRejectDetail = GudangJahitRejectDetail::where('gdJahitRejectId', $gdJahitReject->id)->get();
+
+        return view('gudangPotong.reject.detail', ['jahitRejectDetail' => $gdJahitRejectDetail]);
     }
 }

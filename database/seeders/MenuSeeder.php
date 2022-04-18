@@ -74,6 +74,7 @@ class MenuSeeder extends Seeder
             ['id' => 36, 'parentId' => 34, 'urutan' => 2, 'nama' => 'Request B. Jadi', 'alias' => 'GPotong.request', 'directori' => 'gudangPotong/request/index', 'isActive' => 1],
             ['id' => 37, 'parentId' => 34, 'urutan' => 3, 'nama' => 'Request B. Baku', 'alias' => 'GPotong.keluar', 'directori' => 'gudangPotong/keluar/index', 'isActive' => 1],
             ['id' => 38, 'parentId' => 34, 'urutan' => 4, 'nama' => 'Proses Potong', 'alias' => 'GPotong.proses', 'directori' => 'gudangPotong/proses/index', 'isActive' => 1],
+            ['id' => 75, 'parentId' => 34, 'urutan' => 5, 'nama' => 'Request Reject', 'alias' => 'GPotong.reject', 'directori' => 'gudangPotong/reject/index', 'isActive' => 1],
 
             //Gudang Jahit
             ['id' => 39, 'parentId' => 0, 'urutan' => 10, 'nama' => 'Gudang Jahit', 'alias' => 'GJahit', 'directori' => 'gudangJahit', 'isActive' => 1],
