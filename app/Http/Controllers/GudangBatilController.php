@@ -376,6 +376,7 @@ class GudangBatilController extends Controller
 
     public function gOperatorStore(Request $request)
     {
+        // dd($request);
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
                 $operatorReqId = explode(",", $request['operatorReqId'][$i]);
