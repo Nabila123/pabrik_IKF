@@ -107,7 +107,7 @@
                                                             <td>{{ $proses->hasilDz }}</td>
                                                             <td align="center">
                                                                 <input type="hidden" name="potongProses[]" id="potongProses" value="{{ $proses->id }}">
-                                                                <input style='width:70px;' class="form-control totalDz[]" type="number" name="totalDz[]" id="totalDz[]" value="{{ $detail->ambilDz }}">
+                                                                <input style='width:70px;' class="form-control totalDz[]" type="number" name="totalDz[]" id="totalDz[]" value="{{ $proses->ambilDz }}">
                                                             </td>
                                                         </tr>
                                                     @endforeach

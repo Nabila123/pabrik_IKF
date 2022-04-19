@@ -71,10 +71,10 @@
                                 <thead>
                                     <tr>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle; width:10%;">No</th>
-                                        <th class="textAlign" rowspan="2" style="vertical-align: middle;">Tanggal</th>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle;">Nomor PO</th>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" rowspan="2" style="vertical-align: middle;">Ukuran</th>
+                                        <th class="textAlign" rowspan="2" style="vertical-align: middle;">Jumlah (Dz)</th>
                                         <th class="textAlign" colspan="3" style="vertical-align: middle;">Keterangan</th>
                                     </tr>
                                     <tr>
@@ -88,10 +88,15 @@
                                    @foreach ($dataProses as $proses)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ date('d F Y', strtotime($proses->created_at)) }}</td>
                                             <td>{{ $proses->purchase->kode }}</td>
                                             <td>{{ $proses->jenisBaju }}</td>
                                             <td>{{ $proses->ukuranBaju }}</td>
+                                            <td>
+                                                {{ $proses->totalDz }}
+                                                @if (isset($proses->sisa))
+                                                    / {{ $proses->sisa }}
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($proses->soom == 1)
                                                     <i class="fa-solid fa-check"></i>

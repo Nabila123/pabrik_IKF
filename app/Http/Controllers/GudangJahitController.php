@@ -25,7 +25,7 @@ class GudangJahitController extends Controller
     {
         $bajus = GudangBajuStokOpname::select('jenisBaju', 'ukuranBaju')->groupBy('jenisBaju', 'ukuranBaju')->get();
         $data = GudangBajuStokOpname::where('soom', 0)->where('jahit', 0)->where('bawahan', 0)->get();
-        $belumSelesai = GudangBajuStokOpname::where(function ($a) {
+        $belumSelesai = GudangBajuStokOpname::select('*', DB::raw('count(*) as jumlah'))->where(function ($a) {
                                                 $a->where('soom', 1)
                                                   ->where('jahit', 0)
                                                   ->where('bawahan', 0);
@@ -50,9 +50,18 @@ class GudangJahitController extends Controller
                                                   ->where('jahit', 1)
                                                   ->where('bawahan', 1);
                                             })
+                                            ->groupBy('purchaseId','jenisBaju', 'ukuranBaju')
                                             ->get();
                                             
         $dataStok=[];
+
+        foreach ($belumSelesai as $detail) {
+            $detail->totalDz =  (int)($detail->jumlah/12);
+            $sisa = ($detail->jumlah%12);
+            if ($sisa != 0) {
+                $detail->sisa = $sisa;
+            }  
+        }
 
         foreach ($bajus as $baju) {
             $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['nama'] = $baju->jenisBaju;

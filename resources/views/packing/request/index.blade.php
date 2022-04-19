@@ -54,19 +54,22 @@
                             <table id="pemindahan" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">Tanggal Request </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Status Diterima</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Action</th>
+                                        <th class="textAlign" style="vertical-align: middle;">No </th>
+                                        <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
+                                    <?php $no = 1; ?>
                                     @foreach ($packingRequest as $detail)
                                         <tr>
-                                            <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
-                                            <td> <span style="color: green; font-size: 13px">Sudah Diterima</span> </td>
-                                            <td>
-                                                <a href="{{ route('GPacking.request.detail', [date('Y-m-d', strtotime($detail->tanggal))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                            </td>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $detail->purchase->kode }}</td>
+                                            <td>{{ $detail->jenisBaju }}</td>
+                                            <td>{{ $detail->ukuranBaju }}</td>
+                                            <td>{{ $detail->jumlah/12 }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

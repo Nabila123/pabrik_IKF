@@ -279,7 +279,8 @@ class PackingController extends Controller
 
     public function gRequest()
     {
-        $gdPackingRequest = GudangSetrikaStokOpname::where('statusPacking', 0)->groupby('tanggal')->get();
+        $gdPackingRequest = GudangSetrikaStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusPacking', 0)->where('tanggal', date('Y-m-d'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        // $gdPackingRequest = GudangSetrikaStokOpname::where('statusPacking', 0)->groupby('tanggal')->get();
 
         return view('packing.request.index', ['packingRequest' => $gdPackingRequest]);
     }

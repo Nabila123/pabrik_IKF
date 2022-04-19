@@ -142,17 +142,19 @@ class GudangPotongController extends Controller
             foreach ($gPotongProsesDetail as $prosesDetail) {
                 $gdJahitMasuk = GudangJahitMasukDetail::where('gdPotongProsesId', $prosesDetail->id)->where('purchaseId', $proses->purchaseId)->where('jenisBaju', $prosesDetail->jenisBaju)->where('ukuranBaju', $prosesDetail->ukuranBaju)->get();
                 if ($gdJahitMasuk != null) {
-                    $proses->ambilDz = $prosesDetail->hasilDz;
+                    $prosesDetail->ambilDz = $prosesDetail->hasilDz;
                     foreach ($gdJahitMasuk as $jahitMasuk) {
-                        $proses->ambilDz -= ($jahitMasuk->qty / 12);
-                        $proses->ambilPcs = $prosesDetail->ambilDz*12;
+                        $prosesDetail->ambilDz -= ($jahitMasuk->qty / 12);
+                        $prosesDetail->ambilPcs = $prosesDetail->ambilDz*12;
                     }
                 }else {
-                    $proses->ambilDz = $prosesDetail->hasilDz;
-                    $proses->ambilPcs = $prosesDetail->hasilDz*12;
+                    $prosesDetail->ambilDz = $prosesDetail->hasilDz;
+                    $prosesDetail->ambilPcs = $prosesDetail->hasilDz*12;
                 }
             }
         }
+
+        // dd($gPotongProses);
         
         foreach ($gPotongKeluarDetail as $detail) {
             $purchaseId[] = $detail->purchaseId;
@@ -163,27 +165,24 @@ class GudangPotongController extends Controller
 
     public function gKeluarKembaliStore(Request $request)
     {
+        // dd($request);
         $jahitMasuk = new GudangJahitMasuk;
         $jahitMasuk->tanggal = date('Y-m-d');
         $jahitMasuk->userId = \Auth::user()->id;
         $jahitMasuk->created_at = date('Y-m-d H:i:s');
         if ($jahitMasuk->save()) {
-            for ($i=0; $i < count($request->purchaseId); $i++) { 
-                if ($request['totalDz'][$i] != 0) {
-                    $gdPotongProses = GudangPotongProses::where('gPotongKId', $request->id)->where('purchaseId', $request['purchaseId'][$i])->get();
-                    foreach ($gdPotongProses as $potong) {
-                        $gdPotongProsesDetail = GudangPotongProsesDetail::where('id', $request['potongProses'][$i])->where('gdPotongProsesId', $potong->id)->get();
-                        foreach ($gdPotongProsesDetail as $detail) {
-                            $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $detail->id, $potong->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, ($request['totalDz'][$i]*12));
-                        }
-                    }
+            for ($j=0; $j < count($request->potongProses); $j++) { 
+                if ($request['totalDz'][$j] != 0) {                        
+                    $gdPotongProsesDetail = GudangPotongProsesDetail::where('id', $request['potongProses'][$j])->first();
+                    $gdJahitDetail = GudangJahitMasukDetail::createGudangJahitMasukDetail($jahitMasuk->id, $gdPotongProsesDetail->id, $gdPotongProsesDetail->prosesPotong->purchaseId, $gdPotongProsesDetail->jenisBaju, $gdPotongProsesDetail->ukuranBaju, ($request['totalDz'][$j]*12));
                 }
             }
+        }
 
             if ($gdJahitDetail == 1) {
                 return redirect('GPotong/keluar');
             }
-        }
+        
     }
 
     //Gudang Potong Proses

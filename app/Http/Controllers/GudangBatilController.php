@@ -327,18 +327,18 @@ class GudangBatilController extends Controller
                 $reqOperator->sisa = $sisa;
             }  
         }
+
         $gdBatil = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
         $gdJahitRekap = GudangBatilRekap::orderBy('tanggal', 'DESC')->groupBy('tanggal')->get();
-        $pindahan = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->get();
+        $pindahan = GudangBatilStokOpname::where('statusBatil', 1)->whereDate('tanggal', date('Y-m-d'))->orderBy('jenisBaju', 'asc')->get();
         foreach ($pindahan as $detail) {
-            // dd($pindahan);
             $checkBatilDetail = GudangControlMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
             if ($checkBatilDetail == null) {
                 if ($i != 0 && $detail->jenisBaju == $tempJenisBaju && $detail->ukuranBaju == $tempUkuranBaju) {
                     $dataPemindahan[$i-1]['jumlahBaju'] += 1;
                 } else {
                     $dataPemindahan[$i] = [
-                        'tanggal' => date('d F Y', strtotime($detail->tanggal)),
+                        'tanggal' => date('d F Y', strtotime($detail->created_at)),
                         'jenisBaju' => $detail->jenisBaju,
                         'ukuranBaju' => $detail->ukuranBaju,
                         'jumlahBaju' => 1,
