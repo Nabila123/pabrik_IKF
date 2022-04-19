@@ -80,7 +80,7 @@
                                             </select>                                                                                  
                                         </div>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <div class="form-group">
                                             <label>Nomor PO</label>
                                             <select class="form-control purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" >
@@ -89,7 +89,7 @@
                                         </div>
                                     </div> 
 
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <div class="form-group">
                                             <label>Ukuran Baju</label>
                                             <select class="form-control ukuranBaju" id="ukuranBaju" name="ukuranBaju" style="width: 100%; height: 38px;" >
@@ -99,7 +99,16 @@
                                     </div> 
 
                                     <div class="col-3">
-                                        <label>Jumlah Baju (Dz) </label>
+                                        <div class="form-group">
+                                            <label>Ket. Jumlah Ambil Baju</label>
+                                            <select class="form-control ketJumlah" id="ketJumlah" name="ketJumlah" style="width: 100%; height: 38px;" >
+
+                                            </select>                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <label class="jumlahAmbil" id="jumlahAmbil">Jumlah Baju (Dz)</label>
                                         <div class="input-group">                                            
                                             <input type="number" id="jumlah" name="jumlah" class="form-control jumlah " >
                                             <input type="hidden" id="jumlahOld" name="jumlahOld">
@@ -126,7 +135,7 @@
                                                     <th style="vertical-align: middle;">Kode Purchse</th>
                                                     <th style="vertical-align: middle;">Jenis Baju</th>
                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah (Dz)</th>
+                                                    <th style="vertical-align: middle;">Jumlah</th>
                                                     <th style="vertical-align: middle;">Action</th>
                                                 </tr>
                                             </thead>
@@ -138,7 +147,13 @@
                                                         <td>{{ $detail->purchase->kode }}</td>
                                                         <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                                         <td>{{ $detail->ukuranBaju }}</td>
-                                                        <td>{{ $detail->jumlah/12 }}</td>
+                                                        <td>
+                                                            @if ($detail->jumlah%12 != 0)
+                                                                {{ $detail->jumlah }} PCS
+                                                            @else
+                                                                {{ $detail->jumlah/12 }} DZ
+                                                            @endif
+                                                        </td>
                                                         <td align="center">
                                                             @if ($gdBatil == null)
                                                                 <a href="{{ route('GBatil.operator.update.delete', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju]) }}" class="btn btn-sm btn-block btn-danger" style="width:40px;"><span class="fa fa-trash"></span></a>
@@ -213,7 +228,7 @@
                     var data = JSON.parse(response)
                     var ukuranBaju ="<option value=''>Pilih Ukuran Baju</option>";
                     for(var i = 0;i < data.length;i++){
-                        ukuranBaju += "<option value="+data+">"+data+"</option>";
+                        ukuranBaju += "<option value="+data[i]+">"+data[i]+"</option>";
                     }
                     $('#ukuranBaju').html(ukuranBaju);
                     console.log(data);
@@ -235,6 +250,12 @@
                 success: function(response){
                     var data = JSON.parse(response)
                     console.log(data);
+
+                    var ketJumlah ="<option value='dz'>DZ</option>";
+                        ketJumlah +="<option value='pcs'>PCS</option>";
+                    $('#ketJumlah').html(ketJumlah);
+
+                    
                     $('#jumlah').val(data['jumlah']/12);
                     $('#jumlahOld').val(data['jumlah']);
                     for(var i = 0;i < data.operatorReqId.length; i++){
@@ -245,13 +266,61 @@
             })
         });
 
-        $(document).on("change", ".jumlah", function(){
+        $(document).on("change", ".ketJumlah", function(){
             var purchaseId = $('#purchaseId').val();
             var jenisBaju = $('#jenisBaju').val();
             var ukuranBaju = $('#ukuranBaju').val();
-            var jumlah = $('#jumlah').val()*12;
+            var ketJumlah = $('#ketJumlah').val();
+            var _token = $('#_token').val();
+            $('#requestOperatorId').html('');
+            
+            $.ajax({
+                type: "get",
+                url: '{{ url('GBatil/operator/getDetailMaterial') }}/'+purchaseId+'/'+jenisBaju+'/'+ukuranBaju+'/'+null,
+                
+                success: function(response){
+                    var data = JSON.parse(response)
+                    $('#jumlahAmbil').html("");
+
+                    if(ketJumlah == "dz"){
+                        var jumlahAmbil = "Jumlah Baju (Dz)";
+                        $('#jumlahAmbil').html(jumlahAmbil);
+
+                        $('#jumlah').val(data['jumlah']/12);
+                        $('#jumlahOld').val(data['jumlah']);
+                        console.log(data.operatorReqId.length)
+                        for(var i = 0;i < data.operatorReqId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
+                    }else if(ketJumlah == "pcs"){
+                        var jumlahAmbil = "Jumlah Baju (Pcs)";
+                        $('#jumlahAmbil').html(jumlahAmbil);
+
+                        $('#jumlah').val(data['jumlah']);
+                        $('#jumlahOld').val(data['jumlah']);
+                        console.log(data.operatorReqId.length)
+                        for(var i = 0;i < data.operatorReqId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
+                    }                 
+                }
+            })
+        });
+
+        $(document).on("keyup", ".jumlah", function(){
+            var purchaseId = $('#purchaseId').val();
+            var jenisBaju = $('#jenisBaju').val();
+            var ukuranBaju = $('#ukuranBaju').val();
+            var ketJumlah = $('#ketJumlah').val();
+            var jumlah = $('#jumlah').val();
             var jumlahOld = $('#jumlahOld').val();
             var _token = $('#_token').val();
+
+            if(ketJumlah == "dz"){
+                jumlah *= 12;
+            }
 
             $('#jumlah').css({'border':'1px solid #ced4da'});
             $('#requestOperatorId').html('');   
@@ -266,7 +335,13 @@
                         console.log(data);
                         $('#requestOperatorId').html('');
                         $('#jumlah').css({'border':'1px solid #ced4da'});
-                        $('#jumlah').val(data['jumlah']/12);
+
+                        if(ketJumlah == "dz"){
+                            $('#jumlah').val(data['jumlah']/12);
+                        }else{
+                            $('#jumlah').val(data['jumlah']);
+                        }
+
                         for(var i = 0;i < data.operatorReqId.length; i++){
                             var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operatorReqId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
@@ -287,9 +362,17 @@
                 var purchaseId      = $('#purchaseId').val();
                 var purchaseKode    = $('#purchaseId').find('option:selected').text();
                 var ukuranBaju      = $('#ukuranBaju').val();
+                var ketJumlah       = $('#ketJumlah').val();
                 var jumlah          = $('#jumlah').val();
+                var jumlahOld       = $('#jumlahOld').val();
                 var operatorReqId   = [];
-                for(i=0; i<jumlah*12; i++){
+                if(ketJumlah == "dz"){
+                    var baju = jumlah * 12;
+                }else{
+                    var baju = jumlah;
+                }
+
+                for(i=0; i<baju; i++){
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
                 
@@ -304,7 +387,7 @@
                             table += "<td>"+purchaseKode+"<input type='hidden' name='purchaseId[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+jenisBajuName+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
-                            table += "<td>"+jumlah+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
+                            table += "<td>"+jumlah+" "+ketJumlah.toUpperCase()+"<input type='hidden' name='jumlah[]' value='"+jumlah+"' id='jumlah_"+jumlah_data+"'></td>";
                             
                             table += "<td align='center'>";
                             table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";
