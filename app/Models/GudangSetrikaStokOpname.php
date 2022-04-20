@@ -20,6 +20,23 @@ class GudangSetrikaStokOpname extends Model
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
     }
 
+    public static function kodeBarcode() {
+        $packingGenerate =  Self::select('kodeBarcode')->get(); 
+        $kode = rand(100000000000, 999999999999);
+        
+        if(strlen($kode) == 12){
+            foreach ($packingGenerate as $value) {
+                if ($value->kodeBarcode == $kode) {
+                    Self::kodeBarcode();
+                }            
+            }
+        }else{
+            Self::kodeBarcode();
+        }
+
+        return $kode;
+    }
+
     public static function SetrikaStokOpnameCreate($gdBajuStokOpnameId, $tanggal, $purchaseId, $jenisBaju, $ukuranBaju, $statusSetrika, $userId)
     {
         $AddSetrikaStokOpname = new GudangSetrikaStokOpname;

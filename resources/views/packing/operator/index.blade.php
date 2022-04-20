@@ -25,6 +25,16 @@
             background-color: #777;
             border-radius: 10px;
         }
+
+        tr th{
+            max-width:100%;
+            white-space:nowrap;
+        }
+
+        tr td{
+            max-width:100%;
+            white-space:nowrap;
+        }
     </style>
 @endpush
 
@@ -52,16 +62,51 @@
                     <div class="card">   
                         <div class="card-header">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Rekap Packing</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="#BarcodeLink" data-toggle="tab">Data Generate Barcode</a></li>
+                                <li class="nav-item"><a class="nav-link " href="#OperatorLink" data-toggle="tab">Rekap Packing</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke G. Barang Jadi</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="active tab-pane" id="OperatorLink">
+                                <div class="active tab-pane" id="BarcodeLink">
+                                    <h3 class="card-title mb-4" style="width: 100%">
+                                        <a href="{{ route('GPacking.operator.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
+                                    </h3>
+                                    <table id="barcode" class="table table-bordered dataTables_scrollBody" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">No </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Kode Barcode</th>
+                                                <th class="textAlign" style="vertical-align: middle;">No PO</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign">
+                                            <?php $no = 1; ?>
+                                        @foreach ($dataBarcode as $barcode)
+                                            @if (!isset($barcode->barangJadi))
+                                                <tr>
+                                                    <td>{{ $no++ }}</td>
+                                                    <td>{{ date('d F Y', strtotime($barcode->tanggal)) }}</td>
+                                                    <td>
+                                                        <span style="font-weight: bold;">{{ $barcode->keterangan }}</span> <br>
+                                                        <small>{{ $barcode->kodeBarcode}}</small>
+                                                    </td>
+                                                    <td>{{ $barcode->purchase->kode}}</td>
+                                                    <td>{{ $barcode->jenisBaju}}</td>
+                                                    <td>{{ $barcode->ukuranBaju }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="OperatorLink">
                                     <h3 class="card-title mb-4" style="width: 100%">
                                         <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
-                                        <a href="{{ route('GPacking.rekap.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
                                     </h3>
                                     <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
@@ -69,7 +114,6 @@
                                                 <th class="textAlign" style="vertical-align: middle;">No </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
                                                 <th class="textAlign" style="vertical-align: middle;">Packing Pegawai </th>
-                                                <th class="textAlign" style="vertical-align: middle;">Kode Packing</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Operator</th>
                                                 <th class="textAlign" style="vertical-align: middle;">Action</th>
                                             </tr>
@@ -81,7 +125,6 @@
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ date('d F Y', strtotime($rekap->tanggal)) }}</td>
                                                     <td>{{ $rekap->pegawaiName}}</td>
-                                                    <td>{{ $rekap->kodePacking}}</td>
                                                     <td>{{ $rekap->user->nama }}</td>
                                                     
                                                     <td>
@@ -118,7 +161,10 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
-                                                    <td>{{ $detail->kodeProduct}}</td>
+                                                    <td>
+                                                        <span style="font-weight: bold;">{{ $detail->keterangan }}</span> <br>
+                                                        <small>{{ $detail->kodeProduct}}</small>
+                                                    </td>
                                                     <td>{{ $detail->purchase->kode}}</td>
                                                     <td>{{ $detail->jenisBaju}}</td>
                                                     <td>{{ $detail->ukuranBaju }}</td>
@@ -182,12 +228,14 @@
         }
 
         $(document).ready( function () {
-            $('#operator').DataTable( {
-                "responsive": true,
+            $('#barcode').DataTable({
+                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });
-
-            $('#barangJadi').DataTable( {
-                "responsive": true,
+            $('#operator').DataTable({
+                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
+            });
+            $('#barangJadi').DataTable({
+                "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]]
             });
         });
     </script>

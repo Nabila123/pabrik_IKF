@@ -259,7 +259,7 @@
 
         if ($mains->nama == "Packing") {
             if ($user == 38) { //Packing
-                $notifPackingMasuk = GudangSetrikaStokOpname::where('statusPacking', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('jenisBaju')->get();            
+                $notifPackingMasuk = GudangSetrikaStokOpname::where('kodeBarcode', null)->where('statusPacking', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('jenisBaju')->get();            
                 if (count($notifPackingMasuk) != 0) {
                     $notif[56] = count($notifPackingMasuk);
                 }

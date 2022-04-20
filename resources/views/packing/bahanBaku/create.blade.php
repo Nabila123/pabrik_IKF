@@ -163,7 +163,10 @@
                             for(var i = 0;i < data.length;i++){
                                 var dataHasil = "<tr>";
                                         dataHasil += "<td>"+ (i+1) +"</td>";
-                                        dataHasil += "<td>"+ data[i]['kodeProduct'] +"</td>";
+                                        dataHasil += "<td>";
+                                            dataHasil += "<span style='font-weight: bold;'>"+ data[i]['keterangan'] +"</span> <br>";
+                                            dataHasil += "<small>"+ data[i]['kodeProduct'] +"</small>";
+                                        dataHasil += "</td>";
                                         dataHasil += "<td>"+ data[i]['jenisBaju'] +"</td>";
                                         dataHasil += "<td>"+ data[i]['ukuranBaju'] +"</td>";
                                         dataHasil += "<td align='center'>";

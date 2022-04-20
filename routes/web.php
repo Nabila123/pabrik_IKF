@@ -350,17 +350,18 @@ Route::get('/GPacking/getKodePacking/{kodePacking}', [App\Http\Controllers\Packi
 Route::post('/GPacking/getKode', [App\Http\Controllers\PackingController::class, 'getKode'])->name('GPacking.getKode');
 
 Route::get('/GPacking/request', [App\Http\Controllers\PackingController::class, 'gRequest'])->name('GPacking.request');
-Route::get('/GPacking/request/terima/{id}', [App\Http\Controllers\PackingController::class, 'gRequestTerima'])->name('GPacking.request.terima');
+Route::get('/GPacking/request/generate/{purchaseId}/{jenisBaju}/{ukuranBaju}/{date}', [App\Http\Controllers\PackingController::class, 'gRequestgenerate'])->name('GPacking.request.generate');
 Route::get('/GPacking/request/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRequestDetail'])->name('GPacking.request.detail');
 
 Route::get('/GPacking/operator', [App\Http\Controllers\PackingController::class, 'gOperator'])->name('GPacking.operator');
+Route::get('/GPacking/operator/cetakBarcode', [App\Http\Controllers\PackingController::class, 'gCetakBarcode'])->name('GPacking.operator.cetakBarcode');
+
 Route::get('/GPacking/rekap/detail/{id}', [App\Http\Controllers\PackingController::class, 'gRekapDetail'])->name('GPacking.rekap.detail');
 Route::get('/GPacking/rekap/create', [App\Http\Controllers\PackingController::class, 'gRekapCreate'])->name('GPacking.rekap.create');
 Route::post('/GPacking/rekap/create', [App\Http\Controllers\PackingController::class, 'gRekapStore'])->name('GPacking.rekap.create');
 Route::get('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdate'])->name('GPacking.rekap.update');
 Route::post('/GPacking/rekap/update/{id}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateSave'])->name('GPacking.rekap.update');
 Route::get('/GPacking/rekap/update/delete/{rekapId}/{rekapDetailId}', [App\Http\Controllers\PackingController::class, 'gRekapUpdateDelete'])->name('GPacking.rekap.update.delete');
-Route::get('/GPacking/rekap/cetakBarcode', [App\Http\Controllers\PackingController::class, 'gRekapCetakBarcode'])->name('GPacking.rekap.cetakBarcode');
 
 Route::get('/GPacking/bahanBaku/create', [App\Http\Controllers\PackingController::class, 'gPackingBahanBakuCreate'])->name('GPacking.bahanBaku.create');
 Route::post('/GPacking/bahanBaku/create', [App\Http\Controllers\PackingController::class, 'gPackingBahanBakuStore'])->name('GPacking.bahanBaku.create');

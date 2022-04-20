@@ -260,15 +260,20 @@ class PackingController extends Controller
         $data = [];
         $GetKodePacking = GudangBarangJadiStokOpname::where('kodeproduct', $request->kodeProduct)->first();
         if ($GetKodePacking == null) {
-            $getPackingRekap = GudangPackingRekap::where('kodePacking', $request->kodeProduct)->first();
-            $getPackingRekapDetail = GudangPackingRekapDetail::where('gdPackingRekapId', $getPackingRekap->id)->get();
-            foreach ($getPackingRekapDetail as $detail) {
-                $addBarangJadiStokOpname = GudangBarangJadiStokOpname::CreateGudangBarangStokOpname($detail->gdBajuStokOpnameId, $getPackingRekap->kodePacking, $detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju);
+            $getPacking = GudangSetrikaStokOpname::where('kodeBarcode', $request->kodeProduct)->get();
+            foreach ($getPacking as $detail) {
+                $addBarangJadiStokOpname = GudangBarangJadiStokOpname::CreateGudangBarangStokOpname($detail->gdBajuStokOpnameId, $detail->kodeBarcode, $detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju);
             }
 
             if($addBarangJadiStokOpname == 1){
-                $getBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->groupBy('kodeProduct')->get();
-                foreach ($getBarangJadi as $value) {
+                $getBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->orderBy('jenisBaju', 'asc')->groupBy('kodeProduct')->get();
+                foreach ($getBarangJadi as $value) {                    
+                    $dataBaju = explode("-", $value->jenisBaju);
+                    for ($i=0; $i < count($dataBaju); $i++) { 
+                        $dataBaju[$i] = substr($dataBaju[$i],0,1);
+                    }
+                    $value->keterangan = implode("", $dataBaju)." - ".$value->ukuranBaju." - ".$value->gdBajuStokOpnameId;
+
                     $data[] = $value;
                 }
                 return json_encode($data);
@@ -285,6 +290,31 @@ class PackingController extends Controller
         return view('packing.request.index', ['packingRequest' => $gdPackingRequest]);
     }
 
+    public function gRequestgenerate($purchaseId, $jenisBaju, $ukuranBaju, $date)
+    {
+        $generate = GudangSetrikaStokOpname::where('purchaseId', $purchaseId)->where('jenisBaju', $jenisBaju)->where('ukuranBaju', $ukuranBaju)->where('tanggal', $date)->where('statusPacking', 0)->get();
+        
+        $dataBarcode = 1;
+        $kodeBarcode = GudangSetrikaStokOpname::kodeBarcode();
+        foreach ($generate as $barcode) {
+            if ($dataBarcode%6 == 0) {
+                $updatedBarcode = GudangSetrikaStokOpname::bajuUpdateField('kodeBarcode', $kodeBarcode, $barcode->id);
+                if ($updatedBarcode == 1) {
+                    $dataBarcode = 1;
+                    $kodeBarcode = GudangSetrikaStokOpname::kodeBarcode();
+                }                
+            }else{
+                GudangSetrikaStokOpname::bajuUpdateField('kodeBarcode', $kodeBarcode, $barcode->id);
+                $dataBarcode++;
+            }
+        }
+
+        if ($updatedBarcode == 1) {
+            return redirect('GPacking/request');
+        }
+        
+    }
+
     public function gRequestDetail($date)
     {
         $gdPackingRequest = GudangSetrikaStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusPacking', 0)->where('tanggal', $date)->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
@@ -294,8 +324,22 @@ class PackingController extends Controller
 
     public function gOperator()
     {
+        $dataBarcode = GudangSetrikaStokOpname::where('kodeBarcode', '!=', null)->where('tanggal', date('Y-m-d'))->orderBy('jenisBaju', 'asc')->groupBy('kodeBarcode')->get();
+        foreach ($dataBarcode as $barcode) {
+            $checkBarangJadi = GudangBarangJadiStokOpname::where('kodeProduct', $barcode->kodeBarcode)->orderBy('jenisBaju', 'asc')->groupBy('kodeProduct')->first();
+            if ($checkBarangJadi == null) {
+                
+                $dataBaju = explode("-", $barcode->jenisBaju);
+                for ($i=0; $i < count($dataBaju); $i++) { 
+                    $dataBaju[$i] = substr($dataBaju[$i],0,1);
+                }
+                $barcode->keterangan = implode("", $dataBaju)." - ".$barcode->ukuranBaju." - ".$barcode->gdBajuStokOpnameId;
+            } else {
+                $barcode->barangJadi = true;
+            }            
+        }
+
         $gdPackingRekap = GudangPackingRekap::where('tanggal', date('Y-m-d'))->get();
-        $gdBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->groupBy('kodeProduct')->get();
         foreach ($gdPackingRekap as $packing) {
             $gdPackingRekapDetail = GudangPackingRekapDetail::where('gdPackingRekapId', $packing->id)->groupBy('pegawaiId')->get();
             foreach ($gdPackingRekapDetail as $packingDetail) {
@@ -303,14 +347,61 @@ class PackingController extends Controller
             }
         }
 
-        return view('packing.operator.index', ['packingRekap' => $gdPackingRekap, 'barangJadi' => $gdBarangJadi]);
+        $gdBarangJadi = GudangBarangJadiStokOpname::where('tanggal', date('Y-m-d'))->orderBy('jenisBaju', 'asc')->groupBy('kodeProduct')->get();
+        foreach ($gdBarangJadi as $barangJadi) {            
+            $dataBaju = explode("-", $barangJadi->jenisBaju);
+            for ($i=0; $i < count($dataBaju); $i++) { 
+                $dataBaju[$i] = substr($dataBaju[$i],0,1);
+            }
+            $barangJadi->keterangan = implode("", $dataBaju)." - ".$barangJadi->ukuranBaju." - ".$barangJadi->gdBajuStokOpnameId;
+        }
+
+        return view('packing.operator.index', ['dataBarcode' => $dataBarcode, 'packingRekap' => $gdPackingRekap, 'barangJadi' => $gdBarangJadi]);
+    }
+
+    public function gCetakBarcode()
+    {
+        $GetKodePacking = GudangSetrikaStokOpname::where('kodeBarcode', '!=', null)->whereDate('tanggal', date('Y-m-d'))->orderBy('jenisBaju', 'asc')->groupBy('kodeBarcode')->get();
+        
+        $data = [];
+        $baris = 0;
+        $i = 0;
+        foreach ($GetKodePacking as $packing) {
+
+            $dataBaju = explode("-", $packing->jenisBaju);
+            for ($j=0; $j < count($dataBaju); $j++) { 
+                $dataBaju[$j] = substr($dataBaju[$j],0,1);
+            }
+
+            if ($i % 3 == 0) {
+                $baris++;
+            }
+
+            $data[$baris][$i]['barcode']= $packing->kodeBarcode;
+            $data[$baris][$i]['ket'] = implode("", $dataBaju)." - ".$packing->ukuranBaju." - ".$packing->gdBajuStokOpnameId;            
+
+            $i++;
+        }
+        // dd($data);
+        $customPaper = array(0,0,685,500);
+        $pdf = PDF::loadview('packing.operator.cetakBarcode',['data' => $data])
+                ->setPaper($customPaper);
+    	return $pdf->stream();
+
+        // return view('packing.operator.cetakBarcode', ['data' => $data]);
     }
 
     public function gRekapDetail($id)
     {
         $getPegawai = GudangPackingRekap::where('id', $id)->first();
         $getDetailPegawai = GudangPackingRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdPackingRekapId', $getPegawai->id)->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
-
+        foreach ($getDetailPegawai as $detail) {
+            $detail->totalDz =  (int)($detail->jumlah/12);
+            $sisa = ($detail->jumlah%12);
+            if ($sisa != 0) {
+                $detail->sisa = $sisa;
+            }
+        }
         return view('packing.operator.detail', ['rekap' => $getPegawai, 'pegawais' => $getDetailPegawai]);
     }
 
@@ -328,7 +419,7 @@ class PackingController extends Controller
         // dd($request);
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
-                $PackingRekap = GudangPackingRekap::PackingRekapCreate($request['kodePacking'][$i], \Auth::user()->id);     
+                $PackingRekap = GudangPackingRekap::PackingRekapCreate(\Auth::user()->id);     
                 if ($PackingRekap) {
                     $operatorReqId = explode(",", $request['operatorReqId'][$i]);
                     for ($j=0; $j < count($operatorReqId); $j++) {
@@ -368,11 +459,6 @@ class PackingController extends Controller
         if ($request->jumlah_data != 0) {
             for ($i=0; $i < $request->jumlah_data; $i++) { 
                 $checkPegawai = GudangPackingRekap::where('id', $request->id)->first();
-                if ($checkPegawai == null) {
-                    $PackingRekap = GudangPackingRekap::PackingRekapCreate($request['kodePacking'][$i], \Auth::user()->id);     
-                } else {
-                    $PackingRekap = $checkPegawai->id;
-                }
 
                 $operatorReqId = explode(",", $request['operatorReqId'][$i]);
                 for($j=0; $j < count($operatorReqId); $j++){
@@ -380,7 +466,7 @@ class PackingController extends Controller
                     if ($operatorReq != null) {
                         $bajuStokOpname = GudangSetrikaStokOpname::bajuUpdateField('statusPacking', 1, $operatorReq->id);
                         if ($bajuStokOpname == 1) {
-                            $PackingRekapDetail = GudangPackingRekapDetail::PackingRekapDetailCreate($PackingRekap, $operatorReq->gdBajuStokOpnameId, $request['pegawaiId'][$i], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
+                            $PackingRekapDetail = GudangPackingRekapDetail::PackingRekapDetailCreate($checkPegawai->id, $operatorReq->gdBajuStokOpnameId, $request['pegawaiId'][$i], $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
                         }              
                     }
                 }                                             
@@ -420,29 +506,6 @@ class PackingController extends Controller
                 
             }                    
         } 
-    }
-
-    public function gRekapCetakBarcode()
-    {
-        $GetKodePacking = GudangPackingRekap::select('kodePacking')->whereDate('tanggal', date('Y-m-d'))->get();
-        $data = [];
-        $baris = 0;
-        $i = 0;
-
-        foreach ($GetKodePacking as $packing) {
-            if ($i % 3 == 0) {
-                $baris++;
-            }
-
-            $data[$baris][] = $packing->kodePacking;
-            $i++;
-        }
-
-        $pdf = PDF::loadview('packing.operator.cetakBarcode',['data' => $data])
-                ->setPaper('a4', 'potrait');
-    	return $pdf->stream();
-
-        // return view('packing.operator.cetakBarcode', ['data' => $data]);
     }
 
     public function gPackingBahanBakuCreate()

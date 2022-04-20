@@ -51,7 +51,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">  
-                        <div class="card-header">
+                        {{--  <div class="card-header">
                             <div class="row mt-4">
                                 <div class="col-sm-4">
                                     <div class="position-relative p-3 bg-light" style="height: 120px">
@@ -65,17 +65,21 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                 
+                        </div>                   --}}
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th class="textAlign" style="vertical-align: middle;">No </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Nama Pegawai</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">No </th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Nama Pegawai</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Nomor PO</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                        <th rowspan="2" class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                        <th colspan="2" class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="textAlign" style="vertical-align: middle;">Dus</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Dz</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
@@ -87,7 +91,13 @@
                                             <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
-                                            <td>{{ $detail->jumlah }}</td>
+                                            <td>{{ $detail->jumlah/6 }}</td>
+                                            <td>
+                                                {{ $detail->totalDz }}
+                                                @if (isset($detail->sisa))
+                                                    / {{ $detail->sisa }}
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -38,10 +38,10 @@ class GudangPackingRekap extends Model
         return $kode;
     }
 
-    public static function PackingRekapCreate($kodePacking, $userId)
+    public static function PackingRekapCreate($userId)
     {
         $addPackingRekap = New GudangPackingRekap;
-        $addPackingRekap->kodePacking = $kodePacking;
+        $addPackingRekap->kodePacking = null;
         $addPackingRekap->tanggal = date('Y-m-d');
         $addPackingRekap->userId = $userId;
         $addPackingRekap->created_at = date('Y-m-d H:i:s');

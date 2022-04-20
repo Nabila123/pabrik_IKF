@@ -59,6 +59,7 @@
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
@@ -70,6 +71,13 @@
                                             <td>{{ $detail->jenisBaju }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
                                             <td>{{ $detail->jumlah/12 }}</td>
+                                            <td>
+                                                @if ($detail->kodeBarcode != null)
+                                                    <span style="color: green; font-size: 13px">Sudah DiGenarate</span>
+                                                @else
+                                                    <a href="{{ route('GPacking.request.generate', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, $detail->tanggal]) }}" class="btn btn-success"> Generate Barcode </a>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
