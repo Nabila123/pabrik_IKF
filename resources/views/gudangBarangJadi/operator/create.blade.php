@@ -113,13 +113,13 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">  
-                                                    <div class="col-3">
+                                                    <div class="col-2">
                                                         <div class="form-group">
-                                                            <label>Kode Barang <sup>Optional</sup> </label>
+                                                            <label>Kode Barang <sup>Barcode</sup> </label>
                                                             <input type="text" id="kodeProduct" name="kodeProduct" class="form-control kodeProduct">                                                                                 
                                                         </div>
                                                     </div>
-                                                    <div class="col-3">
+                                                    <div class="col-2">
                                                         <div class="form-group">
                                                             <label>Jenis Baju</label>
                                                             <select class="form-control jenisBaju" id="jenisBaju" name="jenisBaju" style="width: 100%; height: 38px;" >
@@ -140,12 +140,18 @@
                                                     </div>       
                                                     <div class="col-2">
                                                         <div class="form-group">
-                                                            <label>Jumlah Baju </label>                                                            
+                                                            <label>Jumlah Dus </label>                                                            
                                                             <input type="text" class="form-control jumlahBaju" name="jumlahBaju" id="jumlahBaju">
                                                             <input type="hidden" style="width:100px;" id="jumlahBajuOld">
                                                         </div>
                                                         <div id="requestOperatorId">
 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <div class="form-group">
+                                                            <label>Jumlah Dz </label>                                                            
+                                                            <input type="text" class="form-control jumlahDz" name="jumlahDz" id="jumlahDz">
                                                         </div>
                                                     </div>  
                                                     <div class="col-2">
@@ -174,13 +180,17 @@
                                         <table id="JahitData" class="table table-bordered dataTables_scrollBody textAlign JahitData">
                                             <thead>
                                                 <tr>
-                                                    <th style="vertical-align: middle;">No</th>
-                                                    <th style="vertical-align: middle;">Kode Barang</th>
-                                                    <th style="vertical-align: middle;">Jenis Baju</th>
-                                                    <th style="vertical-align: middle;">Ukuran Baju</th>
-                                                    <th style="vertical-align: middle;">Jumlah Baju</th>
-                                                    <th style="vertical-align: middle;">Harga Baju</th>
-                                                    <th style="vertical-align: middle;">Action</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">No</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Kode Barang</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Jenis Baju</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Ukuran Baju</th>
+                                                    <th colspan="2" style="vertical-align: middle;">Jumlah Baju </th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Harga Baju</th>
+                                                    <th rowspan="2" style="vertical-align: middle;">Action</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="vertical-align: middle;">Dus</th>
+                                                    <th style="vertical-align: middle;">Dz</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data textAlign">
@@ -188,7 +198,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th colspan="5" style="text-align: right">Total Harga</th>
+                                                    <th colspan="6" style="text-align: right">Total Harga</th>
                                                     <th>
                                                         <div class="totalHarga" id="totalHarga">
                                                             
@@ -293,6 +303,7 @@
                     var data = JSON.parse(response) 
                     console.log(data['operator']);
                     $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                    $('#jumlahDz').val(data['operator']['jumlahBaju']/2);
                     $('#jumlahBajuOld').val(data['operator']['jumlahBaju']);
                     for(var i = 0;i < data.operator.requestOperatorId.length; i++){
                         var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
@@ -334,8 +345,56 @@
                     success: function(response){
                         var data = JSON.parse(response) 
                         console.log(data);
+                        $('#requestOperatorId').html('');
                         $('#jumlahBaju').css({'border':'1px solid #ced4da'});
                         $('#jumlahBaju').val(data['operator']['jumlahBaju']);
+                        $('#jumlahDz').val(data['operator']['jumlahBaju']/2);
+                        for(var i = 0;i < data.operator.requestOperatorId.length; i++){
+                            var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
+                            $('#requestOperatorId').append(dt);  
+                        }
+                    }
+                })
+            }else{
+                $('#jumlahBaju').css({'border':'2px solid #e74c3c'});
+            }
+        });
+
+        $(document).on("keyup", ".jumlahDz", function(){
+            var jenisBaju   = $('#jenisBaju').val();
+            var ukuranBaju  = $('#ukuranBaju').val();
+            var jumlahBaju  = $('#jumlahDz').val();
+            var jumlahBajuOld  = $('#jumlahBajuOld').val();
+            var jumlah_data  = $('#jumlah_data').val();
+
+            var operatorReqId   = [];
+            for(i=1; i<=jumlah_data; i++){
+                operatorReqId[i]   = $('#operatorReqId_'+i+'').val();
+            }
+            var _token = $('#_token').val();
+
+            $('#requestOperatorId').html('');
+            $('#jumlahBaju').css({'border':'1px solid #ced4da'});
+
+            if(parseInt(jumlahBaju) <= parseInt(jumlahBajuOld)){
+                $.ajax({
+                    type: "post",
+                    url: '{{ url('GBarangJadi/getBarangJadi') }}',
+                    data: {
+                        'jenisBaju' : jenisBaju,
+                        'ukuranBaju' : ukuranBaju,
+                        'jumlahBaju' : jumlahBaju,
+                        'operatorReqId' : operatorReqId,
+                        'groupBy' : "id",
+                        '_token': _token
+                    },
+                    success: function(response){
+                        var data = JSON.parse(response) 
+                        console.log(data);
+                        $('#requestOperatorId').html('');
+                        $('#jumlahBaju').css({'border':'1px solid #ced4da'});
+                        $('#jumlahBaju').val(data['operator']['jumlahBaju']*2);
+                        $('#jumlahDz').val(data['operator']['jumlahBaju']);
                         for(var i = 0;i < data.operator.requestOperatorId.length; i++){
                             var dt ="<input type='hidden' name='requestOperatorId[]' value='"+data['operator']['requestOperatorId'][i]+"' id='requestOperatorId_"+i+"'>";
                             $('#requestOperatorId').append(dt);  
@@ -355,6 +414,7 @@
                 var jenisBaju       = $('#jenisBaju').val();
                 var ukuranBaju      = $('#ukuranBaju').val();
                 var jumlahBaju      = $('#jumlahBaju').val();
+                var jumlahDz        = $('#jumlahDz').val();
                 var hargaBaju       = $('#hargaBaju').val();
                 var totalHarga      = $('#total').val();
                 var totalAkhir      = 0;
@@ -363,10 +423,7 @@
                     operatorReqId[i]   = $('#requestOperatorId_'+i+'').val();
                 }
 
-                console.log(totalAkhir)
-                totalAkhir = parseInt(totalHarga) + (parseInt(hargaBaju.replace(/[^0-9]/g, '')) * parseInt(jumlahBaju));
-                console.log(totalAkhir)
-                
+                totalAkhir = parseInt(totalHarga) + (parseInt(hargaBaju.replace(/[^0-9]/g, '')) * parseFloat(jumlahDz));              
 
                 var jumlah_data     = $('#jumlah_data').val();
 
@@ -380,6 +437,7 @@
                             table += "<td>"+jenisBaju+"<input type='hidden' name='jenisBaju[]' value='"+jenisBaju+"' id='jenisBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+ukuranBaju+"<input type='hidden' name='ukuranBaju[]' value='"+ukuranBaju+"' id='ukuranBaju_"+jumlah_data+"'></td>";
                             table += "<td>"+jumlahBaju+"<input type='hidden' name='jumlahBaju[]' value='"+jumlahBaju+"' id='jumlahBaju_"+jumlah_data+"'></td>";
+                            table += "<td>"+jumlahDz+"<input type='hidden' name='jumlahDz[]' value='"+jumlahDz+"' id='jumlahDz_"+jumlah_data+"'></td>";
                             table += "<td>"+hargaBaju+"<input type='hidden' name='hargaBaju[]' value='"+parseInt(hargaBaju.replace(/[^0-9]/g, ''))+"' id='hargaBaju_"+jumlah_data+"'></td>";    
                             
                             table += "<td>";
@@ -395,6 +453,7 @@
                         $('#ukuranBaju option[value=""]').attr('selected','selected');
                         
                         $('#jumlahBaju').val('');
+                        $('#jumlahDz').val('');
                         $('#hargaBaju').val('');
 
                 }else{

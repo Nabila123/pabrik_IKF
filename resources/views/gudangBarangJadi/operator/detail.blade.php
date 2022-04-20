@@ -78,7 +78,7 @@
                                         <th>Kode Product</th>
                                         <th>Jenis Baju</th>
                                         <th>Ukuran Baju</th>
-                                        <th>Jumlah</th>
+                                        <th>Jumlah (Dus)</th>
                                         <th>Harga</th>
                                     </tr>
                                 </thead>
@@ -89,14 +89,14 @@
                                             <td>{{ $detail->jenisBaju }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
                                             <td>{{ $detail->qty }}</td>
-                                            <td>{{ $detail->harga }}</td>
+                                            <td>{{ rupiah($detail->harga) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="4" style="text-align: right;">Total Harga</th>
-                                        <th>{{ $penjualan->totalHarga }}</th>
+                                        <th>{{ rupiah($penjualan->totalHarga) }}</th>
                                     </tr>
                                 </tfoot>
                             </table>

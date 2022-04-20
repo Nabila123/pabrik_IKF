@@ -367,20 +367,22 @@ class PackingController extends Controller
         $baris = 0;
         $i = 0;
         foreach ($GetKodePacking as $packing) {
+            $checkBarangJadi = GudangBarangJadiStokOpname::where('kodeProduct', $packing->kodeBarcode)->orderBy('jenisBaju', 'asc')->groupBy('kodeProduct')->first();
+            if ($checkBarangJadi == null) {
+                $dataBaju = explode("-", $packing->jenisBaju);
+                for ($j=0; $j < count($dataBaju); $j++) { 
+                    $dataBaju[$j] = substr($dataBaju[$j],0,1);
+                }
 
-            $dataBaju = explode("-", $packing->jenisBaju);
-            for ($j=0; $j < count($dataBaju); $j++) { 
-                $dataBaju[$j] = substr($dataBaju[$j],0,1);
-            }
+                if ($i % 3 == 0) {
+                    $baris++;
+                }
 
-            if ($i % 3 == 0) {
-                $baris++;
-            }
+                $data[$baris][$i]['barcode']= $packing->kodeBarcode;
+                $data[$baris][$i]['ket'] = implode("", $dataBaju)." - ".$packing->ukuranBaju." - ".$packing->gdBajuStokOpnameId;            
 
-            $data[$baris][$i]['barcode']= $packing->kodeBarcode;
-            $data[$baris][$i]['ket'] = implode("", $dataBaju)." - ".$packing->ukuranBaju." - ".$packing->gdBajuStokOpnameId;            
-
-            $i++;
+                $i++;
+            }            
         }
         // dd($data);
         $customPaper = array(0,0,685,500);
