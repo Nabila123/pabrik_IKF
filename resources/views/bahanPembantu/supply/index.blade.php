@@ -66,7 +66,7 @@
                                     @foreach($data as $key=>$value)
                                         <tr>
                                             <td>{{$value->purchase->kode}}</td>
-                                            <td>{{$value->namaSuplier}}</td>
+                                            <td>{{$value->barangDatang->namaSuplier}}</td>
                                             <!-- <td>{{$value->total}}</td> -->
                                             <td>
                                                 <a href="{{ route('GBahanPembantu.supply.detail',['id'=>$value->purchaseId])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

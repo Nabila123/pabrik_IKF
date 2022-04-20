@@ -119,24 +119,23 @@
                                                                             <td>
                                                                                 {{$detail->material->satuan}}
                                                                             </td>
-                                                                            @if($detail->materialId == 1)
-                                                                                 @foreach($detail->detailMaterial as $key2=>$detailMaterial)
-                                                                                    <td>
-                                                                                        {{$detailMaterial->diameter}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->gramasi}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->brutto}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->netto}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->tarra}}
-                                                                                    </td>
-                                                                                @endforeach
+                                                                             @foreach($detail->detailMaterial as $key2=>$detailMaterial)
+                                                                                <td>
+                                                                                    {{$detailMaterial->diameter}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->gramasi}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->brutto}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->netto}}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{$detailMaterial->tarra}}
+                                                                                </td>
+                                                                            @endforeach
                                                                                 <!-- <td>
                                                                                     <input type="text" name="unitPrice[]" value="{{$detail->unitPrice}}" style="width: 90px;">
                                                                                 </td>
@@ -146,31 +145,6 @@
                                                                                 <td>
                                                                                     <input type="text" name="remark[]" value="{{$detail->remark}}" style="width: 70px;">
                                                                                 </td> -->
-                                                                            @else
-                                                                                <td colspan="5">
-                                                                                    Data Per Roll
-                                                                                </td>
-                                                                                @foreach($detail->detailMaterial as $detailMaterial)
-                                                                                <tr>
-                                                                                    <td colspan="5"></td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->diameter}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->gramasi}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->brutto}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->netto}}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{$detailMaterial->tarra}}
-                                                                                    </td>
-                                                                                </tr>
-                                                                                @endforeach
-                                                                            @endif
                                                                         </tr>
                                                                         @php $i++; @endphp
                                                                     @endforeach

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;

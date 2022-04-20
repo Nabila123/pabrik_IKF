@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class BarangDatang extends Model
 {
@@ -14,6 +15,11 @@ class BarangDatang extends Model
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
+    }
+
+    public function detail()
+    {
+        return $this->hasOne('App\Models\barangDatangDetail','barangDatangId','id');
     }
 
     public static function updateFieldGudang($fieldName, $updatedField, $id)

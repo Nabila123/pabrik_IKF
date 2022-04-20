@@ -17,6 +17,7 @@ use App\Models\GudangJahitRejectDetail;
 use App\Models\GudangBatilMasuk;
 use App\Models\GudangBatilMasukDetail;
 use App\Models\Pegawai;
+use Illuminate\Database\Eloquent\Builder;
 
 use DB;
 class GudangJahitController extends Controller

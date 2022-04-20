@@ -13,6 +13,7 @@ use App\Models\GudangControlMasukDetail;
 use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
+use Illuminate\Database\Eloquent\Builder;
 
 use DB;
 

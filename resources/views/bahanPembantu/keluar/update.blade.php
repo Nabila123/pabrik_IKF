@@ -73,9 +73,9 @@
                                                         <div class="form-group">
                                                             <div id="checkGudang">
                                                                 <label>Barang</label>
-                                                                <input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly> 
-                                                                <input type="hidden" name="jenisId" id="jenisId" class="jenisId">            
-                                                                <input type="hidden" name="materialId" id="materialId" class="materialId">                                        
+                                                               <select class="form-control material" id="materialId" name="material" style="width: 100%; height: 38px;"> 
+                                                                </select>
+                                                                <input type="hidden" name="jenisId" id="jenisId" class="jenisId">                                        
                                                             </div>
                                                         </div>
                                                     </div>
@@ -202,46 +202,10 @@
         $(document).ready( function () {
             var gudangRequest = $('#gudangRequest').val();
             var _token = $('#_token').val();
-
-            if(gudangRequest == 4){
-                var html =  '<label>Jenis Kain</label>';
-                    html += '<input type="hidden" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly>';
-                    html += '<input type="hidden" name="jenisId" id="jenisId" class="jenisId">';
-                    html += '<input type="hidden" name="materialId" id="materialId" class="materialId">';
-                    html +=  '<select class="form-control jenisKain" id="jenisKain" name="jenisKain" style="width: 100%; height: 38px;">';
-                        html +=  '<option value="">Pilih Jenis Kain</option>';
-                        html +=  '<option value="1">Kain Putih</option>';
-                        html +=  '<option value="2">Kain Putih Inspeksi</option>';
-                    html +=  '</select>';                       
-            }else{
-                var html = '<label>Barang</label>';
-                    html += '<input type="text" class="form-control material" id="material" name="material" placeholder="Nama Barang" style="width: 100%; height: 38px;" readonly>';
-                    html += '<input type="hidden" name="jenisId" id="jenisId" class="jenisId">';
-                    html += '<input type="hidden" name="materialId" id="materialId" class="materialId">';
-            }
-            $('#checkGudang').html(html);
-
-            if(gudangRequest == 1){
-                var dt = '<table>';
-                        dt += '<tr>';
-                            dt += '<th>Jumlah <sub>Kg</sub></th>';
-                            dt += '<th>Jumlah <sub>Bal</sub></th>';
-                        dt += '</tr>';
-                        dt += '<tr>';
-                            dt += '<td>';
-                                dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="KG" />'; 
-                            dt += '</td>';
-                            dt += '<td>';                                                            
-                                dt += '<input type="text" class="form-control bal" id="bal" name="bal"placeholder="Bal" />'; 
-                            dt += '</td>';
-                        dt += '</tr>';
-                    dt += '</table>';
-                    dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
-            }else{                    
-                var dt = '<label>Jumlah</label>';
-                    dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" />';
-                    dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
-            }
+                  
+            var dt = '<label>Jumlah</label>';
+                dt += '<input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" />';
+                dt += '<input type="hidden" class="form-control qtyHidden" id="qtyHidden" name="qtyHidden"/>';
             $('#Jumlah').html(dt);
             
             $.ajax({
@@ -250,14 +214,31 @@
                 success: function(response){
                     var data = JSON.parse(response);
                     {{--  console.log(data.material);  --}}
-                    $('#materialId').val(data.material.id);
-                    $('#material').val(data.material.nama);
-                    $('#jenisId').val(gudangRequest);
+                    var opt_material ='<option value="">Pilih Barang</option>';
+                    for(var i =0;i < data.material.length;i++){
+                        opt_material += "<option value="+data.material[i].id+">"+data.material[i].nama+"</option>"
+                    }
+                    $('#materialId').html(opt_material);
+                    $('#jenisId').val(gudangRequest);       
+                }
+            })
+
+        });
+
+        $(document).on("change", ".material", function(){
+            var materialId = $(this).val();
+            var _token = $('#_token').val();
+            
+            $.ajax({
+                type: "get",
+                url: '{{ url("GBahanPembantu/keluar/getPurchase") }}/'+materialId,
+                success: function(response){
+                    var data = JSON.parse(response);
                     var opt ='<option value="">Pilih Nomor PO</option>';
                     for(var i =0;i < data.purchase.length;i++){
                         opt += "<option value="+data.purchase[i].id+">"+data.purchase[i].kode+"</option>"
                     }
-                    $('#kodePurchase').html(opt);        
+                    $('#kodePurchase').html(opt);                   
                 }
             })
 
@@ -346,59 +327,12 @@
             })
         });
 
-        $(document).on("keyup", ".qty", function(){
-            var gudangRequest = $('#gudangRequest').val();
-            var berat = $('#berat').val();
-            var qty = $('#qty').val();
-            
-           if(gudangRequest == 1){
-               var cek = berat-qty;
-                
-                if(berat != 0 && berat != null && cek >= 0){
-                    $('#qty').css({'border':'1px solid #ced4da'});
-                    $('#bal').css({'border':'1px solid #ced4da'});
-
-                    var bal = (qty/181.44);
-                
-                    $('#bal').val(bal.toFixed(2));    
-                    $('#qtyHidden').val(qty);
-                }else{
-                    $('#qty').css({'border':'2px solid #e74c3c'});
-                    $('#bal').css({'border':'2px solid #e74c3c'});
-                }
-           }      
-                
-        });
-
-        $(document).on("keyup", ".bal", function(){
-            var gudangRequest = $('#gudangRequest').val();
-            var berat = $('#berat').val();
-            var bal = $('#bal').val();
-            
-           if(gudangRequest == 1){
-               var qty = (bal*181.44);
-               var cek = berat-qty;
-                
-                if(berat != 0 && berat != null && cek >= 0){
-                    $('#qty').css({'border':'1px solid #ced4da'});
-                    $('#bal').css({'border':'1px solid #ced4da'});
-                                   
-                    $('#qty').val(qty.toFixed(2));    
-                    $('#qtyHidden').val(qty);
-                }else{
-                    $('#qty').css({'border':'2px solid #e74c3c'});
-                    $('#bal').css({'border':'2px solid #e74c3c'});
-                }
-           }      
-                
-        });
-
         $(document).ready( function () {
             $(document).on("click", "button.TBarang", function(e){
                 e.preventDefault();
 
                 var material                = $('#materialId').val();
-                var nama_material           = $('#material').val();
+                var nama_material           = $('#materialId').find('option:selected').text();
                 var purchaseId              = $('#kodePurchase').val();
                 var kodePurchase            = $('#kodePurchase').find('option:selected').text();
                 var diameter                = $('#diameter').val();

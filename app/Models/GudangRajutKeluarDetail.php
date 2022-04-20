@@ -48,4 +48,8 @@ class GudangRajutKeluarDetail extends Model
             return 0;
         }
     }
+
+    function getKeluarIdAttribute() {
+        return $this->gdRajutKId;
+    }
 }

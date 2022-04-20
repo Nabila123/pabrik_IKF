@@ -63,8 +63,8 @@
                                                             <label>Nomor PO</label>
                                                             <select class="form-control col-md-7 col-xs-12 purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" required>
                                                                 <option value="">Pilih Nomor PO</option>
-                                                                @foreach($purchases as $purchase)
-                                                                    <option value="{{$purchase->id}}">{{$purchase->kode}}</option>
+                                                                @foreach($purchases as $purchaseDetail)
+                                                                    <option value="{{$purchaseDetail->purchaseId}}">{{$purchaseDetail->purchase->kode}}</option>
                                                                 @endforeach
                                                             </select>                                           
                                                         </div>

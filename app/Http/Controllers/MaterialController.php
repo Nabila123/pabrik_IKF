@@ -5,6 +5,7 @@ use App\Models\MaterialModel;
 use App\Models\JenisBarang;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class MaterialController extends Controller
 {

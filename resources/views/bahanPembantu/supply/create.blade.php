@@ -63,8 +63,8 @@
                                                             <label>Nomor PO</label>
                                                             <select class="form-control col-md-7 col-xs-12 purchaseId" id="purchaseId" name="purchaseId" style="width: 100%; height: 38px;" required>
                                                                 <option value="">Pilih Nomor PO</option>
-                                                                @foreach($purchases as $purchase)
-                                                                    <option value="{{$purchase->id}}">{{$purchase->kode}}</option>
+                                                                @foreach($purchases as $purchaseDetail)
+                                                                    <option value="{{$purchaseDetail->purchaseId}}">{{$purchaseDetail->purchase->kode}}</option>
                                                                 @endforeach
                                                             </select>                                           
                                                         </div>
@@ -96,7 +96,6 @@
                                                                     <th class="textAlign">Bruto</th>
                                                                     <th class="textAlign">Netto </th>
                                                                     <th class="textAlign">Tarra</th>
-                                                                    <th class="textAlign">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign"></tbody>                                                                                       
@@ -161,7 +160,7 @@
                             var jumlah_data = $('#jumlah_data').val();
                             jumlah_data++;
                             $('#jumlah_data').val(jumlah_data);
-                            var dt = "<tr  class='data_"+jumlah_data+"'>";
+                            var dt = "<tr class='data_"+jumlah_data+"'>";
                             dt += "<td>"+nomor+"</td>";
                             dt += "<td>"+data[i].materialNama;
                             dt += "<input type='hidden' name='materialId[]' value='"+data[i].materialId+"' id='material_"+jumlah_data+"'>";
@@ -174,17 +173,11 @@
                             dt += "<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'>";
                             dt += "<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'>";
                             dt += "<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'>";
-                            if(data[i].materialId == 1){
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"' > </td>";
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"' placeholder='Kg'> </td>";
-                                dt += "<td>Kg<input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'>";
-                                dt += "Ball<input type='text' required style='width:60px;' class='form-control netto_ball' id_data='"+jumlah_data+"' name='netto_ball_"+data[i].materialId+"[]' value='' id='netto_ball_"+jumlah_data+"'> </td>";
-                                dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"' placeholder='Kg'> </td>";
-                            }else{
-                                dt += '<input type="hidden" name="jumlah_roll_'+data[i].materialId+'" id="jumlah_roll_'+data[i].materialId+'" value="0"/>';
-                                dt += '<td colspan="6"><button type="button" id="addRoll" materialId="'+data[i].materialId+'" data='+jumlah_data+' style="float: left" class="btn btn-info btn-flat-right addRoll">Tambah Data Roll</button></td>'
-                            }
+                            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"' > </td>";
+                            dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
+                            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"' placeholder='Kg'> </td>";
+                            dt += "<td>Kg<input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'>";
+                            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"' placeholder='Kg'> </td>";
                             dt += '</tr>';
                             nomor++;
                             

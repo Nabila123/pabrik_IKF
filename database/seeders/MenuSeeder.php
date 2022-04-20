@@ -135,7 +135,6 @@ class MenuSeeder extends Seeder
             ['id' => 78, 'parentId' => 76, 'urutan' => 2, 'nama' => 'Supply barang', 'alias' => 'GBahanPembantu.supply.index', 'directori' => 'gudangBahanPembantu/supply', 'isActive' => 1],
             ['id' => 79, 'parentId' => 76, 'urutan' => 3, 'nama' => 'PPIC Request', 'alias' => 'GBahanPembantu.ppicRequest', 'directori' => 'gudangBahanPembantu/ppicRequest', 'isActive' => 1],
             ['id' => 80, 'parentId' => 76, 'urutan' => 4, 'nama' => 'Request Keluar Gudang', 'alias' => 'GBahanPembantu.keluar', 'directori' => 'gudangBahanPembantu/keluar', 'isActive' => 1],
-            ['id' => 81, 'parentId' => 76, 'urutan' => 5, 'nama' => 'Request Masuk Gudang', 'alias' => 'GBahanPembantu.masuk', 'directori' => 'gudangBahanPembantu/masuk', 'isActive' => 1],
 
         ];
 

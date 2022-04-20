@@ -11,6 +11,7 @@ use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;
 use App\Models\MaterialModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class GudangRajutController extends Controller
 {
@@ -34,9 +35,16 @@ class GudangRajutController extends Controller
     public function gudangRajutRequest(){
         $gRajutRequest = GudangRajutKeluar::all();
         foreach ($gRajutRequest as $request) {
-            $cekPengembalian = GudangRajutMasuk::where('gdRajutKId', $request->id)->first();
-            if ($cekPengembalian != null) {
-                $request->cekPengembalian = 1;
+            $cekBahanPembantu = GudangRajutKeluarDetail::where('gdRajutKId', $request->id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
+            if(count($cekBahanPembantu)== 0){
+                $cekPengembalian = GudangRajutMasuk::where('gdRajutKId', $request->id)->first();
+                if ($cekPengembalian != null) {
+                    $request->cekPengembalian = 1;
+                }
+            }else{
+                $request->cekPengembalian = 2;
             }
         }
 

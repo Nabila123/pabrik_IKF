@@ -10,6 +10,7 @@ use App\Models\GudangCompactMasukDetail;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetailMaterial;
 use App\Models\MaterialModel;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class GudangCompactController extends Controller
@@ -34,9 +35,16 @@ class GudangCompactController extends Controller
     public function gudangCompactRequest(){
         $gCompactRequest = GudangCompactKeluar::all();
         foreach ($gCompactRequest as $request) {
-            $cekPengembalian = GudangCompactMasuk::where('gdCompactKId', $request->id)->first();
-            if ($cekPengembalian != null) {
-                $request->cekPengembalian = 1;
+            $cekBahanPembantu = GudangcompactKeluarDetail::where('gdCompactKId', $request->id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
+            if(count($cekBahanPembantu)== 0){
+                $cekPengembalian = GudangCompactMasuk::where('gdCompactKId', $request->id)->first();
+                if ($cekPengembalian != null) {
+                    $request->cekPengembalian = 1;
+                }
+            }else{
+                $request->cekPengembalian = 2;
             }
         }
 

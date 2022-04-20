@@ -7,6 +7,7 @@ use App\Models\GudangCompactKeluar;
 use App\Models\GudangCompactKeluarDetail;
 use App\Models\GudangCompactMasuk;
 use App\Models\MaterialModel;
+use Illuminate\Database\Eloquent\Builder;
 
 
 use Illuminate\Http\Request;
@@ -39,9 +40,16 @@ class GudangCuciController extends Controller
                 $total += $value->qty;
             }
 
-            $cekPengembalian = GudangCompactKeluar::where('gdCuciKId', $request->id)->first();
-            if ($cekPengembalian != null && $total == 0) {
-                $request->cekPengembalian = 1;
+            $cekBahanPembantu = GudangCompactKeluarDetail::where('gdCuciKId', $request->id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
+            if(count($cekBahanPembantu)== 0){
+                $cekPengembalian = GudangCompactKeluar::where('gdCuciKId', $request->id)->first();
+                if ($cekPengembalian != null && $total == 0) {
+                    $request->cekPengembalian = 1;
+                }
+            }else{
+                $request->cekPengembalian = 2;
             }
         }
 

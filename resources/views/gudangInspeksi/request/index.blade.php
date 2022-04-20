@@ -75,6 +75,8 @@
                                                         <span style="color: green; font-size: 10px">Kembalikan Barang</span>
                                                     @elseif ($detail->cekInspeksi == 0)
                                                         <span style="color: green; font-size: 15px">Silahkan Lakukan Proses Inspeksi</span>
+                                                    @elseif($detail->statusDiterima == 1 && $detail->cekPengembalian == 2)
+                                                        <span style="color: green; font-size: 15px">Barang Sudah Diterima</span>
                                                     @else
                                                         <span style="color: green; font-size: 15px">Barang Sudah Dikembalikan</span>
                                                     @endif

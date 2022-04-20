@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AdminPurchase;
+use App\Models\AdminPurchaseDetail;
 use App\Models\GudangBahanBaku;
 use App\Models\GudangBahanBakuDetail;
 use App\Models\GudangBahanBakuDetailMaterial;
@@ -30,6 +31,7 @@ use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
 use App\Models\PPICGudangRequest;
 use App\Models\BarangDatangDetailMaterial;
+use Illuminate\Database\Eloquent\Builder;
 
 class GudangBahanBakuController extends Controller
 {
@@ -40,7 +42,7 @@ class GudangBahanBakuController extends Controller
 
     public function index(){
         $data = GudangBahanBakuDetail::all();
-        $materials = MaterialModel::all();
+        $materials = MaterialModel::where('keterangan','LIKE','%Bahan Baku%')->get();
         $dataStok=[];
         foreach ($materials as $key => $material) {
             $dataStok[$material->id]['id'] = $material->id;
@@ -58,13 +60,22 @@ class GudangBahanBakuController extends Controller
     }
 
     public function indexSupplyBarang(){
-        $data = BarangDatang::groupBy('purchaseId')->get();
+        $data = BarangDatangDetail::groupBy('purchaseId')->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Baku%');
+                    })->get();
         return view('bahanBaku.supply.index')->with(['data'=>$data]);
     }
 
     public function create()
     {
-        $purchases = AdminPurchase::where('jenisPurchase', 'Purchase Order')->get();
+        $purchases = AdminPurchaseDetail::groupBy('purchaseId')
+                            ->whereHas('material', function (Builder $query) {
+                             $query->where('keterangan','LIKE', '%Bahan Baku%');
+                            })
+                            ->whereHas('purchase', function (Builder $query) {
+                             $query->where('jenisPurchase', 'Purchase Order');
+                            })
+                            ->get();
         return view('bahanBaku.supply.create')->with(['purchases'=>$purchases]);
     }
 
@@ -318,11 +329,21 @@ class GudangBahanBakuController extends Controller
     public function keluarGudang()
     {
         $data = [];
-        $data[0] = GudangRajutKeluar::all();
-        $data[1] = GudangCuciKeluar::all();
-        $data[2] = GudangCompactKeluar::all();
-        $data[3] = GudangInspeksiKeluar::all();
-        $data[4] = GudangPotongKeluar::all();
+        $data[0] = GudangRajutKeluarDetail::groupBy('gdRajutKId')->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Baku%');
+                    })->get();
+        $data[1] = GudangCuciKeluarDetail::groupBy('gdCuciKId')->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Baku%');
+                    })->get();
+        $data[2] = GudangCompactKeluarDetail::groupBy('gdCompactKId')->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Baku%');
+                    })->get();
+        $data[3] = GudangInspeksiKeluarDetail::groupBy('gdInspeksiKId')->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Baku%');
+                    })->get();
+        $data[4] = GudangPotongKeluarDetail::groupBy('gdPotongKId')->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Baku%');
+                    })->get();
 
         for ($i=0; $i < count($data); $i++) { 
             foreach ($data[$i] as $val) {

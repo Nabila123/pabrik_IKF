@@ -480,10 +480,9 @@ Route::get('/GBahanPembantu/ppicRequest/terima/{id}', [App\Http\Controllers\Guda
 Route::get('/GBahanPembantu/keluar', [App\Http\Controllers\GudangBahanPembantuController::class, 'keluarGudang'])->name('GBahanPembantu.keluar');
 Route::get('/GBahanPembantu/keluar/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'createKeluarGudang'])->name('GBahanPembantu.keluar.create');
 Route::get('/GBahanPembantu/keluar/getMaterial/{gudangRequest}/{jenisKain}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataMaterial'])->name('GBahanPembantu.keluar.material');
+Route::get('/GBahanPembantu/keluar/getPurchase/{materialId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataPurchase'])->name('GBahanPembantu.keluar.purchase');
 Route::get('/GBahanPembantu/keluar/getGudang/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataGudang'])->name('GBahanPembantu.keluar.gudang');
-Route::get('/GBahanPembantu/keluar/getGudangInspeksi/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataGudangInspeksi'])->name('GBahanPembantu.keluar.gudangInspeksi');
 Route::get('/GBahanPembantu/keluar/getDetailMaterial/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataDetailMaterial'])->name('GBahanPembantu.keluar.detailMaterial');
-Route::get('/GBahanPembantu/keluar/getDetailMaterialInspeksi/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataDetailMaterialInspeksi'])->name('GBahanPembantu.keluar.detailMaterialInspeksi');
 Route::post('/GBahanPembantu/keluar/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'storeKeluarGudang'])->name('GBahanPembantu.keluar.store');
 Route::get('/GBahanPembantu/keluar/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'detailKeluarGudang'])->name('GBahanPembantu.keluar.detail');
 Route::get('/GBahanPembantu/keluar/detail/delete/{gudangId}/{detailId}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'deleteDetailGudang'])->name('GBahanPembantu.keluar.detail.delete');
@@ -493,10 +492,5 @@ Route::post('/GBahanPembantu/keluar/update/{id}/{gudangRequest}', [App\Http\Cont
 // Route::get('/GBahanPembantu/keluar/update/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'editKeluarGudang'])->name('GBahanPembantu.keluar.update');
 // Route::post('/GBahanPembantu/update/keluar/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'updateKeluarGudang'])->name('GBahanPembantu.keluar.update');
 Route::post('/GBahanPembantu/keluar/delete', [App\Http\Controllers\GudangBahanPembantuController::class, 'deleteKeluarGudang'])->name('GBahanPembantu.keluar.delete');
-
-//GUDANG MASUK
-Route::get('/GBahanPembantu/masuk', [App\Http\Controllers\GudangBahanPembantuController::class, 'masukGudang'])->name('GBahanPembantu.masuk');
-Route::get('/GBahanPembantu/masuk/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'detailKeluarGudang'])->name('GBahanPembantu.masuk.detail');
-Route::get('/GBahanPembantu/masuk/terima/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'terimaMasukGudang'])->name('GBahanPembantu.masuk.terima');
 
 Auth::routes();
