@@ -464,4 +464,8 @@ Route::post('/Keuangan/penjualan/create', [App\Http\Controllers\KeuanganControll
 Route::get('/Keuangan/penjualan/detail/{kodeTransaksi}', [App\Http\Controllers\KeuanganController::class, 'penjualanDetail'])->name('Keuangan.penjualan.detail');
 Route::delete('/Keuangan/penjualan/delete', [App\Http\Controllers\KeuanganController::class, 'penjualanDelete'])->name('Keuangan.penjualan.delete');
 
+//DASHBOARD TV
+Route::get('/dashboard/bahanBaku', [App\Http\Controllers\DashboardTVController::class, 'bahanBaku'])->name('dashboard.bahanBaku');
+Route::get('/dashboard/getBahanBaku', [App\Http\Controllers\DashboardTVController::class, 'getBahanBaku'])->name('dashboard.getBahanBaku');
+
 Auth::routes();
