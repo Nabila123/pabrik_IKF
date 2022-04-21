@@ -20,7 +20,51 @@ class GudangPotongController extends Controller
 {
     public function index()
     {
-        return view('gudangPotong.index');
+        $kains = GudangPotongKeluarDetail::all();
+
+        $bajus = GudangPotongProsesDetail::select('jenisBaju', 'ukuranBaju')->groupBy('jenisBaju', 'ukuranBaju')->get();
+        $data = GudangPotongProsesDetail::all();
+        $dataJahit = GudangJahitMasukDetail::all();
+        $dataKain=[];
+        $kainPutih = 0;
+        $jumlahPutih = 0;
+        $kainInspeksi = 0;
+        $jumlahInspeksi = 0;
+        $dataStok=[];
+
+        // dd($bajus, $data);
+        foreach ($kains as $kain) {
+            if ($kain->gdDetailMaterialId != null) {
+                $dataKain["putih"]['nama'] = "Kain Putih";
+                $kainPutih += $kain->berat;
+                $dataKain["putih"]['berat'] = $kainPutih;
+                $jumlahPutih += $kain->qty;
+                $dataKain["putih"]['qty'] = $jumlahPutih;
+            } else {
+                $dataKain["inspeksi"]['nama'] = "Kain Putih Inspeksi";
+                $kainInspeksi += $kain->berat;
+                $dataKain["inspeksi"]['berat'] = $kainInspeksi;
+                $jumlahInspeksi += $kain->qty;
+                $dataKain["inspeksi"]['qty'] = $jumlahInspeksi;
+            }
+            
+        }
+        foreach ($bajus as $baju) {
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['nama'] = $baju->jenisBaju;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['ukuran'] = $baju->ukuranBaju;
+            $dataStok[$baju->jenisBaju."_".$baju->ukuranBaju]['qty'] = 0;
+        }
+
+        foreach ($data as $value) {
+            $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] = $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] + $value->hasilDz;
+        }
+
+        foreach ($dataJahit as $jahit) {
+            $dataStok[$jahit->jenisBaju."_".$jahit->ukuranBaju]['qty'] = $dataStok[$jahit->jenisBaju."_".$jahit->ukuranBaju]['qty'] - ($jahit->qty/12);
+
+        }
+
+        return view('gudangPotong.index', ['dataKain' => $dataKain, 'dataStok' => $dataStok]);
     }
 
     public function getData(Request $request)
