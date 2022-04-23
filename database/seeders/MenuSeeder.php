@@ -129,6 +129,10 @@ class MenuSeeder extends Seeder
             ['id' => 73, 'parentId' => 70, 'urutan' => 3, 'nama' => 'Purchase Invoice', 'alias' => 'adminPO.poInvoice', 'directori' => 'adminPO/purchaseInvoice/index', 'isActive' => 1],
             ['id' => 74, 'parentId' => 70, 'urutan' => 4, 'nama' => 'Penjualan Baju', 'alias' => 'Keuangan.penjualan', 'directori' => 'keuangan/penjualan/index', 'isActive' => 1],
 
+            //Master Pegawai
+            ['id' => 76, 'parentId' => 0, 'urutan' => 17, 'nama' => 'Master Pegawai', 'alias' => 'pegawai', 'directori' => 'pegawai', 'isActive' => 1],
+            ['id' => 77, 'parentId' => 76, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'pegawai', 'directori' => 'pegawai/index', 'isActive' => 1],
+
         ];
 
         DB::table('mst_menu')->insert($menu);

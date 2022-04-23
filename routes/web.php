@@ -470,4 +470,13 @@ Route::get('/dashboard/getBahanBaku', [App\Http\Controllers\DashboardTVControlle
 Route::get('/dashboard/produksi', [App\Http\Controllers\DashboardTVController::class, 'produksi'])->name('dashboard.produksi');
 Route::get('/dashboard/getProduksi', [App\Http\Controllers\DashboardTVController::class, 'getProduksi'])->name('dashboard.getProduksi');
 
+//Master Pegawai
+Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai');
+Route::get('/pegawai/create', [App\Http\Controllers\PegawaiController::class, 'create'])->name('pegawai.create');
+Route::post('pegawai/create', [App\Http\Controllers\PegawaiController::class, 'store'])->name('pegawai.store');
+Route::get('/pegawai/edit/{kodeBagian}', [App\Http\Controllers\PegawaiController::class, 'edit'])->name('pegawai.edit');
+Route::post('pegawai/edit/{kodeBagian}', [App\Http\Controllers\PegawaiController::class, 'update'])->name('pegawai.update');
+Route::get('pegawai/detail/{kodeBagian}', [App\Http\Controllers\PegawaiController::class, 'detail'])->name('pegawai.detail');
+Route::get('pegawai/delete/{kodeBagian}/{id}', [App\Http\Controllers\PegawaiController::class, 'delete'])->name('pegawai.delete');
+
 Auth::routes();
