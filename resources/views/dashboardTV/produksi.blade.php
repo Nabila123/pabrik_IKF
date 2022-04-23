@@ -150,9 +150,10 @@
                     for(var i = 0;i < data.table.length;i++){
                     var table = "<h2 class='card-title  mt-4 mb-4' style='width: 100%; font-weight: bold;'>";
                             if(i == 0){ table += "Gudang Potong"; }
-                            else if(i == 1){ table += "Gudang Batil"; }
-                            else if(i == 2){ table += "Gudang Control"; }
-                            else if(i == 3){ table += "Gudang Setrika"; }
+                            else if(i == 1){ table += "Gudang Jahit"; }
+                            else if(i == 2){ table += "Gudang Batil"; }
+                            else if(i == 3){ table += "Gudang Control"; }
+                            else if(i == 4){ table += "Gudang Setrika"; }
                             else{ table += "Gudang Packing"; }
                         table += "</h2>";
                         table += "<table class='table table-bordered table-striped textAlign ' style='width: 100%; border-collapse: collapse;'>";
