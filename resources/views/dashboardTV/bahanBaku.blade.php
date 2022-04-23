@@ -70,7 +70,7 @@
             <div class="col-12">
                 <div class="card card-info">
                     <div class="card-body">
-                        <div id="contentScroll" class="dataTables_scrollBody" style="overflow-y: scroll; height:460px;">
+                        <div id="contentScroll" class="dataTables_scrollBody" style="overflow-y: scroll; height:595px;">
                             <div class="table" id="table">
                                 
                             </div>
@@ -107,7 +107,7 @@
             objDiv.scrollTop = objDiv.scrollTop + 1;  
             $('p:nth-of-type(1)').html('scrollTop : '+ objDiv.scrollTop);
             $('p:nth-of-type(2)').html('scrollHeight : ' + objDiv.scrollHeight);
-            if (objDiv.scrollTop == (objDiv.scrollHeight - 460)) {
+            if (objDiv.scrollTop == (objDiv.scrollHeight - 595)) {
                 objDiv.scrollTop = 0;
             }
             my_time = setTimeout('pageScroll()', 25);
