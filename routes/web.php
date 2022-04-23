@@ -467,5 +467,7 @@ Route::delete('/Keuangan/penjualan/delete', [App\Http\Controllers\KeuanganContro
 //DASHBOARD TV
 Route::get('/dashboard/bahanBaku', [App\Http\Controllers\DashboardTVController::class, 'bahanBaku'])->name('dashboard.bahanBaku');
 Route::get('/dashboard/getBahanBaku', [App\Http\Controllers\DashboardTVController::class, 'getBahanBaku'])->name('dashboard.getBahanBaku');
+Route::get('/dashboard/produksi', [App\Http\Controllers\DashboardTVController::class, 'produksi'])->name('dashboard.produksi');
+Route::get('/dashboard/getProduksi', [App\Http\Controllers\DashboardTVController::class, 'getProduksi'])->name('dashboard.getProduksi');
 
 Auth::routes();
