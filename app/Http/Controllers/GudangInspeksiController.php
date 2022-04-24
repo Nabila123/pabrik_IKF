@@ -79,8 +79,11 @@ class GudangInspeksiController extends Controller
     public function RDetail($id){
         $gInspeksiRequest = GudangInspeksiKeluar::where('id', $id)->first();
         $gInspeksiRequestDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $id)->get();
+        $cekBahanPembantu = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
 
-        return view('gudangInspeksi.request.detail', ['gudangKeluar' => $gInspeksiRequest, 'gudangKeluarDetail' => $gInspeksiRequestDetail]);
+        return view('gudangInspeksi.request.detail', ['gudangKeluar' => $gInspeksiRequest, 'gudangKeluarDetail' => $gInspeksiRequestDetail,'cekBahanPembantu'=>$cekBahanPembantu]);
     }
 
     public function RTerimaBarang($id){

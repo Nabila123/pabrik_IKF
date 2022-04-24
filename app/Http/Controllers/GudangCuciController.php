@@ -40,7 +40,7 @@ class GudangCuciController extends Controller
                 $total += $value->qty;
             }
 
-            $cekBahanPembantu = GudangCompactKeluarDetail::where('gdCuciKId', $request->id)->whereHas('material', function (Builder $query) {
+            $cekBahanPembantu = GudangCuciKeluarDetail::where('gdCuciKId', $request->id)->whereHas('material', function (Builder $query) {
                      $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
                     })->get();
             if(count($cekBahanPembantu)== 0){
@@ -59,8 +59,11 @@ class GudangCuciController extends Controller
     public function RDetail($id){
         $gCuciRequest = GudangCuciKeluar::where('id', $id)->first();
         $gCuciRequestDetail = GudangCuciKeluarDetail::where('gdCuciKId', $id)->get();
+        $cekBahanPembantu = GudangCuciKeluarDetail::where('gdCuciKId', $id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
 
-        return view('gudangCuci.request.detail', ['gudangKeluar' => $gCuciRequest, 'gudangKeluarDetail' => $gCuciRequestDetail]);
+        return view('gudangCuci.request.detail', ['gudangKeluar' => $gCuciRequest, 'gudangKeluarDetail' => $gCuciRequestDetail, 'cekBahanPembantu'=>$cekBahanPembantu]);
     }
 
     public function RTerimaBarang($id){

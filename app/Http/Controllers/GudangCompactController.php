@@ -54,8 +54,11 @@ class GudangCompactController extends Controller
     public function RDetail($id){
         $gCompactRequest = GudangCompactKeluar::where('id', $id)->first();
         $gCompactRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $id)->get();
+        $cekBahanPembantu = GudangCompactKeluarDetail::where('gdCompactKId', $id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
 
-        return view('gudangCompact.request.detail', ['gudangKeluar' => $gCompactRequest, 'gudangKeluarDetail' => $gCompactRequestDetail]);
+        return view('gudangCompact.request.detail', ['gudangKeluar' => $gCompactRequest, 'gudangKeluarDetail' => $gCompactRequestDetail, 'cekBahanPembantu'=>$cekBahanPembantu]);
     }
 
     public function RTerimaBarang($id){

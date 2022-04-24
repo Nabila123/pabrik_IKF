@@ -54,11 +54,14 @@ class GudangRajutController extends Controller
     public function RDetail($id){        
         $gRajutRequest = GudangRajutKeluar::where('id', $id)->first();
         $gRajutRequestDetail = GudangRajutKeluarDetail::where('gdRajutKId', $id)->get();
+        $cekBahanPembantu = GudangRajutKeluarDetail::where('gdRajutKId', $id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
         foreach ($gRajutRequestDetail as $value) {
            $material = $value->material->nama;
         }
 
-        return view('gudangRajut.request.detail', ['material' => $material, 'gudangKeluar' => $gRajutRequest, 'gudangKeluarDetail' => $gRajutRequestDetail]);
+        return view('gudangRajut.request.detail', ['material' => $material, 'gudangKeluar' => $gRajutRequest, 'gudangKeluarDetail' => $gRajutRequestDetail, 'cekBahanPembantu'=>$cekBahanPembantu]);
     }
 
     public function RTerimaBarang($id){

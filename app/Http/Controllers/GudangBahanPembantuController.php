@@ -471,6 +471,10 @@ class GudangBahanPembantuController extends Controller
                 $gudang = 'Gudang Potong';
                 $keluar = new GudangPotongKeluar;
                 break;
+            case 5:
+                $gudang = 'Gudang Compact';
+                $keluar = new GudangCompactKeluar;
+                break;
         }
 
         $keluar->tanggal = date('Y-m-d');
@@ -526,6 +530,15 @@ class GudangBahanPembantuController extends Controller
                         }
                     }
                     
+                }elseif($request['jenisId'] == 5){
+                    $keluarDetail = GudangCompactKeluarDetail::CreateCompactKeluarDetail($request['gudangIdArr'][$i], $request['gudangMaterialDetailArr'][$i], $gdId, $request['purchaseIdArr'][$i], $request['materialIdArr'][$i],$request['jenisIdArr'][$i], $request['gramasiArr'][$i], $request['diameterArr'][$i], $request['beratArr'][$i], $request['qtyArr'][$i]);
+                    if ($keluarDetail) {
+                        $newQty = 0;
+                        $detailMaterial = GudangBahanBakuDetailMaterial::where('id', $request['gudangMaterialDetailArr'][$i])->first();
+                        $newQty = $detailMaterial->qty - $request['qtyArr'][$i];
+                        GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $newQty, $detailMaterial->id);
+                        
+                    }
                 }
             }
         }

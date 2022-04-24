@@ -53,9 +53,11 @@
                     <div class="card"> 
                         <div class="card-header">
                             <table class="table">
-                                <tr>
-                                    <td> <b>Nama Barang :</b> Kain Putih</td>
-                                </tr>
+                                @if(count($cekBahanPembantu) == 0)
+                                    <tr>
+                                        <td> <b>Nama Barang :</b> Kain Putih</td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangPotong->tanggal)) }}</td>
                                 </tr>

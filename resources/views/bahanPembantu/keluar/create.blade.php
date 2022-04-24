@@ -65,6 +65,7 @@
                                                                 <option value="">Pilih Gudang</option>
                                                                     <option value=1>Gudang Rajut</option>
                                                                     <option value=2>Gudang Cuci</option>
+                                                                    <option value=5>Gudang Compact</option>
                                                                     <option value=3>Gudang Inspeksi</option>
                                                                     <option value=4>Gudang Potong</option>
                                                             </select>                                           
@@ -336,6 +337,7 @@
                 e.preventDefault();
 
                 var material                = $('#materialId').val();
+                var jenisId                = $('#jenisId').val();
                 var nama_material           = $('#materialId').find('option:selected').text();
                 var purchaseId              = $('#kodePurchase').val();
                 var kodePurchase            = $('#kodePurchase').find('option:selected').text();
@@ -363,6 +365,7 @@
                             table += "<input type='hidden' name='gudangIdArr[]' value='"+gudangId+"' id='gudangId_"+jumlah_data+"'/>";
                             table += "<input type='hidden' name='gudangMaterialDetailArr[]' value='"+gudangMaterialDetail+"' id='gudangMaterialDetail_"+jumlah_data+"'/>";
                             table += "<td>"+nama_material+"<input type='hidden' name='materialIdArr[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
+                            table += "<input type='hidden' name='jenisIdArr[]' value='"+jenisId+"' id='jenisId_"+jumlah_data+"'>";
                             table += "<td>"+kodePurchase+"<input type='hidden' name='purchaseIdArr[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
                             table += "<td>"+nilai_diameter+"<input type='hidden' name='diameterArr[]' value='"+diameter+"' id='diameter_"+jumlah_data+"'></td>";
                             table += "<td>"+nilai_gramasi+"<input type='hidden' name='gramasiArr[]' value='"+gramasi+"' id='gramasi_"+jumlah_data+"'></td>";
