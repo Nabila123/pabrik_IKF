@@ -120,7 +120,7 @@
                                                     <button type="button" class='btn btn-info disabled mt-1'><i class="fas fa-download" style="font-size: 14px"></i></button>
                                                 @endif
                                                 
-                                                @if (|| \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
+                                                @if (\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
                                                     <button type="button" data-toggle="modal" purchaseId='{{ $order->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $order->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                             </td>
