@@ -64,10 +64,12 @@
                                         @for ($j = 0; $j < count($data[$i]); $j++)
                                             <tr>
                                                 <td>{{$data[$i][$j]->gudangRequest}}</td>
-                                                <td>{{$data[$i][$j]->tanggal}}</td>
+                                                <td>{{date('d F Y', strtotime($data[$i][$j]->tanggal))}}</td>
                                                 <td>
                                                     @if ($data[$i][$j]->statusDiterima == 0)
-                                                        <a href="{{ route('bahan_baku.masuk.terima', [$data[$i][$j]->id, $data[$i][$j]->gudangRequest]) }}" class="btn btn-success"> Terima Barang </a>
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 26)
+                                                            <a href="{{ route('bahan_baku.masuk.terima', [$data[$i][$j]->id, $data[$i][$j]->gudangRequest]) }}" class="btn btn-success"> Terima Barang </a>
+                                                        @endif
                                                     @elseif ($data[$i][$j]->statusDiterima == 1)
                                                         <span style="color: green; font-size: 13px">Barang Sudah Diterima </span>
                                                    @endif

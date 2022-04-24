@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            @if (\Auth::user()->roleId == 38)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 38)
                                 <h3 class="card-title">
                                     <a href="{{ route('ppic.gdRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
                                 </h3>
@@ -85,7 +85,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('ppic.gdRequest.detail', $request->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                @if (\Auth::user()->roleId == 38)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 38)
                                                     <a href="{{ route('ppic.gdRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                     <button type="button" data-toggle="modal" invoiceId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
