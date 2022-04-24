@@ -75,7 +75,7 @@
                                             <td>{{ $user->nip }}</td>
                                             <td>{{ $user->role->nama }} </td>
                                             <td>
-                                                <a href="{{ route('user.detail', $user->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
+                                                {{--  <a href="{{ route('user.detail', $user->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>  --}}
                                                 <a href="{{ route('user.edit', $user->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $user->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                             </td>

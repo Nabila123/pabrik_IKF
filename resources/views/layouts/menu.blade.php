@@ -8,6 +8,7 @@
 ?>
 
 @foreach($mains as $main)
+    @if(checkPermission($main->id,\Auth::user()->roleId))
         <?php
             $menus = \DB::table('mst_menu')
                     ->where('parentId','=',$main->id)
@@ -41,6 +42,7 @@
             
                 <ul class="nav nav-treeview">
                     @foreach($menus as $menu)
+                        @if(checkPermission($main->id,\Auth::user()->roleId))
                             <li class="nav-item">
                                 <a href="{{ route($menu->alias) }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -56,8 +58,10 @@
                                     </p>
                                 </a>
                             </li>
+                        @endif
                     @endforeach
                 </ul>
             </li>
         @endif
+    @endif
 @endforeach

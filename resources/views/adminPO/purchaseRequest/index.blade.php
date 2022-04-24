@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            @if (\Auth::user()->roleId == 38)
+                            @if (\Auth::user()->roleId == 38 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10 || \Auth::user()->roleId == 24)
                                 <h3 class="card-title">
                                     <a href="{{ route('adminPO.poRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
                                 </h3>
@@ -136,10 +136,12 @@
                                             <td>
                                                 <a href="{{ route('adminPO.poRequest.detail', $request->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 
-                                                @if ($request->prosesOrder != true)
-                                                    <a href="{{ route('adminPO.poRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                @else
-                                                    <button type="button" class='btn btn-success disabled mt-1'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></button>
+                                                @if (\Auth::user()->roleId == 38 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
+                                                    @if ($request->prosesOrder != true)
+                                                        <a href="{{ route('adminPO.poRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    @else
+                                                        <button type="button" class='btn btn-success disabled mt-1'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></button>
+                                                    @endif
                                                 @endif
 
                                                 @if ($request->isKaDeptPO != 0)
@@ -147,7 +149,10 @@
                                                 @else
                                                     <button type="button" class='btn btn-info disabled mt-1'><i class="fas fa-download" style="font-size: 14px"></i></button>
                                                 @endif
-                                                <button type="button" data-toggle="modal" purchaseId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                
+                                                @if (\Auth::user()->roleId == 38 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
+                                                    <button type="button" data-toggle="modal" purchaseId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                                    

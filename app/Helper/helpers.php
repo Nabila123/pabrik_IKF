@@ -26,12 +26,36 @@
     }
 
     function checkPermission($id_menu='', $id_role='') {
-        $id_role = $id_role == '' ? \Session::get('id_role') : $id_role;
-        
+        $id_role = $id_role == '' ? \Auth::user()->roleId : $id_role;
+
         return \DB::table('permission')
                     ->where('roleId','=',$id_role)
                     ->where('menuId','=',$id_menu)
                     ->count()>0?1:0;
+    }
+
+    function checkFitur($menu='', $id_role='', $check='') {
+        $id_role = $id_role == '' ? \Auth::user()->roleId : $id_role;
+        $menu = \DB::table('mst_menu')->where('nama','=',$menu)->first();
+        
+        $permission =  \DB::table('permission')
+                    ->where('roleId','=',$id_role)
+                    ->where('menuId','=',$menu->id)
+                    ->first();
+            
+        switch ($check) {
+            case 'create':
+                return $permission->isCreate == 1?true:false;
+                break;
+
+            case 'update':
+                return $permission->isUpdate == 1?true:false;
+                break;
+
+            case 'delete':
+                return $permission->isDelete == 1?true:false;
+                break;            
+        }
     }
 
     function notifMenu($id)
