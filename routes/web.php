@@ -521,4 +521,13 @@ Route::post('/GBahanPembantu/keluar/update/{id}/{gudangRequest}', [App\Http\Cont
 // Route::post('/GBahanPembantu/update/keluar/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'updateKeluarGudang'])->name('GBahanPembantu.keluar.update');
 Route::post('/GBahanPembantu/keluar/delete', [App\Http\Controllers\GudangBahanPembantuController::class, 'deleteKeluarGudang'])->name('GBahanPembantu.keluar.delete');
 
+//Master User
+Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
+Route::post('user/create', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
+Route::get('/user/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('user.edit');
+Route::post('user/edit/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
+Route::get('user/detail/{id}', [App\Http\Controllers\UserController::class, 'detail'])->name('user.detail');
+Route::delete('user/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('user.delete');
+
 Auth::routes();
