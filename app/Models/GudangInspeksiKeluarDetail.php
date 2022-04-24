@@ -48,4 +48,9 @@ class GudangInspeksiKeluarDetail extends Model
             return 0;
         }
     }
+
+
+    function getKeluarIdAttribute() {
+        return $this->gdInspeksiKId;
+    }
 }

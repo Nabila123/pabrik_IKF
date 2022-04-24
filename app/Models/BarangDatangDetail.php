@@ -19,4 +19,10 @@ class BarangDatangDetail extends Model
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');
     }
+
+    public function barangDatang()
+    {
+         return $this->belongsTo('App\Models\BarangDatang','barangDatangId','id');
+    }
 }
+

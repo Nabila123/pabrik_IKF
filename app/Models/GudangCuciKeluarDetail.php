@@ -63,4 +63,8 @@ class GudangCuciKeluarDetail extends Model
             return 1;
         }
     }
+
+    function getKeluarIdAttribute() {
+        return $this->gdCuciKId;
+    }
 }

@@ -33,12 +33,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Pemindahan Gudang</h1>
+                    <h1>Detail Request Gudang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Pemindahan Gudang Compact</li>
+                        <li class="breadcrumb-item">Request Gudang</li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
                 </div>
@@ -53,13 +53,11 @@
                     <div class="card"> 
                         <div class="card-header">
                             <table class="table">
-                                @if(count($cekBahanPembantu) == 0)
-                                    <tr>
-                                        <td> <b>Nama Barang :</b> Grey / Kain Grey</td>
-                                    </tr>
-                                @endif
                                 <tr>
-                                    <td> <b>Tanggal Pemindahan :</b> {{ date('d F Y', strtotime($gudangKeluar->tanggal)) }}</td>
+                                    <td> <b>Gudang :</b> {{ $data->gudangRequest }}</td>
+                                </tr>
+                                <tr>
+                                    <td> <b>Tanggal Request :</b> {{ date('d F Y', strtotime($data->tanggal)) }}</td>
                                 </tr>
                             </table>
                         </div>                       
@@ -69,20 +67,24 @@
                                     <tr>
                                         <th class="textAlign">Bahan</th>
                                         <th class="textAlign">Nomor PO</th>
-                                        <th class="textAlign">Gramasi</th>
-                                        <th class="textAlign">Diamater</th>
-                                        <th class="textAlign">Berat</th>
+                                        @if ($data->gudangRequest != "Gudang Rajut")
+                                            <th class="textAlign">Gramasi</th>
+                                            <th class="textAlign">Diamater</th>
+                                            <th class="textAlign">Berat</th>
+                                        @endif
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">
-                                    @foreach ($gudangKeluarDetail as $detail)
+                                    @foreach ($dataDetail as $detail)
                                         <tr>
                                             <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
-                                            <td>{{ $detail->gramasi }}</td>
-                                            <td>{{ $detail->diameter }}</td>
-                                            <td>{{ $detail->berat }}</td>
+                                            @if ($data->gudangRequest != "Gudang Rajut")
+                                                <td>{{ $detail->gramasi }}</td>
+                                                <td>{{ $detail->diameter }}</td>
+                                                <td>{{ $detail->berat }}</td>
+                                            @endif
                                             <td>{{ $detail->qty }}</td>
                                         </tr>
                                     @endforeach

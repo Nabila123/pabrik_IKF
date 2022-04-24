@@ -53,9 +53,11 @@
                     <div class="card"> 
                         <div class="card-header">
                             <table class="table">
-                                <tr>
-                                    <td> <b>Nama Barang :</b> {{ $material }}</td>
-                                </tr>
+                                @if(count($cekBahanPembantu) == 0)
+                                    <tr>
+                                        <td> <b>Nama Barang :</b> {{ $material }}</td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td> <b>Tanggal Pengambilan :</b> {{ date('d F Y', strtotime($gudangKeluar->tanggal)) }}</td>
                                 </tr>
@@ -65,6 +67,9 @@
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
+                                        @if(count($cekBahanPembantu) != 0)
+                                            <th>Barang</th>
+                                        @endif
                                         <th class="textAlign">Nomor PO</th>
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
@@ -72,6 +77,9 @@
                                 <tbody class="textAlign">
                                     @foreach ($gudangKeluarDetail as $detail)
                                         <tr>
+                                             @if(count($cekBahanPembantu) != 0)
+                                                <td>{{$detail->material->nama}}</td>
+                                            @endif
                                             <td>{{ $detail->purchase->kode }}</td>
                                             <td>{{ $detail->qty }}</td>
                                         </tr>

@@ -12,6 +12,7 @@ use App\Models\AdminPurchase;
 use App\Models\AdminPurchaseDetail;
 use App\Models\gudangInspeksiStokOpname;
 use App\Models\gudangInspeksiStokOpnameDetail;
+use Illuminate\Database\Eloquent\Builder;
 
 class GudangInspeksiController extends Controller
 {
@@ -51,6 +52,9 @@ class GudangInspeksiController extends Controller
 
             foreach ($cekDetail as $detail) {
                 $gudangInspeksi = gudangInspeksiStokOpname::where('gdInspeksiKId', $detail->gdInspeksiKId)->where('gdDetailMaterialId', $detail->gdDetailMaterialId)->where('purchaseId', $detail->purchaseId)->first();
+                $cekBahanPembantu = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $request->id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
                 $cekPengembalian = GudangInspeksiMasuk::where('gdInspeksiKId', $request->id)->first();
                 
                 if ($gudangInspeksi != null) {
@@ -59,12 +63,15 @@ class GudangInspeksiController extends Controller
                     $request->cekInspeksi = 0;
                 }
 
-                if ($cekPengembalian != null) {
-                    $request->cekPengembalian = 1;
+                if(count($cekBahanPembantu)== 0){
+                    if ($cekPengembalian != null) {
+                        $request->cekPengembalian = 1;
+                    }
+                }else{
+                    $request->cekPengembalian = 2;
                 }
             }
         }
-
         // dd($gInspeksiRequest);
         return view('gudangInspeksi.request.index', ['gInspeksiRequest' => $gInspeksiRequest]);
     }
@@ -72,8 +79,11 @@ class GudangInspeksiController extends Controller
     public function RDetail($id){
         $gInspeksiRequest = GudangInspeksiKeluar::where('id', $id)->first();
         $gInspeksiRequestDetail = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $id)->get();
+        $cekBahanPembantu = GudangInspeksiKeluarDetail::where('gdInspeksiKId', $id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
 
-        return view('gudangInspeksi.request.detail', ['gudangKeluar' => $gInspeksiRequest, 'gudangKeluarDetail' => $gInspeksiRequestDetail]);
+        return view('gudangInspeksi.request.detail', ['gudangKeluar' => $gInspeksiRequest, 'gudangKeluarDetail' => $gInspeksiRequestDetail,'cekBahanPembantu'=>$cekBahanPembantu]);
     }
 
     public function RTerimaBarang($id){

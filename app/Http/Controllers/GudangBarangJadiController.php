@@ -9,6 +9,7 @@ use App\Models\GudangPotongRequestDetail;
 use App\Models\GudangBarangJadiPenjualan;
 use App\Models\GudangBarangJadiPenjualanDetail;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class GudangBarangJadiController extends Controller

@@ -73,6 +73,8 @@
                                                         <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
                                                         <a href="{{ route('GCompact.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
                                                         <span style="color: green; font-size: 10px">Kembalikan Barang </span>
+                                                    @elseif($detail->statusDiterima == 1 && $detail->cekPengembalian == 2)
+                                                        <span style="color: green; font-size: 15px">Barang Sudah Diterima</span>
                                                     @else
                                                         <span style="color: green; font-size: 15px">Barang Sudah Dikembalikan</span>
                                                     @endif

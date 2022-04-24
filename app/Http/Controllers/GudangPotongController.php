@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\GudangPotongKeluar;
 use App\Models\GudangPotongKeluarDetail;
 use App\Models\GudangPotongProses;
@@ -157,8 +158,11 @@ class GudangPotongController extends Controller
     {
         $gudangPotong = GudangPotongKeluar::where('id', $id)->first();
         $gudangPotongDetail = GudangPotongKeluarDetail::where('gdPotongKId', $gudangPotong->id)->get();
+        $cekBahanPembantu = GudangPotongKeluarDetail::where('gdPotongKId', $id)->whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();
 
-        return view('gudangPotong.keluar.detail', ['gudangPotong' => $gudangPotong, 'gudangPotongDetail' => $gudangPotongDetail]);
+        return view('gudangPotong.keluar.detail', ['gudangPotong' => $gudangPotong, 'gudangPotongDetail' => $gudangPotongDetail,'cekBahanPembantu'=>$cekBahanPembantu]);
     }
 
     public function gKeluarTerima($id)

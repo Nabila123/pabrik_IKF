@@ -54,4 +54,8 @@ class GudangPotongKeluarDetail extends Model
             return 0;
         }
     }
+
+    function getKeluarIdAttribute() {
+        return $this->gdPotongKId;
+    }
 }

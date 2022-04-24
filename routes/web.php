@@ -428,6 +428,15 @@ Route::post('material/edit/{id}', [App\Http\Controllers\MaterialController::clas
 Route::get('material/detail/{id}', [App\Http\Controllers\MaterialController::class, 'detail'])->name('Material.detail');
 Route::delete('material/delete', [App\Http\Controllers\MaterialController::class, 'delete'])->name('Material.delete');
 
+//Jenis Baju
+Route::get('/jenisBaju', [App\Http\Controllers\JenisBajuController::class, 'index'])->name('JenisBaju');
+Route::get('/jenisBaju/create', [App\Http\Controllers\JenisBajuController::class, 'create'])->name('JenisBaju.create');
+Route::post('jenisBaju/create', [App\Http\Controllers\JenisBajuController::class, 'store'])->name('JenisBaju.store');
+Route::get('/jenisBaju/edit/{id}', [App\Http\Controllers\JenisBajuController::class, 'edit'])->name('JenisBaju.edit');
+Route::post('jenisBaju/edit/{id}', [App\Http\Controllers\JenisBajuController::class, 'update'])->name('JenisBaju.update');
+Route::get('jenisBaju/detail/{id}', [App\Http\Controllers\JenisBajuController::class, 'detail'])->name('JenisBaju.detail');
+Route::delete('jenisBaju/delete', [App\Http\Controllers\JenisBajuController::class, 'delete'])->name('JenisBaju.delete');
+
 //Gudang Barang Jadi
 Route::get('/GBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'index'])->name('GBarangJadi');
 Route::post('/GBarangJadi/getBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'getBarangJadi'])->name('GBarangJadi.getBarangJadi');
@@ -478,5 +487,38 @@ Route::get('/pegawai/edit/{kodeBagian}', [App\Http\Controllers\PegawaiController
 Route::post('pegawai/edit/{kodeBagian}', [App\Http\Controllers\PegawaiController::class, 'update'])->name('pegawai.update');
 Route::get('pegawai/detail/{kodeBagian}', [App\Http\Controllers\PegawaiController::class, 'detail'])->name('pegawai.detail');
 Route::get('pegawai/delete/{kodeBagian}/{id}', [App\Http\Controllers\PegawaiController::class, 'delete'])->name('pegawai.delete');
+
+/* Gudang Bahan Pembantu */
+Route::get('/GBahanPembantu', [App\Http\Controllers\GudangBahanPembantuController::class, 'index'])->name('GBahanPembantu');
+Route::get('/GBahanPembantu/supply', [App\Http\Controllers\GudangBahanPembantuController::class, 'indexSupplyBarang'])->name('GBahanPembantu.supply.index');
+Route::get('/GBahanPembantu/supply/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'create'])->name('GBahanPembantu.supply.create');
+Route::post('/GBahanPembantu/supply/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'store'])->name('GBahanPembantu.supply.store');
+Route::get('/GBahanPembantu/suppply/detail/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'detail'])->name('GBahanPembantu.supply.detail');
+
+Route::get('/GBahanPembantu/supply/update/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'edit'])->name('GBahanPembantu.supply.update');
+Route::post('/GBahanPembantu/supply/update/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'update'])->name('GBahanPembantu.supply.update');
+Route::post('/GBahanPembantu/supply/delete', [App\Http\Controllers\GudangBahanPembantuController::class, 'delete'])->name('GBahanPembantu.supply.delete');
+Route::post('/GBahanPembantu/supply/delDetailMaterial/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'delDetailMaterial'])->name('GBahanPembantu.supply.delDetailMaterial');
+
+//PPIC Request
+Route::get('/GBahanPembantu/ppicRequest', [App\Http\Controllers\GudangBahanPembantuController::class, 'ppicRequest'])->name('GBahanPembantu.ppicRequest');
+Route::get('/GBahanPembantu/ppicRequest/terima/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'terimaPPICRequest'])->name('GBahanPembantu.ppicRequest.terima');
+
+//GUDANG KELUAR
+Route::get('/GBahanPembantu/keluar', [App\Http\Controllers\GudangBahanPembantuController::class, 'keluarGudang'])->name('GBahanPembantu.keluar');
+Route::get('/GBahanPembantu/keluar/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'createKeluarGudang'])->name('GBahanPembantu.keluar.create');
+Route::get('/GBahanPembantu/keluar/getMaterial/{gudangRequest}/{jenisKain}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataMaterial'])->name('GBahanPembantu.keluar.material');
+Route::get('/GBahanPembantu/keluar/getPurchase/{materialId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataPurchase'])->name('GBahanPembantu.keluar.purchase');
+Route::get('/GBahanPembantu/keluar/getGudang/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataGudang'])->name('GBahanPembantu.keluar.gudang');
+Route::get('/GBahanPembantu/keluar/getDetailMaterial/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataDetailMaterial'])->name('GBahanPembantu.keluar.detailMaterial');
+Route::post('/GBahanPembantu/keluar/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'storeKeluarGudang'])->name('GBahanPembantu.keluar.store');
+Route::get('/GBahanPembantu/keluar/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'detailKeluarGudang'])->name('GBahanPembantu.keluar.detail');
+Route::get('/GBahanPembantu/keluar/detail/delete/{gudangId}/{detailId}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'deleteDetailGudang'])->name('GBahanPembantu.keluar.detail.delete');
+Route::get('/GBahanPembantu/keluar/update/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'updateKeluarGudang'])->name('GBahanPembantu.keluar.update');
+Route::post('/GBahanPembantu/keluar/update/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'updateSaveKeluarGudang'])->name('GBahanPembantu.keluar.update');
+
+// Route::get('/GBahanPembantu/keluar/update/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'editKeluarGudang'])->name('GBahanPembantu.keluar.update');
+// Route::post('/GBahanPembantu/update/keluar/{id}', [App\Http\Controllers\GudangBahanPembantuController::class, 'updateKeluarGudang'])->name('GBahanPembantu.keluar.update');
+Route::post('/GBahanPembantu/keluar/delete', [App\Http\Controllers\GudangBahanPembantuController::class, 'deleteKeluarGudang'])->name('GBahanPembantu.keluar.delete');
 
 Auth::routes();

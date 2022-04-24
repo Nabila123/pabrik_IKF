@@ -12,6 +12,7 @@ use App\Models\BarangDatang;
 use App\Models\BarangDatangDetail;
 use App\Models\BarangDatangDetailMaterial;
 use PDF;
+use Illuminate\Database\Eloquent\Builder;
 
 use Illuminate\Http\Request;
 

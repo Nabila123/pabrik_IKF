@@ -14,6 +14,11 @@ class AdminPurchaseDetail extends Model
         return $this->hasOne('App\Models\MaterialModel','id','materialId');
     }
 
+    public function purchase()
+    {
+        return $this->belongsTo('App\Models\AdminPurchase','purchaseId','id');
+    }
+
     public static function purchaseDetailCreate($purchaseId, $materialId, $jumlah, $satuan, $harga, $totalHarga, $note)
     {
         $AddDetailPurchase = new AdminPurchaseDetail;
