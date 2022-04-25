@@ -50,7 +50,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 39)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12  || \Auth::user()->roleId == 39)
                                 <div style="margin:10px; text-align: right;">
                                     <a href="{{ route('GBahanPembantu.keluar.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Request Keluar</a>
                                 </div>
@@ -84,7 +84,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('GBahanPembantu.keluar.detail',['id'=>$data[$i][$j]->keluarId, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 )
                                                         <a href="{{ route('GBahanPembantu.keluar.update',['id'=>$data[$i][$j]->keluarId, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                         @if ($data[$i][$j]->statusDiterima == 0 && !isset($data[$i][$j]->cuciDelete))
                                                             <button type="button" data-toggle="modal" dataId='{{ $data[$i][$j]->keluarId }}' dataRequest="{{ $data[$i][$j]->gudangRequest }}" data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 

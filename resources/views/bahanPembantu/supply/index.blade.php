@@ -73,8 +73,10 @@
                                             <td>
                                                 <a href="{{ route('GBahanPembantu.supply.detail',['id'=>$value->purchaseId])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 )
                                                     <a href="{{ route('GBahanPembantu.supply.update',['id'=>$value->purchaseId])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                @endif
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
                                                     <button type="button" data-toggle="modal" dataId='{{ $value->purchaseId }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
                                                 @endif
                                             </td>

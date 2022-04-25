@@ -118,7 +118,7 @@ class MenuSeeder extends Seeder
             ['id' => 83, 'parentId' => 64, 'urutan' => 2, 'nama' => 'Master Jenis Baju', 'alias' => 'JenisBaju', 'directori' => 'jenisBaju', 'isActive' => 1],
 
             //Gudang Gudang Barang Jadi
-            ['id' => 66, 'parentId' => 0, 'urutan' => 15, 'nama' => 'G. Barang Jadi', 'alias' => 'GBarangJadi', 'directori' => 'gudangBarangJadi', 'isActive' => 1],
+            ['id' => 66, 'parentId' => 0, 'urutan' => 15, 'nama' => 'Gudang Barang Jadi', 'alias' => 'GBarangJadi', 'directori' => 'gudangBarangJadi', 'isActive' => 1],
             ['id' => 67, 'parentId' => 66, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GBarangJadi', 'directori' => 'gudangBarangJadi', 'isActive' => 1],
             ['id' => 68, 'parentId' => 66, 'urutan' => 3, 'nama' => 'Operator Barang Jadi', 'alias' => 'GBarangJadi.operator', 'directori' => 'gudangBarangJadi/operator/index', 'isActive' => 1],
             ['id' => 69, 'parentId' => 66, 'urutan' => 4, 'nama' => 'Request Potong Baju', 'alias' => 'GBarangJadi.requestPotong', 'directori' => 'gudangBarangJadi/requestPotong/index', 'isActive' => 1],

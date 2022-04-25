@@ -14,7 +14,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('mst_role')->delete();
+        DB::table('mst_role')->delete();
 
         $rol = [
             ['id' => 1, 'nama' => 'Developer', 'created_at' => date('Y-m-d H:i:s')],

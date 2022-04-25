@@ -29,8 +29,8 @@ class UserSeeder extends Seeder
             //Produksi
             ['nama' => 'K DIV Prod', 'nip' => 'KDivProd001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 5, 'created_at' => date('Y-m-d H:i:s')],
             ['nama' => 'Manager Prod', 'nip' => 'KDeptProd001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 8, 'created_at' => date('Y-m-d H:i:s')],
-            ['nama' => 'K. Bag Gudang', 'nip' => 'KBagProd001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 13, 'created_at' => date('Y-m-d H:i:s')],
-            ['nama' => 'K. Bag Produksi', 'nip' => 'AProd001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 23, 'created_at' => date('Y-m-d H:i:s')],
+            ['nama' => 'K. Bag Gudang', 'nip' => 'KBagGud001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 12, 'created_at' => date('Y-m-d H:i:s')],
+            ['nama' => 'K. Bag Produksi', 'nip' => 'KBagProd001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 13, 'created_at' => date('Y-m-d H:i:s')],
             ['nama' => 'PPIC', 'nip' => 'PPIC001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 38, 'created_at' => date('Y-m-d H:i:s')],
             
             ['nama' => 'Gudang Rajut', 'nip' => 'GR001', 'password' => bcrypt('12345678'), 'passwordAsli' => '12345678', 'roleId' => 27, 'created_at' => date('Y-m-d H:i:s')],

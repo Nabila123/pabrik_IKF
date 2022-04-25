@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">   
                         <div class="card-header">
-                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 37)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 37)
                                 <h3 class="card-title" style="width: 100%">
                                     <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Penjualan Barang</a>
                                 </h3>                           
