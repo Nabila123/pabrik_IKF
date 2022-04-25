@@ -104,6 +104,12 @@ class PermissionSeeder extends Seeder
                 ['menuId' => 11, 'roleId' => 26, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
 
 
+            // Gudang Bahan Bantu
+                //Admin               
+                ['menuId' => 1, 'roleId' => 39, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 78, 'roleId' => 39, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+
+
         ];
 
         DB::table('permission')->insert($permission);

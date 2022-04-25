@@ -138,7 +138,7 @@ class MenuSeeder extends Seeder
             ['id' => 78, 'parentId' => 0, 'urutan' => 4, 'nama' => 'Gudang Bahan Bantu', 'alias' => 'GBahanPembantu', 'directori' => 'gudangBahanPembantu', 'isActive' => 1],
             ['id' => 79, 'parentId' => 78, 'urutan' => 1, 'nama' => 'Dashboard', 'alias' => 'GBahanPembantu', 'directori' => 'gudangBahanPembantu/index', 'isActive' => 1],
             ['id' => 80, 'parentId' => 78, 'urutan' => 2, 'nama' => 'Supply barang', 'alias' => 'GBahanPembantu.supply.index', 'directori' => 'gudangBahanPembantu/supply', 'isActive' => 1],
-            ['id' => 81, 'parentId' => 78, 'urutan' => 3, 'nama' => 'PPIC Request', 'alias' => 'GBahanPembantu.ppicRequest', 'directori' => 'gudangBahanPembantu/ppicRequest', 'isActive' => 1],
+            // ['id' => 81, 'parentId' => 78, 'urutan' => 3, 'nama' => 'PPIC Request', 'alias' => 'GBahanPembantu.ppicRequest', 'directori' => 'gudangBahanPembantu/ppicRequest', 'isActive' => 1],
             ['id' => 82, 'parentId' => 78, 'urutan' => 4, 'nama' => 'Request Keluar Gudang', 'alias' => 'GBahanPembantu.keluar', 'directori' => 'gudangBahanPembantu/keluar', 'isActive' => 1],
 
             //Master User

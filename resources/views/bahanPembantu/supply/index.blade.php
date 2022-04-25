@@ -50,9 +50,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div style="margin:10px; text-align: right;">
-                                <a href="{{ route('GBahanPembantu.supply.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Barang Datang</a>
-                            </div>
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 39)
+                                <div style="margin:10px; text-align: right;">
+                                    <a href="{{ route('GBahanPembantu.supply.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Barang Datang</a>
+                                </div>
+                            @endif
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
@@ -70,8 +72,11 @@
                                             <!-- <td>{{$value->total}}</td> -->
                                             <td>
                                                 <a href="{{ route('GBahanPembantu.supply.detail',['id'=>$value->purchaseId])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('GBahanPembantu.supply.update',['id'=>$value->purchaseId])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" dataId='{{ $value->purchaseId }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
+                                                
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                    <a href="{{ route('GBahanPembantu.supply.update',['id'=>$value->purchaseId])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    <button type="button" data-toggle="modal" dataId='{{ $value->purchaseId }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                                    
