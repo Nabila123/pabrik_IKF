@@ -70,7 +70,7 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="BarcodeLink">
-                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 36)
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 36)
                                         <h3 class="card-title mb-4" style="width: 100%">
                                             <a href="{{ route('GPacking.operator.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
                                         </h3>
@@ -107,7 +107,7 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="OperatorLink">
-                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 36)
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 36)
                                         <h3 class="card-title mb-4" style="width: 100%">
                                             <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
                                         </h3>
@@ -134,7 +134,7 @@
                                                     <td>
                                                         <a href="{{ route('GPacking.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
 
-                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
                                                             @if ($rekap->tanggal == date("Y-m-d"))
                                                                 <a href="{{ route('GPacking.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                             @else
@@ -148,7 +148,7 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="PindahLink">
-                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 36)
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 36)
                                         <h3 class="card-title mb-4" style="width: 100%">
                                             <a href="{{ route('GPacking.bahanBaku.create') }}" class='btn btn-info btn-flat-right'>Pindahkan Barang</a>
                                         </h3>

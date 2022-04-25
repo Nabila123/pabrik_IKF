@@ -83,7 +83,11 @@
                                                         <span style="color: rgb(230, 140, 5); font-size: 13px">Sudah Dalam Proses </span>                                                            
                                                     @else
                                                         @if ($reject->statusProses == 2)
-                                                            <a href="{{ route('GSetrika.reject.terima', [$reject->id]) }}" class="btn btn-info"> Terima Barang </a>
+                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 35)
+                                                                <a href="{{ route('GSetrika.reject.terima', [$reject->id]) }}" class="btn btn-info"> Terima Barang </a>
+                                                            @else
+                                                                <span style="color: rgb(230, 140, 5); font-size: 15px">Dalam Proses Reject</span>
+                                                            @endif
                                                         @else
                                                             <span style="color: green; font-size: 13px">Sudah Diterima</span>
                                                         @endif
@@ -93,11 +97,15 @@
                                             <td>
                                                 <a href="{{ route('GSetrika.reject.detail', [$reject->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 @if ($reject->statusProses == 0)
-                                                    <a href="{{ route('GSetrika.reject.update', [$reject->id]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                    <button type="button" data-toggle="modal" requestId='{{ $reject->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $reject->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                        <a href="{{ route('GSetrika.reject.update', [$reject->id]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        <button type="button" data-toggle="modal" requestId='{{ $reject->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $reject->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                    @endif
                                                 @else
-                                                    <button type="button" class='btn btn-success disabled' style="margin-right: 4px;"><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                    <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                        <button type="button" class='btn btn-success disabled' style="margin-right: 4px;"><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>

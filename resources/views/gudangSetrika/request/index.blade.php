@@ -65,7 +65,7 @@
                                             <td>{{ date('d F Y', strtotime($detail->tanggal)) }}</td>
                                             <td>
                                                 @if ($detail->statusDiterima == 0)
-                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 35)
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 35)
                                                         <a href="{{ route('GSetrika.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                     @else
                                                         <span style="color: rgb(209, 34, 10); font-size: 15px">Dalam Proses Ambil Barang</span>
