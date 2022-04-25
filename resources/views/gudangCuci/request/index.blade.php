@@ -67,12 +67,20 @@
                                             <td>{{ $detail->user->nama }}</td>
                                             <td>
                                                 @if ($detail->statusDiterima == 0)
-                                                    <a href="{{ route('GCuci.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 28)
+                                                        <a href="{{ route('GCuci.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                    @else
+                                                        <span style="color: rgb(209, 34, 10); font-size: 15px">Dalam Proses Ambil Barang</span>
+                                                    @endif
                                                 @else
                                                     @if ($detail->statusDiterima == 1 && !isset($detail->cekPengembalian))
-                                                        <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
-                                                        <a href="{{ route('GCuci.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pemindahan </a> <br>
-                                                        <span style="color: green; font-size: 10px">Pindahkan Barang</span>
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 28)
+                                                            <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
+                                                            <a href="{{ route('GCuci.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pemindahan </a> <br>
+                                                            <span style="color: green; font-size: 10px">Pindahkan Barang</span>
+                                                        @else
+                                                            <span style="color: rgb(185, 102, 8); font-size: 15px">Barang Sedang Diproses</span>
+                                                        @endif
                                                     @elseif($detail->statusDiterima == 1 && $detail->cekPengembalian == 2)
                                                         <span style="color: green; font-size: 15px">Barang Sudah Diterima</span>
                                                     @else

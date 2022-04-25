@@ -49,12 +49,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">      
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('GInspeksi.proses.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
-                            </h3>
-                        </div>                  
+                    <div class="card">   
+                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 30)   
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <a href="{{ route('GInspeksi.proses.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
+                                </h3>
+                            </div>   
+                        @endif               
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
@@ -77,8 +79,11 @@
                                             <td>{{ $inspeksi->user->nama }}</td>
                                             <td>
                                                 <a href="{{ route('GInspeksi.proses.detail', $inspeksi->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('GInspeksi.proses.update', $inspeksi->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" inspeksiId='{{ $inspeksi->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $inspeksi->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)   
+                                                    <a href="{{ route('GInspeksi.proses.update', $inspeksi->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    <button type="button" data-toggle="modal" inspeksiId='{{ $inspeksi->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $inspeksi->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

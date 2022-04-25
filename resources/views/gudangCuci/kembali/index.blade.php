@@ -63,8 +63,11 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('GCuci.kembali.detail', [$kembali->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $kembali->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
-                                            </td>
+                                                
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)    
+                                                    <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $kembali->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                @endif
+                                            </td>   
                                         </tr>
                                     @endforeach
                                 </tbody>

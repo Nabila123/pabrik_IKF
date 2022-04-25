@@ -110,6 +110,27 @@ class PermissionSeeder extends Seeder
                 ['menuId' => 78, 'roleId' => 39, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
 
 
+            // Gudang Rajut
+                //Admin               
+                ['menuId' => 1, 'roleId' => 27, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 17, 'roleId' => 27, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+
+            // Gudang Cuci
+                //Admin               
+                ['menuId' => 1, 'roleId' => 28, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 21, 'roleId' => 28, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+
+            // Gudang Compact
+                //Admin               
+                ['menuId' => 1, 'roleId' => 29, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 25, 'roleId' => 29, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+
+            // Gudang Inspeksi
+                //Admin               
+                ['menuId' => 1, 'roleId' => 30, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 29, 'roleId' => 30, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+
+
         ];
 
         DB::table('permission')->insert($permission);
