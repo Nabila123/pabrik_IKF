@@ -50,9 +50,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div style="margin:10px;">
-                                <a href="{{ route('Keuangan.penjualan.create') }}" class='btn btn-success mb-3'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Pembayaran</a>
-                            </div>
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 6 || \Auth::user()->roleId == 9 || \Auth::user()->roleId == 25)
+                                <div style="margin:10px;">
+                                    <a href="{{ route('Keuangan.penjualan.create') }}" class='btn btn-success mb-3'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Pembayaran</a>
+                                </div>
+                            @endif
                             <table id="example2" class="table table-bordered dataTables_scrollBody textAlign" style="width: 100%">
                                 <thead>
                                     <tr>

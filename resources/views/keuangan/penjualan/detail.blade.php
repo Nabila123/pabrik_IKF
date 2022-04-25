@@ -126,7 +126,11 @@
                                                                     <td>{{ $detail->user->nama }}</td>
                                                                     <td>{{ rupiah($detail->totalHarga) }}</td>
                                                                     <td>
-                                                                        <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->id }}", "{{ $detail->kodeTransaksi }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 6 || \Auth::user()->roleId == 9)
+                                                                            <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->id }}", "{{ $detail->kodeTransaksi }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                                        @else
+                                                                            -
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
                                                             @endforeach

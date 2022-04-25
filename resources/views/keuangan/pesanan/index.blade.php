@@ -68,8 +68,14 @@
                                             <td>{{ $val->paymentDue }}</td>
                                             <td>
                                                 <a href="{{ route('adminPO.poInvoice.detail', $val->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('adminPO.poInvoice.update', $val->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" invoiceId='{{ $val->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $val->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                
+                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
+                                                    <a href="{{ route('adminPO.poInvoice.update', $val->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                @endif
+
+                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
+                                                    <button type="button" data-toggle="modal" invoiceId='{{ $val->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $val->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                               

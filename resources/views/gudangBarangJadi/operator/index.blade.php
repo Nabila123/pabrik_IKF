@@ -82,7 +82,7 @@
                                             <td>
                                                 <a href="{{ route('GBarangJadi.operator.detail', [$penjualan->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 37)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
                                                     <button type="button" data-toggle="modal" requestId='{{ $penjualan->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $penjualan->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                             </td>
