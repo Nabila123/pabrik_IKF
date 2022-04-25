@@ -70,9 +70,11 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="BarcodeLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GPacking.operator.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 36)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GPacking.operator.cetakBarcode') }}" target="blank" class='btn btn-success btn-flat-right'>Cetak Barcode</a>
+                                        </h3>
+                                    @endif
                                     <table id="barcode" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -105,9 +107,11 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="OperatorLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 36)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GPacking.rekap.create') }}" class='btn btn-info btn-flat-right'>Rekap Barang</a>
+                                        </h3>
+                                    @endif
                                     <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -129,10 +133,13 @@
                                                     
                                                     <td>
                                                         <a href="{{ route('GPacking.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        @if ($rekap->tanggal == date("Y-m-d"))
-                                                            <a href="{{ route('GPacking.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        @else
-                                                            <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            @if ($rekap->tanggal == date("Y-m-d"))
+                                                                <a href="{{ route('GPacking.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            @else
+                                                                <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -141,9 +148,11 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="PindahLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GPacking.bahanBaku.create') }}" class='btn btn-info btn-flat-right'>Pindahkan Barang</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 36)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GPacking.bahanBaku.create') }}" class='btn btn-info btn-flat-right'>Pindahkan Barang</a>
+                                        </h3>
+                                    @endif
                                     <table id="barangJadi" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>

@@ -71,9 +71,11 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="OperatorLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GJahit.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 32)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GJahit.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
+                                        </h3>
+                                    @endif
                                     <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -99,11 +101,14 @@
                                                     
                                                     <td>
                                                         <a href="{{ route('GJahit.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GJahit.operator.update', date('Y-m-d', strtotime($detail->created_at))) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        @if (count($jahitBasis) == 0)
-                                                            <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
-                                                        @else
-                                                            <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
+
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            <a href="{{ route('GJahit.operator.update', date('Y-m-d', strtotime($detail->created_at))) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            @if (count($jahitBasis) == 0)
+                                                                <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                            @else
+                                                                <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -112,9 +117,11 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="BasisLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GJahit.basis.create') }}" class='btn btn-info btn-flat-right'>Tambah Basis</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 32)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GJahit.basis.create') }}" class='btn btn-info btn-flat-right'>Tambah Basis</a>
+                                        </h3>
+                                    @endif
                                     <table id="basis" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -135,8 +142,11 @@
                                                     
                                                     <td>
                                                         <a href="{{ route('GJahit.basis.detail', [$basis->posisi]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GJahit.basis.update', $basis->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        <button type="button" data-toggle="modal" requestId='{{ $basis->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $basis->posisi }}", "basis", "basis")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                         
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            <a href="{{ route('GJahit.basis.update', $basis->posisi) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            <button type="button" data-toggle="modal" requestId='{{ $basis->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $basis->posisi }}", "basis", "basis")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -144,9 +154,12 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="RekapanLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GJahit.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 32)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GJahit.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
+                                        </h3>
+                                    @endif
+
                                     <table id="rekap" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -163,10 +176,13 @@
                                                    
                                                     <td>
                                                         <a href="{{ route('GJahit.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        @if ($rekap->tanggal == date("Y-m-d"))
-                                                            <a href="{{ route('GJahit.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        @else
-                                                            <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                        
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            @if ($rekap->tanggal == date("Y-m-d"))
+                                                                <a href="{{ route('GJahit.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            @else
+                                                                <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -201,7 +217,9 @@
                                                             <td>{{ ($dataPemindahan[$i]['jumlahBaju']/12) }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GJahit.keluar.create',[$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
+                                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 32)
+                                                                    <a href="{{ route('GJahit.keluar.create',[$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
+                                                                @endif
                                                                 <a href="{{ route('GJahit.keluar.detail', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>

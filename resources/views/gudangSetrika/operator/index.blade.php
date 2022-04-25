@@ -70,9 +70,11 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="OperatorLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GSetrika.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 35)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GSetrika.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
+                                        </h3>
+                                    @endif
                                     <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -98,12 +100,15 @@
                                                     
                                                     <td>
                                                         <a href="{{ route('GSetrika.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        <a href="{{ route('GSetrika.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                        
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            <a href="{{ route('GSetrika.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                             @if (count($gdSetrika) == 0)
                                                                 <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                             @else
                                                                 <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
                                                             @endif
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -112,9 +117,11 @@
                                 </div>
                                 
                                 <div class="tab-pane" id="RekapanLink">
-                                    <h3 class="card-title mb-4" style="width: 100%">
-                                        <a href="{{ route('GSetrika.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Setrika</a>
-                                    </h3>
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 35)
+                                        <h3 class="card-title mb-4" style="width: 100%">
+                                            <a href="{{ route('GSetrika.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Setrika</a>
+                                        </h3>
+                                    @endif
                                     <table id="rekap" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                         <thead>
                                             <tr>
@@ -131,10 +138,12 @@
                                                    
                                                     <td>
                                                         <a href="{{ route('GSetrika.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                        @if ($rekap->tanggal == date("Y-m-d"))
-                                                            <a href="{{ route('GSetrika.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                        @else
-                                                            <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            @if ($rekap->tanggal == date("Y-m-d"))
+                                                                <a href="{{ route('GSetrika.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                            @else
+                                                                <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -170,7 +179,9 @@
                                                             <td>{{ $pindahan->jumlah/12 }}</td>
                                                             
                                                             <td>
-                                                                <a href="{{ route('GSetrika.keluar.create',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
+                                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                                    <a href="{{ route('GSetrika.keluar.create',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
+                                                                @endif
                                                                 <a href="{{ route('GSetrika.keluar.detail',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                             </td>
                                                         </tr>
