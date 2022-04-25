@@ -72,10 +72,19 @@
                                            <td>{{ $reject->totalBaju }}</td>
                                            <td>
                                                @if ($reject->statusProses == 0)
-                                                    <a href="{{ route('GJahit.reject.terima', [$reject->id]) }}" class="btn btn-success"> Proses Reject </a>
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 31)
+                                                        <a href="{{ route('GJahit.reject.terima', [$reject->id]) }}" class="btn btn-success"> Proses Reject </a>
+                                                    @else
+                                                        <span style="color: rgb(209, 34, 10); font-size: 15px">Belum Di Proses</span>
+                                                    @endif
+
                                                 @else
                                                     @if ($reject->statusProses == 1)
-                                                        <a href="{{ route('GJahit.reject.kembali', [$reject->id]) }}" class="btn btn-info"> Kembalikan Barang </a>
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 31)
+                                                            <a href="{{ route('GJahit.reject.kembali', [$reject->id]) }}" class="btn btn-info"> Kembalikan Barang </a>
+                                                        @else
+                                                            <span style="color: rgb(230, 140, 5); font-size: 15px">Sedang Dalam Proses</span>
+                                                        @endif
                                                     @else
                                                         @if ($reject->statusProses == 2)
                                                             <span style="color: rgb(230, 140, 5); font-size: 13px">Dalam Proses Dikembalikan</span>                                                            

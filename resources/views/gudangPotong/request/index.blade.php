@@ -67,7 +67,11 @@
                                             <td>{{ $req->user->nama }}</td>
                                             <td>
                                                 @if ($req->statusDiterima == 0)
-                                                    <a href="{{ route('GPotong.request.terima', [$req->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 31)
+                                                        <a href="{{ route('GPotong.request.terima', [$req->id]) }}" class="btn btn-success"> Terima Barang </a>
+                                                    @else
+                                                        <span style="color: rgb(209, 34, 10); font-size: 15px">Dalam Proses Penerimaan Barang</span>
+                                                    @endif
                                                 @else
                                                     <span style="color: green; font-size: 15px">Barang Sudah DiProses</span>
                                                 @endif
