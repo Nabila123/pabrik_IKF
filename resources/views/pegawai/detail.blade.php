@@ -69,7 +69,11 @@
                                             <td>{{ $pegawai->nama }}</td>
                                             <td>{{ strtoupper($pegawai->kodeBagian) }}</td>
                                             <td>
-                                                <a href="{{ route('pegawai.delete', [$pegawai->kodeBagian, $pegawai->id]) }}" class='btn btn-danger'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @if (\Auth::user()->roleId == 1)        
+                                                    <a href="{{ route('pegawai.delete', [$pegawai->kodeBagian, $pegawai->id]) }}" class='btn btn-danger'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @else 
+                                                    -
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                                    

@@ -51,9 +51,11 @@
                 <div class="col-12">
                     <div class="card">                        
                         <div class="card-body">
-                            <div style="margin:10px; text-align: right;">
-                                <a href="{{ route('Material.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
-                            </div>
+                            @if (\Auth::user()->roleId == 1)
+                                <div style="margin:10px; text-align: right;">
+                                    <a href="{{ route('Material.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
+                                </div>
+                            @endif
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
@@ -75,8 +77,11 @@
                                             <td>{{ $material->keterangan}} </td>
                                             <td>
                                                 <a href="{{ route('Material.detail', $material->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <a href="{{ route('Material.edit', $material->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" purchaseId='{{ $material->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $material->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                
+                                                @if (\Auth::user()->roleId == 1)
+                                                    <a href="{{ route('Material.edit', $material->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    <button type="button" data-toggle="modal" purchaseId='{{ $material->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $material->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                                    

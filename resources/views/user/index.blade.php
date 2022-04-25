@@ -49,12 +49,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">         
-                        <div class="card-header">
-                            <div style="margin:10px; text-align: left;">
-                                <a href="{{ route('user.create') }}" class='btn btn-success btn-flat-left'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
-                            </div>    
-                        </div>               
+                    <div class="card"> 
+                        @if (\Auth::user()->roleId == 1)        
+                            <div class="card-header">
+                                <div style="margin:10px; text-align: left;">
+                                    <a href="{{ route('user.create') }}" class='btn btn-success btn-flat-left'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
+                                </div>    
+                            </div>     
+                        @endif          
                         <div class="card-body">                            
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
@@ -76,8 +78,10 @@
                                             <td>{{ $user->role->nama }} </td>
                                             <td>
                                                 {{--  <a href="{{ route('user.detail', $user->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>  --}}
-                                                <a href="{{ route('user.edit', $user->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $user->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @if (\Auth::user()->roleId == 1)
+                                                    <a href="{{ route('user.edit', $user->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
+                                                    <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $user->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach                                    

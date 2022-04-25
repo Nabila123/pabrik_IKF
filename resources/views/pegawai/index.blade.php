@@ -49,12 +49,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">         
-                        <div class="card-header">
-                            <div style="margin:10px; text-align: left;">
-                                <a href="{{ route('pegawai.create') }}" class='btn btn-success btn-flat-left'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
-                            </div>    
-                        </div>               
+                    <div class="card">       
+                        @if (\Auth::user()->roleId == 1)        
+                            <div class="card-header">
+                                <div style="margin:10px; text-align: left;">
+                                    <a href="{{ route('pegawai.create') }}" class='btn btn-success btn-flat-left'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
+                                </div>    
+                            </div>
+                        @endif               
                         <div class="card-body">                            
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
