@@ -161,6 +161,11 @@ class PermissionSeeder extends Seeder
                 ['menuId' => 1, 'roleId' => 36, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
                 ['menuId' => 54, 'roleId' => 36, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
 
+            // Gudang Bahan Jadi
+                //Admin               
+                ['menuId' => 1, 'roleId' => 37, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 66, 'roleId' => 37, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+
             
 
         ];

@@ -51,9 +51,11 @@
                 <div class="col-12">
                     <div class="card">   
                         <div class="card-header">
-                            <h3 class="card-title" style="width: 100%">
-                                <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Penjualan Barang</a>
-                            </h3>                           
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 37)
+                                <h3 class="card-title" style="width: 100%">
+                                    <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Penjualan Barang</a>
+                                </h3>                           
+                            @endif
                         </div>                   
                         <div class="card-body">
                             <table id="operator" class="table table-bordered dataTables_scrollBody" style="width: 100%">
@@ -79,7 +81,10 @@
                                             
                                             <td>
                                                 <a href="{{ route('GBarangJadi.operator.detail', [$penjualan->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                <button type="button" data-toggle="modal" requestId='{{ $penjualan->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $penjualan->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 37)
+                                                    <button type="button" data-toggle="modal" requestId='{{ $penjualan->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $penjualan->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                    @endforeach
