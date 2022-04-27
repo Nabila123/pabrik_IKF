@@ -14,6 +14,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class GudangBarangJadiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $bajus = GudangBarangJadiStokOpname::select('jenisBaju', DB::raw('count(*) as jumlah'))->groupBy('jenisBaju')->get();

@@ -14,6 +14,11 @@ use App\Models\GudangBahanBaku;
 
 class KeuanganController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         return view('keuangan.index');
