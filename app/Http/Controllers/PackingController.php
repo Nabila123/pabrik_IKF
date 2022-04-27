@@ -17,6 +17,11 @@ use PDF;
 
 class PackingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $bajus = GudangSetrikaStokOpname::select('jenisBaju')->where('statusSetrika', 1)->groupBy('jenisBaju')->get();

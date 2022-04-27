@@ -24,6 +24,12 @@ use DB;
 
 class DashboardTVController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function bahanBaku()
     {
         return view('dashboardTV.bahanBaku');
