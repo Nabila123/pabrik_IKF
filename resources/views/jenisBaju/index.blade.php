@@ -58,7 +58,7 @@
                                 <thead>
                                     <tr>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis </th>
-                                        <th class="textAlign" style="vertical-align: middle;">Ukuran</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Type Produk</th>
                                         <th class="textAlign" style="vertical-align: middle; width:15%;">action</th>
                                     </tr>
                                 </thead>
@@ -66,7 +66,7 @@
                                     @foreach ($jenisBajus as $jenisBaju)
                                         <tr>
                                             <td>{{ $jenisBaju->jenis}} </td>
-                                            <td>{{ $jenisBaju->ukuran}} </td>
+                                            <td>{{ $jenisBaju->type}} </td>
                                             <td>
                                                 <a href="{{ route('JenisBaju.detail', $jenisBaju->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 <a href="{{ route('JenisBaju.edit', $jenisBaju->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>

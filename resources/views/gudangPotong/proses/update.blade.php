@@ -165,14 +165,14 @@
                                                     <td> <input class="form-control"  style='width:70px;' type="text" name="beratRoll" id="beratRoll"> </td>
                                                     <td> 
                                                         <select class="form-control" name="jnsBaju" id="jnsBaju" style="width: 150px">
-                                                            <option> Pilih Jenis Baju</option>    
-                                                            <option value="singlet"> J - Singlet </option>    
-                                                            <option value="oblong"> J - Oblong </option>    
-                                                            <option value="oblong tk"> J - Oblong TK </option> 
-                                                            <option value="dj-singlet"> DJ - Singlet </option>    
-                                                            <option value="dj-oblong"> DJ - Oblong </option>    
-                                                            <option value="dj-oblong tk"> DJ - Oblong TK </option>   
-                                                        </select>    
+                                                            <option> Pilih Jenis Baju</option>
+                                                            @foreach ($jenisBaju as $key => $detail)
+                                                                <optgroup label="{{ $key }}"> </optgroup> 
+                                                                @foreach ($jenisBaju[$key] as $detail)
+                                                                    <option value="{{ $detail }}"> {{ $detail }} </option>  
+                                                                @endforeach
+                                                            @endforeach
+                                                        </select>      
                                                     </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="size" id="size"> </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="totalDZ" id="totalDZ"> </td>

@@ -256,7 +256,12 @@ class GudangPotongController extends Controller
         }
 
         foreach ($Baju as $val) {
-            $jenisBaju[$val->type][] = $val->jenis; 
+            $dataBaju = explode(" ", $val->jenis);
+            for ($i=0; $i < count($dataBaju); $i++) { 
+                $dataBaju[$i] = $dataBaju[$i];
+            }
+
+            $jenisBaju[$val->type][] = implode("-", $dataBaju)."-".$val->type; 
         }
 
         $gudangKeluar = GudangPotongKeluar::all();
@@ -345,10 +350,27 @@ class GudangPotongController extends Controller
 
     public function gProsesUpdate($id)
     {
+        $jenisBaju = [];
         $gdPotongProses = GudangPotongProses::where('id', $id)->first();
+        $Baju = JenisBaju::orderBy('type', 'asc')->get();
+        foreach ($Baju as $key) {
+            if (!in_array($key->type, $jenisBaju)) {
+                $jenisBaju[$key->type] = [];
+            }
+        }
+
+        foreach ($Baju as $val) {
+            $dataBaju = explode(" ", $val->jenis);
+            for ($i=0; $i < count($dataBaju); $i++) { 
+                $dataBaju[$i] = $dataBaju[$i];
+            }
+
+            $jenisBaju[$val->type][] = implode("-", $dataBaju)."-".$val->type; 
+        }
+        
         $gdPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotongProses->id)->get();
 
-        return view('gudangPotong.proses.update', ['gdPotongProses' => $gdPotongProses, 'gdPotongProsesDetail' => $gdPotongProsesDetail]);
+        return view('gudangPotong.proses.update', ['gdPotongProses' => $gdPotongProses, 'jenisBaju' => $jenisBaju, 'gdPotongProsesDetail' => $gdPotongProsesDetail]);
     }
 
     public function gProsesUpdatePotong(Request $request)
