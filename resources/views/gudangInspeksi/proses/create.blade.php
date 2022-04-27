@@ -244,8 +244,6 @@
             var materialId = $('#materialId').val();
             var jenisId = $('#jenisId').val();
             var _token = $('#_token').val();
-
-            console.log(purchaseId)
             
             $.ajax({
                 type: "post",
@@ -260,6 +258,7 @@
                     var data = JSON.parse(response)
                     $('.namaSuplier').val(data.suplierName);
                     $('.jenisKain').val(data.nama);
+                    console.log(data.diameter)
                     var diameter ="<option value=''>Pilih diameter</option>";
                     for(var i = 0;i < data.diameter.length;i++){
                         diameter += "<option value="+data.diameter[i]+">"+data.diameter[i]+"</option>";

@@ -21,6 +21,11 @@ class GudangRajutKeluarDetail extends Model
         return $this->hasOne('App\Models\GudangBahanBaku','id','gudangId');
     }
 
+    public function rajut()
+    {
+        return $this->hasOne('App\Models\GudangRajutKeluar','id','gdRajutKId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');

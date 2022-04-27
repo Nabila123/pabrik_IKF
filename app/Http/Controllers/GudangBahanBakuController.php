@@ -350,10 +350,12 @@ class GudangBahanBakuController extends Controller
                 switch ($i) {
                     case 0:
                         $val->gudangRequest = "Gudang Rajut";
+                        $val->statusDiterima = $val->rajut->statusDiterima;
                         break;
                     
                     case 1:
                         $val->gudangRequest = "Gudang Cuci";
+                        $val->statusDiterima = $val->cuci->statusDiterima;
                         $dataCompact = GudangCompactKeluar::where('gdCuciKId',$val->id)->first();
                         if ($dataCompact != null) {
                             $val->cuciDelete = false;
@@ -362,14 +364,20 @@ class GudangBahanBakuController extends Controller
 
                     case 2:
                         $val->gudangRequest = "Gudang Compact";
+                        $val->statusDiterima = $val->compact->statusDiterima;
+
                         break;
 
                     case 3:
                         $val->gudangRequest = "Gudang Inspeksi";
+                        $val->statusDiterima = $val->inspeksi->statusDiterima;
+
                         break;
 
                     case 4:
                         $val->gudangRequest = "Gudang Potong";
+                        $val->statusDiterima = $val->gdPotongKeluar->statusDiterima;
+
                         break;
                 }
             }

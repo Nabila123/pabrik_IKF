@@ -115,6 +115,7 @@ class PermissionSeeder extends Seeder
                 
                 //Kepala Manager                
                 ['menuId' => 1, 'roleId' => 8, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
+                ['menuId' => 6, 'roleId' => 8, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
                 ['menuId' => 11, 'roleId' => 8, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
                 ['menuId' => 66, 'roleId' => 8, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],
                 ['menuId' => 78, 'roleId' => 8, 'isCreate' => 1, 'isRead' => 1, 'isUpdate' => 1, 'isDelete' => 1, 'created_at' => date('Y-m-d H:i:s')],

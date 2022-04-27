@@ -34,21 +34,20 @@ class GudangPotongKeluar extends Model
             if (count($detailPotong) == 0) {
                 if (!in_array($detail->diameter, $data['diameter'])) {
                     $data['diameter'][$i] = $detail->diameter;
+                    $i++;
                 }
-                $i++;
             } else {
                 foreach ($detailPotong as $potong) {
                     $detailPotongProses = GudangPotongProsesDetail::where('gdPotongProsesId', $potong->id)->where('diameter', $detail->diameter)->first();
                     if ($detailPotongProses == null) {
                         if (!in_array($detail->diameter, $data['diameter'])) {
                             $data['diameter'][$i] = $detail->diameter;
+                            $i++;
                         }
-                        $i++;
                     }
                 }
             }            
-        }      
-        
+        }              
         return $data;
     }
 

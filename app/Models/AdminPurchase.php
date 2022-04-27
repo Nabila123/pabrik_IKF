@@ -68,8 +68,8 @@ class AdminPurchase extends Model
             if ($inspeksiStokOpname == null) {
                 if (!in_array($detail->diameter, $data['diameter'])) {
                     $data['diameter'][$i] = $detail->diameter;
-                }
                     $i++;
+                }
             }
         }      
         

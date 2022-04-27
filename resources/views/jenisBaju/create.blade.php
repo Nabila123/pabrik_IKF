@@ -63,8 +63,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label>Jenis</label>
-                                            <input class="form-control" name="jenis"  type="text" placeholder="Jenis" required>
+                                            <label>Jenis Baju</label>
+                                            <input class="form-control" name="jenis"  type="text" placeholder="Singlet Jupiter" required>
                                         </div>
                                     </div>
                                     <div class="col-12">

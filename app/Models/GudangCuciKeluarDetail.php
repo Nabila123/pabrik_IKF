@@ -21,6 +21,11 @@ class GudangCuciKeluarDetail extends Model
         return $this->hasOne('App\Models\GudangBahanBaku','id','gudangId');
     }
 
+    public function cuci()
+    {
+        return $this->hasOne('App\Models\GudangCuciKeluar','id','gdCuciKId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');

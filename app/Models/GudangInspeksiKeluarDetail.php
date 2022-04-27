@@ -16,6 +16,11 @@ class GudangInspeksiKeluarDetail extends Model
         return $this->hasOne('App\Models\GudangBahanBaku','id','gudangId');
     }
 
+    public function inspeksi()
+    {
+        return $this->hasOne('App\Models\GudangInspeksiKeluar','id','gdInspeksiKId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');

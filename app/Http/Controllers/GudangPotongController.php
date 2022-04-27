@@ -15,6 +15,7 @@ use App\Models\GudangJahitMasukDetail;
 use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
+use App\Models\JenisBaju;
 use DB;
 
 class GudangPotongController extends Controller
@@ -244,8 +245,20 @@ class GudangPotongController extends Controller
     {
         $purchasePotong = [];
         $material = [];
+        $jenisBaju = [];
         $index = 0;
         $pegawai = Pegawai::where('kodeBagian', 'potong')->get();
+        $Baju = JenisBaju::orderBy('type', 'asc')->get();
+        foreach ($Baju as $key) {
+            if (!in_array($key->type, $jenisBaju)) {
+                $jenisBaju[$key->type] = [];
+            }
+        }
+
+        foreach ($Baju as $val) {
+            $jenisBaju[$val->type][] = $val->jenis; 
+        }
+
         $gudangKeluar = GudangPotongKeluar::all();
         foreach ($gudangKeluar as $keluar) {
             $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
@@ -283,7 +296,7 @@ class GudangPotongController extends Controller
             }
         }
 
-        return view('gudangPotong.proses.create', ['pegawai' => $pegawai, 'purchaseId' => $purchasePotong, 'material' => $material]);
+        return view('gudangPotong.proses.create', ['pegawai' => $pegawai, 'jenisBaju' => $jenisBaju, 'purchaseId' => $purchasePotong, 'material' => $material]);
     }
 
     public function gProsesStore(Request $request)

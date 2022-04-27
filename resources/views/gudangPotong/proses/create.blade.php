@@ -90,9 +90,9 @@
                                     </div>
                                     <div class="col-4">
                                         <label>Operator</label>
-                                        <div class="input-group">                                            
+                                        <div class="form-group">                                            
                                             {{--  <input type="text" id="namaOperator" name="namaOperator" value="{{ \Auth::user()->nama }}" class="form-control namaOperator disabled" readonly>  --}}
-                                            <select class="form-control col-md-7 col-xs-12 pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" required>
+                                            <select class="form-control pegawaiId" id="pegawaiId" name="pegawaiId" style="width: 100%; height: 38px;" required>
                                                 <option> Pilih Satu </option>
                                                     @foreach ($pegawai as $val)
                                                         <option value="{{ $val->id }}">{{ $val->nama }}</option>
@@ -182,18 +182,13 @@
                                                     <td> <input class="form-control"  style='width:70px;' type="text" name="beratRoll" id="beratRoll"> </td>
                                                     <td> 
                                                         <select class="form-control" name="jnsBaju" id="jnsBaju" style="width: 150px">
-                                                            <option> Pilih Jenis Baju</option>   
-                                                            <optgroup label="Jupiter"></optgroup> 
-                                                            <option value="Blong-Jupiter"> Blong Jupiter (BY) </option>    
-                                                            <option value="Singlet-Jupiter"> Singlet Jupiter (SY) </option>    
-                                                            <option value="Blong-Tempat-Kancing"> Blong Tempat Kancing Jupiter (BTK) </option> 
-                                                            <option value="Blong-Tanpa-Lengan"> Blong Tanpa Lengan Jupiter (BTL) </option> 
-                                                            
-                                                            <optgroup label="Daun Jati"></optgroup>
-                                                            <option value="Singlet-DJ"> Singlet DJ </option>    
-                                                            <option value="Blong-TK-DJ"> Blong TK DJ </option>    
-                                                            <option value="Singlet-Haji-DJ"> Singlet Haji DJ </option>   
-                                                            <option value="Blong-Haji-DJ"> Blong Haji DJ </option>   
+                                                            <option> Pilih Jenis Baju</option>
+                                                            @foreach ($jenisBaju as $key => $detail)
+                                                                <optgroup label="{{ $key }}"> </optgroup> 
+                                                                @foreach ($jenisBaju[$key] as $detail)
+                                                                    <option value="{{ $detail }}"> {{ $detail }} </option>  
+                                                                @endforeach
+                                                            @endforeach
                                                         </select>    
                                                     </td>
                                                     <td> <input style='width:70px;' class="form-control" type="number" name="size" id="size"> </td>

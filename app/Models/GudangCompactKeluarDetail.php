@@ -16,6 +16,11 @@ class GudangCompactKeluarDetail extends Model
         return $this->hasOne('App\Models\GudangBahanBaku','id','gudangId');
     }
 
+    public function compact()
+    {
+        return $this->hasOne('App\Models\GudangCompactKeluar','id','gdCompactKId');
+    }
+
     public function purchase()
     {
         return $this->hasOne('App\Models\AdminPurchase','id','purchaseId');

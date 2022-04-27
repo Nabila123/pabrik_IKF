@@ -19,7 +19,7 @@ class JenisBarangSeeder extends Seeder
             ['id' => 2, 'nama' => 'Grey', 'created_at' => date('Y-m-d H:i:s')],
 
             ['id' => 3, 'nama' => 'Kain', 'created_at' => date('Y-m-d H:i:s')],
-            ['id' => 4, 'nama' => 'Baju', 'created_at' => date('Y-m-d H:i:s')],
+            ['id' => 4, 'nama' => 'Pembantu', 'created_at' => date('Y-m-d H:i:s')],
         ];
 
         DB::table('mst_jenisBarang')->insert($rol);
