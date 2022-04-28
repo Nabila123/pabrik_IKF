@@ -64,7 +64,7 @@
                                         <th class="textAlign" style="vertical-align: middle;">Satuan</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis </th>
                                         <th class="textAlign" style="vertical-align: middle;">Keterangan</th>
-                                        <th class="textAlign" style="vertical-align: middle; width:11%;">action</th>
+                                        <th class="textAlign" style="vertical-align: middle; width:15%;">action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="textAlign">

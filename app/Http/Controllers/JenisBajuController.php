@@ -15,8 +15,8 @@ class JenisBajuController extends Controller
     }
 
     public function index(){
-        $jenisBajus = JenisBaju::all();
-        return view('jenisBaju.index')->with(['jenisBajus'=>$jenisBajus]);
+        $jenisBajus = JenisBaju::orderBy('type', 'asc')->get();
+        return view('jenisBaju.index', ['jenisBajus'=>$jenisBajus]);
     }
 
     public function create()
@@ -31,6 +31,7 @@ class JenisBajuController extends Controller
         $material = new JenisBaju;
         $material->jenis      = $request['jenis'];
         $material->ukuran     = $request['ukuran'];
+        $material->type     = $request['type'];
         $material->userId     = \Auth::user()->id;
 
         $material->save();
@@ -58,6 +59,7 @@ class JenisBajuController extends Controller
         if($jenisBaju){
             $data['jenis'] = $request['jenis'];
             $data['ukuran'] = $request['ukuran'];
+            $data['type'] = $request['type'];
             $data['userId'] = \Auth::user()->id;
 
             $updateJenisBaju = JenisBaju::where('id',$id)->update($data);

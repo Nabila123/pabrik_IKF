@@ -15,10 +15,16 @@ use App\Models\GudangJahitMasukDetail;
 use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
+use App\Models\JenisBaju;
 use DB;
 
 class GudangPotongController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $kains = GudangPotongKeluarDetail::all();
@@ -244,8 +250,25 @@ class GudangPotongController extends Controller
     {
         $purchasePotong = [];
         $material = [];
+        $jenisBaju = [];
         $index = 0;
         $pegawai = Pegawai::where('kodeBagian', 'potong')->get();
+        $Baju = JenisBaju::orderBy('type', 'asc')->get();
+        foreach ($Baju as $key) {
+            if (!in_array($key->type, $jenisBaju)) {
+                $jenisBaju[$key->type] = [];
+            }
+        }
+
+        foreach ($Baju as $val) {
+            $dataBaju = explode(" ", $val->jenis);
+            for ($i=0; $i < count($dataBaju); $i++) { 
+                $dataBaju[$i] = $dataBaju[$i];
+            }
+
+            $jenisBaju[$val->type][] = implode("-", $dataBaju)."-".$val->type; 
+        }
+
         $gudangKeluar = GudangPotongKeluar::all();
         foreach ($gudangKeluar as $keluar) {
             $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();
@@ -283,7 +306,7 @@ class GudangPotongController extends Controller
             }
         }
 
-        return view('gudangPotong.proses.create', ['pegawai' => $pegawai, 'purchaseId' => $purchasePotong, 'material' => $material]);
+        return view('gudangPotong.proses.create', ['pegawai' => $pegawai, 'jenisBaju' => $jenisBaju, 'purchaseId' => $purchasePotong, 'material' => $material]);
     }
 
     public function gProsesStore(Request $request)
@@ -332,10 +355,27 @@ class GudangPotongController extends Controller
 
     public function gProsesUpdate($id)
     {
+        $jenisBaju = [];
         $gdPotongProses = GudangPotongProses::where('id', $id)->first();
+        $Baju = JenisBaju::orderBy('type', 'asc')->get();
+        foreach ($Baju as $key) {
+            if (!in_array($key->type, $jenisBaju)) {
+                $jenisBaju[$key->type] = [];
+            }
+        }
+
+        foreach ($Baju as $val) {
+            $dataBaju = explode(" ", $val->jenis);
+            for ($i=0; $i < count($dataBaju); $i++) { 
+                $dataBaju[$i] = $dataBaju[$i];
+            }
+
+            $jenisBaju[$val->type][] = implode("-", $dataBaju)."-".$val->type; 
+        }
+        
         $gdPotongProsesDetail = GudangPotongProsesDetail::where('gdPotongProsesId', $gdPotongProses->id)->get();
 
-        return view('gudangPotong.proses.update', ['gdPotongProses' => $gdPotongProses, 'gdPotongProsesDetail' => $gdPotongProsesDetail]);
+        return view('gudangPotong.proses.update', ['gdPotongProses' => $gdPotongProses, 'jenisBaju' => $jenisBaju, 'gdPotongProsesDetail' => $gdPotongProsesDetail]);
     }
 
     public function gProsesUpdatePotong(Request $request)

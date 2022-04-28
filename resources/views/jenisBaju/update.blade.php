@@ -69,8 +69,12 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label>Ukuran</label>
-                                            <input class="form-control" name="ukuran"  type="number" placeholder="Jenis" value="{{$jenisBaju->ukuran}}" required>
+                                            <label>Type Produk</label>
+                                            <select class="form-control" id="type" name="type" required>
+                                                <option> Pilih Satu </option>
+                                                <option value="Jupiter"> Jupiter </option>
+                                                <option value="Daun Jati"> Daun Jati </option>
+                                            </select>                                          
                                         </div>
                                     </div>
                                     <div class="col-12">

@@ -63,14 +63,18 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label>Jenis</label>
-                                            <input class="form-control" name="jenis"  type="text" placeholder="Jenis" required>
+                                            <label>Jenis Baju</label>
+                                            <input class="form-control" name="jenis"  type="text" placeholder="Singlet" required>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label>Ukuran</label>
-                                             <input class="form-control" name="ukuran"  type="number" placeholder="Ukuran" required>
+                                            <label>Type Produk</label>
+                                            <select class="form-control" id="type" name="type" required>
+                                                <option> Pilih Satu </option>
+                                                <option value="Jupiter"> Jupiter </option>
+                                                <option value="Daun Jati"> Daun Jati </option>
+                                            </select>                                          
                                         </div>
                                     </div>
                                     <div class="col-12">

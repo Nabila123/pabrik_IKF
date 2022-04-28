@@ -85,7 +85,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Jenis</label>
-                                            <input class="form-control" name="jenis"  type="text" placeholder="Jenis" required>
+                                            <input class="form-control" name="jenis"  type="text" placeholder="Beri ( - ) Jika Dikosongkan" required>
                                         </div>
                                     </div>
                                     <div class="col-12">

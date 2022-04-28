@@ -94,13 +94,13 @@
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label>Gramasi</label>
-                                            <input class="form-control gramasi" type="text" id="gramasi" name="gramasi" placeholder="Gramasi">                                            
+                                            <input class="form-control gramasi" type="text" id="gramasi" name="gramasi" placeholder="Beri Angka ( 0 ) Jika Tidak Di Isi">                                            
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label>Diameter</label>
-                                            <input class="form-control diameter" type="text" id="diameter" name="diameter" placeholder="Diameter">                                            
+                                            <input class="form-control diameter" type="text" id="diameter" name="diameter" placeholder="Beri Angka ( 0 ) Jika Tidak Di Isi">                                            
                                         </div>
                                     </div>
                                     <div class="col-4">
@@ -198,7 +198,7 @@
                 child += "<div class='col-4'>";
                     child += "<div class='form-group'>";
                         child += "<label>Ukuran Baju</label>";
-                        child +="<input class='form-control ukuranBaju' type='text' id='ukuranBaju' name='ukuranBaju' placeholder='ukuranBaju'>";
+                        child +="<input class='form-control ukuranBaju' type='text' id='ukuranBaju' name='ukuranBaju' placeholder='Beri Angka ( 0 ) Jika Tidak Di Isi'>";
                     child +="</div>";
                 child += "</div>";
 
@@ -227,13 +227,13 @@
                 var child = "<div class='col-4'>";
                         child += "<div class='form-group'>";
                             child += "<label>Gramasi</label>";
-                            child +="<input class='form-control gramasi' type='text' id='gramasi' name='gramasi' placeholder='Gramasi'>";
+                            child +="<input class='form-control gramasi' type='text' id='gramasi' name='gramasi' placeholder='Beri Angka ( 0 ) Jika Tidak Di Isi'>";
                         child +="</div>";
                     child += "</div>";
                     child += "<div class='col-4'>";
                         child += "<div class='form-group'>";
                             child += "<label>Diameter</label>";
-                            child +="<input class='form-control diameter' type='text' id='diameter' name='diameter' placeholder='Diameter'>";
+                            child +="<input class='form-control diameter' type='text' id='diameter' name='diameter' placeholder='Beri Angka ( 0 ) Jika Tidak Di Isi'>";
                         child +="</div>";
                     child += "</div>";
                     child += "<div class='col-4'>";
