@@ -92,33 +92,6 @@
                                                 <div class="row">  
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label>Diameter</label>
-                                                            <select class="form-control diameter" id="diameter" name="diameter" style="width: 100%; height: 38px;">
-                                                                
-                                                            </select>     
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-3">
-                                                        <div class="form-group">
-                                                            <label>Gramasi</label>
-                                                            <select class="form-control gramasi" id="gramasi" name="gramasi" style="width: 100%; height: 38px;">
-                                                                
-                                                            </select>                                                        
-                                                        </div>
-                                                    </div> 
-                                                    
-                                                    <div class="col-3">
-                                                        <div class="form-group">
-                                                            <label>Berat</label>
-                                                            <select class="form-control berat" id="berat" name="berat" style="width: 100%; height: 38px;">
-                                                                
-                                                            </select>                                                        
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-3">
-                                                        <div class="form-group">
                                                             <div id="Jumlah">
                                                                 <label>Jumlah</label>
                                                                 <input type="text" class="form-control qty" id="qty" name="qty"placeholder="qty" /> 
@@ -142,9 +115,6 @@
                                                                 <tr>
                                                                     <th class="textAlign">Nama Barang</th>
                                                                     <th class="textAlign">Nomor PO </th>
-                                                                    <th class="textAlign">Diameter </th>
-                                                                    <th class="textAlign">Gramasi </th>
-                                                                    <th class="textAlign">berat </th>
                                                                     <th class="textAlign">Jumlah</th>
                                                                     <th class="textAlign">Action</th>
                                                                 </tr>
@@ -154,9 +124,6 @@
                                                                     <tr>
                                                                         <td>{{ $detail->material->nama }}</td>
                                                                         <td>{{ $detail->purchase->kode }}</td>
-                                                                        <td>{{ $detail->diameter }}</td>
-                                                                        <td>{{ $detail->gramasi }}</td>
-                                                                        <td>{{ $detail->berat }}</td>
                                                                         <td>{{ $detail->qty }}</td>
                                                                         <td><a href="{{ route('GBahanPembantu.keluar.detail.delete', [$data->id, $detail->id, $gudangRequest]) }}" class='btn btn-sm btn-block btn-danger' style='width:40px;'><span class='fa fa-trash'></span></a></td>
                                                                     </tr>
@@ -263,60 +230,10 @@
                     $('#gudangId').val(data.gudangId); 
                 }
             })
-        });
-
-        $(document).on("change", ".diameter", function(){
-            var purchaseId = $('#kodePurchase').val();
-            var materialId = $('#materialId').val();
-            var diameter = $('#diameter').val();
-            var _token = $('#_token').val();
             
             $.ajax({
                 type: "get",
-                url: '{{ url("GBahanPembantu/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+null+'/'+null,
-                success: function(response){
-                    var data = JSON.parse(response);
-                    var gramasi ="<option value=''>Pilih Gramasi</option>";
-                    for(var i = 0;i < data.length;i++){
-                        gramasi += "<option value="+data[i]+">"+data[i]+"</option>";
-                    }
-                    $('#gramasi').html(gramasi);  
-                }
-            })
-        });
-
-        $(document).on("change", ".gramasi", function(){
-            var purchaseId = $('#kodePurchase').val();
-            var materialId = $('#materialId').val();
-            var diameter = $('#diameter').val();
-            var gramasi = $('#gramasi').val();
-            var _token = $('#_token').val();
-            
-            $.ajax({
-                type: "get",
-                url: '{{ url("GBahanPembantu/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+null,
-                success: function(response){
-                    var data = JSON.parse(response);
-                    var berat ="<option value=''>Pilih Berat</option>";
-                    for(var i = 0;i < data.length;i++){
-                        berat += "<option value="+data[i]+">"+data[i]+"</option>";
-                    }
-                    $('#berat').html(berat);     
-                }
-            })
-        });
-
-        $(document).on("change", ".berat", function(){
-            var purchaseId = $('#kodePurchase').val();
-            var materialId = $('#materialId').val();
-            var diameter = $('#diameter').val();
-            var gramasi = $('#gramasi').val();
-            var berat = $('#berat').val();
-            var _token = $('#_token').val();
-            
-            $.ajax({
-                type: "get",
-                url: '{{ url("GBahanPembantu/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId+'/'+diameter+'/'+gramasi+'/'+berat,
+                url: '{{ url("GBahanPembantu/keluar/getDetailMaterial") }}/'+materialId+'/'+purchaseId,
                 success: function(response){
                     var data = JSON.parse(response);
                     console.log(data)
@@ -335,12 +252,6 @@
                 var nama_material           = $('#materialId').find('option:selected').text();
                 var purchaseId              = $('#kodePurchase').val();
                 var kodePurchase            = $('#kodePurchase').find('option:selected').text();
-                var diameter                = $('#diameter').val();
-                var nilai_diameter          = $('#diameter').find('option:selected').text();
-                var gramasi                 = $('#gramasi').val();
-                var nilai_gramasi           = $('#gramasi').find('option:selected').text();
-                var berat                   = $('#berat').val();
-                var nilai_berat             = $('#berat').find('option:selected').text();
                 var qty                     = $('#qty').val();
                 var gudangId                = $('#gudangId').val();
                 var gudangMaterialDetail    = $('#gudangMaterialDetail').val();
@@ -360,9 +271,9 @@
                             table += "<input type='hidden' name='gudangMaterialDetailArr[]' value='"+gudangMaterialDetail+"' id='gudangMaterialDetail_"+jumlah_data+"'/>";
                             table += "<td>"+nama_material+"<input type='hidden' name='materialIdArr[]' value='"+material+"' id='material_"+jumlah_data+"'></td>";
                             table += "<td>"+kodePurchase+"<input type='hidden' name='purchaseIdArr[]' value='"+purchaseId+"' id='purchaseId_"+jumlah_data+"'></td>";
-                            table += "<td>"+nilai_diameter+"<input type='hidden' name='diameterArr[]' value='"+diameter+"' id='diameter_"+jumlah_data+"'></td>";
-                            table += "<td>"+nilai_gramasi+"<input type='hidden' name='gramasiArr[]' value='"+gramasi+"' id='gramasi_"+jumlah_data+"'></td>";
-                            table += "<td>"+nilai_berat+"<input type='hidden' name='beratArr[]' value='"+berat+"' id='berat_"+jumlah_data+"'></td>";
+                            table += "<input type='hidden' name='diameterArr[]' value='0' id='diameter_"+jumlah_data+"'>";
+                            table += "<input type='hidden' name='gramasiArr[]' value='0' id='gramasi_"+jumlah_data+"'>";
+                            table += "<input type='hidden' name='beratArr[]' value='0' id='berat_"+jumlah_data+"'><";
                             table += "<td>"+qty+"<input type='hidden' name='qtyArr[]' value='"+qty+"' id='jumlah_"+jumlah_data+"'></td>";
                             table += "<td>";
                             table += "<a class='btn btn-sm btn-block btn-danger del' idsub='"+jumlah_data+"' style='width:40px;'><span class='fa fa-trash'></span></a>";

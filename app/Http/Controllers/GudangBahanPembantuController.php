@@ -41,7 +41,9 @@ class GudangBahanPembantuController extends Controller
     }
 
     public function index(){
-        $data = GudangBahanBakuDetail::all();
+        $data = GudangBahanBakuDetail::whereHas('material', function (Builder $query) {
+                     $query->where('keterangan','LIKE', '%Bahan Bantu / Merchandise%');
+                    })->get();;
         $materials = MaterialModel::where('keterangan','LIKE','%Bahan Bantu / Merchandise%')->get();
         $dataStok=[];
         foreach ($materials as $key => $material) {
@@ -53,10 +55,7 @@ class GudangBahanPembantuController extends Controller
         foreach ($data as $key => $value) {
             $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $value->qtySaatIni;
         }
-        
-        $dataMasuk = GudangRajutMasuk::count() + GudangCompactMasuk::count() + GudangInspeksiMasuk::count();
-        $dataKeluar = GudangRajutKeluar::count() + GudangCuciKeluar::count() +GudangCompactKeluar::count() + GudangInspeksiKeluar::count();
-        return view('bahanPembantu.index')->with(['dataStok'=>$dataStok,'dataMasuk'=>$dataMasuk,'dataKeluar'=>$dataKeluar]);
+        return view('bahanPembantu.index')->with(['dataStok'=>$dataStok]);
     }
 
     public function indexSupplyBarang(){
@@ -102,11 +101,6 @@ class GudangBahanPembantuController extends Controller
         if($barangDatang->save()){
             for ($i=0; $i < $jumlahData; $i++) {
                 $materialId = $request['materialId'][$i];
-                $gramasi = $request['gramasi_'.$materialId];
-                $diameter = $request['diameter_'.$materialId];
-                $brutto = $request['brutto_'.$materialId];
-                $netto = $request['netto_'.$materialId];
-                $tarra = $request['tarra_'.$materialId];
 
                 $barangDatangDetail = new BarangDatangDetail;
                 $barangDatangDetail->barangDatangId = $barangDatang->id;
@@ -163,22 +157,12 @@ class GudangBahanPembantuController extends Controller
                     $bahanPembantuDetailMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanPembantuDetail->id)->first();
 
                     if($bahanPembantuDetailMaterial){
-                        $dataDetail['gramasi'] = $bahanPembantuDetailMaterial->gramasi + $gramasi[0];
-                        $dataDetail['diameter'] = $bahanPembantuDetailMaterial->diameter + $diameter[0];
-                        $dataDetail['brutto'] = $bahanPembantuDetailMaterial->brutto + $brutto[0];
-                        $dataDetail['netto'] = $bahanPembantuDetailMaterial->netto + $netto[0];
-                        $dataDetail['tarra'] = $bahanPembantuDetailMaterial->tarra + $tarra[0];
                         $dataDetail['qty'] = $bahanPembantuDetailMaterial->qty + 1;
 
                         $updateBahanBakuDetailMaterial =  GudangBahanBakuDetailMaterial::where('gudangDetailId',$bahanPembantuDetail->id)->update($dataDetail);
                     }else{
                         $bahanPembantuDetailMaterial = new GudangBahanBakuDetailMaterial;
                         $bahanPembantuDetailMaterial->gudangDetailId = $bahanPembantuDetail->id;
-                        $bahanPembantuDetailMaterial->diameter = $diameter[0];
-                        $bahanPembantuDetailMaterial->gramasi = $gramasi[0];
-                        $bahanPembantuDetailMaterial->brutto = $brutto[0];
-                        $bahanPembantuDetailMaterial->netto = $netto[0];
-                        $bahanPembantuDetailMaterial->tarra = $tarra[0];
                         $bahanPembantuDetailMaterial->qty = 1;
                         $bahanPembantuDetailMaterial->unit = $request['unit'][$i];
                         $bahanPembantuDetailMaterial->unitPrice = $request['unitPrice'][$i];
@@ -189,7 +173,7 @@ class GudangBahanPembantuController extends Controller
                         $bahanPembantuDetailMaterial->save();
                     }
 
-                    BarangDatangDetailMaterial::createDetailMaterial($barangDatangDetail->id, $diameter[0], $gramasi[0], $brutto[0], $netto[0], $tarra[0], $request['unit'][$i], $request['unitPrice'][$i], $request['amount'][$i], $request['remark'][$i]);
+                    BarangDatangDetailMaterial::createDetailMaterial($barangDatangDetail->id, 0,0,0,0,0, $request['unit'][$i], $request['unitPrice'][$i], $request['amount'][$i], $request['remark'][$i]);
             }
         }
 
@@ -238,11 +222,6 @@ class GudangBahanPembantuController extends Controller
 
             for ($j=0; $j < count($request['detailMaterialId'][$detailId]); $j++) {
                 $detailMaterialId = $request['detailMaterialId'][$detailId][$j]; 
-                $dt['gramasi'] = $request['gramasi'][$detailMaterialId];
-                $dt['diameter'] = $request['diameter'][$detailMaterialId];
-                $dt['brutto'] = $request['brutto'][$detailMaterialId];
-                $dt['netto'] = $request['netto'][$detailMaterialId];
-                $dt['tarra'] = $request['tarra'][$detailMaterialId];
                 // $dt['unit'] = $request['unit'][$detailMaterialId][$j];
                 $dt['userId'] = \Auth::user()->id;
                 // $data['unitPrice'] = $request['unitPrice_'.$request['materialId'][$i]][$j];
@@ -419,34 +398,14 @@ class GudangBahanPembantuController extends Controller
     }
 
 
-    public function getDataDetailMaterial($materialId, $purchaseId, $diameter, $gramasi="", $berat="")
+    public function getDataDetailMaterial($materialId, $purchaseId)
     {
         $datas = [];
-        if ($gramasi == "null") {
             $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('qty', '!=', 0)->get();
-        
-            foreach ($gudangMaterialDetail as $detail) {
-                if (!in_array($detail->gramasi, $datas)) {
-                    $datas[] = $detail->gramasi;
-                }
-            }
-        }elseif ($berat == "null") {
-            $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('qty', '!=', 0)->get();
-        
-            foreach ($gudangMaterialDetail as $detail) {
-                if (!in_array($detail->netto, $datas)) {
-                    $datas[] = $detail->netto;
-                }
-            }
-        }else{
-            $detailGudang = GudangBahanBakuDetail::where('materialId',$materialId)->where('purchaseId',$purchaseId)->first();
-            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('diameter', $diameter)->where('gramasi', $gramasi)->where('netto', $berat)->where('qty', '!=', 0)->first();
+            $gudangMaterialDetail = GudangBahanBakuDetailMaterial::where('gudangDetailId', $detailGudang->id)->where('qty', '!=', 0)->first();
             
             $datas['gudangMaterialDetail'] = $gudangMaterialDetail->id;
-            $datas['qty'] = $gudangMaterialDetail->qty;
-        }       
+            $datas['qty'] = $gudangMaterialDetail->qty;    
 
         return json_encode($datas);
     }

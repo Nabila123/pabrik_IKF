@@ -91,11 +91,6 @@
                                                                     <th class="textAlign">Harga Satuan</th>
                                                                     <th class="textAlign">Amount</th>
                                                                     <th class="textAlign">Remark</th> -->
-                                                                    <th class="textAlign">Diameter</th>
-                                                                    <th class="textAlign">Gramasi</th>
-                                                                    <th class="textAlign">Bruto</th>
-                                                                    <th class="textAlign">Netto </th>
-                                                                    <th class="textAlign">Tarra</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign"></tbody>                                                                                       
@@ -173,11 +168,11 @@
                             dt += "<input type='hidden' name='unitPrice[]' value='"+data[i].unitPrice+"' id='unitPrice_"+jumlah_data+"'>";
                             dt += "<input type='hidden' name='amount[]' value='"+data[i].amount+"' id='amount_"+jumlah_data+"'>";
                             dt += "<input type='hidden' name='remark[]' value='"+data[i].remark+"' id='remark_"+jumlah_data+"'>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"' > </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'> </td>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"' placeholder='Kg'> </td>";
-                            dt += "<td>Kg<input type='text' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'>";
-                            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"' placeholder='Kg'> </td>";
+                            dt += "<input type='hidden' required style='width:60px;' class='form-control diameter' id_data='"+jumlah_data+"' name='diameter_"+data[i].materialId+"[]' value='' id='diameter_"+jumlah_data+"' > ";
+                            dt += "<td><input type='hidden' required style='width:60px;' class='form-control gramasi' id_data='"+jumlah_data+"' name='gramasi_"+data[i].materialId+"[]' value='' id='gramasi_"+jumlah_data+"'>";
+                            dt += "<input type='hidden' required style='width:60px;' class='form-control brutto' id_data='"+jumlah_data+"' name='brutto_"+data[i].materialId+"[]' value='' id='brutto_"+jumlah_data+"'>";
+                            dt += "<input type='hidden' required style='width:60px;' class='form-control netto' id_data='"+jumlah_data+"' name='netto_"+data[i].materialId+"[]' value='' id='netto_"+jumlah_data+"'>";
+                            dt += "<input type='hidden' required style='width:60px;' class='form-control tarra' id_data='"+jumlah_data+"' name='tarra_"+data[i].materialId+"[]' value='' id='tarra_"+jumlah_data+"'>";
                             dt += '</tr>';
                             nomor++;
                             
