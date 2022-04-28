@@ -510,7 +510,7 @@ Route::get('/GBahanPembantu/keluar/create', [App\Http\Controllers\GudangBahanPem
 Route::get('/GBahanPembantu/keluar/getMaterial/{gudangRequest}/{jenisKain}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataMaterial'])->name('GBahanPembantu.keluar.material');
 Route::get('/GBahanPembantu/keluar/getPurchase/{materialId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataPurchase'])->name('GBahanPembantu.keluar.purchase');
 Route::get('/GBahanPembantu/keluar/getGudang/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataGudang'])->name('GBahanPembantu.keluar.gudang');
-Route::get('/GBahanPembantu/keluar/getDetailMaterial/{materialId}/{purchaseId}/{diameter}/{gramasi}/{berat}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataDetailMaterial'])->name('GBahanPembantu.keluar.detailMaterial');
+Route::get('/GBahanPembantu/keluar/getDetailMaterial/{materialId}/{purchaseId}', [App\Http\Controllers\GudangBahanPembantuController::class, 'getDataDetailMaterial'])->name('GBahanPembantu.keluar.detailMaterial');
 Route::post('/GBahanPembantu/keluar/create', [App\Http\Controllers\GudangBahanPembantuController::class, 'storeKeluarGudang'])->name('GBahanPembantu.keluar.store');
 Route::get('/GBahanPembantu/keluar/detail/{id}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'detailKeluarGudang'])->name('GBahanPembantu.keluar.detail');
 Route::get('/GBahanPembantu/keluar/detail/delete/{gudangId}/{detailId}/{gudangRequest}', [App\Http\Controllers\GudangBahanPembantuController::class, 'deleteDetailGudang'])->name('GBahanPembantu.keluar.detail.delete');

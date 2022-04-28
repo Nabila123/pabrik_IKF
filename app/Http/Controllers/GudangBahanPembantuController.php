@@ -219,20 +219,9 @@ class GudangBahanPembantuController extends Controller
             $dataDetail['jumlah_datang'] = $request['qtySaatIni'][$detailId];
 
             $updateDetail = BarangDatangDetail::where('id',$detailId)->update($dataDetail);
-
-            for ($j=0; $j < count($request['detailMaterialId'][$detailId]); $j++) {
-                $detailMaterialId = $request['detailMaterialId'][$detailId][$j]; 
-                // $dt['unit'] = $request['unit'][$detailMaterialId][$j];
-                $dt['userId'] = \Auth::user()->id;
-                // $data['unitPrice'] = $request['unitPrice_'.$request['materialId'][$i]][$j];
-                // $data['amount'] = $request['amount_'.$request['materialId'][$i]][$j];
-                // $data['remark'] = $request['remark_'.$request['materialId'][$i]][$j];
-
-                $updateDetailMaterial =  BarangDatangDetailMaterial::where('id',$detailMaterialId)->update($dt);
-            } 
         }
 
-        return redirect('bahan_baku/supply');
+        return redirect('GBahanPembantu/supply');
 
     }
 

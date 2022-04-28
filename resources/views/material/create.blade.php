@@ -84,12 +84,6 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label>Jenis</label>
-                                            <input class="form-control" name="jenis"  type="text" placeholder="Beri ( - ) Jika Dikosongkan" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
                                             <label>Keterangan</label>
                                              <select class="form-control" name="keterangan" required>
                                                 <option value="Bahan Baku">Bahan Baku</option>
