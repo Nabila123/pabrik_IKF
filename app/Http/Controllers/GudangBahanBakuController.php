@@ -96,6 +96,9 @@ class GudangBahanBakuController extends Controller
             $bahanBaku->total = 0;
             $bahanBaku->userId = \Auth::user()->id;
             $bahanBaku->save();
+            $gudangId = $bahanBaku->id;
+        }else{
+            $gudangId = $find->id;
         }
             
         if($barangDatang->save()){
@@ -115,43 +118,26 @@ class GudangBahanBakuController extends Controller
                 $barangDatangDetail->jumlah_datang = $request['qtySaatIni'][$i];
                 $barangDatangDetail->save();
 
-                if($find != null){
+                $bahanBakuDetail = GudangBahanBakuDetail::where('gudangId',$gudangId)
+                                                        ->where('materialId',$materialId)
+                                                        ->where('purchaseId',$request['purchaseId'])->first();
 
-                    $bahanBakuDetail = GudangBahanBakuDetail::where('gudangId',$find->id)
-                                                            ->where('materialId',$materialId)
-                                                            ->where('purchaseId',$request['purchaseId'])->first();
+                if($bahanBakuDetail){
+                    $data['qtySaatIni'] = $bahanBakuDetail->qtySaatIni + $request['qtySaatIni'][$i];
+                    $updateBahanBakuDetail = GudangBahanBakuDetail::where('gudangId',$gudangId)
+                                                        ->where('materialId',$materialId)
+                                                        ->where('purchaseId',$request['purchaseId'])->update($data);
 
-                    if($bahanBakuDetail){
-                        $data['qtySaatIni'] = $bahanBakuDetail->qtySaatIni + $request['qtySaatIni'][$i];
-                        $updateBahanBakuDetail = GudangBahanBakuDetail::where('gudangId',$find->id)
-                                                            ->where('materialId',$materialId)
-                                                            ->where('purchaseId',$request['purchaseId'])->update($data);
-
-                    }else{
-                        $bahanBakuDetail = new GudangBahanBakuDetail;
-                        $bahanBakuDetail->gudangId = $find->id;
-                        $bahanBakuDetail->purchaseId = $request['purchaseId'];
-                        $bahanBakuDetail->materialId = $request['materialId'][$i];
-                        $bahanBakuDetail->qtyPermintaan = $request['qtyPermintaan'][$i];
-                        $bahanBakuDetail->qtySaatIni = $request['qtySaatIni'][$i];
-                        $bahanBakuDetail->userId = \Auth::user()->id;
-                        if($bahanBakuDetail->save()){
-                        $saveStatus = 1;
-                        } else {
-                            $saveStatus = 0;
-                            die();
-                        }
-                    }
                 }else{
                     $bahanBakuDetail = new GudangBahanBakuDetail;
-                    $bahanBakuDetail->gudangId = $bahanBaku->id;
+                    $bahanBakuDetail->gudangId = $gudangId;
                     $bahanBakuDetail->purchaseId = $request['purchaseId'];
                     $bahanBakuDetail->materialId = $request['materialId'][$i];
                     $bahanBakuDetail->qtyPermintaan = $request['qtyPermintaan'][$i];
                     $bahanBakuDetail->qtySaatIni = $request['qtySaatIni'][$i];
                     $bahanBakuDetail->userId = \Auth::user()->id;
                     if($bahanBakuDetail->save()){
-                        $saveStatus = 1;
+                    $saveStatus = 1;
                     } else {
                         $saveStatus = 0;
                         die();

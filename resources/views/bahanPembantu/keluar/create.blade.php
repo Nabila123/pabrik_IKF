@@ -174,13 +174,12 @@
             
             $.ajax({
                 type: "get",
-                url: '{{ url("GBahanPembantu/keluar/getMaterial") }}/'+gudangRequest+'/'+null,
+                url: '{{ url("GBahanPembantu/keluar/getMaterial") }}',
                 success: function(response){
                     var data = JSON.parse(response);
-                    {{--  console.log(data.material);  --}}
                     var opt_material ='<option value="">Pilih Barang</option>';
-                    for(var i =0;i < data.material.length;i++){
-                        opt_material += "<option value="+data.material[i].id+">"+data.material[i].nama+"</option>"
+                    for(var i =0;i < data.length;i++){
+                        opt_material += "<option value="+data[i].materialId+">"+data[i].material.nama+"</option>"
                     }
                     $('#materialId').html(opt_material);
                     $('#jenisId').val(gudangRequest);                  
@@ -255,12 +254,13 @@
                 var purchaseId              = $('#kodePurchase').val();
                 var kodePurchase            = $('#kodePurchase').find('option:selected').text();
                 var qty                     = $('#qty').val();
+                var qty                     = $('#qty').val();
                 var gudangId                = $('#gudangId').val();
                 var gudangMaterialDetail    = $('#gudangMaterialDetail').val();
 
                 var jumlah_data = $('#jumlah_data').val();
                 var qtyHidden = $('#qtyHidden').val();
-                if (parseFloat(qty) > parseFloat(berat)){
+                if (parseFloat(qty) > parseFloat(qtyHidden)){
                     alert("Jumlah tidak dapat melebihi stok di Gudang saat ini!\nStok di Gudang : "+qtyHidden);
                 }else{
                     if((nama_material != "Pilih Material / Bahan" || material != "") && qty != ""){

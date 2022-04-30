@@ -69,7 +69,7 @@
                                         @for ($j = 0; $j < count($data[$i]); $j++)
                                             <tr>
                                                 <td>{{$data[$i][$j]->gudangRequest}}</td>
-                                                <td>{{$data[$i][$j]->tanggal}}</td>
+                                                <td>{{ date('d F Y', strtotime($data[$i][$j]->created_at)) }}</td>
                                                 <td>
                                                     @if ($data[$i][$j]->statusDiterima == 0)
                                                     <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penyerahan</span>
