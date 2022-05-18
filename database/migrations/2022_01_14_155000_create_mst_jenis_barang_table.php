@@ -13,7 +13,7 @@ class CreateMstJenisBarangTable extends Migration
      */
     public function up()
     {
-        Schema::create('mst_jenis_barang', function (Blueprint $table) {
+        Schema::create('mst_jenisBarang', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nama')->nullable();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateMstJenisBarangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mst_jenis_barang');
+        Schema::dropIfExists('mst_jenisBarang');
     }
 }

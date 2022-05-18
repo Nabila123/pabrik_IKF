@@ -12124,7 +12124,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 .nav-sidebar .nav-link > .right:nth-child(2),
 .nav-sidebar .nav-link > p > .right:nth-child(2) {
-  right: 2.2rem;
+  /* right: 2.2rem; */
 }
 .nav-sidebar .menu-open > .nav-treeview {
   display: block;

@@ -23,7 +23,7 @@ class CreateMstMaterialTable extends Migration
             $table->unsignedBigInteger('userId');
             $table->timestamps();
 
-            $table->foreign('jenisId')->references('id')->on('mst_jenis_barang');
+            $table->foreign('jenisId')->references('id')->on('mst_jenisBarang');
             $table->foreign('userId')->references('id')->on('users');
             $table->index(['jenisId','userId']);
         });
