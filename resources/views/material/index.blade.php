@@ -62,7 +62,6 @@
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Barang</th>
                                         <th class="textAlign" style="vertical-align: middle;">Nama</th>
                                         <th class="textAlign" style="vertical-align: middle;">Satuan</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jenis </th>
                                         <th class="textAlign" style="vertical-align: middle;">Keterangan</th>
                                         <th class="textAlign" style="vertical-align: middle; width:15%;">action</th>
                                     </tr>
@@ -73,7 +72,6 @@
                                             <td>{{ $material->jenisBarang->nama }}</td>
                                             <td>{{ $material->nama }}</td>
                                             <td>{{ $material->satuan }} </td>
-                                            <td>{{ $material->jenis}} </td>
                                             <td>{{ $material->keterangan}} </td>
                                             <td>
                                                 <a href="{{ route('Material.detail', $material->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

@@ -457,9 +457,9 @@ class AdminPoController extends Controller
         $getPurchaseRequest = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
         $getPurchaseId = AdminPurchase::where('kode', $getPurchaseRequest->kode)->where('jenisPurchase', 'Purchase Order')->first();
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
-
+        
         $gudangDatang = [];
-        $barang = BarangDatang::select('id')->where('purchaseId', $getPurchaseId->id)->get();
+        $barang = BarangDatang::select('id')->where('purchaseId', $id)->get();
         if (count($barang) != 0) {
             foreach ($barang as $Gbarang) {
                 $barangDetail = BarangDatangDetail::where('barangDatangId', $Gbarang->id)->get();

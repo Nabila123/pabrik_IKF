@@ -67,11 +67,6 @@
                                     <tr>
                                         <th class="textAlign">Bahan</th>
                                         <th class="textAlign">Nomor PO</th>
-                                        @if ($data->gudangRequest != "Gudang Rajut")
-                                            <th class="textAlign">Gramasi</th>
-                                            <th class="textAlign">Diamater</th>
-                                            <th class="textAlign">Berat</th>
-                                        @endif
                                         <th class="textAlign">Jumlah</th>
                                     </tr>
                                 </thead>
@@ -80,11 +75,6 @@
                                         <tr>
                                             <td>{{ $detail->material->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
-                                            @if ($data->gudangRequest != "Gudang Rajut")
-                                                <td>{{ $detail->gramasi }}</td>
-                                                <td>{{ $detail->diameter }}</td>
-                                                <td>{{ $detail->berat }}</td>
-                                            @endif
                                             <td>{{ $detail->qty }}</td>
                                         </tr>
                                     @endforeach

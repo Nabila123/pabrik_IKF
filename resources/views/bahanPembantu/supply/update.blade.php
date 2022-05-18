@@ -83,7 +83,7 @@
                                                         <p>Waktu Kedatangan : {{date('j F Y H:i:s', strtotime($value->created_at))}}</p>
                                                         <input type="hidden" name="jumlah_data" class="jumlah_data" id="jumlah_data" value="{{count($value->detail)}}">
                                                         <div class="col-12 right">
-                                                            <table id="materialPO" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                                                            <table id="materialPO" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="textAlign" style="width: 7%;">No</th>
@@ -91,12 +91,6 @@
                                                                         <th class="textAlign">Jumlah Permintaan</th>
                                                                         <th class="textAlign">Jumlah Saat Ini</th>
                                                                         <th class="textAlign">Satuan </th>
-                                                                        <th class="textAlign">Diameter </th>
-                                                                        <th class="textAlign">Gramasi </th>
-                                                                        <th class="textAlign">Bruto </th>
-                                                                        <th class="textAlign">Netto </th>
-                                                                        <th class="textAlign">Tarra</th>
-                                                                        <th class="textAlign">Action</th>
                                                                         <!-- <th class="textAlign">Harga Satuan</th>
                                                                         <th class="textAlign">Amount</th>
                                                                         <th class="textAlign">Remark</th> -->
@@ -125,24 +119,7 @@
                                                                                 {{$detail->material->satuan}}
                                                                                 <input type="hidden" name="unit[{{$detail->id}}]" value="{{$detail->material->satuan}}" style="width: 70px;">
                                                                             </td>
-                                                                             @foreach($detail->detailMaterial as $key2=>$detailMaterial)
-                                                                                <input type="hidden" name="detailMaterialId[{{$detail->id}}][]" value="{{$detailMaterial->id}}" >
-                                                                                <td>
-                                                                                    <input type="text" name="diameter[{{$detailMaterial->id}}]" value="{{$detailMaterial->diameter}}" style="width: 70px;">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="gramasi[{{$detailMaterial->id}}]" value="{{$detailMaterial->gramasi}}" style="width: 70px;">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="brutto[{{$detailMaterial->id}}]" value="{{$detailMaterial->brutto}}" style="width: 70px;">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="netto[{{$detailMaterial->id}}]" value="{{$detailMaterial->netto}}" style="width: 70px;" >
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="tarra[{{$detailMaterial->id}}]" value="{{$detailMaterial->tarra}}" style="width: 70px;" >
-                                                                                </td>
-                                                                            @endforeach
+                                                                            
                                                                             <!-- <td>
                                                                                 <input type="text" name="unitPrice[]" value="{{$detail->unitPrice}}" style="width: 90px;">
                                                                             </td>

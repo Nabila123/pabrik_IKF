@@ -59,31 +59,6 @@
                     </div>
                 @endforeach
             </div>
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-4">
-                    <h4>Request Keluar</h4>
-                    <div class="info-box mb-4">
-                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-shopping-cart"></i></span>
-        
-                        <div class="info-box-content">
-                            <span class="info-box-number">{{$dataKeluar}}</span>
-                        </div>
-                    </div>
-                </div>
-        
-                <div class="clearfix hidden-md-up"></div>
-        
-                <div class="col-12 col-sm-12 col-md-4">
-                    <h4>Request Masuk</h4>
-                    <div class="info-box mb-4">
-                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-people-carry"></i></span>
-            
-                        <div class="info-box-content">
-                            <span class="info-box-number">{{$dataMasuk}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 @endsection

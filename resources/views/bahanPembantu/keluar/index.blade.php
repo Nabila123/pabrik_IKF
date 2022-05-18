@@ -55,7 +55,7 @@
                                     <a href="{{ route('GBahanPembantu.keluar.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Request Keluar</a>
                                 </div>
                             @endif
-                            <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody" style="width: 100%">
+                            <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th style="vertical-align: middle; width: 20%;">Gudang Request</th>
@@ -69,7 +69,7 @@
                                         @for ($j = 0; $j < count($data[$i]); $j++)
                                             <tr>
                                                 <td>{{$data[$i][$j]->gudangRequest}}</td>
-                                                <td>{{$data[$i][$j]->tanggal}}</td>
+                                                <td>{{ date('d F Y', strtotime($data[$i][$j]->created_at)) }}</td>
                                                 <td>
                                                     @if ($data[$i][$j]->statusDiterima == 0)
                                                     <span style="color: rgb(221, 3, 3); font-size: 13px"> Dalam Proses Penyerahan</span>
