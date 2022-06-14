@@ -56,6 +56,9 @@
                                         <th style="width: 40%">Nomor PO : {{ $purchase->kode }}</th>
                                     </tr>
                                     <tr>
+                                        <th style="width: 40%">Suplier : {{ $purchase->suplierName }}</th>
+                                    </tr>
+                                    <tr>
                                         <th>Note : {{ $purchase->note }}</th>
                                     </tr>
                                 </thead>                               
