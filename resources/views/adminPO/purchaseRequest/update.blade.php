@@ -75,7 +75,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                             </div>
-                                            <input type="text" id="pengajuanDate" name="pengajuanDate" class="form-control disable pengajuanDate" value="{{ date('d F Y') }}" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask readonly>
+                                            <input type="date" id="pengajuanDate" name="pengajuanDate" class="form-control pengajuanDate" value="{{ $purchase->tanggal }}" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                                         </div>
                                     </div>
                                     <div class="col-6">

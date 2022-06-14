@@ -44,6 +44,11 @@
     <table width="100%">
         <tr>
             <td style="font-size: 12px"> <b>P/O No :</b> {{ $purchase->kode }}</td>
+        </tr>
+        <tr>
+            <td style="font-size: 12px"> <b>Suplier :</b> {{ $purchase->suplierName }}</td>
+        </tr>
+        <tr>
             <td style="font-size: 12px"> <b>Messsrs :</b> {{ $purchase->note }}</td>
         </tr>
     </table>

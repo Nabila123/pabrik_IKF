@@ -56,6 +56,9 @@
                                         <th style="width: 40%">Nomor PO : {{ $request->kode }}</th>
                                     </tr>
                                     <tr>
+                                        <th style="width: 40%">Suplier : {{ $request->suplierName }}</th>
+                                    </tr>
+                                    <tr>
                                         <th>Note : {{ $request->note }}</th>
                                     </tr>
                                 </thead>                               

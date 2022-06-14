@@ -89,9 +89,9 @@ class AdminPoController extends Controller
         $purchaseKode = $request['purchaseKode'];
         $suplierName = $request['suplierName'];
         $jenisPurchase = "Purchase Order";
-        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
-        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
-        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):date('Y-m-d H:i:s', strtotime(NULL));
+        $pengajuanDate = !empty($request['pengajuanDate'])?date('Y-m-d H:i:s', strtotime($request['pengajuanDate'])):null;
+        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
+        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
         $notePesan = $request['notePesan'];
 
         $material = $request['material'];
@@ -217,9 +217,9 @@ class AdminPoController extends Controller
         $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
         $jenisPurchase = "Purchase Order";
-        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
-        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
-        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):date('Y-m-d H:i:s', strtotime(NULL));
+        $pengajuanDate = !empty($request['pengajuanDate'])?date('Y-m-d H:i:s', strtotime($request['pengajuanDate'])):null;
+        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
+        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
         $notePesan = $request['notePesan'];
         $total = (int)$request['total'];
 
@@ -304,11 +304,11 @@ class AdminPoController extends Controller
         return view('adminPO.purchaseRequest.create', ['materials' => $materials]);
     }
     
-    public function poRequestStore(Request $request){        
+    public function poRequestStore(Request $request){     
         $purchaseKode = "-";
         $suplierName = isset($request['suplierName'])?$request['suplierName']:null;
         $jenisPurchase = "Purchase Request";
-        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
+        $pengajuanDate = !empty($request['pengajuanDate'])?date('Y-m-d H:i:s', strtotime($request['pengajuanDate'])):null;
         $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
         $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
         $notePesan = $request['notePesan'];
@@ -358,9 +358,9 @@ class AdminPoController extends Controller
         $purchaseid = $request['purchaseId'];
         $purchaseKode = $request['purchaseKode'];
         $jenisPurchase = "Purchase Request";
-        $pengajuanDate = date('Y-m-d H:i:s', strtotime($request['pengajuanDate']));
-        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):date('Y-m-d H:i:s', strtotime(NULL));
-        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):date('Y-m-d H:i:s', strtotime(NULL));
+        $pengajuanDate = !empty($request['pengajuanDate'])?date('Y-m-d H:i:s', strtotime($request['pengajuanDate'])):null;
+        $pengirimanDate = !empty($request['pengirimanDate'])?date('Y-m-d H:i:s', strtotime($request['pengirimanDate'])):null;
+        $jatuhTempoDate = !empty($request['jatuhTempoDate'])?date('Y-m-d H:i:s', strtotime($request['jatuhTempoDate'])):null;
         $notePesan = $request['notePesan'];
         $total = (int)$request['total'];
 
@@ -456,6 +456,11 @@ class AdminPoController extends Controller
     public function poRequestDetail($id){
         $getPurchaseRequest = AdminPurchase::where('id', $id)->where('jenisPurchase', 'Purchase Request')->first();
         $getPurchaseId = AdminPurchase::where('kode', $getPurchaseRequest->kode)->where('jenisPurchase', 'Purchase Order')->first();
+        if ($getPurchaseId != null) {
+            $getPurchaseRequest->suplierName = $getPurchaseId->suplierName;
+        }else{
+            $getPurchaseRequest->suplierName = "-";
+        }
         $getPurchaseDetailId = AdminPurchaseDetail::where('purchaseId', $id)->get();
         
         $gudangDatang = [];
@@ -505,6 +510,12 @@ class AdminPoController extends Controller
     public function poRequestUnduh($id)
     {
         $purchase = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('id', $id)->first();
+        $getPurchaseId = AdminPurchase::where('kode', $purchase->kode)->where('jenisPurchase', 'Purchase Order')->first();
+        if ($getPurchaseId != null) {
+            $purchase->suplierName = $getPurchaseId->suplierName;
+        }else{
+            $purchase->suplierName = "-";
+        }
         $purchaseDetail = AdminPurchaseDetail::where('purchaseId', $id)->get();
         
     	$pdf = PDF::loadview('adminPO.purchaseRequest.unduh',['purchase' => $purchase, 'purchaseDetail' => $purchaseDetail])
