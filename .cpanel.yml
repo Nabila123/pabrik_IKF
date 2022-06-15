@@ -2,4 +2,5 @@
 deployment:
 tasks:
   - export DEPLOYPATH=/home/inde5251/public_html
-  - /bin/cp -r * $DEPLOYPATH
+  - /bin/cp -r * $DEPLOYPATH #all
+
