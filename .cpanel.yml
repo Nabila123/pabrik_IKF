@@ -1,5 +1,6 @@
 ---
 deployment:
 tasks:
-  - export DEPLOYPATH=/home/inde5251/public_html/git
-  - /bin/cp -r * $DEPLOYPATH
+  - export DEPLOYPATH=/home/inde5251/public_html
+  - /bin/cp -r * $DEPLOYPATH #all
+
