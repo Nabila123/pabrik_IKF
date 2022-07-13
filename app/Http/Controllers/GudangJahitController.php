@@ -197,7 +197,6 @@ class GudangJahitController extends Controller
                                                                 ->whereDate('created_at', date('Y-m-d'))->get();
             }
 
-            // dd($gdRequestOperator);
             if (isset($request->operatorReqPurchaseId)) {
                 for ($i=0; $i < count($request['operatorReqPurchaseId']); $i++) { 
                     if ($request['operatorReqPurchaseId'][$i] == null) {
@@ -238,7 +237,7 @@ class GudangJahitController extends Controller
                     }    
                 }
             }
-            // dd($checkId);
+            // dd($gdRequestOperator);
             if (!isset($request->jumlahBaju)) {
                 $request->jumlahBaju = 12;
             } 
@@ -309,6 +308,7 @@ class GudangJahitController extends Controller
             }
         }
         
+        // dd($request);
 
         return json_encode($data);
     }

@@ -37,18 +37,20 @@ class PPICController extends Controller
             $dataStok[$material->id]['id'] = $material->id;
             $dataStok[$material->id]['nama'] = $material->nama;
             $dataStok[$material->id]['qty'] = 0;
-            $dataStok[$material->id]['satuan'] = "";
+            if ($material->id == 2 || $material->id == 3) {
+                $dataStok[$material->id]['satuan'] = "Roll";
+            }else {
+                $dataStok[$material->id]['satuan'] = $material->satuan;
+            }
 
             $data = GudangBahanBakuDetail::where('materialId', $material->id)->get();
             foreach ($data as $value) {
                 $dataMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $value->id)->get();
                 foreach ($dataMaterial as $detail) {
                     if ($material->id == 1) {
-                        $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $detail->netto;
-                        $dataStok[$material->id]['satuan'] = "KG";
+                        $dataStok[$value->materialId]['qty'] = ($dataStok[$value->materialId]['qty'] + $detail->netto)/181.44;
                     } else {
                         $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $detail->qty;
-                        $dataStok[$material->id]['satuan'] = "Roll";
                     }
                     
                 }

@@ -279,6 +279,7 @@
                 },
                 success: function(response){
                     var data = JSON.parse(response)
+                    console.log(data)
                     var ukuranBaju ="<option value=''>Pilih Ukuran Baju</option>";
                     for(var i = 0;i < data.operator.length;i++){
                         ukuranBaju += "<option value="+data['operator'][i]['ukuranBaju']+">"+data['operator'][i]['ukuranBaju']+"</option>";

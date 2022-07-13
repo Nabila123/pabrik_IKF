@@ -29,6 +29,17 @@ class KeuanganController extends Controller
         $data = [];
         $Penjualan = GudangBarangJadiPenjualan::where('kodeTransaksi', $request->kodeTransaksi)->first();
         $PenjualanDetail = GudangBarangJadiPenjualanDetail::where('barangJadiPenjualanId', $Penjualan->id)->groupBy('jenisBaju', 'ukuranBaju', 'qty', 'harga')->get();
+        $Pembayaran = GudangBarangJadiPembayaran::where('kodeTransaksi', $request->kodeTransaksi)->get();
+        $data['totalBayar'] = 0;
+        if ($Pembayaran != []) {
+            foreach ($Pembayaran as $bayar) {
+                $data['totalBayar'] = $data['totalBayar'] + $bayar->totalHarga;
+            }
+        }
+
+        $data['totalBayar'] = rupiah($data['totalBayar']);
+        
+        $data['customer'] = $Penjualan->customer;
         $data['total'] = $Penjualan->totalHarga;
         foreach ($PenjualanDetail as  $detail) {
             $data['detail'][] = $detail;

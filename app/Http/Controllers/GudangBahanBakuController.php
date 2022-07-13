@@ -41,17 +41,30 @@ class GudangBahanBakuController extends Controller
     }
 
     public function index(){
-        $data = GudangBahanBakuDetail::all();
         $materials = MaterialModel::where('keterangan','LIKE','%Bahan Baku%')->get();
         $dataStok=[];
         foreach ($materials as $key => $material) {
             $dataStok[$material->id]['id'] = $material->id;
             $dataStok[$material->id]['nama'] = $material->nama;
             $dataStok[$material->id]['qty'] = 0;
-        }
+            if ($material->id == 2 || $material->id == 3) {
+                $dataStok[$material->id]['satuan'] = "Roll";
+            }else {
+                $dataStok[$material->id]['satuan'] = $material->satuan;
+            }
 
-        foreach ($data as $key => $value) {
-            $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $value->qtySaatIni;
+            $data = GudangBahanBakuDetail::where('materialId', $material->id)->get();
+            foreach ($data as $value) {
+                $dataMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $value->id)->get();
+                foreach ($dataMaterial as $detail) {
+                    if ($material->id == 1) {
+                        $dataStok[$value->materialId]['qty'] = ($dataStok[$value->materialId]['qty'] + $detail->netto)/181.44;
+                    } else {
+                        $dataStok[$value->materialId]['qty'] = $dataStok[$value->materialId]['qty'] + $detail->qty;
+                    }
+                    
+                }
+            }
         }
         
         $dataMasuk = GudangRajutMasuk::count() + GudangCompactMasuk::count() + GudangInspeksiMasuk::count();

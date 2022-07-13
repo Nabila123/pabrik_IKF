@@ -265,10 +265,14 @@ class GudangPotongController extends Controller
             for ($i=0; $i < count($dataBaju); $i++) { 
                 $dataBaju[$i] = $dataBaju[$i];
             }
+            $dataType = explode(" ", $val->type);
+            for ($i=0; $i < count($dataType); $i++) { 
+                $dataType[$i] = $dataType[$i];
+            }
 
-            $jenisBaju[$val->type][] = implode("-", $dataBaju)."-".$val->type; 
+            $jenisBaju[$val->type][] = implode("-", $dataBaju)."-".implode("-", $dataType); 
         }
-
+        
         $gudangKeluar = GudangPotongKeluar::all();
         foreach ($gudangKeluar as $keluar) {
             $gudangKeluarDetail = GudangPotongKeluarDetail::where('gdPotongKId', $keluar->id)->get();

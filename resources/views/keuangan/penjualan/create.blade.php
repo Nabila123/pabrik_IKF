@@ -128,6 +128,7 @@
                                                                     <th style="vertical-align: middle;">Ukuran Baju</th>
                                                                     <th style="vertical-align: middle;">Jumlah Baju</th>
                                                                     <th style="vertical-align: middle;">Harga Baju</th>
+                                                                    <th style="vertical-align: middle;">Total Terbayarkan</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="data textAlign">
@@ -135,7 +136,7 @@
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr>
-                                                                    <th colspan="4" style="text-align: right">Total Harga</th>
+                                                                    <th colspan="5" style="text-align: right">Total Harga</th>
                                                                     <th>
                                                                         <div class="totalHarga" id="totalHarga">
                                                                             
@@ -196,7 +197,7 @@
                 },
                 success: function(response){
                     var data = JSON.parse(response) 
-                    
+                    console.log(data)
                     for(var i = 0;i < data.detail.length;i++){
                         var dataPenjualan = "<tr>";
                                 dataPenjualan += "<td>"+data['detail'][i]['kodeProduct']+"</td>";
@@ -204,10 +205,12 @@
                                 dataPenjualan += "<td>"+data['detail'][i]['ukuranBaju']+"</td>";
                                 dataPenjualan += "<td>"+data['detail'][i]['qty']+"</td>";
                                 dataPenjualan += "<td>"+formatRupiah(data['detail'][i]['harga'], 'Rp. ')+"</td>";
+                                dataPenjualan += "<td>"+data.totalBayar+"</td>";
                             dataPenjualan += "<tr>";
 
                         $('#penjualanData tbody.data').append(dataPenjualan);
                     }
+                    $('#customer').val(data.customer);
                     $('#totalHarga').html(formatRupiah(data.total, 'Rp. '));
                     console.log(data)
                 }
