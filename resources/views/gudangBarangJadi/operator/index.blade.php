@@ -65,7 +65,6 @@
                                         <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
                                         <th class="textAlign" style="vertical-align: middle;">Kode Transaksi </th>
                                         <th class="textAlign" style="vertical-align: middle;">Customer (Pelanggan)</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Total Harga</th>
                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                     </tr>
                                 </thead>
@@ -77,7 +76,6 @@
                                             <td>{{ date('d F Y', strtotime($penjualan->tanggal)) }}</td>
                                             <td>{{ $penjualan->kodeTransaksi}}</td>
                                             <td>{{ $penjualan->customer }}</td>
-                                            <td>{{ rupiah($penjualan->totalHarga) }}</td>
                                             
                                             <td>
                                                 <a href="{{ route('GBarangJadi.operator.detail', [$penjualan->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>

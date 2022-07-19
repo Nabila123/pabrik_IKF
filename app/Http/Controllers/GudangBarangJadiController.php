@@ -32,6 +32,34 @@ class GudangBarangJadiController extends Controller
         return view('gudangBarangJadi.index', ['dataStok' => $dataStok]);
     }
 
+    public function getKode(Request $request)
+    {
+        $data = [];
+        $jenisBaju = GudangBarangJadiStokOpname::groupBy('jenisBaju')->get();
+        $getKodeProduct = GudangBarangJadiStokOpname::where('kodeProduct', $request->kodeProduct)->first();
+            $jenisB = "<select class='form-control jenisBaju' id='jenisBaju'";
+            $jenisB .= "name='jenisBaju' style='width: 100%; height: 38px;'>";
+                $jenisB .= "<option value='$getKodeProduct->jenisBaju'> $getKodeProduct->jenisBaju </option>";
+                foreach ($jenisBaju as $baju){
+                    $jenisB .= "<option value='$baju->jenisBaju'> $baju->jenisBaju</option>";
+                }
+            $jenisB .= "</select>";
+
+            $ukuranB = "<select class='form-control ukuranBaju' id='ukuranBaju'";
+            $ukuranB .= "name='ukuranBaju' style='width: 100%; height: 38px;'>";
+                $ukuranB .= "<option value='$getKodeProduct->ukuranBaju'> $getKodeProduct->ukuranBaju </option>";
+            $ukuranB .= "</select>";
+        
+        $data['kodeProduct'] = $request->kodeProduct;
+        $data['requestOperator'] = "<input type='hidden' name='requestOperatorId[]' value='$request->kodeProduct' id='requestOperatorId_0'>";
+        $data['jenisBaju'] = $jenisB;
+        $data['ukuranBaju'] = $ukuranB;
+        $data['jumlahDus'] = 1;
+        $data['jumlahDz'] = 0.5;
+
+        return json_encode($data);
+    }
+
     public function getBarangJadi(Request $request)
     {
         $data = [];

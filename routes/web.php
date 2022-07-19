@@ -440,6 +440,7 @@ Route::delete('jenisBaju/delete', [App\Http\Controllers\JenisBajuController::cla
 
 //Gudang Barang Jadi
 Route::get('/GBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'index'])->name('GBarangJadi');
+Route::post('/GBarangJadi/getKode', [App\Http\Controllers\GudangBarangJadiController::class, 'getKode'])->name('GBarangJadi.getKode');
 Route::post('/GBarangJadi/getBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'getBarangJadi'])->name('GBarangJadi.getBarangJadi');
 
 Route::get('/GBarangJadi/operator', [App\Http\Controllers\GudangBarangJadiController::class, 'gOperator'])->name('GBarangJadi.operator');
