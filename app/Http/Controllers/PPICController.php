@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminPurchase;
+use App\Models\AdminPurchaseDetail;
+use App\Models\BarangDatang;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\GudangBahanBaku;
@@ -97,6 +100,28 @@ class PPICController extends Controller
         }
         
         return view('ppic.index')->with(['dataStok'=>$dataStok, 'dataBenang'=>$dataBenang]);
+    }
+
+    public function reRequest()
+    {
+        $poRequest = AdminPurchase::where('jenisPurchase', 'Purchase Request')->get();
+        foreach ($poRequest as $request) {
+            $request['purchaseDetail'] = AdminPurchaseDetail::where('purchaseId', $request->id)->get();
+            $cek = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('kode', $request->kode)->first();
+            if ($cek != null) {
+                $cekDatang = BarangDatang::where('purchaseId', $cek->id)->first();
+                if ($cekDatang != null) {
+                    $request['barangDatang'] = true;
+                    $request['barangDatangAt'] = $cekDatang->created_at;
+                }
+                
+                $request['prosesOrder'] = true;
+                $request['prosesOrderAt'] = $cek->tanggal;
+            }            
+        }
+
+        // dd($poRequest);
+        return view('ppic.rekapanPurchase')->with(['datas' => $poRequest]);
     }
 
     public function gdRequest()

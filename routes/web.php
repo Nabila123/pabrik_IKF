@@ -174,6 +174,7 @@ Route::delete('/gudangInspeksi/proses/delete', [App\Http\Controllers\GudangInspe
 /* PPIC */
 Route::get('/ppic', [App\Http\Controllers\PPICController::class, 'index'])->name('ppic');
 
+Route::get('/ppic/reRequest', [App\Http\Controllers\PPICController::class, 'reRequest'])->name('ppic.reRequest');
 Route::get('/ppic/Gudang', [App\Http\Controllers\PPICController::class, 'gdRequest'])->name('ppic.gdRequest');
 Route::get('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestCreate'])->name('ppic.gdRequest.create');
 Route::post('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestStore'])->name('ppic.gdRequest.create');

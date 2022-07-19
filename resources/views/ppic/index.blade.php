@@ -69,7 +69,7 @@
                                          <th class="textAlign" style="vertical-align: middle; width:10%;">No</th>
                                          <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
                                          <th class="textAlign" style="vertical-align: middle;">Bahan Baku</th>
-                                         <th class="textAlign" style="vertical-align: middle;">Jenis Bahan Olahan</th>
+                                         <th class="textAlign" style="vertical-align: middle;">Olahan Bahan Jadi</th>
                                          <th class="textAlign" style="vertical-align: middle;">Diameter</th>
                                          <th class="textAlign" style="vertical-align: middle;">Gramasi</th>
                                          <th class="textAlign" style="vertical-align: middle;">Jumlah</th>

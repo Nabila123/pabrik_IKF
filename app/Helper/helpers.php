@@ -70,8 +70,16 @@
                 if (count($PPIC) != 0) {
                     $notif[5] = count($PPIC);
                 }
+                $notifRequest = GudangPotongRequest::where('statusDiterima', 0)->get();            
+                if (count($notifRequest) != 0) {
+                    $notif[36] = count($notifRequest);
+                }
+            }
+            
+            if (count($notif) != 0) {
                 return $notif;
             }
+            
         }
 
         if ($mains->nama == "Purchase") {
@@ -209,14 +217,7 @@
                 if (count($notifKeluar) != 0) {
                     $notif[37] = count($notifKeluar);
                 }        
-            }
-
-            if ($user == 8 || $user == 13 || $user == 31) { //Gudang Potong Request Bahan Jadi
-                $notifRequest = GudangPotongRequest::where('statusDiterima', 0)->get();            
-                if (count($notifRequest) != 0) {
-                    $notif[36] = count($notifRequest);
-                }
-            }            
+            }          
             
             return $notif;
         }

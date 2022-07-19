@@ -16,6 +16,8 @@ use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\Pegawai;
 use App\Models\JenisBaju;
+use App\Models\PPICGudangRequest;
+use App\Models\PPICGudangRequestDetail;
 use DB;
 
 class GudangPotongController extends Controller
@@ -116,10 +118,30 @@ class GudangPotongController extends Controller
         $id = $id;  
         $statusDiterima = 1;  
 
-        $gudangRajutTerima = GudangPotongRequest::updateStatusDiterima($id, $statusDiterima);
+        $gudangReqTerima = GudangPotongRequest::updateStatusDiterima($id, $statusDiterima);
+        $requestGudang = GudangPotongRequestDetail::where('gdPotongReqId', $id)->get();
+        if ($gudangReqTerima == 1) {
+            $checkPPICRequest = PPICGudangRequest::where('gudangRequest', 'Gudang Potong')
+                                                 ->where('tanggal', date('Y-m-d'))
+                                                 ->where('statusDiterima', 0)
+                                                 ->first();
 
-        if ($gudangRajutTerima == 1) {
-            return redirect('GPotong/request');
+            if ($checkPPICRequest == null) {
+                $ppicRequest = PPICGudangRequest::CreatePPICGudangRequest('Gudang Potong');
+                if ($ppicRequest) {
+                    foreach ($requestGudang as $gudang) {
+                        $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest, 3, 3, 0, 0, $gudang->jenisBaju, $gudang->ukuranBaju, $gudang->qty);
+                    }
+                }
+            }else{
+                foreach ($requestGudang as $gudang) {
+                    $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($checkPPICRequest->id, 3, 3, 0, 0, $gudang->jenisBaju, $gudang->ukuranBaju, $gudang->qty);
+                }
+            }
+
+            if ($ppicRequestDetail == 1) {
+                return redirect('ppic/Gudang');
+            }
         }
     }
 
