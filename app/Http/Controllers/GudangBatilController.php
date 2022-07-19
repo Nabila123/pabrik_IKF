@@ -40,6 +40,7 @@ class GudangBatilController extends Controller
         foreach ($data as $value) {
             $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] = $dataStok[$value->jenisBaju."_".$value->ukuranBaju]['qty'] + 1;
         }
+
         return view('gudangBatil.index', ['dataStok' => $dataStok]);
     }
 
