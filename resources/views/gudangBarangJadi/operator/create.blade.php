@@ -42,12 +42,12 @@
          <div class="container-fluid">
              <div class="row mb-2">
                  <div class="col-sm-6">
-                     <h1> Penjualan Barang</h1>
+                     <h1> Keluar Barang</h1>
                  </div>
                  <div class="col-sm-6">
                      <ol class="breadcrumb float-sm-right">
                          <li class="breadcrumb-item"><a href="#">Home</a></li>
-                         <li class="breadcrumb-item">Penjualan Barang</li>
+                         <li class="breadcrumb-item">Keluar Barang</li>
                          <li class="breadcrumb-item active">Tambah Data</li>
                      </ol>
                  </div>
@@ -66,7 +66,9 @@
                                  <input type="hidden" name="namaOperator" value="{{ \Auth::user()->nama }}">
                              </h3>
                              <h3 class="card-title" style="float: right">
-                                 Tanggal Penjualan : <label style="font-size: 15px;"> {{ date('d F y') }} </label>
+                                 Tanggal Barang Keluar : <label style="font-size: 15px;"> {{ date('d F y') }} </label>
+                                 <input type="hidden" id="tanggal" name="tanggal" value="{{ date('d F Y') }}"
+                                     class="form-control tanggal disable" readonly>
                              </h3>
                          </div>
                          <div class="card-body">
@@ -95,18 +97,22 @@
 
                                      <div class="col-4">
                                          <div class="form-group">
-                                             <label>Nama Customer (Pelanggan) <sup>Optional</sup></label>
+                                             <label>Nama Customer / Keluar Barang <sup>Optional</sup></label>
                                              <input type="text" id="customer" name="customer"
                                                  class="form-control customer">
                                          </div>
                                      </div>
 
                                      <div class="col-4">
-                                         <label>Tanggal</label>
+                                         <label>Kategori</label>
                                          <div class="input-group">
-                                             <input type="text" id="tanggal" name="tanggal"
-                                                 value="{{ date('d F Y') }}" class="form-control tanggal disable"
-                                                 readonly>
+                                             <select class="form-control kategori" id="kategori" name="kategori"
+                                                 style="width: 100%; height: 38px;" required>
+                                                 <option> Pilih Satu Jenis Baju</option>
+                                                 <option value="Penjualan"> Penjualan</option>
+                                                 <option value="Hadiah"> Hadiah</option>
+                                                 <option value="Sample"> Sample</option>
+                                             </select>
                                          </div>
                                      </div>
                                  </div>
@@ -481,7 +487,7 @@
 
                  var jumlah_data = $('#jumlah_data').val();
 
-                 if (jenisBaju != "" && ukuranBaju != "" && jumlahBaju != "" && hargaBaju != "") {
+                 if (kategori != "" && jenisBaju != "" && ukuranBaju != "" && jumlahBaju != "" && hargaBaju != "") {
                      jumlah_data++;
                      $('#jumlah_data').val(jumlah_data);
 

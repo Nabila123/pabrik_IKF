@@ -172,7 +172,7 @@ class GudangBarangJadiController extends Controller
     {
         // dd($request);
         if ($request->jumlah_data != 0) {            
-            $BarangJadiPenjualan = GudangBarangJadiPenjualan::CreateBarangJadiPenjualan($request['kodeTransaksi'], $request['customer'], date('Y-m-d'), $request['total']);
+            $BarangJadiPenjualan = GudangBarangJadiPenjualan::CreateBarangJadiPenjualan($request['kodeTransaksi'], $request['kategori'], $request['customer'], date('Y-m-d'), $request['total']);
             
             for ($i=0; $i < $request->jumlah_data; $i++) {
                 $kodeProduct = explode(",", $request['operatorReqId'][$i]);

@@ -53,7 +53,7 @@
                         <div class="card-header">
                             @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 37)
                                 <h3 class="card-title" style="width: 100%">
-                                    <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Penjualan Barang</a>
+                                    <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Pengeluaran Barang</a>
                                 </h3>                           
                             @endif
                         </div>                   
@@ -64,6 +64,7 @@
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
                                         <th class="textAlign" style="vertical-align: middle;">Kode Transaksi </th>
+                                        <th class="textAlign" style="vertical-align: middle;">Kategori </th>
                                         <th class="textAlign" style="vertical-align: middle;">Customer (Pelanggan)</th>
                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                     </tr>
@@ -75,6 +76,7 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ date('d F Y', strtotime($penjualan->tanggal)) }}</td>
                                             <td>{{ $penjualan->kodeTransaksi}}</td>
+                                            <td>{{ $penjualan->kategori}}</td>
                                             <td>{{ $penjualan->customer }}</td>
                                             
                                             <td>

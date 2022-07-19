@@ -70,6 +70,11 @@
                                     <td>:</td>
                                     <td>{{ $penjualan->customer }}</td>
                                 </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Kategori</td>
+                                    <td>:</td>
+                                    <td>{{ $penjualan->kategori }}</td>
+                                </tr>
                             </table>
 
                             <table class="table table-bordered mt-4 textAlign" style="width: 100%">
