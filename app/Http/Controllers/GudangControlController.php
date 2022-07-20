@@ -515,7 +515,7 @@ class GudangControlController extends Controller
                     if ($operatorReq != null) {
                         $bajuStokOpname = GudangControlStokOpname::bajuUpdateField('statusControl', 1, $operatorReq->id);
                         if ($bajuStokOpname == 1) {
-                            $controlRekapDetail = GudangControlRekapDetail::ControlRekapDetailCreate($controlRekap, $request['pegawaiId'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
+                            $controlRekapDetail = GudangControlRekapDetail::ControlRekapDetailCreate($controlRekap, $request['pegawaiId'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['keterangan'][$i]);
                         }              
                     } 
                 }                                             
@@ -534,20 +534,34 @@ class GudangControlController extends Controller
         $totalControlPegawai = [];
         $total = 0;
         $getPegawai = GudangControlRekap::where('id', $id)->first();
-        $getDetailPegawai = GudangControlRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlRekapId', $getPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        $getDetailPegawai = GudangControlRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlRekapId', $getPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju', 'keterangan')->get();
+        // dd($getDetailPegawai);
         foreach ($getDetailPegawai as $detailPegawai) {
-            $getCountPegawai = GudangControlRekapDetail::select(DB::raw('count(*) as jumlah'))->where('pegawaiId', $detailPegawai->pegawaiId)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
+            $getCountPegawai = GudangControlRekapDetail::select(DB::raw('count(*) as jumlah'))->where('pegawaiId', $detailPegawai->pegawaiId)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju', 'keterangan')->whereDate('created_at', date('Y-m-d'))->get();
             if (!in_array($detailPegawai->pegawaiId, $totalControlPegawai)) {
                 $totalControlPegawai[] = $detailPegawai->pegawaiId;
                 foreach ($getCountPegawai as $countPegawai) {
                     $total += $countPegawai->jumlah;
                 }
+
                 $detailPegawai->jumlahTotal = $total/12;
+                
                 $detailPegawai->rowSpan = count($getCountPegawai);
                 $total = 0;
             }
+
+            if ($detailPegawai->keterangan == "-") {
+                $detailPegawai->jumlah = $detailPegawai->jumlah/12;
+                $detailPegawai->satuan = "Dz";
+            }else{
+                $detailPegawai->jumlah = $detailPegawai->jumlah;
+                $detailPegawai->satuan = "Pcs";
+            }
+
             $detailPegawai->posisi = $getPegawai->posisi;        
         }
+
+        // dd($getDetailPegawai);
 
         return view('gudangControl.rekap.detail', ['pegawais' => $getDetailPegawai]);
     }
@@ -558,7 +572,16 @@ class GudangControlController extends Controller
         $purchaseId = GudangControlStokOpname::select('purchaseId')->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId')->get();
 
         $getRekapanPegawai = GudangControlRekap::where('id', $id)->first();
-        $getDetailRekapanPegawai = GudangControlRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlRekapId', $getRekapanPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju')->get();
+        $getDetailRekapanPegawai = GudangControlRekapDetail::select('*', DB::raw('count(*) as jumlah'))->where('gdControlRekapId', $getRekapanPegawai->id)->groupBy('pegawaiId', 'purchaseId', 'jenisBaju', 'ukuranBaju', 'keterangan')->get();
+        foreach ($getDetailRekapanPegawai as $rekap) {
+            if($rekap->keterangan == "-"){
+                $rekap->jumlah = $rekap->jumlah/12;
+                $rekap->satuan = "Dz";
+            }else{
+                $rekap->jumlah = $rekap->jumlah;
+                $rekap->satuan = "Pcs";
+            }
+        }
 
         return view('gudangControl.rekap.update', ['id' => $getRekapanPegawai->id, 'rekapanPegawai' => $getDetailRekapanPegawai, 'pegawais' => $pegawai, 'purchases' => $purchaseId]);
     }
@@ -581,7 +604,7 @@ class GudangControlController extends Controller
                     if ($operatorReq != null) {
                         $bajuStokOpname = GudangControlStokOpname::bajuUpdateField('statusControl', 1, $operatorReq->id);
                         if ($bajuStokOpname == 1) {
-                            $batilRekapDetail = GudangControlRekapDetail::ControlRekapDetailCreate($batilRekap, $request['pegawaiId'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i]);
+                            $batilRekapDetail = GudangControlRekapDetail::ControlRekapDetailCreate($batilRekap, $request['pegawaiId'][$i], $operatorReq->gdBajuStokOpnameId, $request['purchaseId'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['keterangan'][$i]);
                         }              
                     } 
                 }                                             

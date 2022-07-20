@@ -58,9 +58,10 @@
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Nama Pegawai</th>
                                         <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Keterangan</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju (Dz)</th>
+                                        <th class="textAlign" style="vertical-align: middle;">Jumlah Baju</th>
                                         <th class="textAlign" style="vertical-align: middle;">Jumlah Total</th>
                                     </tr>
                                 </thead>
@@ -71,11 +72,12 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $detail->pegawai->nama }}</td>
                                             <td>{{ $detail->purchase->kode }}</td>
+                                            <td>{{ $detail->keterangan }}</td>
                                             <td>{{ strtoupper($detail->jenisBaju) }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
-                                            <td>{{ ($detail->jumlah/12) }}</td>
+                                            <td>{{ ($detail->jumlah) }} {{ $detail->satuan }}</td>
                                             @if (isset($detail->rowSpan) && $detail->rowSpan > 0)
-                                                <td class="textAlign" style="vertical-align: middle;" rowspan="{{ $detail->rowSpan }}">{{ ($detail->jumlahTotal) }}</td>
+                                                <td class="textAlign" style="vertical-align: middle;" rowspan="{{ $detail->rowSpan }}">{{ number_format($detail->jumlahTotal, 2, '.', ''); }}</td>
                                             @endif
                                         </tr>
                                     @endforeach

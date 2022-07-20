@@ -373,8 +373,7 @@ class GudangJahitController extends Controller
         $gdJahitRekap = GudangJahitRekap::orderBy('tanggal', 'desc')->groupBy('posisi', 'tanggal')->get();
         // dd($gdJahitRekap);
         // $dataPemindahan = GudangJahitRequestOperator::select('*', DB::raw('count(*) as jumlah'))->groupBy('jenisBaju', 'ukuranBaju')->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->get();
-        $pindahan = GudangJahitRequestOperator::where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->orderby('jenisBaju', 'asc')->get();
-
+        $pindahan = GudangJahitRequestOperator::where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->orderby('jenisBaju', 'asc')->orderby('ukuranBaju', 'asc')->get();
         foreach ($pindahan as $detail) {
             $checkBatilDetail = GudangBatilMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
             if ($checkBatilDetail == null) {
@@ -394,6 +393,8 @@ class GudangJahitController extends Controller
                 $tempUkuranBaju = $detail->ukuranBaju;                
             }
         }
+
+        // dd($dataPemindahan);
         $gdBatilMasuk = GudangBatilMasuk::where('tanggal', date('Y-m-d'))->get();
         if (count($gdBatilMasuk) != 0) {
             $gdBatilMasukDetail = GudangBatilMasukDetail::select('*', DB::raw('count(*) as jumlah'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();

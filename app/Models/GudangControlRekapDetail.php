@@ -36,7 +36,7 @@ class GudangControlRekapDetail extends Model
         return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
     }
     
-    public static function ControlRekapDetailCreate($gdControlRekapId, $pegawaiId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
+    public static function ControlRekapDetailCreate($gdControlRekapId, $pegawaiId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju, $keterangan)
     {
         $addControlDetailRekap = New GudangControlRekapDetail();
         $addControlDetailRekap->gdControlRekapId = $gdControlRekapId;
@@ -45,6 +45,7 @@ class GudangControlRekapDetail extends Model
         $addControlDetailRekap->purchaseId = $purchaseId;
         $addControlDetailRekap->jenisBaju = $jenisBaju;
         $addControlDetailRekap->ukuranBaju = $ukuranBaju;
+        $addControlDetailRekap->keterangan = $keterangan;
         $addControlDetailRekap->created_at = date('Y-m-d H:i:s');
 
         if ($addControlDetailRekap->save()) {
