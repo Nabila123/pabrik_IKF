@@ -36,7 +36,7 @@ class GudangSetrikaRekapDetail extends Model
         return $this->hasOne('App\Models\Pegawai','id','pegawaiId');
     }
     
-    public static function SetrikaRekapDetailCreate($gdSetrikaRekapId, $pegawaiId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju)
+    public static function SetrikaRekapDetailCreate($gdSetrikaRekapId, $pegawaiId, $gdBajuStokOpnameId, $purchaseId, $jenisBaju, $ukuranBaju, $keterangan)
     {
         $addSetrikaDetailRekap = New GudangSetrikaRekapDetail();
         $addSetrikaDetailRekap->gdSetrikaRekapId = $gdSetrikaRekapId;
@@ -45,6 +45,7 @@ class GudangSetrikaRekapDetail extends Model
         $addSetrikaDetailRekap->purchaseId = $purchaseId;
         $addSetrikaDetailRekap->jenisBaju = $jenisBaju;
         $addSetrikaDetailRekap->ukuranBaju = $ukuranBaju;
+        $addSetrikaDetailRekap->keterangan = $keterangan;
         $addSetrikaDetailRekap->created_at = date('Y-m-d H:i:s');
 
         if ($addSetrikaDetailRekap->save()) {
