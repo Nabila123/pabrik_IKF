@@ -459,12 +459,12 @@ class GudangJahitController extends Controller
             $data = count($gdRequestOperator);
             // $cekOperator = GudangJahitRequestOperator::whereDate('created_at','!=', date('Y-m-d'))->delete();
             // dd($cekOperator);
-            foreach ($gdRequestOperator as $value) {
-                $cekOperator = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $value->id)->where('soom', $request->soom)->where('jahit', $request->jahit)->where('bawahan', $request->bawahan)->whereDate('created_at', date('Y-m-d'))->first();
-                if ($cekOperator != null) {
-                   $data -= 1;
-                }
-            }
+            // foreach ($gdRequestOperator as $value) {
+            //     $cekOperator = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $value->id)->where('soom', $request->soom)->where('jahit', $request->jahit)->where('bawahan', $request->bawahan)->whereDate('created_at', date('Y-m-d'))->first();
+            //     if ($cekOperator != null) {
+            //        $data -= 1;
+            //     }
+            // }
         }
 
         return json_encode($data);
