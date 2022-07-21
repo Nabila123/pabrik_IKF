@@ -263,6 +263,7 @@ Route::post('/GBatil/getData', [App\Http\Controllers\GudangBatilController::clas
 Route::post('/GBatil/getBasis', [App\Http\Controllers\GudangBatilController::class, 'getBasis'])->name('GBatil.getBasis');
 Route::post('/GBatil/getPegawai', [App\Http\Controllers\GudangBatilController::class, 'getPegawai'])->name('GBatil.getPegawai');
 Route::post('/GBatil/getReject', [App\Http\Controllers\GudangBatilController::class, 'getReject'])->name('GBatil.getReject');
+Route::post('/GBatil/searchRekapan', [App\Http\Controllers\GudangBatilController::class, 'searchRekapan'])->name('GBatil.searchRekapan');
 
 Route::get('/GBatil/request', [App\Http\Controllers\GudangBatilController::class, 'gRequest'])->name('GBatil.request');
 Route::get('/GBatil/request/terima/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRequestTerima'])->name('GBatil.request.terima');

@@ -12,6 +12,7 @@ use App\Models\GudangControlMasuk;
 use App\Models\GudangControlMasukDetail;
 use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
+use App\Models\Other;
 use App\Models\Pegawai;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -269,6 +270,17 @@ class GudangBatilController extends Controller
         return json_encode($data);
     }
 
+    public function searchRekapan(Request $request)
+    {
+        $purchaseId = $request->purchaseId == "Pilih Satu"?"":$request->purchaseId;
+        $tglMulai = $request->tglMulai;
+        $tglSelesai = $request->tglSelesai;
+
+        $getSearch = Other::getSearch('batil', $purchaseId, $tglMulai, $tglSelesai);
+
+        return $getSearch;
+    }
+
     public function getData(Request $request)
     {
         $data = [];
@@ -364,7 +376,10 @@ class GudangBatilController extends Controller
             $gdControlMasukDetail = [];
         }
 
-        return view('gudangBatil.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdBatil' => $gdBatil, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdControlMasuk' => $gdControlMasukDetail]);
+        $purchase = GudangBatilStokOpname::groupBy('purchaseId')->where('statusBatil', 1)->get();
+
+
+        return view('gudangBatil.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdBatil' => $gdBatil, 'batilRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdControlMasuk' => $gdControlMasukDetail, 'purchase' => $purchase]);
     }
 
     public function gOperatorDetail($jenisBaju, $ukuranBaju)
