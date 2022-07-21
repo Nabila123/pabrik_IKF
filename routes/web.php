@@ -218,6 +218,7 @@ Route::get('/GJahit', [App\Http\Controllers\GudangJahitController::class, 'index
 Route::post('/GJahit/getData', [App\Http\Controllers\GudangJahitController::class, 'getData'])->name('GJahit.getData');
 Route::post('/GJahit/getBasis', [App\Http\Controllers\GudangJahitController::class, 'getBasis'])->name('GJahit.getBasis');
 Route::post('/GJahit/getPegawai', [App\Http\Controllers\GudangJahitController::class, 'getPegawai'])->name('GJahit.getPegawai');
+Route::post('/GJahit/searchRekapan', [App\Http\Controllers\GudangJahitController::class, 'searchRekapan'])->name('GJahit.searchRekapan');
 
 Route::get('/GJahit/request', [App\Http\Controllers\GudangJahitController::class, 'gRequest'])->name('GJahit.request');
 Route::get('/GJahit/request/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRequestTerima'])->name('GJahit.request.terima');
