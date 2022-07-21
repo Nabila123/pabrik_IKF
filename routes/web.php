@@ -306,6 +306,7 @@ Route::post('/GControl/getData', [App\Http\Controllers\GudangControlController::
 Route::post('/GControl/getBasis', [App\Http\Controllers\GudangControlController::class, 'getBasis'])->name('GControl.getBasis');
 Route::post('/GControl/getPegawai', [App\Http\Controllers\GudangControlController::class, 'getPegawai'])->name('GControl.getPegawai');
 Route::post('/GControl/getReject', [App\Http\Controllers\GudangControlController::class, 'getReject'])->name('GControl.getReject');
+Route::post('/GControl/searchRekapan', [App\Http\Controllers\GudangControlController::class, 'searchRekapan'])->name('GControl.searchRekapan');
 
 Route::get('/GControl/request', [App\Http\Controllers\GudangControlController::class, 'gRequest'])->name('GControl.request');
 Route::get('/GControl/request/terima/{id}', [App\Http\Controllers\GudangControlController::class, 'gRequestTerima'])->name('GControl.request.terima');
@@ -386,6 +387,7 @@ Route::post('/GSetrika/getData', [App\Http\Controllers\GudangSetrikaController::
 Route::post('/GSetrika/getBasis', [App\Http\Controllers\GudangSetrikaController::class, 'getBasis'])->name('GSetrika.getBasis');
 Route::post('/GSetrika/getPegawai', [App\Http\Controllers\GudangSetrikaController::class, 'getPegawai'])->name('GSetrika.getPegawai');
 Route::post('/GSetrika/getReject', [App\Http\Controllers\GudangSetrikaController::class, 'getReject'])->name('GSetrika.getReject');
+Route::post('/GSetrika/searchRekapan', [App\Http\Controllers\GudangSetrikaController::class, 'searchRekapan'])->name('GSetrika.searchRekapan');
 
 Route::get('/GSetrika/request', [App\Http\Controllers\GudangSetrikaController::class, 'gRequest'])->name('GSetrika.request');
 Route::get('/GSetrika/request/terima/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRequestTerima'])->name('GSetrika.request.terima');

@@ -11,6 +11,7 @@ use App\Models\GudangSetrikaRekap;
 use App\Models\GudangSetrikaRekapDetail;
 use App\Models\GudangControlReject;
 use App\Models\GudangControlRejectDetail;
+use App\Models\Other;
 use App\Models\Pegawai;
 
 use DB;
@@ -282,7 +283,16 @@ class GudangSetrikaController extends Controller
         return json_encode($data);
     }
 
+    public function searchRekapan(Request $request)
+    {
+        $purchaseId = $request->purchaseId == "Pilih Satu"?"":$request->purchaseId;
+        $tglMulai = $request->tglMulai;
+        $tglSelesai = $request->tglSelesai;
 
+        $getSearch = Other::getSearch('setrika', $purchaseId, $tglMulai, $tglSelesai);
+
+        return $getSearch;
+    }
 
     
     public function gRequest()
@@ -338,7 +348,9 @@ class GudangSetrikaController extends Controller
    
         $gdPackingMasuk = GudangSetrikaStokOpname::select('*', DB::raw('count(*) as jumlah'))->where('statusSetrika', 1)->where('statusPacking', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->get();
         
-        return view('gudangSetrika.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdSetrika' => $gdSetrika, 'setrikaRekap' => $gdSetrikaRekap, 'dataPemindahan' => $pindahan, 'gdPackingMasuk' => $gdPackingMasuk]);
+        $purchase = GudangSetrikaStokOpname::groupBy('purchaseId')->where('statusSetrika', 1)->get();
+
+        return view('gudangSetrika.operator.index', ['operatorRequest' => $gdRequestOperator, 'gdSetrika' => $gdSetrika, 'setrikaRekap' => $gdSetrikaRekap, 'dataPemindahan' => $pindahan, 'gdPackingMasuk' => $gdPackingMasuk, 'purchase' => $purchase]);
     }
 
     public function gOperatorDataMaterial($purchaseId, $jenisBaju, $ukuranBaju, $jumlahBaju)

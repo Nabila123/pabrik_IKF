@@ -65,6 +65,8 @@
                                 <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Packing</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#RekapanAllLink" data-toggle="tab">Rekapan
+                                    Semua Data</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
@@ -219,6 +221,72 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="tab-pane" id="RekapanAllLink">
+                                    <div class="card-title mb-4" style="width: 100%">
+                                        <form id="FormRekapanAll" method="POST">
+                                            <input type="hidden" name="_token" id="_token"
+                                                value="{{ csrf_token() }}">
+
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Nomor PO </label>
+                                                        <select class="form-control purchaseId" id="purchaseId"
+                                                            name="purchaseId" style="width: 100%; height: 38px;">
+                                                            <option> Pilih Satu </option>
+                                                            @foreach ($purchase as $kode)
+                                                                <option value="{{ $kode->purchaseId }} ">
+                                                                    {{ strtoupper($kode->purchase->kode) }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Tanggal Mulai </label>
+                                                        <input type="date" name="tglMulai" id="tglMulai"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Tanggal Selesai </label>
+                                                        <input type="date" name="tglSelesai" id="tglSelesai"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <button type="submit" id="telusuri"
+                                                            class='btn btn-success btn-flat-left telusuri'
+                                                            style="float: left">Telusuri</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <h6 class="mt-4 text-danger text-sm"> Nb : Data Yang Ditampilkan
+                                                        Merupakan Data Yang Sudah Melewati Proses
+                                                        Soom, Jahit & Bawahan
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table id="rekapanAll" class="table table-bordered dataTables_scrollBody"
+                                        style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">No </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Total (Dz)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign allRekapan" id="allRekapan">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -290,6 +358,27 @@
             });
             $('#pemindahan').DataTable( {
                 "responsive": true,
+            });
+            $('#rekapanAll').DataTable({
+                "lengthMenu": [
+                    [50, 100, 500, -1],
+                    [50, 100, 500, "All"]
+                ]
+            });
+
+            $('#FormRekapanAll').on('submit', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $.ajax({
+                    url: '{{ url('GSetrika/searchRekapan') }}',
+                    type: 'post',
+                    data: $this.serialize(),
+                    success: function(html) {
+                       $('#rekapanAll tbody.allRekapan').html('');
+                       
+                       $('#rekapanAll tbody.allRekapan').append(html);
+                    }
+                });
             });
         });
     </script>
