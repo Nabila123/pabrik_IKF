@@ -24,7 +24,7 @@
         .textAlign {
             vertical-align: middle; 
             text-align: center;
-            font-size: 15px;
+            font-size: 12px;
         }
 
         .dataTables_scrollBody::-webkit-scrollbar-track {
@@ -35,7 +35,7 @@
         
         .dataTables_scrollBody::-webkit-scrollbar {
             width: 0px;
-            height: 5px;
+            height: 3px;
             background-color: #F5F5F5;
         }
         
@@ -56,7 +56,7 @@
     </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed bg-info">
 <div class="wrapper">
 
     <section class="content-header"> </section>
@@ -68,9 +68,9 @@
             </div>
 
             <div class="col-12">
-                <div class="card card-info">
+                <div class="card card-info bg-light">
                     <div class="card-body">
-                        <div id="contentScroll" class="dataTables_scrollBody" style="overflow-y: scroll; height:595px;">
+                        <div id="contentScroll" class="dataTables_scrollBody" style="overflow-y: scroll; height:490px;">
                             <div class="table" id="table">
                                 
                             </div>
@@ -107,7 +107,7 @@
             objDiv.scrollTop = objDiv.scrollTop + 1;  
             $('p:nth-of-type(1)').html('scrollTop : '+ objDiv.scrollTop);
             $('p:nth-of-type(2)').html('scrollHeight : ' + objDiv.scrollHeight);
-            if (objDiv.scrollTop == (objDiv.scrollHeight - 595)) {
+            if (objDiv.scrollTop == (objDiv.scrollHeight - 490)) {
                 objDiv.scrollTop = 0;
             }
             my_time = setTimeout('pageScroll()', 25);
@@ -133,14 +133,13 @@
                     console.log(data);
                     $('#header').html('');
                     $('#table').html('');
+                    var color = ['bg-success', 'bg-dark', 'bg-primary', 'bg-warning', 'bg-secondary', 'bg-light'];
                     for(var i = 0;i < data.header.length;i++){
-                    var header = "<div class='col-12 col-sm-12 col-md-3'>";
-                            header += "<div class='info-box mb-3'>";
-                                header += "<span class='info-box-icon bg-danger elevation-1'><i class='fas fa-list-alt'></i></span>";
-                    
+                        var header = "<div class='col-12 col-sm-12 col-md-3'>";
+                            header += "<div class='info-box "+color[i]+"' style='min-height:50px;'>";                    
                                 header += "<div class='info-box-content'>";
-                                    header += "<span class='info-box-text'>"+data['header'][i].kategori+"</span>";
-                                    header += "<span class='info-box-number'>"+data['header'][i].jumlah+" "+data['header'][i].satuan+"</span>";
+                                    header += "<span class='info-box-number'> <span style='font-size:17px;'>"+data['header'][i].kategori+"</span>";
+                                    header += "<span style='float:right'>"+data['header'][i].jumlah+" "+data['header'][i].satuan+"</span></span>";
                                 header += "</div>";
                             header += "</div>";
                         header += "</div>";
@@ -148,12 +147,12 @@
                     }
 
                     for(var i = 0;i < data.table.length;i++){
-                    var table = "<h2 class='card-title  mt-4 mb-4' style='width: 100%; font-weight: bold;'>";
+                    var table = "<h6 class='card-title  mt-4 mb-4' style='width: 100%; font-weight: bold;'>";
                             if(i == 0){ table += "Gudang Rajut"; }
                             else if(i == 1){ table += "Gudang Cuci"; }
                             else if(i == 2){ table += "Gudang Compact"; }
                             else{ table += "Gudang Inspeksi"; }
-                        table += "</h2>";
+                        table += "</h6>";
                         table += "<table class='table table-bordered table-striped textAlign ' style='width: 100%; border-collapse: collapse;'>";
                             table += "<thead>";
                                 table += "<tr>";
