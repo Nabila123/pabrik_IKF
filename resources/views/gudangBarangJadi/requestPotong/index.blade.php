@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">       
                         <div class="card-header">
-                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 37)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 11)
                                 <h3 class="card-title" style="width: 100%">
                                     <a href="{{ route('GBarangJadi.requestPotong.create') }}" class='btn btn-info btn-flat-right'>Tambah Request</a>
                                 </h3>
@@ -82,10 +82,10 @@
                                             <td>
                                                 <a href="{{ route('GBarangJadi.requestPotong.detail', [$req->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 11)
                                                     <a href="{{ route('GBarangJadi.requestPotong.update', [$req->id])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 @endif
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 11)
                                                     @if ($req->statusDiterima == 0)
                                                         <button type="button" data-toggle="modal" requestId='{{ $req->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $req->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                     @endif

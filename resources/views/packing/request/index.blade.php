@@ -75,7 +75,7 @@
                                                 @if ($detail->kodeBarcode != null)
                                                     <span style="color: green; font-size: 13px">Sudah DiGenarate</span>
                                                 @else
-                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 36)
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 22)
                                                         <a href="{{ route('GPacking.request.generate', [$detail->purchaseId, $detail->jenisBaju, $detail->ukuranBaju, $detail->tanggal]) }}" class="btn btn-success"> Generate Barcode </a>
                                                     @else
                                                         <span style="color: rgb(209, 34, 10); font-size: 15px">Belum DiGenerate</span>

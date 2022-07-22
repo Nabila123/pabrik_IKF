@@ -80,14 +80,14 @@
                                                     <td>{{ $reject->totalBaju }}</td>
                                                     <td>
                                                         @if ($reject->statusProses == 0)
-                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 34)
+                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 20)
                                                                 <a href="{{ route('GControl.reject.terima', [$reject->id]) }}" class="btn btn-success"> Proses Reject </a>
                                                             @else
                                                                 <span style="color: rgb(209, 34, 10); font-size: 15px">Belum Di Proses</span>
                                                             @endif
                                                         @else
                                                             @if ($reject->statusProses == 1)
-                                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 34)
+                                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 20)
                                                                     <a href="{{ route('GControl.reject.kembali', [$reject->id]) }}" class="btn btn-info"> Kembalikan Barang </a>
                                                                 @else
                                                                     <span style="color: rgb(230, 140, 5); font-size: 15px">Dalam Proses Reject</span>
@@ -142,7 +142,7 @@
                                                                 <span style="color: rgb(230, 140, 5); font-size: 13px">Sudah Dalam Proses </span>                                                            
                                                             @else
                                                                 @if ($reject->statusProses == 2)
-                                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 34)
+                                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 20)
                                                                         <a href="{{ route('GControl.reject.TJterima', [$reject->id]) }}" class="btn btn-info"> Terima Barang </a>
                                                                     @else
                                                                         <span style="color: rgb(230, 140, 5); font-size: 15px">Dalam Proses Reject</span>
@@ -156,12 +156,12 @@
                                                     <td>
                                                         <a href="{{ route('GControl.reject.detail', [$reject->id, 'Jahit']) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         @if ($reject->statusProses == 0)
-                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 20)
                                                                 <a href="{{ route('GControl.reject.update', [$reject->id]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                                 <button type="button" data-toggle="modal" requestId='{{ $reject->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $reject->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                             @endif
                                                         @else
-                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 20)
                                                                 <button type="button" class='btn btn-success disabled' style="margin-right: 4px;"><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                                 <button type="button" class="btn btn-danger disabled" style="width:40px;"><span class="fa fa-trash"></span></button>
                                                             @endif

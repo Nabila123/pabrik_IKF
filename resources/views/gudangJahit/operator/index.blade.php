@@ -75,7 +75,7 @@
                          <div class="card-body">
                              <div class="tab-content">
                                  <div class="active tab-pane" id="OperatorLink">
-                                     @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 32)
+                                     @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                          <h3 class="card-title mb-4" style="width: 100%">
                                              <a href="{{ route('GJahit.operator.create') }}"
                                                  class='btn btn-info btn-flat-right'>Ambil Barang</a>
@@ -110,12 +110,12 @@
                                                              class='btn btn-warning'><i class="fas fa-list-ul"
                                                                  style="font-size: 14px"></i></a>
 
-                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                              <a href="{{ route('GJahit.operator.update', date('Y-m-d', strtotime($detail->created_at))) }}"
                                                                  class='btn btn-success'><i class="fas fa-pencil-alt"
                                                                      style="font-size: 14px"></i></a>
                                                          @endif
-                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                              @if (count($jahitBasis) == 0)
                                                                  <button type="button" data-toggle="modal"
                                                                      requestId='{{ $detail->id }}'
@@ -136,7 +136,7 @@
                                      </table>
                                  </div>
                                  <div class="tab-pane" id="BasisLink">
-                                     @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 32)
+                                     @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                          <h3 class="card-title mb-4" style="width: 100%">
                                              <a href="{{ route('GJahit.basis.create') }}"
                                                  class='btn btn-info btn-flat-right'>Tambah Basis</a>
@@ -166,12 +166,12 @@
                                                              class='btn btn-warning'><i class="fas fa-list-ul"
                                                                  style="font-size: 14px"></i></a>
 
-                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                              <a href="{{ route('GJahit.basis.update', $basis->posisi) }}"
                                                                  class='btn btn-success'><i class="fas fa-pencil-alt"
                                                                      style="font-size: 14px"></i></a>
                                                          @endif
-                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                         @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                              <button type="button" data-toggle="modal"
                                                                  requestId='{{ $basis->id }}'
                                                                  data-target="#DeleteModal" id="modalDelete"
@@ -186,7 +186,7 @@
                                      </table>
                                  </div>
                                  <div class="tab-pane" id="RekapanLink">
-                                     @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 32)
+                                     @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                          <h3 class="card-title mb-4" style="width: 100%">
                                              <a href="{{ route('GJahit.rekap.create') }}"
                                                  class='btn btn-info btn-flat-right'>Tambah Rekapan Jahit</a>
@@ -214,13 +214,13 @@
                                                                  style="font-size: 14px"></i></a>
 
                                                          @if ($rekap->tanggal == date('Y-m-d'))
-                                                             @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                             @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                                  <a href="{{ route('GJahit.rekap.update', $rekap->id) }}"
                                                                      class='btn btn-success'><i class="fas fa-pencil-alt"
                                                                          style="font-size: 14px"></i></a>
                                                              @endif
                                                          @else
-                                                             @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                             @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                                  <button type="button" class="btn btn-success disabled"
                                                                      style="width:40px;"><span
                                                                          class="fas fa-pencil-alt"></span></button>
@@ -270,7 +270,7 @@
                                                              <td>{{ $dataPemindahan[$i]['jumlahBaju'] / 12 }}</td>
 
                                                              <td>
-                                                                 @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 32)
+                                                                 @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                                      <a href="{{ route('GJahit.keluar.create', [$dataPemindahan[$i]['jenisBaju'], $dataPemindahan[$i]['ukuranBaju'], date('Y-m-d', strtotime($dataPemindahan[$i]['tanggal']))]) }}"
                                                                          title="Pindahkan Barang"
                                                                          class='btn btn-info btn-flat-right'><i

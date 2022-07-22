@@ -67,14 +67,14 @@
                                             <td>{{ $detail->user->nama }}</td>
                                             <td>
                                                 @if ($detail->statusDiterima == 0)
-                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 31)
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 17)
                                                         <a href="{{ route('GPotong.keluar.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                     @else
                                                         <span style="color: rgb(209, 34, 10); font-size: 15px">Dalam Proses Ambil Barang</span>
                                                     @endif
                                                 @else
                                                     @if ($detail->statusDiterima != 0 && !isset($detail->cekJahit) && $detail->cekPotong == 1)
-                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 31)
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 17)
                                                             <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
                                                             <a href="{{ route('GPotong.keluar.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pemindahan </a> <br>
                                                             <span style="color: green; font-size: 10px">Pindahkan Barang</span>

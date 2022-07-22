@@ -24,7 +24,7 @@
         .textAlign {
             vertical-align: middle; 
             text-align: center;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .dataTables_scrollBody::-webkit-scrollbar-track {

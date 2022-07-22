@@ -67,7 +67,7 @@
                                             <td>{{ $detail->user->nama }}</td>
                                             <td>
                                                 @if ($detail->statusProses == 0)
-                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 32)
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 18)
                                                         <a href="{{ route('GJahit.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                     @else
                                                         <span style="color: rgb(209, 34, 10); font-size: 15px">Dalam Proses Ambil Barang</span>

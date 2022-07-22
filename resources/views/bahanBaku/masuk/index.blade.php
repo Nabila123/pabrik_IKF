@@ -67,7 +67,7 @@
                                                 <td>{{date('d F Y', strtotime($data[$i][$j]->tanggal))}}</td>
                                                 <td>
                                                     @if ($data[$i][$j]->statusDiterima == 0)
-                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12  || \Auth::user()->roleId == 26)
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
                                                             <a href="{{ route('bahan_baku.masuk.terima', [$data[$i][$j]->id, $data[$i][$j]->gudangRequest]) }}" class="btn btn-success"> Terima Barang </a>
                                                         @else
                                                             <span style="color: rgb(194, 94, 0); font-size: 13px">Dalam Proses Pengembalian </span>

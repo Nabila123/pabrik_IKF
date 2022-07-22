@@ -68,14 +68,14 @@
                                             <td>
 
                                                 @if ($detail->statusDiterima == 0)
-                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 27)
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 13)
                                                         <a href="{{ route('GRajut.request.terima', [$detail->id]) }}" class="btn btn-success"> Terima Barang </a>
                                                     @else
                                                         <span style="color: rgb(209, 34, 10); font-size: 15px">Dalam Proses Ambil Barang</span>
                                                     @endif
                                                 @else
                                                     @if ($detail->statusDiterima != 0 && !isset($detail->cekPengembalian))
-                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 27)
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 13)
                                                             <input type="hidden" name="gudangKeluarId" id="gudangKeluarId" value="{{ $detail->id }}">
                                                             <a href="{{ route('GRajut.request.kembali', [$detail->id]) }}" class="btn btn-info requestKode" style="font-size: 13px;"> Ajukan Pengembalian </a> <br>
                                                             <span style="color: green; font-size: 10px">Kembalikan Barang</span>

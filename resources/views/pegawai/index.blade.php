@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">       
-                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 3)        
+                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 2 || \Auth::user()->roleId == 3 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 5)        
                             <div class="card-header">
                                 <div style="margin:10px; text-align: left;">
                                     <a href="{{ route('pegawai.create') }}" class='btn btn-success btn-flat-left'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
