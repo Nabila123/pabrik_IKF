@@ -65,12 +65,14 @@
                                 <li class="nav-item"><a class="nav-link active" href="#OperatorLink" data-toggle="tab">Operator</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#RekapanLink" data-toggle="tab">Rekapan</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#PindahLink" data-toggle="tab">Pindah Ke Packing</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#RekapanAllLink" data-toggle="tab">Rekapan
+                                    Semua Data</a></li>
                             </ul>                            
                         </div>                   
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="OperatorLink">
-                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 35)
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                         <h3 class="card-title mb-4" style="width: 100%">
                                             <a href="{{ route('GSetrika.operator.create') }}" class='btn btn-info btn-flat-right'>Ambil Barang</a>
                                         </h3>
@@ -101,10 +103,10 @@
                                                     <td>
                                                         <a href="{{ route('GSetrika.operator.detail', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         
-                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                                             <a href="{{ route('GSetrika.operator.update', [$detail->jenisBaju, $detail->ukuranBaju]) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                         @endif
-                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                                             @if (count($gdSetrika) == 0)
                                                                 <button type="button" data-toggle="modal" requestId='{{ $detail->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $detail->jenisBaju }}", "{{ $detail->ukuranBaju }}", "operator")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
                                                             @else
@@ -119,7 +121,7 @@
                                 </div>
                                 
                                 <div class="tab-pane" id="RekapanLink">
-                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 35)
+                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                         <h3 class="card-title mb-4" style="width: 100%">
                                             <a href="{{ route('GSetrika.rekap.create') }}" class='btn btn-info btn-flat-right'>Tambah Rekapan Setrika</a>
                                         </h3>
@@ -141,11 +143,11 @@
                                                     <td>
                                                         <a href="{{ route('GSetrika.rekap.detail', [$rekap->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                         @if ($rekap->tanggal == date("Y-m-d"))
-                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                                                 <a href="{{ route('GSetrika.rekap.update', $rekap->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                             @endif
                                                         @else
-                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                                                 <button type="button" class="btn btn-success disabled" style="width:40px;"><span class="fas fa-pencil-alt"></span></button>
                                                             @endif
                                                         @endif
@@ -183,7 +185,7 @@
                                                             <td>{{ $pindahan->jumlah/12 }}</td>
                                                             
                                                             <td>
-                                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 35)
+                                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 21)
                                                                     <a href="{{ route('GSetrika.keluar.create',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" title="Pindahkan Barang" class='btn btn-info btn-flat-right'><i class="fa-solid fa-arrow-right-arrow-left" alt="Pindahkan Barang"></i> <small> Pindahkan Barang</small></a>
                                                                 @endif
                                                                 <a href="{{ route('GSetrika.keluar.detail',[$pindahan->jenisBaju, $pindahan->ukuranBaju, date('Y-m-d', strtotime($pindahan->tanggal))]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
@@ -218,6 +220,72 @@
                                             </table>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="tab-pane" id="RekapanAllLink">
+                                    <div class="card-title mb-4" style="width: 100%">
+                                        <form id="FormRekapanAll" method="POST">
+                                            <input type="hidden" name="_token" id="_token"
+                                                value="{{ csrf_token() }}">
+
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Nomor PO </label>
+                                                        <select class="form-control purchaseId" id="purchaseId"
+                                                            name="purchaseId" style="width: 100%; height: 38px;">
+                                                            <option> Pilih Satu </option>
+                                                            @foreach ($purchase as $kode)
+                                                                <option value="{{ $kode->purchaseId }} ">
+                                                                    {{ strtoupper($kode->purchase->kode) }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Tanggal Mulai </label>
+                                                        <input type="date" name="tglMulai" id="tglMulai"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Tanggal Selesai </label>
+                                                        <input type="date" name="tglSelesai" id="tglSelesai"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <button type="submit" id="telusuri"
+                                                            class='btn btn-success btn-flat-left telusuri'
+                                                            style="float: left">Telusuri</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <h6 class="mt-4 text-danger text-sm"> Nb : Data Yang Ditampilkan
+                                                        Merupakan Data Yang Sudah Melewati Proses
+                                                        Soom, Jahit & Bawahan
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table id="rekapanAll" class="table table-bordered dataTables_scrollBody"
+                                        style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="textAlign" style="vertical-align: middle;">No </th>
+                                                <th class="textAlign" style="vertical-align: middle;">Nomor PO</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Jenis Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Ukuran Baju</th>
+                                                <th class="textAlign" style="vertical-align: middle;">Total (Dz)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="textAlign allRekapan" id="allRekapan">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -290,6 +358,27 @@
             });
             $('#pemindahan').DataTable( {
                 "responsive": true,
+            });
+            $('#rekapanAll').DataTable({
+                "lengthMenu": [
+                    [50, 100, 500, -1],
+                    [50, 100, 500, "All"]
+                ]
+            });
+
+            $('#FormRekapanAll').on('submit', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $.ajax({
+                    url: '{{ url('GSetrika/searchRekapan') }}',
+                    type: 'post',
+                    data: $this.serialize(),
+                    success: function(html) {
+                       $('#rekapanAll tbody.allRekapan').html('');
+                       
+                       $('#rekapanAll tbody.allRekapan').append(html);
+                    }
+                });
             });
         });
     </script>

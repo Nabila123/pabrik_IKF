@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">                        
                         <div class="card-body">
-                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 3)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 2 || \Auth::user()->roleId == 3 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 5)
                                 <div style="margin:10px; text-align: right;">
                                     <a href="{{ route('Material.create') }}" class='btn btn-success btn-flat-right'><i class="fas fa-plus" style="font-size: 15px"></i> Tambah Data</a>
                                 </div>

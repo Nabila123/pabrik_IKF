@@ -70,6 +70,11 @@
                                     <td>:</td>
                                     <td>{{ $penjualan->customer }}</td>
                                 </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Kategori</td>
+                                    <td>:</td>
+                                    <td>{{ $penjualan->kategori }}</td>
+                                </tr>
                             </table>
 
                             <table class="table table-bordered mt-4 textAlign" style="width: 100%">
@@ -79,7 +84,6 @@
                                         <th>Jenis Baju</th>
                                         <th>Ukuran Baju</th>
                                         <th>Jumlah (Dus)</th>
-                                        <th>Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,16 +93,9 @@
                                             <td>{{ $detail->jenisBaju }}</td>
                                             <td>{{ $detail->ukuranBaju }}</td>
                                             <td>{{ $detail->qty }}</td>
-                                            <td>{{ rupiah($detail->harga) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="4" style="text-align: right;">Total Harga</th>
-                                        <th>{{ rupiah($penjualan->totalHarga) }}</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>

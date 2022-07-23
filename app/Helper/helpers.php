@@ -65,24 +65,32 @@
         $notif = [];
 
         if ($mains->nama == "PPIC") { //PPIC Gudang Request
-            if ($user == 38) {
+            if ($user == 9) {
                 $PPIC = PPICGudangRequest::where('statusDiterima', 1)->get();               
                 if (count($PPIC) != 0) {
                     $notif[5] = count($PPIC);
                 }
+                $notifRequest = GudangPotongRequest::where('statusDiterima', 0)->get();            
+                if (count($notifRequest) != 0) {
+                    $notif[36] = count($notifRequest);
+                }
+            }
+            
+            if (count($notif) != 0) {
                 return $notif;
             }
+            
         }
 
         if ($mains->nama == "Purchase") {
-            if ($user == 8) { //KDeptProd
+            if ($user == 7) { //KDeptProd
                 $KDeptProd = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('isKaDeptProd', 0)->where('isKaDeptPO', 0)->get();            
                 if (count($KDeptProd) != 0) {
                     $notif[8] = count($KDeptProd);
                     return $notif;
                 }
             }
-            if ($user == 7) { //KDeptPO
+            if ($user == 6) { //KDeptPO
                 $CNotif = 0;
                 $prosesPO = [];
                 $KDeptPO = AdminPurchase::where('jenisPurchase', 'Purchase Request')->where('isKaDeptProd', '!=', 0)->where('isKaDeptPO', 0)->get();  
@@ -106,14 +114,14 @@
                 }
 
             }
-            if ($user == 4 ) { //KDivPO
+            if ($user == 3 ) { //KDivPO
                 $KDivPO = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('isKaDivPO', 0)->where('isKaDivFin', 0)->get();  
                 if (count($KDivPO) != 0) {
                     $notif[9] = count($KDivPO);
                     return $notif;
                 }
             }
-            if ($user == 6) { //KDivFin
+            if ($user == 5) { //KDivFin
                 $KDivFin = AdminPurchase::where('jenisPurchase', 'Purchase Order')->where('isKaDivPO', '!=', 0)->where('isKaDivFin', 0)->get();  
                 if (count($KDivFin) != 0) {
                     $notif[9] = count($KDivFin);
@@ -127,7 +135,7 @@
         }
 
         if ($mains->nama == "Gudang Bahan Baku") {
-            if ($user == 8|| $user == 12 || $user == 26) { //Gudang Rajut Masuk
+            if ($user == 7|| $user == 10) { //Gudang Rajut Masuk
                 $countNotif = 0;
                 $notifRajut = GudangRajutMasuk::where('statusDiterima', 0)->get();          
                 $notifCompact = GudangCompactMasuk::where('statusDiterima', 0)->get();  
@@ -160,7 +168,7 @@
         }
 
         if ($mains->nama == "Gudang Rajut") {
-            if ($user == 8 || $user == 12 || $user == 27) { //Gudang Rajut Keluar
+            if ($user == 7 || $user == 13) { //Gudang Rajut Keluar
                 $notifRajutKeluar = GudangRajutKeluar::where('statusDiterima', 0)->get();      
                 if (count($notifRajutKeluar) != 0) {
                     $notif[19] = count($notifRajutKeluar);      
@@ -171,7 +179,7 @@
         }
 
         if ($mains->nama == "Gudang Cuci") {
-            if ($user == 8 || $user == 12 || $user == 28) { //Gudang Cuci Keluar
+            if ($user == 7 || $user == 14 ) { //Gudang Cuci Keluar
                 $notifCuciKeluar = GudangCuciKeluar::where('statusDiterima', 0)->get();            
                 if (count($notifCuciKeluar) != 0) {
                     $notif[23] = count($notifCuciKeluar);
@@ -182,7 +190,7 @@
         }
 
         if ($mains->nama == "Gudang Compact") {
-            if ($user == 8 || $user == 12 || $user == 29) { //Gudang Compact Keluar
+            if ($user == 7 || $user == 15) { //Gudang Compact Keluar
                 $notifCompactKeluar = GudangCompactKeluar::where('statusDiterima', 0)->get();            
                 if (count($notifCompactKeluar) != 0) {
                     $notif[27] = count($notifCompactKeluar);
@@ -193,7 +201,7 @@
         }
 
         if ($mains->nama == "Gudang Inspeksi") {
-            if ($user == 8 || $user == 12 || $user == 30) { //Gudang Inspeksi Keluar
+            if ($user == 7 || $user == 16) { //Gudang Inspeksi Keluar
                 $notifInspeksiKeluar = GudangInspeksiKeluar::where('statusDiterima', 0)->get();            
                 if (count($notifInspeksiKeluar) != 0) {
                     $notif[31] = count($notifInspeksiKeluar);
@@ -204,25 +212,18 @@
         }
 
         if ($mains->nama == "Gudang Potong") {
-            if ($user == 8 || $user == 13 || $user == 31) { //Gudang Potong Keluar
+            if ($user == 7 || $user == 17) { //Gudang Potong Keluar
                 $notifKeluar = GudangPotongKeluar::where('statusDiterima', 0)->get();   
                 if (count($notifKeluar) != 0) {
                     $notif[37] = count($notifKeluar);
                 }        
-            }
-
-            if ($user == 8 || $user == 13 || $user == 31) { //Gudang Potong Request Bahan Jadi
-                $notifRequest = GudangPotongRequest::where('statusDiterima', 0)->get();            
-                if (count($notifRequest) != 0) {
-                    $notif[36] = count($notifRequest);
-                }
-            }            
+            }          
             
             return $notif;
         }
 
         if ($mains->nama == "Gudang Jahit") {
-            if ($user == 8 || $user == 13 || $user == 32) { //Gudang Jahit
+            if ($user == 7 || $user == 18) { //Gudang Jahit
                 $notifJahitMasuk = GudangJahitMasuk::where('statusProses', 0)->get();            
                 $notifJahitReject = GudangJahitReject::where('statusProses', 0)->get();            
                 if (count($notifJahitMasuk) != 0) {
@@ -239,7 +240,7 @@
         
 
         if ($mains->nama == "Gudang Batil") {
-            if ($user == 8 || $user == 13 || $user == 33) { //Gudang Batil
+            if ($user == 7 || $user == 19) { //Gudang Batil
                 $notifBatilMasuk = GudangBatilMasuk::where('statusDiterima', 0)->get(); 
                 $notifBatilReject = GudangJahitReject::where('gudangRequest', 'Gudang Batil')->where('statusProses', 2)->get();           
                 if (count($notifBatilMasuk) != 0) {
@@ -255,7 +256,7 @@
         }
 
         if ($mains->nama == "Gudang Control") {
-            if ($user == 8 || $user == 13 || $user == 34) { //Gudang Control
+            if ($user == 7 || $user == 20) { //Gudang Control
                 $notifControlMasuk = GudangControlMasuk::where('statusDiterima', 0)->get();            
                 $notifControlReject = GudangControlReject::where('statusProses', 0)->get(); 
                 $notifControlJahitPotong = GudangJahitReject::where('gudangRequest', 'Gudang Control')->where('statusProses', 2)->get();                      
@@ -283,7 +284,7 @@
         }
 
         if ($mains->nama == "Gudang Setrika") {
-            if ($user == 8 || $user == 13 || $user == 35) { //Gudang Setrika
+            if ($user == 7 || $user == 21) { //Gudang Setrika
                 $notifSetrikaMasuk = GudangSetrikaMasuk::where('statusDiterima', 0)->get(); 
                 $notifSetrikaReject = GudangControlReject::where('gudangRequest', 'Gudang Setrika')->where('statusProses', 2)->get();            
                 if (count($notifSetrikaMasuk) != 0) {
@@ -299,7 +300,7 @@
         }
 
         if ($mains->nama == "Packing") {
-            if ($user == 8 || $user == 13 || $user == 36) { //Packing
+            if ($user == 7 || $user == 22) { //Packing
                 $notifPackingMasuk = GudangSetrikaStokOpname::where('kodeBarcode', null)->where('statusPacking', 0)->whereDate('tanggal', date('Y-m-d'))->groupBy('jenisBaju')->get();            
                 if (count($notifPackingMasuk) != 0) {
                     $notif[56] = count($notifPackingMasuk);

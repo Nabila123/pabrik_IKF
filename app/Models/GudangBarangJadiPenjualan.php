@@ -29,10 +29,11 @@ class GudangBarangJadiPenjualan extends Model
         return $kode;
     }
     
-    public Static function CreateBarangJadiPenjualan($kodeTransaksi, $customer, $tanggal, $totalHarga)
+    public Static function CreateBarangJadiPenjualan($kodeTransaksi, $kategori, $customer, $tanggal, $totalHarga)
     {
         $BarangJadiPenjualan = new GudangBarangJadiPenjualan;
         $BarangJadiPenjualan->kodeTransaksi = $kodeTransaksi;
+        $BarangJadiPenjualan->kategori = $kategori;
         $BarangJadiPenjualan->customer = $customer;
         $BarangJadiPenjualan->tanggal = $tanggal;
         $BarangJadiPenjualan->totalHarga = $totalHarga;

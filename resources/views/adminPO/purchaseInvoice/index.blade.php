@@ -51,7 +51,7 @@
                  <div class="col-12">
                      <div class="card">
                          <div class="card-header">
-                            @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10 || \Auth::user()->roleId == 24)
+                            @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 3 || \Auth::user()->roleId == 6)
                                 <h3 class="card-title">
                                     <a href="{{ route('adminPO.poInvoice.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
                                 </h3>
@@ -78,11 +78,11 @@
                                                      class='btn btn-warning'><i class="fas fa-list-ul"
                                                          style="font-size: 14px"></i></a>
 
-                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
+                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 3 || \Auth::user()->roleId == 6)
                                                     <a href="{{ route('adminPO.poInvoice.update', $val->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 @endif
                                                 
-                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
+                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 3 || \Auth::user()->roleId == 6)
                                                     <button type="button" data-toggle="modal" invoiceId='{{ $val->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $val->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                              </td>

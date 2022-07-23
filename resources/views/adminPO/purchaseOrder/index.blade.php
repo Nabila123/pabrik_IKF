@@ -81,7 +81,7 @@
                                                     {{ $order->roleKaDivPOUser->nama }} <br>
                                                     <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($order->isKaDivPOAt)) }} </span>
                                                 @else
-                                                    @if (\Auth::user()->roleId == 4)
+                                                    @if (\Auth::user()->roleId == 3)
                                                         <button type="button" id="approveKaKaDivPO" purchaseid="{{ $order->id }}" class='btn btn-success approveKaKaDivPO'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
                                                     @else
                                                         <br>
@@ -95,7 +95,7 @@
                                                     {{ $order->roleKaDivFinUser->nama }} <br>
                                                     <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($order->isKaDivFinAt)) }} </span>
                                                 @else
-                                                    @if (\Auth::user()->roleId == 6 && $order->isKaDivPO != 0)
+                                                    @if (\Auth::user()->roleId == 5 && $order->isKaDivPO != 0)
                                                         <button type="button" id="approveKaDivFin" purchaseid="{{ $order->id }}" class='btn btn-success approveKaDivFin'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
                                                     @else
                                                         <br>
@@ -120,7 +120,7 @@
                                                     <button type="button" class='btn btn-info disabled mt-1'><i class="fas fa-download" style="font-size: 14px"></i></button>
                                                 @endif
                                                 
-                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
+                                                @if (\Auth::user()->roleId == 1 ||\Auth::user()->roleId == 3 || \Auth::user()->roleId == 6)
                                                     <button type="button" data-toggle="modal" purchaseId='{{ $order->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $order->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                             </td>

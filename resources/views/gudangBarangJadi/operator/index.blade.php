@@ -51,9 +51,9 @@
                 <div class="col-12">
                     <div class="card">   
                         <div class="card-header">
-                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 37)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 11)
                                 <h3 class="card-title" style="width: 100%">
-                                    <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Penjualan Barang</a>
+                                    <a href="{{ route('GBarangJadi.operator.create') }}" class='btn btn-info btn-flat-right'>Tambah Pengeluaran Barang</a>
                                 </h3>                           
                             @endif
                         </div>                   
@@ -64,8 +64,8 @@
                                         <th class="textAlign" style="vertical-align: middle;">No </th>
                                         <th class="textAlign" style="vertical-align: middle;">Tanggal </th>
                                         <th class="textAlign" style="vertical-align: middle;">Kode Transaksi </th>
+                                        <th class="textAlign" style="vertical-align: middle;">Kategori </th>
                                         <th class="textAlign" style="vertical-align: middle;">Customer (Pelanggan)</th>
-                                        <th class="textAlign" style="vertical-align: middle;">Total Harga</th>
                                         <th class="textAlign" style="vertical-align: middle;">Action</th>
                                     </tr>
                                 </thead>
@@ -76,13 +76,13 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ date('d F Y', strtotime($penjualan->tanggal)) }}</td>
                                             <td>{{ $penjualan->kodeTransaksi}}</td>
+                                            <td>{{ $penjualan->kategori}}</td>
                                             <td>{{ $penjualan->customer }}</td>
-                                            <td>{{ rupiah($penjualan->totalHarga) }}</td>
                                             
                                             <td>
                                                 <a href="{{ route('GBarangJadi.operator.detail', [$penjualan->id]) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 11)
                                                     <button type="button" data-toggle="modal" requestId='{{ $penjualan->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $penjualan->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                             </td>

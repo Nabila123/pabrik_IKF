@@ -16,6 +16,7 @@ use App\Models\GudangJahitReject;
 use App\Models\GudangJahitRejectDetail;
 use App\Models\GudangBatilMasuk;
 use App\Models\GudangBatilMasukDetail;
+use App\Models\Other;
 use App\Models\Pegawai;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -197,7 +198,6 @@ class GudangJahitController extends Controller
                                                                 ->whereDate('created_at', date('Y-m-d'))->get();
             }
 
-            // dd($gdRequestOperator);
             if (isset($request->operatorReqPurchaseId)) {
                 for ($i=0; $i < count($request['operatorReqPurchaseId']); $i++) { 
                     if ($request['operatorReqPurchaseId'][$i] == null) {
@@ -238,7 +238,7 @@ class GudangJahitController extends Controller
                     }    
                 }
             }
-            // dd($checkId);
+            // dd($gdRequestOperator);
             if (!isset($request->jumlahBaju)) {
                 $request->jumlahBaju = 12;
             } 
@@ -309,8 +309,20 @@ class GudangJahitController extends Controller
             }
         }
         
+        // dd($request);
 
         return json_encode($data);
+    }
+
+    public function searchRekapan(Request $request)
+    {
+        $purchaseId = $request->purchaseId == "Pilih Satu"?"":$request->purchaseId;
+        $tglMulai = $request->tglMulai;
+        $tglSelesai = $request->tglSelesai;
+
+        $getSearch = Other::getSearch('jahit', $purchaseId, $tglMulai, $tglSelesai);
+
+        return $getSearch;
     }
 
     //Gudang Request From Gudang Potong
@@ -373,8 +385,7 @@ class GudangJahitController extends Controller
         $gdJahitRekap = GudangJahitRekap::orderBy('tanggal', 'desc')->groupBy('posisi', 'tanggal')->get();
         // dd($gdJahitRekap);
         // $dataPemindahan = GudangJahitRequestOperator::select('*', DB::raw('count(*) as jumlah'))->groupBy('jenisBaju', 'ukuranBaju')->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->get();
-        $pindahan = GudangJahitRequestOperator::where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->orderby('jenisBaju', 'asc')->get();
-
+        $pindahan = GudangJahitRequestOperator::where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->whereDate('created_at', date('Y-m-d'))->orderby('jenisBaju', 'asc')->orderby('ukuranBaju', 'asc')->get();
         foreach ($pindahan as $detail) {
             $checkBatilDetail = GudangBatilMasukDetail::where('gdBajuStokOpnameId', $detail->gdBajuStokOpnameId)->first();
             if ($checkBatilDetail == null) {
@@ -394,14 +405,18 @@ class GudangJahitController extends Controller
                 $tempUkuranBaju = $detail->ukuranBaju;                
             }
         }
+
+        // dd($dataPemindahan);
         $gdBatilMasuk = GudangBatilMasuk::where('tanggal', date('Y-m-d'))->get();
         if (count($gdBatilMasuk) != 0) {
             $gdBatilMasukDetail = GudangBatilMasukDetail::select('*', DB::raw('count(*) as jumlah'))->groupBy('purchaseId', 'jenisBaju', 'ukuranBaju')->whereDate('created_at', date('Y-m-d'))->get();
         }else {
             $gdBatilMasukDetail = [];
         }
+
+        $purchase = GudangBajuStokOpname::groupBy('purchaseId')->where('soom', 1)->where('jahit', 1)->where('bawahan', 1)->get();
         
-        return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdBatilMasuk' => $gdBatilMasukDetail]);
+        return view('gudangJahit.operator.index', ['operatorRequest' => $gdRequestOperator, 'jahitBasis' => $gdJahitBasis, 'jahitRekap' => $gdJahitRekap, 'dataPemindahan' => $dataPemindahan, 'gdBatilMasuk' => $gdBatilMasukDetail, 'purchase' => $purchase]);
     }
 
     public function gOperatorDetail($jenisBaju, $ukuranBaju)
@@ -458,12 +473,12 @@ class GudangJahitController extends Controller
             $data = count($gdRequestOperator);
             // $cekOperator = GudangJahitRequestOperator::whereDate('created_at','!=', date('Y-m-d'))->delete();
             // dd($cekOperator);
-            foreach ($gdRequestOperator as $value) {
-                $cekOperator = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $value->id)->where('soom', $request->soom)->where('jahit', $request->jahit)->where('bawahan', $request->bawahan)->whereDate('created_at', date('Y-m-d'))->first();
-                if ($cekOperator != null) {
-                   $data -= 1;
-                }
-            }
+            // foreach ($gdRequestOperator as $value) {
+            //     $cekOperator = GudangJahitRequestOperator::where('gdBajuStokOpnameId', $value->id)->where('soom', $request->soom)->where('jahit', $request->jahit)->where('bawahan', $request->bawahan)->whereDate('created_at', date('Y-m-d'))->first();
+            //     if ($cekOperator != null) {
+            //        $data -= 1;
+            //     }
+            // }
         }
 
         return json_encode($data);

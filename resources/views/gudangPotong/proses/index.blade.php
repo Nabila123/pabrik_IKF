@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">   
-                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13 || \Auth::user()->roleId == 31)
+                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 17)
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <a href="{{ route('GPotong.proses.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
@@ -80,10 +80,10 @@
                                         <td>
                                             <a href="{{ route('GPotong.proses.detail', $proses->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                             
-                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 13)
+                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 17)
                                                 <a href="{{ route('GPotong.proses.update', $proses->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                             @endif
-                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)
+                                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 17)
                                                 <button type="button" data-toggle="modal" potongProsesId='{{ $proses->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $proses->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>    
                                             @endif
                                         </td>    

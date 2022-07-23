@@ -174,6 +174,7 @@ Route::delete('/gudangInspeksi/proses/delete', [App\Http\Controllers\GudangInspe
 /* PPIC */
 Route::get('/ppic', [App\Http\Controllers\PPICController::class, 'index'])->name('ppic');
 
+Route::get('/ppic/reRequest', [App\Http\Controllers\PPICController::class, 'reRequest'])->name('ppic.reRequest');
 Route::get('/ppic/Gudang', [App\Http\Controllers\PPICController::class, 'gdRequest'])->name('ppic.gdRequest');
 Route::get('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestCreate'])->name('ppic.gdRequest.create');
 Route::post('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestStore'])->name('ppic.gdRequest.create');
@@ -217,6 +218,7 @@ Route::get('/GJahit', [App\Http\Controllers\GudangJahitController::class, 'index
 Route::post('/GJahit/getData', [App\Http\Controllers\GudangJahitController::class, 'getData'])->name('GJahit.getData');
 Route::post('/GJahit/getBasis', [App\Http\Controllers\GudangJahitController::class, 'getBasis'])->name('GJahit.getBasis');
 Route::post('/GJahit/getPegawai', [App\Http\Controllers\GudangJahitController::class, 'getPegawai'])->name('GJahit.getPegawai');
+Route::post('/GJahit/searchRekapan', [App\Http\Controllers\GudangJahitController::class, 'searchRekapan'])->name('GJahit.searchRekapan');
 
 Route::get('/GJahit/request', [App\Http\Controllers\GudangJahitController::class, 'gRequest'])->name('GJahit.request');
 Route::get('/GJahit/request/Terima/{id}', [App\Http\Controllers\GudangJahitController::class, 'gRequestTerima'])->name('GJahit.request.terima');
@@ -261,6 +263,7 @@ Route::post('/GBatil/getData', [App\Http\Controllers\GudangBatilController::clas
 Route::post('/GBatil/getBasis', [App\Http\Controllers\GudangBatilController::class, 'getBasis'])->name('GBatil.getBasis');
 Route::post('/GBatil/getPegawai', [App\Http\Controllers\GudangBatilController::class, 'getPegawai'])->name('GBatil.getPegawai');
 Route::post('/GBatil/getReject', [App\Http\Controllers\GudangBatilController::class, 'getReject'])->name('GBatil.getReject');
+Route::post('/GBatil/searchRekapan', [App\Http\Controllers\GudangBatilController::class, 'searchRekapan'])->name('GBatil.searchRekapan');
 
 Route::get('/GBatil/request', [App\Http\Controllers\GudangBatilController::class, 'gRequest'])->name('GBatil.request');
 Route::get('/GBatil/request/terima/{id}', [App\Http\Controllers\GudangBatilController::class, 'gRequestTerima'])->name('GBatil.request.terima');
@@ -303,6 +306,7 @@ Route::post('/GControl/getData', [App\Http\Controllers\GudangControlController::
 Route::post('/GControl/getBasis', [App\Http\Controllers\GudangControlController::class, 'getBasis'])->name('GControl.getBasis');
 Route::post('/GControl/getPegawai', [App\Http\Controllers\GudangControlController::class, 'getPegawai'])->name('GControl.getPegawai');
 Route::post('/GControl/getReject', [App\Http\Controllers\GudangControlController::class, 'getReject'])->name('GControl.getReject');
+Route::post('/GControl/searchRekapan', [App\Http\Controllers\GudangControlController::class, 'searchRekapan'])->name('GControl.searchRekapan');
 
 Route::get('/GControl/request', [App\Http\Controllers\GudangControlController::class, 'gRequest'])->name('GControl.request');
 Route::get('/GControl/request/terima/{id}', [App\Http\Controllers\GudangControlController::class, 'gRequestTerima'])->name('GControl.request.terima');
@@ -383,6 +387,7 @@ Route::post('/GSetrika/getData', [App\Http\Controllers\GudangSetrikaController::
 Route::post('/GSetrika/getBasis', [App\Http\Controllers\GudangSetrikaController::class, 'getBasis'])->name('GSetrika.getBasis');
 Route::post('/GSetrika/getPegawai', [App\Http\Controllers\GudangSetrikaController::class, 'getPegawai'])->name('GSetrika.getPegawai');
 Route::post('/GSetrika/getReject', [App\Http\Controllers\GudangSetrikaController::class, 'getReject'])->name('GSetrika.getReject');
+Route::post('/GSetrika/searchRekapan', [App\Http\Controllers\GudangSetrikaController::class, 'searchRekapan'])->name('GSetrika.searchRekapan');
 
 Route::get('/GSetrika/request', [App\Http\Controllers\GudangSetrikaController::class, 'gRequest'])->name('GSetrika.request');
 Route::get('/GSetrika/request/terima/{id}', [App\Http\Controllers\GudangSetrikaController::class, 'gRequestTerima'])->name('GSetrika.request.terima');
@@ -439,6 +444,7 @@ Route::delete('jenisBaju/delete', [App\Http\Controllers\JenisBajuController::cla
 
 //Gudang Barang Jadi
 Route::get('/GBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'index'])->name('GBarangJadi');
+Route::post('/GBarangJadi/getKode', [App\Http\Controllers\GudangBarangJadiController::class, 'getKode'])->name('GBarangJadi.getKode');
 Route::post('/GBarangJadi/getBarangJadi', [App\Http\Controllers\GudangBarangJadiController::class, 'getBarangJadi'])->name('GBarangJadi.getBarangJadi');
 
 Route::get('/GBarangJadi/operator', [App\Http\Controllers\GudangBarangJadiController::class, 'gOperator'])->name('GBarangJadi.operator');

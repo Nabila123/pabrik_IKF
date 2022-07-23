@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">   
-                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12 || \Auth::user()->roleId == 30)   
+                        @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 16)   
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <a href="{{ route('GInspeksi.proses.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
@@ -80,10 +80,10 @@
                                             <td>
                                                 <a href="{{ route('GInspeksi.proses.detail', $inspeksi->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8 || \Auth::user()->roleId == 12)   
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 16)   
                                                     <a href="{{ route('GInspeksi.proses.update', $inspeksi->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                 @endif
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 5 || \Auth::user()->roleId == 8)   
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 16)   
                                                     <button type="button" data-toggle="modal" inspeksiId='{{ $inspeksi->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $inspeksi->id }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                             </td>

@@ -51,7 +51,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 38 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10 || \Auth::user()->roleId == 24)
+                            @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 3 || \Auth::user()->roleId == 6 || \Auth::user()->roleId == 9)
                                 <h3 class="card-title">
                                     <a href="{{ route('adminPO.poRequest.create') }}" class='btn btn-info btn-flat-right'>Tambah Data</a>
                                 </h3>
@@ -79,7 +79,7 @@
                                     @foreach ($poRequest as $request)
                                         <tr>
                                             <td>
-                                                @if (\Auth::user()->roleId == 7 && $request->isKaDeptPO != 0 && $request->prosesOrder != true)
+                                                @if (\Auth::user()->roleId == 6 && $request->isKaDeptPO != 0 && $request->prosesOrder != true)
                                                     <a href="{{ route('adminPO.poRequest.requestKode', $request->id) }}" class="btn btn-info requestKode"> Buat Pruchase Order </a> <br>
                                                     <span style="color: green; font-size: 10px">Lanjut Purchase Order</span>
                                                 @else
@@ -97,7 +97,7 @@
                                                     {{ $request->roleKaDeptProdUser->nama }} <br>
                                                     <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($request->isKaDeptProdAt)) }} </span>
                                                 @else
-                                                    @if (\Auth::user()->roleId == 8)
+                                                    @if (\Auth::user()->roleId == 7)
                                                     <button type="button" id="approveKaDeptProd" purchaseid="{{ $request->id }}" class='btn btn-success approveKaDeptProd'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
                                                     @else
                                                         <br>
@@ -110,7 +110,7 @@
                                                     {{ $request->roleKaDeptPOUser->nama }} <br>
                                                     <span style="color: green; font-size: 10px"> Aproved At {{ date('d F Y', strtotime($request->isKaDeptPOAt)) }} </span>
                                                 @else
-                                                    @if (\Auth::user()->roleId == 7 && $request->isKaDeptProd != 0)
+                                                    @if (\Auth::user()->roleId == 6 && $request->isKaDeptProd != 0)
                                                         <button type="button" id="approveKaDeptPO" purchaseId="{{ $request->id }}" class='btn btn-success approveKaDeptPO'><i class="fas fa-check-square" style="font-size: 14px"> </i> Approve</a>
                                                     @else
                                                         <br>
@@ -136,7 +136,7 @@
                                             <td>
                                                 <a href="{{ route('adminPO.poRequest.detail', $request->id) }}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
                                                 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 38 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 3 || \Auth::user()->roleId == 6 || \Auth::user()->roleId == 9 )
                                                     @if ($request->prosesOrder != true)
                                                         <a href="{{ route('adminPO.poRequest.update', $request->id) }}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
                                                     @else
@@ -150,7 +150,7 @@
                                                     <button type="button" class='btn btn-info disabled mt-1'><i class="fas fa-download" style="font-size: 14px"></i></button>
                                                 @endif
                                                 
-                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 38 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7)
+                                                @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 3 || \Auth::user()->roleId == 6 || \Auth::user()->roleId == 9 )
                                                     <button type="button" data-toggle="modal" purchaseId='{{ $request->id }}' data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $request->id }}")' class='btn btn-danger delete mt-1'><i class="fas fa-trash" style="font-size: 14px"></i></a>
                                                 @endif
                                             </td>
