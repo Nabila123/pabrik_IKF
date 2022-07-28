@@ -33,6 +33,7 @@ use App\Models\PPICGudangRequest;
 use App\Models\BarangDatangDetailMaterial;
 use Illuminate\Database\Eloquent\Builder;
 
+use DB;
 class GudangBahanBakuController extends Controller
 {
     public function __construct()
@@ -81,6 +82,29 @@ class GudangBahanBakuController extends Controller
 
     public function create()
     {
+        $dtPurchase = [];
+        $purchaseIds = AdminPurchase::where('jenisPurchase', "Purchase Order")->groupBy('kode')->get();
+        
+        foreach ($purchaseIds as $purchase) {            
+            $jumlahClear = False;
+            $datangDetail = BarangDatangDetail::select('purchaseId', 'materialId', 'qtyPermintaan', DB::raw('sum(jumlah_datang) as jumlah_datang'))
+                                                ->where('purchaseId', $purchase->id)
+                                                ->groupBy('purchaseId', 'materialId')
+                                                ->get();
+            foreach ($datangDetail as $detail) {
+                if ($detail->qtyPermintaan <= (int)$detail->jumlah_datang) {
+                    $jumlahClear = True;
+                }else {
+                    $jumlahClear = False;
+                }
+            }
+
+            if ($jumlahClear == True) {
+                $dtPurchase[] = $purchase->id;
+            }
+        }
+
+        // dd($dtPurchase);
         $purchases = AdminPurchaseDetail::groupBy('purchaseId')
                             ->whereHas('material', function (Builder $query) {
                              $query->where('keterangan','LIKE', '%Bahan Baku%');
@@ -88,7 +112,9 @@ class GudangBahanBakuController extends Controller
                             ->whereHas('purchase', function (Builder $query) {
                              $query->where('jenisPurchase', 'Purchase Order');
                             })
+                            ->whereNotIn('purchaseId', $dtPurchase)
                             ->get();
+
         return view('bahanBaku.supply.create')->with(['purchases'=>$purchases]);
     }
 
@@ -322,7 +348,7 @@ class GudangBahanBakuController extends Controller
 
             $findBarangDatangDetail = BarangDatangDetail::where('barangDatangId',$barangDatang->id)->delete();
             if ($findBarangDatangDetail) {
-                BarangDatang::where('id', $request['barangDatangId'])->delete();
+                BarangDatang::where('purchaseId', $request['purchaseId'])->delete();
             }
         }
                 
