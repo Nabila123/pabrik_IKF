@@ -203,12 +203,13 @@
             jumlah_data = parseInt(data) + 1;
             dt = '<tr id="roll_'+materialId+'_'+jumlah_roll+'">';
             // dt += '<td colspan="6">Data Roll '+jumlah_roll+'</td>';
-            dt += '<td colspan="6"></td>';
+            dt += '<td colspan="5"></td>';
+            dt += "<td>Roll </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control diameter' name='diameter_"+materialId+"[]' value=''> </td>";
             dt += "<td><input type='text' required style='width:60px;' class='form-control gramasi' name='gramasi_"+materialId+"[]' value=''> </td>";
-            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' name='brutto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
-            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' name='netto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
-            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' name='tarra_"+materialId+"[]' value='' placeholder='Kg'> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control brutto' idRoll="+jumlah_roll+" materialId="+materialId+" id='brutto_"+materialId+"_"+jumlah_roll+"' name='brutto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control netto' idRoll="+jumlah_roll+" materialId="+materialId+" id='netto_"+materialId+"_"+jumlah_roll+"' name='netto_"+materialId+"[]' value='' placeholder='Kg'> </td>";
+            dt += "<td><input type='text' required style='width:60px;' class='form-control tarra' idRoll="+jumlah_roll+" materialId="+materialId+" id='tarra_"+materialId+"_"+jumlah_roll+"' name='tarra_"+materialId+"[]' value='' placeholder='Kg'> </td>";
             dt += '<td><a idRoll="'+jumlah_roll+'" materialId="'+materialId+'" class="btn btn-danger delRoll"><i class="fa fa-trash"></i></a></td>';
             dt += '</tr>';
 
@@ -234,10 +235,58 @@
         });
 
         $(document).on("change", ".netto", function(){
-            var netto = $(this).val();
-            var idData = $(this).attr('id_data');
-            var netto_ball = parseFloat(netto) / 181.44;
-            $('#netto_ball_'+idData).val(netto_ball.toFixed(2)); 
+            idRoll = $(this).attr('idroll');
+            if(idRoll !== undefined){
+                var materialId = $(this).attr('materialId')
+                
+                var brutto = $('#brutto_'+materialId+'_'+idRoll).val();
+                var netto = $('#netto_'+materialId+'_'+idRoll).val();
+
+                brutto = (brutto == '') ? 0 : brutto 
+                netto = (netto == '') ? 0 : netto 
+                var tarra = parseFloat(brutto) - parseFloat(netto);
+                
+                console.log(tarra);
+                $('#tarra_'+materialId+'_'+idRoll).val(tarra.toFixed(2)); 
+            }else{
+                var netto = $(this).val();
+                var idData = $(this).attr('id_data');
+                var netto_ball = parseFloat(netto) / 181.44;
+                $('#netto_ball_'+idData).val(netto_ball.toFixed(2));
+
+                var brutto = $('#brutto_'+idData).val();
+                
+                brutto = (brutto == '') ? 0 : brutto 
+                netto = (netto == '') ? 0 : netto 
+                var tarra = parseFloat(brutto) - parseFloat(netto);
+
+                $('#tarra_'+idData).val(tarra.toFixed(2)); 
+            }
+        });
+
+        $(document).on("change", ".brutto", function(){
+            idRoll = $(this).attr('idroll');
+            if(idRoll !== undefined){
+                var materialId = $(this).attr('materialId')
+                var brutto = $('#brutto_'+materialId+'_'+idRoll).val();
+                var netto = $('#netto_'+materialId+'_'+idRoll).val();
+
+                brutto = (brutto == '') ? 0 : brutto 
+                netto = (netto == '') ? 0 : netto 
+                var tarra = parseFloat(brutto) - parseFloat(netto);
+                
+                console.log(tarra);
+                $('#tarra_'+materialId+'_'+idRoll).val(tarra.toFixed(2));
+            }else{
+                var brutto = $(this).val();
+                var idData = $(this).attr('id_data');
+                var netto = $('#netto_'+idData).val();
+               
+                brutto = (brutto == '') ? 0 : brutto 
+                netto = (netto == '') ? 0 : netto 
+                var tarra = parseFloat(brutto) - parseFloat(netto); 
+                $('#tarra_'+idData).val(tarra.toFixed(2));
+            } 
         });
 
         $(document).on("click", ".delRoll", function(e){
