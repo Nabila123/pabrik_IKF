@@ -375,7 +375,9 @@ class GudangBahanBakuController extends Controller
 
     public function delDetailMaterial($id)
     {
-        if(GudangBahanBakuDetailMaterial::where('id',$id)->delete()){
+        $BahanBakuMaterial = GudangBahanBakuDetailMaterial::where('detailMaterialId',$id)->delete();
+        if($BahanBakuMaterial){
+            BarangDatangDetailMaterial::where('id',$id)->delete();
             return 1;
         }else{
             return 0;
