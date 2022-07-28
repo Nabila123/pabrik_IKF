@@ -27,7 +27,7 @@ class BarangDatangDetailMaterial extends Model
         $addDetailMaterial->created_at = date('Y-m-d H:i:s');
 
         if ($addDetailMaterial->save()) {
-            return 1;
+            return $addDetailMaterial->id;
         } else {
             return 0;
         }

@@ -79,7 +79,7 @@
                                                 @endif
 
                                                 @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
-                                                    <button type="button" data-toggle="modal" dataId='{{ $value->purchaseId }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button>
+                                                    <button type="button" data-toggle="modal" dataId='{{ $value->barangDatangId }}' dataPurchaseId='{{ $value->purchaseId }}' data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button>
                                                 @endif 
                                             </td>
                                         </tr>
@@ -106,7 +106,8 @@
                     <div class="modal-body">
                         {{ csrf_field() }}
                         <p>Anda yakin ingin menghapus data ini ?</p>
-                        <input type="hidden" name="gudangId" id="gudangId">
+                        <input type="hidden" name="barangDatangId" id="barangDatangId">
+                        <input type="hidden" name="purchaseId" id="purchaseId">
                     </div>
                     <div class="modal-footer">
                         <center>
@@ -128,7 +129,10 @@
 
             $('.delete').click(function () {
                var id = $(this).attr('dataId');
-               $('#gudangId').val(id);
+               var purchaseId = $(this).attr('dataPurchaseId');
+               
+               $('#barangDatangId').val(id);
+               $('#purchaseId').val(purchaseId);
             });
 
             $('.submitDelete').click(function(){
@@ -141,7 +145,7 @@
                 var url = '{{ route('bahan_baku.supply.delete') }}';
                 // url = url.replace(':id', id);
                 console.log(id);
-                $('#gudangId').val(id);
+                $('#barangDatangId').val(id);
                 $("#deleteForm").attr('action', url);
             }
 
