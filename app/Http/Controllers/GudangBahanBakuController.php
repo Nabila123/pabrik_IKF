@@ -257,9 +257,16 @@ class GudangBahanBakuController extends Controller
         foreach ($barangDatang as $key => $value) {
             $value->detail = BarangDatangDetail::where('barangDatangId', $value->id)->get();
             foreach ($value->detail as $key => $value2) {
-                $value2->detailMaterial = BarangDatangDetailMaterial::where('barangDatangDetailId', $value2->id)->get();
+                $value2->detailMaterial = BarangDatangDetailMaterial::select('*', DB::raw('count(id) as jumlahRoll'))->where('barangDatangDetailId', $value2->id)->groupBy('diameter', 'gramasi', 'brutto', 'netto', 'tarra')->get();
+
+                if ($value2->materialId == 1) {
+                    $value2->rollTotal = "-";
+                }else {
+                    $value2->rollTotal = count(BarangDatangDetailMaterial::where('barangDatangDetailId', $value2->id)->get())." Roll";
+                }
             }
         }
+
         return view('bahanBaku.supply.detail')->with(['barangDatang'=>$barangDatang, 'data'=>$data]);
     }
 
