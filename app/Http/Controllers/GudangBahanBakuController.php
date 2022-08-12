@@ -480,7 +480,19 @@ class GudangBahanBakuController extends Controller
             $datas = GudangBahanBakuDetail::where('materialId',$data['material']->id)->groupby('purchaseId')->get();
             $data['purchase'] = [];
             foreach($datas as $val){
-                $data['purchase'][] = $val->purchase;
+                $dataMaterial = GudangBahanBakuDetailMaterial::where('gudangDetailId', $val->id)->get();
+                foreach ($dataMaterial as $dataM) {
+                    if ($data['material']->id == 1 && $dataM->netto != 0) {
+                        if (!in_array($val->purchase, $data['purchase'])) {
+                            $data['purchase'][] = $val->purchase;
+                        }
+                    }elseif ($data['material']->id != 1 && $dataM->qty != 0) {
+                        if (!in_array($val->purchase, $data['purchase'])) {
+                            $data['purchase'][] = $val->purchase;
+                        }
+                    }
+                }
+                
             }
         }else{
             $data['material'] = MaterialModel::where('jenisId',3)->first();
