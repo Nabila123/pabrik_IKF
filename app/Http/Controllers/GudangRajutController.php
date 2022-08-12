@@ -86,32 +86,36 @@ class GudangRajutController extends Controller
     }
 
     public function Rstore(Request $request){   
-        $gdRajutMasuk = GudangRajutMasuk::CreateRajutMasuk($request->gdRajutKId);
-        if ($gdRajutMasuk) {
-            for ($i=1; $i <= $request->totalData; $i++) { 
-                $bahanBaku = GudangBahanBaku::where('id', $request["gudangId_".$i])->where('purchaseId', $request["purchaseId_".$i])->first();
-                if ($bahanBaku != null) {
-                    $bahanBakuDetail = GudangBahanBakuDetail::where('gudangId', $bahanBaku->id)->where('purchaseId', $bahanBaku->purchaseId)->where('materialId', $request->materialId)->first();
-                    if ($bahanBakuDetail != null) {
-                        for ($j=0; $j < count($request["gramasi_".$i]); $j++) { 
-                            $bahanBakuDetailMaterial = GudangBahanBakuDetailMaterial::CreateDetailMaterial($bahanBakuDetail->id, $request["diameter_".$i][$j], $request["gramasi_".$i][$j], 0, $request["berat_".$i][$j], 0, 0, "Kg", 0, null, null);
-                            $gudangRajutMasuk = GudangRajutMasukDetail::CreateRajutMasukDetail($request["gudangId_".$i], $bahanBakuDetailMaterial, $gdRajutMasuk, $request["purchaseId_".$i], $request->materialId, $request->jenisId, $request["gramasi_".$i][$j], $request["diameter_".$i][$j], $request["berat_".$i][$j], $request["qty_".$i][$j]);
-                        }
-                    }else{
-                        $bahanBakuDetail = GudangBahanBakuDetail::CreateBahanBakuDetail($bahanBaku->id, $request["purchaseId_".$i], $request->materialId, 0, 0);
-                        if ($bahanBakuDetail) {
+        if ($request->jumlah_data != 0) {
+            $gdRajutMasuk = GudangRajutMasuk::CreateRajutMasuk($request->gdRajutKId);
+            if ($gdRajutMasuk) {
+                for ($i=1; $i <= $request->totalData; $i++) { 
+                    $bahanBaku = GudangBahanBaku::where('id', $request["gudangId_".$i])->where('purchaseId', $request["purchaseId_".$i])->first();
+                    if ($bahanBaku != null) {
+                        $bahanBakuDetail = GudangBahanBakuDetail::where('gudangId', $bahanBaku->id)->where('purchaseId', $bahanBaku->purchaseId)->where('materialId', $request->materialId)->first();
+                        if ($bahanBakuDetail != null) {
                             for ($j=0; $j < count($request["gramasi_".$i]); $j++) { 
-                                $bahanBakuDetailMaterial = GudangBahanBakuDetailMaterial::CreateDetailMaterial($bahanBakuDetail, $request["diameter_".$i][$j], $request["gramasi_".$i][$j], 0, $request["berat_".$i][$j], 0, 0, "Kg", 0, null, null);
+                                $bahanBakuDetailMaterial = GudangBahanBakuDetailMaterial::CreateDetailMaterial($bahanBakuDetail->id, $request["diameter_".$i][$j], $request["gramasi_".$i][$j], 0, $request["berat_".$i][$j], 0, 0, "Kg", 0, null, null);
                                 $gudangRajutMasuk = GudangRajutMasukDetail::CreateRajutMasukDetail($request["gudangId_".$i], $bahanBakuDetailMaterial, $gdRajutMasuk, $request["purchaseId_".$i], $request->materialId, $request->jenisId, $request["gramasi_".$i][$j], $request["diameter_".$i][$j], $request["berat_".$i][$j], $request["qty_".$i][$j]);
                             }
+                        }else{
+                            $bahanBakuDetail = GudangBahanBakuDetail::CreateBahanBakuDetail($bahanBaku->id, $request["purchaseId_".$i], $request->materialId, 0, 0);
+                            if ($bahanBakuDetail) {
+                                for ($j=0; $j < count($request["gramasi_".$i]); $j++) { 
+                                    $bahanBakuDetailMaterial = GudangBahanBakuDetailMaterial::CreateDetailMaterial($bahanBakuDetail, $request["diameter_".$i][$j], $request["gramasi_".$i][$j], 0, $request["berat_".$i][$j], 0, 0, "Kg", 0, null, null);
+                                    $gudangRajutMasuk = GudangRajutMasukDetail::CreateRajutMasukDetail($request["gudangId_".$i], $bahanBakuDetailMaterial, $gdRajutMasuk, $request["purchaseId_".$i], $request->materialId, $request->jenisId, $request["gramasi_".$i][$j], $request["diameter_".$i][$j], $request["berat_".$i][$j], $request["qty_".$i][$j]);
+                                }
+                            }
                         }
-                    }
-                }                  
-            } 
+                    }                  
+                } 
 
-            if ($gudangRajutMasuk == 1) {
-                return redirect('gudangRajut/Kembali');
+                if ($gudangRajutMasuk == 1) {
+                    return redirect('gudangRajut/Kembali');
+                }
             }
+        }else{
+            return redirect()->back()->with('msg', 'Silahkan Tambahkan Roll Terlebih Dahulu');
         }
     }
     /* END Gudang Rajut Request */
