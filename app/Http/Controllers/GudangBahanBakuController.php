@@ -821,7 +821,6 @@ class GudangBahanBakuController extends Controller
 
     public function deleteKeluarGudang(Request $request)
     {
-
         switch ($request->gudangRequestName) {
             case 'Gudang Rajut':
                 $dataDetail = GudangRajutKeluarDetail::where('gdRajutKId',$request->gudangRequestId)->get();
@@ -869,11 +868,19 @@ class GudangBahanBakuController extends Controller
         }
         
         if ($dataDetailDelete) {
-            foreach ($dataDetail as $value) {
-                $getStok = GudangBahanBakuDetailMaterial::where('id', $value->gdDetailMaterialId)->first();
-                $qty = $getStok->qty + $value->qty;
-                $update = GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $qty, $getStok->id);
-            }
+            if ($request->gudangRequestName == "Gudang Rajut") {
+                foreach ($dataDetail as $value) {
+                    $getStok = GudangBahanBakuDetailMaterial::where('id', $value->gudang->bahanBakuDetail->bahanBakuDetailMaterial[0]->id)->first();
+                    $qty = $getStok->netto + $value->qty;
+                    $update = GudangBahanBakuDetailMaterial::detailMaterialUpdateField('netto', $qty, $getStok->id);
+                }
+            } else {
+                foreach ($dataDetail as $value) {
+                    $getStok = GudangBahanBakuDetailMaterial::where('id', $value->gdDetailMaterialId)->first();
+                    $qty = $getStok->qty + $value->qty;
+                    $update = GudangBahanBakuDetailMaterial::detailMaterialUpdateField('qty', $qty, $getStok->id);
+                }
+            } 
         }
                 
         return redirect('bahan_baku/keluar');
