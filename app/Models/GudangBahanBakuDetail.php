@@ -43,4 +43,14 @@ class GudangBahanBakuDetail extends Model
             return 0;
         }
     }
+
+    public static function detailUpdateField($fieldName, $updatedField, $id)
+    {
+        $detailMaterialFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($detailMaterialFieldUpdated);
+
+        if ($success) {
+            return 1;
+        }
+    }
 }

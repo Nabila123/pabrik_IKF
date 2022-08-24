@@ -382,8 +382,14 @@ class GudangBahanBakuController extends Controller
 
     public function delDetailMaterial($id)
     {
-        $BahanBakuMaterial = GudangBahanBakuDetailMaterial::where('detailMaterialId',$id)->delete();
-        if($BahanBakuMaterial){
+        $bahanBakuMaterial = GudangBahanBakuDetailMaterial::where('detailMaterialId',$id)->first();
+        $bahanBakuDetail = GudangBahanBakuDetail::where('id',$bahanBakuMaterial->gudangDetailId)->first();
+        $qty = $bahanBakuDetail->qtySaatIni - $bahanBakuMaterial->brutto;
+        GudangBahanBakuDetail::detailUpdateField('qtySaatIni', $qty, $bahanBakuDetail->id);
+        BarangDatangDetail::detailUpdateField('jumlah_datang', $qty, $bahanBakuDetail->datangDetailId);
+
+        $deleteBahanBakuMaterial = GudangBahanBakuDetailMaterial::where('detailMaterialId',$id)->delete();
+        if($deleteBahanBakuMaterial){
             BarangDatangDetailMaterial::where('id',$id)->delete();
             return 1;
         }else{

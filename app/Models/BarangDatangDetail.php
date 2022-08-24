@@ -24,5 +24,15 @@ class BarangDatangDetail extends Model
     {
          return $this->belongsTo('App\Models\BarangDatang','barangDatangId','id');
     }
+
+    public static function detailUpdateField($fieldName, $updatedField, $id)
+    {
+        $detailMaterialFieldUpdated[$fieldName] = $updatedField;
+        $success = self::where('id', $id)->update($detailMaterialFieldUpdated);
+
+        if ($success) {
+            return 1;
+        }
+    }
 }
 

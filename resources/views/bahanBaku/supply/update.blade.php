@@ -230,6 +230,7 @@
                     if(response == 1){
                          $('#roll_'+idRoll).remove();
                         alert('Data Berhasil Dihapus!');
+                        location.reload();
                     }else{
                         alert('Data Gagal Dihapus!');
                     }
