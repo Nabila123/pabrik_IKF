@@ -6,19 +6,22 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link rel="shortcut icon" href="{{ asset('image/copy.png') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-          integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
-          crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+    {{--  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">  --}}
+    <link rel="stylesheet" href="{{ asset('css/dataTables-bootstrap4.css') }}">
+    {{--  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">  --}}
+    <link rel="stylesheet" href="{{ asset('css/dataTables-rowReorder.css') }}">
+    {{--  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">  --}}
+    <link rel="stylesheet" href="{{ asset('css/dataTables-Responsive.css') }}">
+    {{--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">  --}}
+    <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+    {{--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">  --}}
+    <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.css') }}">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
+    {{--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">  --}}
+    <link rel="stylesheet" href="{{ asset('css/iCheck-bootstrap.css') }}">
     
     @yield('third_party_stylesheets')
 
@@ -94,11 +97,16 @@
 <script src="{{ mix('js/app.js') }}" defer></script>
 
 <script src = "https://code.jquery.com/jquery-3.5.1.js" ></script>
-<script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
-<script src = "https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js" defer ></script>
-<script src = "https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js" defer ></script>
-<script src = "https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" defer ></script>
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js" ></script>
+{{--  <script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>  --}}
+<script src="{{ asset('js/dataTables.js') }}" defer></script>
+{{--  <script src = "https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js" defer ></script>  --}}
+<script src="{{ asset('js/dataTables-rowReorder.js') }}" defer></script>
+{{--  <script src = "https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js" defer ></script>  --}}
+<script src="{{ asset('js/dataTables-Responsive.js') }}" defer></script>
+{{--  <script src = "https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" defer ></script>  --}}
+<script src="{{ asset('js/dataTables-Bootstrap.js') }}" defer></script>
+{{--  <script src = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js" ></script>  --}}
+<script src="{{ asset('js/select2.js') }}"></script>
 <script>
     function formatRupiah(angka, prefix){
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
