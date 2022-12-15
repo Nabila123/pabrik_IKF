@@ -16,6 +16,10 @@ class GudangCuciKeluar extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function cuciDetail()
+    {
+        return $this->hasOne('App\Models\GudangCuciKeluarDetail','gdCuciKId','id');
+    }
     public static function updateStatusDiterima($id, $statusDiterima)
     {
         $purchaseUpdated['statusDiterima'] = $statusDiterima;

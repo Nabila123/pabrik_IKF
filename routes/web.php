@@ -179,7 +179,7 @@ Route::get('/ppic/Gudang', [App\Http\Controllers\PPICController::class, 'gdReque
 Route::get('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestCreate'])->name('ppic.gdRequest.create');
 Route::post('/ppic/Gudang/Create', [App\Http\Controllers\PPICController::class, 'gdRequestStore'])->name('ppic.gdRequest.create');
 Route::get('ppic/Gudang/detail/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestDetail'])->name('ppic.gdRequest.detail');
-Route::get('/ppic/Gudang/detail/delete/{detailId}/{ppicRequestId}', [App\Http\Controllers\PPICController::class, 'gdRequestDetailDelete'])->name('adminPO.poOrder.detail.delete');
+Route::get('/ppic/Gudang/detail/delete/{detailId}/{ppicRequestId}', [App\Http\Controllers\PPICController::class, 'gdRequestDetailDelete'])->name('ppic.gdRequest.detail.delete');
 Route::get('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdate'])->name('ppic.gdRequest.update');
 Route::post('/ppic/Gudang/Update/{id}', [App\Http\Controllers\PPICController::class, 'gdRequestUpdateStore'])->name('ppic.gdRequest.update');
 Route::delete('/ppic/Gudang/delete', [App\Http\Controllers\PPICController::class, 'gdRequestDelete'])->name('ppic.gdRequest.delete');

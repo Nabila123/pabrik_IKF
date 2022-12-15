@@ -20,6 +20,7 @@ use App\Models\GudangCompactMasukDetail;
 use App\Models\PPICGudangRequest;
 use App\Models\PPICGudangRequestDetail;
 use App\Models\MaterialModel;
+use DB;
 
 class PPICController extends Controller
 {
@@ -143,25 +144,37 @@ class PPICController extends Controller
 
     public function gdRequestStore(Request $request)
     {
-        for ($i=0; $i < $request->jumlah_data; $i++) { 
-            $checkPPICRequest = PPICGudangRequest::where('gudangRequest', $request['gudangRequest'][$i])
-                                                 ->where('tanggal', date('Y-m-d'))
-                                                 ->where('statusDiterima', 0)
-                                                 ->first();
-            if ($checkPPICRequest == null) {
-                $ppicRequest = PPICGudangRequest::CreatePPICGudangRequest($request['gudangRequest'][$i]);
-                if ($ppicRequest != 0) {
-                    $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
-                }
-            }else{
-                $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($checkPPICRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
-            }
-        }
-
-        if ($ppicRequestDetail == 1) {
-            return redirect('ppic/Gudang');
-        }
         
+        DB::beginTransaction();
+        try {
+            for ($i=0; $i < $request->jumlah_data; $i++) { 
+                $checkPPICRequest = PPICGudangRequest::where('gudangRequest', $request['gudangRequest'][$i])
+                                                     ->where('tanggal', date('Y-m-d'))
+                                                     ->where('statusDiterima', 0)
+                                                     ->first();
+                if ($checkPPICRequest == null) {
+                    $ppicRequest = PPICGudangRequest::CreatePPICGudangRequest($request['gudangRequest'][$i]);
+                    if ($ppicRequest != 0) {
+                        $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($ppicRequest, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
+                    }
+                }else{
+                    $ppicRequestDetail = PPICGudangRequestDetail::CreatePPICGudangRequestDetail($checkPPICRequest->id, $request['materialId'][$i], $request['materialId'][$i], $request['gramasi'][$i], $request['diameter'][$i], $request['jenisBaju'][$i], $request['ukuranBaju'][$i], $request['qty'][$i]);
+                }
+            }
+            
+            
+            DB::commit();
+            if ($ppicRequestDetail == 1) {
+                return redirect('ppic/Gudang')->with('success','Data Berhasil Disimpan');
+            }
+        } catch (\Throwable $th) {            
+            DB::rollback();
+            if (env('APP_ENV') == 'local') {
+                throw $th;
+            } else {
+                return redirect()->back()->with('error','Silahkan Cek Kembali Data Anda');
+            }
+        }        
     }
 
     public function gdRequestDetail($id)

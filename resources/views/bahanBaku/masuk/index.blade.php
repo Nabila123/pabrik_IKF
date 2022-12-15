@@ -53,6 +53,7 @@
                             <table id="example2" class="table table-bordered table-responsive dataTables_scrollBody textAlign" style="width: 100%">
                                 <thead>
                                     <tr>
+                                        <th style="vertical-align: middle; width:10%;">Relasi G. Keluar</th>
                                         <th style="vertical-align: middle; width:20%;">Gudang Request</th>
                                         <th style="vertical-align: middle; width:10%;">Tanggal </th>
                                         <th style="vertical-align: middle; width:20%;">Status </th>
@@ -63,6 +64,7 @@
                                     @for ($i = 0; $i < count($data); $i++)
                                         @for ($j = 0; $j < count($data[$i]); $j++)
                                             <tr>
+                                                <td>{{$data[$i][$j]->foreign}}</td>
                                                 <td>{{$data[$i][$j]->gudangRequest}}</td>
                                                 <td>{{date('d F Y', strtotime($data[$i][$j]->tanggal))}}</td>
                                                 <td>
@@ -78,10 +80,10 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('bahan_baku.masuk.detail',['id'=>$data[$i][$j]->id, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-warning'><i class="fas fa-list-ul" style="font-size: 14px"></i></a>
-                                                    {{--  <a href="{{ route('bahan_baku.keluar.update',['id'=>$data[$i][$j]->id, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>
-                                                    @if ($data[$i][$j]->statusDiterima == 0 && !isset($data[$i][$j]->cuciDelete))
-                                                        <button type="button" data-toggle="modal" dataId='{{ $data[$i][$j]->id }}' dataRequest="{{ $data[$i][$j]->gudangRequest }}" data-target="#DeleteModal" id="modalDelete" class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></button> 
-                                                    @endif  --}}
+                                                    {{--  <a href="{{ route('bahan_baku.keluar.update',['id'=>$data[$i][$j]->id, 'gudangRequest'=>$data[$i][$j]->gudangRequest])}}" class='btn btn-success'><i class="fas fa-pencil-alt" style="font-size: 14px"></i></a>  --}}
+                                                    @if (\Auth::user()->roleId == 1 || \Auth::user()->roleId == 4 || \Auth::user()->roleId == 7 || \Auth::user()->roleId == 10)
+                                                        <button type="button" data-toggle="modal" data-target="#DeleteModal" id="modalDelete" onclick='deleteData("{{ $data[$i][$j]->id }}", "{{ $data[$i][$j]->gudangRequest }}")' class='btn btn-danger delete'><i class="fas fa-trash" style="font-size: 14px"></i></a>        
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endfor
@@ -97,7 +99,7 @@
     <div id="DeleteModal" class="modal fade">
         <div class="modal-dialog ">
             <!-- Modal content-->
-            <form action="{{ route('bahan_baku.keluar.delete') }}" id="deleteForm" method="post" >
+            <form id="deleteForm" method="post" >
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
                         <h4 class="modal-title">DELETE CONFIRMATION</h4>
@@ -107,6 +109,7 @@
                     </div>
                     <div class="modal-body">
                         {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
                         <p>Anda yakin ingin menghapus data ini ?</p>
                         <input type="hidden" name="gudangId" id="gudangId">
                     </div>
@@ -127,30 +130,33 @@
     <script type="text/javascript">
         $(document).ready( function () {
             $('#example2').DataTable();
-
-            $('.delete').click(function () {
-               var id = $(this).attr('dataId');
-               $('#gudangId').val(id);
-            });
-
-            $('.submitDelete').click(function(){
-                $("#deleteForm").submit();
-            })
-
-            function hapusData(id)
-            {
-                var id = id;
-                var url = '{{ route('bahan_baku.keluar.delete') }}';
-                // url = url.replace(':id', id);
-                console.log(id);
-                $('#gudangId').val(id);
-                $("#deleteForm").attr('action', url);
-            }
-
-            function formSubmit()
-            {
-                $("#deleteForm").submit();
-            }
         });
+        function deleteData(id, gudangReq)
+        {
+            switch(gudangReq) {
+                case "Gudang Rajut Masuk":
+                  var url = '{{ route('GRajut.kembali.delete') }}';
+                  document.getElementById("gudangId").name = "gdRajutMId";
+                  break;
+                case "Gudang Compact Masuk":
+                  var url = '{{ route('GCompact.kembali.delete') }}';
+                  document.getElementById("gudangId").name = "gdCompactMId";
+                  break;
+                case "Gudang Inspeksi Masuk":
+                  var url = '{{ route('GInspeksi.kembali.delete') }}';
+                  document.getElementById("gudangId").name = "gdInspeksiMId";
+                  break;
+              }
+
+            var id = id;
+            console.log(id);
+            $('#gudangId').val(id);
+            $("#deleteForm").attr('action', url);            
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
     </script>
 @endpush

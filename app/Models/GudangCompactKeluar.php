@@ -16,6 +16,11 @@ class GudangCompactKeluar extends Model
         return $this->hasOne('App\Models\User','id','userId');
     }
 
+    public function cuci()
+    {
+        return $this->hasOne('App\Models\GudangCuciKeluar','id','gdCuciKId');
+    }
+
     public static function CreateCompactKeluar($gdCuciKId)
     {
         $addGudangCompactKeluar = new GudangCompactKeluar;
