@@ -56,7 +56,7 @@
                                  <div class="alert alert-success alert-dismissible fade show text-white">
                                      <i class="fa-solid fa-circle-check"></i>
                                      <strong> Berhasil! :</strong> {{ session()->get('success') }}
-                                     <button type="button" class="close text-white" data-bs-dismiss="alert" aria-label="Close">
+                                     <button type="button" class="close alert-close text-white" data-bs-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                  </div>
@@ -68,7 +68,7 @@
                                  <div class="alert alert-danger alert-dismissible fade show text-white">
                                      <i class="fa-solid fa-circle-check"></i>
                                      <strong> Gagal! :</strong> {{ session()->get('error') }}
-                                     <button type="button" class="close text-white" data-bs-dismiss="alert" aria-label="Close">
+                                     <button type="button" class="close alert-close text-white" data-bs-dismiss="alert" aria-label="Close">
                                          <span aria-hidden="true">&times;</span>
                                      </button>
                                  </div>
