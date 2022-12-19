@@ -69,13 +69,29 @@ class GudangCompactController extends Controller
 
     public function RTerimaBarang($id)
     {
-        $id = $id;
-        $statusDiterima = 1;
+        DB::beginTransaction();
 
-        $gudangCompactTerima = GudangCompactKeluar::updateStatusDiterima($id, $statusDiterima);
+        try {
+            $id = $id;
+            $statusDiterima = 1;
 
-        if ($gudangCompactTerima == 1) {
-            return redirect('gudangCompact/Request');
+            $gudangCompactTerima = GudangCompactKeluar::updateStatusDiterima($id, $statusDiterima);
+
+            if ($gudangCompactTerima == 1) {
+                DB::commit();
+
+                return redirect('gudangCompact/Request')->with('success', 'Berhasil Menerima Barang');
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            if (env('APP_ENV') == 'local') {
+                throw $th;
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Gagal Menerima Barang');
+            }
         }
     }
 
@@ -95,22 +111,39 @@ class GudangCompactController extends Controller
     public function Rstore(Request $request)
     {
         // dd($request);
-        $gCompactRequest = GudangCompactKeluar::where('id', $request->id)->first();
-        $gCompactRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gCompactRequest->id)->get();
-        // dd($gCompactRequestDetail);
-        if ($gCompactRequestDetail != null) {
-            $gdCompactMasuk = GudangCompactMasuk::CreateCompactMasuk($gCompactRequest->id);
-            if ($gdCompactMasuk) {
-                foreach ($gCompactRequestDetail as $detail) {
-                    $gdBahanBaku = GudangBahanBaku::CheckBahanBakuForCompact($detail->gudangId, $detail->purchaseId, $request->materialId, $detail->diameter, $detail->gramasi, 0, $detail->berat, 0, 0, $request->satuan, 0, 0, null);
-                    if ($gdBahanBaku) {
-                        $gudangCompactDetail = GudangCompactMasukDetail::CreateCompactMasukDetail($detail->gudangId, $gdBahanBaku, $gdCompactMasuk, $detail->purchaseId, $request->materialId, $request->materialId, $detail->gramasi, $detail->diameter, $detail->berat, $detail->qty);
+
+        DB::beginTransaction();
+
+        try {
+            $gCompactRequest = GudangCompactKeluar::where('id', $request->id)->first();
+            $gCompactRequestDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gCompactRequest->id)->get();
+            // dd($gCompactRequestDetail);
+            if ($gCompactRequestDetail != null) {
+                $gdCompactMasuk = GudangCompactMasuk::CreateCompactMasuk($gCompactRequest->id);
+                if ($gdCompactMasuk) {
+                    foreach ($gCompactRequestDetail as $detail) {
+                        $gdBahanBaku = GudangBahanBaku::CheckBahanBakuForCompact($detail->gudangId, $detail->purchaseId, $request->materialId, $detail->diameter, $detail->gramasi, 0, $detail->berat, 0, 0, $request->satuan, 0, 0, null);
+                        if ($gdBahanBaku) {
+                            $gudangCompactDetail = GudangCompactMasukDetail::CreateCompactMasukDetail($detail->gudangId, $gdBahanBaku, $gdCompactMasuk, $detail->purchaseId, $request->materialId, $request->materialId, $detail->gramasi, $detail->diameter, $detail->berat, $detail->qty);
+                        }
+                    }
+
+                    if ($gudangCompactDetail == 1) {
+                        DB::commit();
+
+                        return redirect('gudangCompact/Kembali')->with('success', 'Data Berhasil Disimpan');
                     }
                 }
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
 
-                if ($gudangCompactDetail == 1) {
-                    return redirect('gudangCompact/Kembali');
-                }
+            if (env('APP_ENV') == 'local') {
+                throw $th;
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Data Gagal Disimpan');
             }
         }
     }
@@ -146,18 +179,21 @@ class GudangCompactController extends Controller
                 if ($gdDetailMaterial) {
                     $gdCompactMasuk = GudangCompactMasuk::where('id', $request->gdCompactMId)->delete();
                     if ($gdCompactMasuk) {
-                        
                         DB::commit();
-                        
-                        return redirect()->back();
+
+                        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
                     }
                 }
             }
         } catch (\Throwable $th) {
-            
             DB::rollback();
-            
-            dd($th);
+            if (env('APP_ENV') == 'local') {
+                throw $th;
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Data Gagal Dihapus');
+            }
         }
     }
 

@@ -49,6 +49,33 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+
+                        @if (session()->has('success'))
+                            <div class="card-title">
+                                <div class="alert alert-success alert-dismissible fade show text-white">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <strong> Berhasil! :</strong> {{ session()->get('success') }}
+                                    <button type="button" class="close alert-close text-white" data-bs-dismiss="alert"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (session()->has('error'))
+                            <div class="card-title">
+                                <div class="alert alert-danger alert-dismissible fade show text-white">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <strong> Gagal! :</strong> {{ session()->get('error') }}
+                                    <button type="button" class="close alert-close text-white" data-bs-dismiss="alert"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="card-body">
                             @if (\Auth::user()->roleId == 1 ||
                                 \Auth::user()->roleId == 4 ||
@@ -77,10 +104,8 @@
                                             <tr>
                                                 <td>
                                                     @if ($i == 2)
-                                                        {{ $data[$i][$j]->foreign }} <- {{ $data[$i][$j]->id }}
-                                                    @else
-                                                        {{ $data[$i][$j]->id }}
-                                                    @endif
+                                                    {{ $data[$i][$j]->foreign }} <- {{ $data[$i][$j]->id }} @else
+                                                            {{ $data[$i][$j]->id }} @endif
                                                 </td>
                                                 <td>{{ $data[$i][$j]->gudangRequest }}</td>
                                                 <td>{{ date('d F Y', strtotime($data[$i][$j]->created_at)) }}</td>

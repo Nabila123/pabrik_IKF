@@ -38,6 +38,33 @@
                                 <a href="#" class='btn btn-info btn-flat-right'>Kembalikan Barang</a>
                             </h3>
                         </div>                 --}}
+
+                        @if (session()->has('success'))
+                            <div class="card-title">
+                                <div class="alert alert-success alert-dismissible fade show text-white">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <strong> Berhasil! :</strong> {{ session()->get('success') }}
+                                    <button type="button" class="close alert-close text-white" data-bs-dismiss="alert"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (session()->has('error'))
+                            <div class="card-title">
+                                <div class="alert alert-danger alert-dismissible fade show text-white">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <strong> Gagal! :</strong> {{ session()->get('error') }}
+                                    <button type="button" class="close alert-close text-white" data-bs-dismiss="alert"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+                        
                         <div class="card-body">
                             <table id="example2" class="table table-bordered dataTables_scrollBody" style="width: 100%">
                                 <thead>

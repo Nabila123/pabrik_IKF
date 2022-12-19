@@ -74,13 +74,29 @@ class GudangCuciController extends Controller
 
     public function RTerimaBarang($id)
     {
-        $id = $id;
-        $statusDiterima = 1;
+        DB::beginTransaction();
 
-        $gudangCuciTerima = GudangCuciKeluar::updateStatusDiterima($id, $statusDiterima);
+        try {
+            $id = $id;
+            $statusDiterima = 1;
 
-        if ($gudangCuciTerima == 1) {
-            return redirect('gudangCuci/Request');
+            $gudangCuciTerima = GudangCuciKeluar::updateStatusDiterima($id, $statusDiterima);
+
+            if ($gudangCuciTerima == 1) {
+                DB::commit();
+
+                return redirect('gudangCuci/Request')->with('success', 'Berhasil Menerima Barang');
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            if (env('APP_ENV') == 'local') {
+                throw $th;
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Gagal Menerima Barang');
+            }
         }
     }
 
@@ -95,20 +111,35 @@ class GudangCuciController extends Controller
 
     public function Rstore(Request $request)
     {
-        $gdCompactKeluar = GudangCompactKeluar::CreateCompactKeluar($request->id);
-        if ($gdCompactKeluar) {
-            for ($i = 1; $i <= count($request->detailId); $i++) {
-                if ($request['qty'][$i] == 1) {
-                    $total = 0;
-                    $gdCuciKeluar = GudangCuciKeluarDetail::where('id', $request['detailId'][$i])->first();
-                    GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCuciKeluar->gdDetailMaterialId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request['qty'][$i]);
+        DB::beginTransaction();
 
-                    $total = $request['qtyOri'][$i] - $request['qty'][$i];
-                    GudangCuciKeluarDetail::gudangCuciUpdateField('qty', $total, $gdCuciKeluar->id);
+        try {
+            $gdCompactKeluar = GudangCompactKeluar::CreateCompactKeluar($request->id);
+            if ($gdCompactKeluar) {
+                for ($i = 1; $i <= count($request->detailId); $i++) {
+                    if ($request['qty'][$i] == 1) {
+                        $total = 0;
+                        $gdCuciKeluar = GudangCuciKeluarDetail::where('id', $request['detailId'][$i])->first();
+                        GudangCompactKeluarDetail::CreateCompactKeluarDetail($gdCuciKeluar->gudangId, $gdCuciKeluar->gdDetailMaterialId, $gdCompactKeluar, $gdCuciKeluar->purchaseId, $gdCuciKeluar->materialId, $gdCuciKeluar->jenisId, $gdCuciKeluar->gramasi, $gdCuciKeluar->diameter, $gdCuciKeluar->berat, $request['qty'][$i]);
+
+                        $total = $request['qtyOri'][$i] - $request['qty'][$i];
+                        GudangCuciKeluarDetail::gudangCuciUpdateField('qty', $total, $gdCuciKeluar->id);
+                    }
                 }
-            }
+                DB::commit();
 
-            return redirect('gudangCuci/Kembali');
+                return redirect('gudangCuci/Kembali')->with('success', 'Data Berhasil Disimpan');
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+
+            if (env('APP_ENV') == 'local') {
+                throw $th;
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Data Gagal Disimpan');
+            }
         }
     }
     /* END Gudang Cuci Request */
@@ -145,14 +176,12 @@ class GudangCuciController extends Controller
                 $gdCompactKeluarDetail = GudangCompactKeluarDetail::where('gdCompactKId', $gdCompactKeluar->id)->delete();
                 $gdCompactKeluar = GudangCompactKeluar::where('gdCuciKId', $request->gdCuciKId)->delete();
                 if ($gdCompactKeluar) {
-                    
                     DB::commit();
-                    
+
                     return redirect()->back();
                 }
             }
         } catch (\Throwable $th) {
-            
             DB::rollback();
             dd($th);
         }
